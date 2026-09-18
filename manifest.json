@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "TRIÂNGULO — Serviços locais nas ilhas",
+  "short_name": "TRIÂNGULO",
+  "description": "Serviços locais nas ilhas. Encontra. Reserva. Resolve.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#159e78",
+  "icons": [
+    {
+      "src": "./logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
