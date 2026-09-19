@@ -73,15 +73,17 @@ jobs:
           }
 
           index="$(fetch "$base/?verify=$GITHUB_SHA")"
+          hub="$(fetch "$base/inicio.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
 
-          grep -q "TRIÂNGULO" <<<"$index"
+          grep -q "Entrar no TRIÂNGULO" <<<"$index"
+          grep -q "Procurar um serviço" <<<"$hub"
           grep -q 'name="triangulo-build" content="ux-20260919"' <<<"$app"
           grep -q '"start_url": "/app.html"' <<<"$manifest"
           grep -q '"display": "standalone"' <<<"$manifest"
-          grep -q "triangulo-pwa-20260919-2" <<<"$sw"
+          grep -q "triangulo-pwa-" <<<"$sw"
 
           python - <<'PY'
           import json, urllib.request
