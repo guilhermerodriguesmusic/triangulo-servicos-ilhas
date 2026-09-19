@@ -399,7 +399,7 @@ function openBooking(id){
 function renderBookings(){
  $('#bookingList').innerHTML='<div class="empty"><div class="big">📅</div><h3>'+(lang==='pt'?'Reservas beta':'Beta bookings')+'</h3><p>'+(lang==='pt'?'Os pedidos de reserva são enviados para o TRIÂNGULO para confirmação. Nesta fase não há pagamentos automáticos.':'Booking requests are sent to TRIÂNGULO for confirmation. There are no automatic payments during beta.')+'</p></div>';
 }
-function openProviderSignup(){closeSheets();$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');showScreen('provider');if(location.hash!=='#prestador')history.replaceState(null,'','#prestador')}
+function openProviderSignup(){location.href='candidatura-prestador.html'}
 $('#providerBtn').onclick=openProviderSignup;
 $('#bookingsBtn').onclick=()=>{renderBookings();showScreen('bookings')};const photoInput=$('#providerPhoto');
 if(photoInput)photoInput.onchange=async e=>{const file=e.target.files&&e.target.files[0];if(!file){providerPhotoData=null;return}try{providerPhotoData=await compressImage(file,640,.78);const im=$('#providerPhotoPreview');im.src=providerPhotoData;im.classList.add('show')}catch(err){console.error(err);toast(lang==='pt'?'Não foi possível preparar a imagem.':'Could not prepare the image.')}};
@@ -424,7 +424,7 @@ $('#providerForm').onsubmit=async e=>{
 };
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice}catch{};return}toast(/iphone|ipad|ipod/i.test(navigator.userAgent)?(lang==='pt'?'No iPhone: Partilhar → Adicionar ao ecrã principal.':'On iPhone: Share → Add to Home Screen.'):(lang==='pt'?'Abre no Chrome/Safari para instalar.':'Open in Chrome/Safari to install.'))};
-function init(){updateIsland();applyLang();renderBookings();loadProviders();const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';if(location.hash==='#app'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }else if(providerEntry){openProviderSignup()}if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}
+function init(){updateIsland();applyLang();renderBookings();loadProviders();const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';if(providerEntry){openProviderSignup();return}if(location.hash==='#app'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
 init();
 </script>
