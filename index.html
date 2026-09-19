@@ -3,133 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10345d">
-<title>TRIÂNGULO Açores — Encontra novos clientes na tua ilha</title>
-<meta name="description" content="Cria gratuitamente o teu perfil no TRIÂNGULO e começa a receber pedidos de clientes no Pico, Faial e São Jorge.">
+<meta name="theme-color" content="#0f3158">
+<title>TRIÂNGULO Açores</title>
+<meta name="description" content="TRIÂNGULO Açores — uma plataforma local que liga prestadores de serviços a clientes no Pico, Faial e São Jorge.">
 <link rel="icon" href="/logo.svg">
 <style>
-:root{--navy:#10345d;--navy2:#0a2848;--green:#69e0bc;--mint:#e2f8f1;--ink:#15385f;--muted:#637b8f;--line:#dce8ee;--bg:#f5fafc}
+:root{--navy:#0f3158;--green:#79e5c4}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-a{text-decoration:none;color:inherit}button{font:inherit}
-.wrap{max-width:1080px;margin:auto;padding:0 20px}
-.top{height:72px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-.brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.065em;color:var(--navy)}
-.brand img{width:38px;height:42px;object-fit:contain}
-.right{display:flex;align-items:center;gap:10px}
-.client{font-size:11px;font-weight:800;color:#678095}
-.lang{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px}
-.lang button{border:0;background:transparent;padding:6px 9px;border-radius:999px;font-weight:900;font-size:11px;color:#718596;cursor:pointer}
-.lang button.active{background:var(--mint);color:#087158}
-
-.hero{background:var(--navy);border-radius:28px;overflow:hidden;display:grid;grid-template-columns:1.08fr .92fr;min-height:520px;box-shadow:0 24px 55px rgba(20,61,92,.14)}
-.copy{padding:54px 48px;display:flex;flex-direction:column;justify-content:center;color:#fff}
-.welcome{font-size:12px;font-weight:900;color:#88e7ca;letter-spacing:.025em;margin-bottom:12px}
-h1{font-size:clamp(44px,5.6vw,68px);line-height:.98;letter-spacing:-.05em;margin:0 0 17px;max-width:650px}
-.copy>p{font-size:17px;line-height:1.55;color:#d7e6ee;margin:0;max-width:610px}
-.promise{margin:23px 0 0;display:grid;gap:9px}
-.promise span{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#dce9ef;font-weight:700}
-.promise span:before{content:"✓";display:grid;place-items:center;flex:0 0 19px;height:19px;border-radius:50%;background:rgba(105,224,188,.18);color:#7de4c4;font-weight:950}
-.cta{margin-top:25px;display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;background:var(--green);color:#0b3d30;font-size:15px;font-weight:950;padding:15px 20px;border-radius:15px;box-shadow:0 10px 28px rgba(0,0,0,.16)}
-.cta:hover{transform:translateY(-1px)}
-.smallprint{font-size:10px!important;color:#adc4d0!important;margin-top:10px!important}
-.visual{position:relative;background:url('/assets/pico-real.jpg') center/cover no-repeat;min-height:520px}
-.visual:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 0%,rgba(16,52,93,.18) 38%,rgba(6,30,50,.12) 100%),linear-gradient(180deg,transparent 58%,rgba(5,28,47,.50))}
-.islands{position:absolute;left:24px;right:24px;bottom:22px;z-index:2;display:flex;gap:7px;flex-wrap:wrap}
-.islands span{background:rgba(255,255,255,.92);color:var(--navy);font-size:10px;font-weight:900;padding:8px 11px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.10)}
-
-.how{padding:54px 0 24px}
-.how-head{text-align:center;max-width:620px;margin:0 auto 22px}
-.how-head b{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:#0b8068}
-.how-head h2{font-size:34px;letter-spacing:-.035em;margin:7px 0 8px}
-.how-head p{font-size:13px;color:var(--muted);line-height:1.55;margin:0}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.step{background:#fff;border:1px solid var(--line);border-radius:18px;padding:19px}
-.num{width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:900}
-.step h3{font-size:16px;margin:13px 0 5px}
-.step p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
-
-.bottom{padding:28px 0 58px}
-.bottom-card{background:linear-gradient(135deg,#dff7ef,#e7f5ff);border:1px solid #cfe4e8;border-radius:23px;padding:30px;text-align:center}
-.bottom-card h2{font-size:30px;letter-spacing:-.03em;margin:0 0 8px}
-.bottom-card p{font-size:13px;color:#5f788c;margin:0 auto 17px;max-width:570px;line-height:1.5}
-.bottom-card .cta{margin:0;align-self:auto;background:var(--navy);color:#fff}
-footer{border-top:1px solid var(--line);padding:20px 0 28px;color:#74899a;font-size:10px}
-.footer{display:flex;justify-content:space-between;gap:18px}.footer a{margin-left:14px}
-
-@media(max-width:720px){
- .wrap{padding:0 12px}.top{height:63px}.brand{font-size:14px}.brand img{width:32px}.client{display:none}
- .hero{grid-template-columns:1fr;min-height:0;border-radius:22px}
- .copy{padding:30px 22px 28px}.welcome{font-size:11px}
- h1{font-size:41px}.copy>p{font-size:14px}.promise{margin-top:17px}.promise span{font-size:11px}
- .cta{width:100%;margin-top:20px}.smallprint{text-align:center}
- .visual{min-height:210px}.visual:after{background:linear-gradient(180deg,var(--navy) 0%,rgba(16,52,93,.05) 30%,rgba(5,28,47,.40) 100%)}
- .islands{left:12px;right:12px;bottom:12px}
- .how{padding-top:40px}.how-head h2{font-size:28px}.steps{grid-template-columns:1fr;gap:8px}.step{padding:16px}
- .bottom{padding:20px 0 42px}.bottom-card{padding:25px 18px}.bottom-card h2{font-size:27px}
- .footer{flex-direction:column;gap:8px}.footer a{margin:0 12px 0 0}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f3158;color:#fff}
+body{min-height:100svh}
+.welcome{position:relative;min-height:100svh;display:flex;flex-direction:column;isolation:isolate;overflow:hidden;background:#0f3158}
+.welcome:before{content:"";position:absolute;inset:0;z-index:-3;background:url('/assets/pico-hero-real.jpg') center 45%/cover no-repeat;transform:scale(1.02)}
+.welcome:after{content:"";position:absolute;inset:0;z-index:-2;background:
+ linear-gradient(180deg,rgba(5,27,47,.22) 0%,rgba(6,34,57,.20) 38%,rgba(6,31,53,.60) 68%,rgba(5,26,45,.96) 100%),
+ radial-gradient(circle at 72% 12%,rgba(121,229,196,.17),transparent 30%)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 16px) 18px 0}
+.brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.08em;font-size:15px}
+.brand img{width:45px;height:48px;object-fit:contain;background:rgba(255,255,255,.92);border-radius:14px;padding:5px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.lang{display:flex;padding:3px;border-radius:999px;border:1px solid rgba(255,255,255,.20);background:rgba(4,31,53,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.lang button{border:0;background:transparent;color:rgba(255,255,255,.70);font-size:11px;font-weight:900;padding:7px 10px;border-radius:999px}
+.lang button.active{background:#fff;color:var(--navy)}
+.spacer{flex:1;min-height:30vh}
+.content{padding:0 18px calc(env(safe-area-inset-bottom) + 24px);max-width:720px}
+.kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#9aedd4;margin-bottom:10px}
+h1{font-size:clamp(44px,11vw,72px);line-height:.94;letter-spacing:-.05em;margin:0;text-shadow:0 3px 24px rgba(0,0,0,.28)}
+p{font-size:14px;line-height:1.5;color:rgba(255,255,255,.82);margin:15px 0 0;max-width:560px}
+.cta{margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(100%,520px);padding:17px 18px 17px 20px;background:#fff;color:var(--navy);border-radius:20px;text-decoration:none;box-shadow:0 18px 42px rgba(0,0,0,.24)}
+.cta-copy{display:grid;gap:2px}.cta-copy small{font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:#688096}.cta-copy b{font-size:17px}
+.arrow{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#def7ef;color:#087459;font-size:24px}
+.client{display:inline-block;margin-top:13px;color:rgba(255,255,255,.72);font-size:10px;text-decoration:none}
+@media(min-width:760px){
+ .top{padding-left:34px;padding-right:34px}.content{padding-left:38px;padding-right:38px}.spacer{min-height:28vh}
+}
+@media(max-height:700px){
+ .spacer{min-height:16vh}h1{font-size:42px}.content p{margin-top:10px}.cta{margin-top:16px}
 }
 </style>
 </head>
 <body>
-<header class="wrap top">
-  <a class="brand" href="/"><img src="/logo.svg" alt="">TRIÂNGULO AÇORES</a>
-  <div class="right">
-    <a class="client" href="/app.html" data-pt="Procuras um serviço? Abrir app →" data-en="Looking for a service? Open app →">Procuras um serviço? Abrir app →</a>
-    <div class="lang"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div>
-  </div>
-</header>
+<main class="welcome">
+  <header class="top">
+    <div class="brand"><img src="/logo.svg" alt="">TRIÂNGULO AÇORES</div>
+    <div class="lang" aria-label="Idioma"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div>
+  </header>
 
-<main>
-<section class="wrap">
-  <div class="hero">
-    <div class="copy">
-      <div class="welcome" data-pt="Bem-vindo ao TRIÂNGULO Açores." data-en="Welcome to TRIÂNGULO Açores.">Bem-vindo ao TRIÂNGULO Açores.</div>
-      <h1 data-pt="A plataforma que leva o teu serviço a novos clientes." data-en="The platform that puts your service in front of new clients.">A plataforma que leva o teu serviço a novos clientes.</h1>
-      <p data-pt="Se trabalhas no Pico, Faial ou São Jorge, cria o teu perfil. Quando alguém procurar o serviço que fazes, pode encontrar-te na app TRIÂNGULO e enviar-te um pedido." data-en="If you work in Pico, Faial or São Jorge, create your profile. When someone looks for the service you provide, they can find you in the TRIÂNGULO app and send you a request.">Se trabalhas no Pico, Faial ou São Jorge, cria o teu perfil. Quando alguém procurar o serviço que fazes, pode encontrar-te na app TRIÂNGULO e enviar-te um pedido.</p>
-      <div class="promise">
-        <span data-pt="Criar o perfil é gratuito." data-en="Creating your profile is free.">Criar o perfil é gratuito.</span>
-        <span data-pt="Tu defines os teus serviços, preços e disponibilidade." data-en="You set your services, prices and availability.">Tu defines os teus serviços, preços e disponibilidade.</span>
-        <span data-pt="Recebes pedidos de pessoas que procuram ajuda na tua ilha." data-en="Receive requests from people looking for help on your island.">Recebes pedidos de pessoas que procuram ajuda na tua ilha.</span>
-      </div>
-      <a class="cta" href="/candidatura-prestador.html" data-pt="Quero receber pedidos →" data-en="I want to receive requests →">Quero receber pedidos →</a>
-      <p class="smallprint" data-pt="Leva poucos minutos a criar o perfil." data-en="It only takes a few minutes to create your profile.">Leva poucos minutos a criar o perfil.</p>
-    </div>
-    <div class="visual" role="img" aria-label="Ilha do Pico">
-      <div class="islands"><span>Pico</span><span>Faial</span><span>São Jorge</span></div>
-    </div>
-  </div>
-</section>
+  <div class="spacer"></div>
 
-<section class="how">
-  <div class="wrap">
-    <div class="how-head">
-      <b data-pt="Como funciona" data-en="How it works">Como funciona</b>
-      <h2 data-pt="Simples para ti. Simples para o cliente." data-en="Simple for you. Simple for the client.">Simples para ti. Simples para o cliente.</h2>
-      <p data-pt="O objetivo é um só: facilitar que quem precisa de um serviço encontre quem o sabe fazer." data-en="One goal: make it easy for people who need a service to find someone who can do it.">O objetivo é um só: facilitar que quem precisa de um serviço encontre quem o sabe fazer.</p>
-    </div>
-    <div class="steps">
-      <article class="step"><div class="num">1</div><h3 data-pt="Criar perfil" data-en="Create profile">Criar perfil</h3><p data-pt="Dizes-nos o que fazes, em que ilha trabalhas e como queres cobrar." data-en="Tell us what you do, where you work and how you charge.">Dizes-nos o que fazes, em que ilha trabalhas e como queres cobrar.</p></article>
-      <article class="step"><div class="num">2</div><h3 data-pt="Ficas visível na app" data-en="Appear in the app">Ficas visível na app</h3><p data-pt="Depois de revisto, o teu perfil aparece aos clientes que procuram esse serviço." data-en="Once reviewed, your profile appears to clients searching for that service.">Depois de revisto, o teu perfil aparece aos clientes que procuram esse serviço.</p></article>
-      <article class="step"><div class="num">3</div><h3 data-pt="Recebes pedidos" data-en="Receive requests">Recebes pedidos</h3><p data-pt="O cliente escolhe-te ou publica um pedido para encontrar alguém disponível." data-en="The client chooses you or posts a request to find someone available.">O cliente escolhe-te ou publica um pedido para encontrar alguém disponível.</p></article>
-    </div>
-  </div>
-</section>
+  <section class="content">
+    <div class="kicker" data-pt="Pico · Faial · São Jorge" data-en="Pico · Faial · São Jorge">Pico · Faial · São Jorge</div>
+    <h1 data-pt="Bem-vindo ao TRIÂNGULO Açores." data-en="Welcome to TRIÂNGULO Açores.">Bem-vindo ao TRIÂNGULO Açores.</h1>
+    <p data-pt="A plataforma local que aproxima quem presta serviços de quem precisa deles nas ilhas." data-en="The local platform connecting service providers with people who need them across the islands.">A plataforma local que aproxima quem presta serviços de quem precisa deles nas ilhas.</p>
 
-<section class="bottom">
-  <div class="wrap">
-    <div class="bottom-card">
-      <h2 data-pt="Fazes um serviço nas ilhas?" data-en="Do you provide a service on the islands?">Fazes um serviço nas ilhas?</h2>
-      <p data-pt="Jardinagem, limpezas, reparações, transportes, aulas, tecnologia, fotografia, animais ou outra área — queremos que os clientes te consigam encontrar." data-en="Gardening, cleaning, repairs, transport, lessons, technology, photography, pets or another service — we want clients to be able to find you.">Jardinagem, limpezas, reparações, transportes, aulas, tecnologia, fotografia, animais ou outra área — queremos que os clientes te consigam encontrar.</p>
-      <a class="cta" href="/candidatura-prestador.html" data-pt="Criar o meu perfil →" data-en="Create my profile →">Criar o meu perfil →</a>
-    </div>
-  </div>
-</section>
+    <a class="cta" href="/prestadores.html">
+      <span class="cta-copy">
+        <small data-pt="Descobre a plataforma" data-en="Discover the platform">Descobre a plataforma</small>
+        <b data-pt="Entrar no TRIÂNGULO →" data-en="Enter TRIÂNGULO →">Entrar no TRIÂNGULO →</b>
+      </span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a class="client" href="/app.html" data-pt="Procuras um serviço? Abrir app para clientes →" data-en="Looking for a service? Open the client app →">Procuras um serviço? Abrir app para clientes →</a>
+  </section>
 </main>
-
-<footer><div class="wrap footer"><span>TRIÂNGULO Açores · Pico · Faial · São Jorge</span><span><a href="/app.html" data-pt="App para clientes" data-en="Client app">App para clientes</a><a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a><a href="/terms.html" data-pt="Termos" data-en="Terms">Termos</a></span></div></footer>
-
 <script>
 let lang=localStorage.getItem('tri_lang')||'pt';
 function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=v==='pt'?el.dataset.pt:el.dataset.en);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
