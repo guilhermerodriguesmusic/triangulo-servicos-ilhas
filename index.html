@@ -32,14 +32,14 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 .path.primary p{color:#d7e5ed}
 .path .go{margin-top:auto;padding-top:24px;font-size:13px;font-weight:900;color:#0b8068}
 .path.primary .go{color:#fff}
-.strip{margin-top:16px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.installbar{margin-top:14px;background:#153458;color:#fff;border-radius:16px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}.installbar b{font-size:13px}.installbar a{color:#7ce2c3;text-decoration:none;font-size:12px;font-weight:900;white-space:nowrap}.strip{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
 .strip b{display:block;font-size:14px}
 .strip span{display:block;margin-top:3px;color:#6a8294;font-size:12px}
 .islands{display:flex;gap:7px;flex-wrap:wrap}
 .islands i{font-style:normal;background:#eef8f5;color:#08725b;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}
 .footer{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:24px 2px 8px;color:#718698;font-size:10px}
 .footer a{color:#55738b;text-decoration:none;margin-left:14px}
-@media(max-width:680px){.wrap{padding:12px}.hero{padding:32px 20px}.hero p{font-size:15px}.paths{grid-template-columns:1fr}.path{min-height:160px}.strip{grid-template-columns:1fr}.footer{align-items:flex-start;flex-direction:column}.footer a{margin:0 14px 0 0}}
+@media(max-width:680px){.wrap{padding:12px}.hero{padding:32px 20px}.hero p{font-size:15px}.paths{grid-template-columns:1fr}.path{min-height:160px}.installbar{align-items:flex-start;flex-direction:column}.strip{grid-template-columns:1fr}.footer{align-items:flex-start;flex-direction:column}.footer a{margin:0 14px 0 0}}
 </style>
 </head>
 <body>
@@ -70,6 +70,11 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
     <p data-pt="Entra na aplicação e encontra prestadores disponíveis nas ilhas." data-en="Open the app and find available local providers.">Entra na aplicação e encontra prestadores disponíveis nas ilhas.</p>
     <div class="go" data-pt="Abrir aplicação →" data-en="Open app →">Abrir aplicação →</div>
   </a>
+</section>
+
+<section class="installbar">
+  <b data-pt="Queres o TRIÂNGULO no telemóvel?" data-en="Want TRIÂNGULO on your phone?">Queres o TRIÂNGULO no telemóvel?</b>
+  <a href="instalar/" data-pt="Instalar app →" data-en="Install app →">Instalar app →</a>
 </section>
 
 <section class="strip">
