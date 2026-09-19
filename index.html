@@ -323,6 +323,7 @@ function applyLang(){
  renderCats();
  updateResults(rq||(lang==='pt'?'jardim':'garden'));
  renderBookings();
+ const suffix=lang==='en'?'?lang=en':'';$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 function renderCats(){const make=(c,i,full=false)=>{const label=full?c[lang]:(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en));return `<button class="category c${i}" data-cat="${i}">${icons[c.icon]}<small>${label}</small></button>`};$('#homeCats').innerHTML=categories.slice(0,4).map((c,i)=>make(c,i,false)).join('');$('#allCats').innerHTML=categories.map((c,i)=>make(c,i,true)).join('');$$$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang])})}
@@ -399,7 +400,7 @@ $('#providerForm').onsubmit=async e=>{
  if(!islands.length){toast(lang==='pt'?'Escolhe pelo menos uma ilha onde trabalhas.':'Choose at least one island you work on.');return}
  const d=Object.fromEntries(new FormData(form));
  btn.disabled=true;status.textContent=lang==='pt'?'A enviar…':'Submitting…';
- const payload={name:d.name.trim(),business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,email:d.email.trim(),phone:d.phone&&d.phone.trim()?d.phone.trim():null,base_island:d.base_island,service_islands:islands,categories:cats,description:d.description.trim(),pricing_type:d.pricing_type,price:d.pricing_type==='quote'||!d.price?null:Number(d.price),availability:d.availability&&d.availability.trim()?d.availability.trim():null,available_today:!!d.today,photo_data:providerPhotoData,website:d.website&&d.website.trim()?d.website.trim():null,consent_commission:!!d.consent_commission,consent_terms:!!d.consent_terms,consent_privacy:!!d.consent_privacy,status:'pending'};
+ const payload={name:d.name.trim(),business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,email:d.email.trim(),phone:d.phone&&d.phone.trim()?d.phone.trim():null,base_island:d.base_island,service_islands:islands,categories:cats,description:d.description.trim(),pricing_type:d.pricing_type,price:d.pricing_type==='quote'||!d.price?null:Number(d.price),availability:d.availability&&d.availability.trim()?d.availability.trim():null,available_today:!!d.today,photo_data:providerPhotoData,website:d.website&&d.website.trim()?d.website.trim():null,consent_commission:!!d.consent_commission,consent_terms:!!d.consent_terms,consent_privacy:!!d.consent_privacy,locale:lang,status:'pending'};
  try{
   const res=await db.from('provider_applications').insert(payload);if(res.error)throw res.error;
   form.reset();providerPhotoData=null;const im=$('#providerPhotoPreview');im.src='';im.classList.remove('show');
