@@ -69,6 +69,25 @@
 /* sheets */
 .backdrop{display:none;position:fixed;inset:0;background:rgba(6,32,54,.35);z-index:50}.backdrop.open{display:block}.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,110%);width:min(100%,480px);max-height:90vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;padding:13px 18px 30px;z-index:55;transition:.24s ease}.sheet.open{transform:translate(-50%,0)}.handle{width:43px;height:4px;background:#d7e0e7;border-radius:999px;margin:0 auto 13px}.close{position:absolute;right:14px;top:12px;width:33px;height:33px;border-radius:50%;border:1px solid #e1e7ec;background:#fff}.sheet h2{margin:4px 0 14px}.all-cats{grid-template-columns:repeat(2,1fr)}.book-provider{display:flex;gap:10px;align-items:center;margin-bottom:14px}.book-provider img{width:55px;height:55px;border-radius:14px;object-fit:cover}.date-row,.time-row{display:flex;gap:7px;overflow:auto;margin:8px 0 14px}.date-chip,.time-chip{border:1px solid #dce5ed;background:#fff;border-radius:12px;padding:9px 12px;min-width:62px}.date-chip.active,.time-chip.active{background:#e2f7f0;border-color:#55c4a2;color:#08775c}.pay{display:grid;gap:8px;margin:8px 0 14px}.pay button{border:1px solid #dce5ed;background:#fff;border-radius:12px;padding:11px;text-align:left}.pay button.active{border-color:#3c9be9;background:#eef7ff}.summary{display:flex;justify-content:space-between;font-weight:850;margin:13px 0}.demo{font-size:9px;color:var(--muted);text-align:center;line-height:1.4}.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#153458;color:#fff;padding:10px 14px;border-radius:999px;z-index:90;font-size:11px;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(min-width:600px){body{padding:18px 0}.app{min-height:calc(100vh - 36px);border-radius:30px;overflow:hidden}.bottom-nav{bottom:18px;border-radius:0 0 30px 30px}}
+@media(max-width:520px){
+  #requestSheet{
+    width:100%;
+    max-height:calc(100dvh - env(safe-area-inset-top) - 6px);
+    padding:12px 18px calc(22px + env(safe-area-inset-bottom));
+    border-radius:24px 24px 0 0;
+  }
+  #requestSheet .two{grid-template-columns:1fr;gap:11px}
+  #requestSheet .form{gap:12px}
+  #requestSheet .form input,
+  #requestSheet .form textarea,
+  #requestSheet .form select{
+    font-size:16px;
+    min-width:0;
+  }
+  #requestSheet .form textarea{min-height:96px}
+  #requestSheet .primary{min-height:48px;font-size:15px}
+  #requestSheet h2{font-size:26px;margin-right:44px}
+}
 </style>
 <!-- Wikimedia image credits: Pico (José Duarte, CC0); Faial.jpg (PD-self); Faja dos bodes.jpg (PD-self). -->
 
@@ -231,10 +250,10 @@
 </div></aside>
 <aside id="requestSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-pt="Publicar pedido" data-en="Post a request">Publicar pedido</h2><form id="requestForm" class="form">
 <label><span data-pt="O que precisas?" data-en="What do you need?">O que precisas?</span><textarea name="description" required maxlength="1500" data-ph-pt="Ex.: Preciso de alguém para cortar a erva no sábado" data-ph-en="E.g. I need someone to cut the grass on Saturday"></textarea></label>
-<div class="two"><label><span data-pt="Quando?" data-en="When?">Quando?</span><input type="date" name="date"></label><label><span data-pt="Onde?" data-en="Where?">Onde?</span><input name="where" data-ph-pt="Ex.: São Mateus" data-ph-en="E.g. São Mateus"></label></div>
+<div class="two"><label><span data-pt="Quando?" data-en="When?">Quando?</span><input type="date" name="date"></label><label><span data-pt="Onde?" data-en="Where?">Onde?</span><input name="where" autocomplete="street-address" data-ph-pt="Ex.: São Mateus" data-ph-en="E.g. São Mateus"></label></div>
 <label><span data-pt="Tenho este orçamento (opcional)" data-en="My budget (optional)">Tenho este orçamento (opcional)</span><input name="budget" type="number" min="0" step="0.01" placeholder="€"></label>
-<div class="two"><label><span data-pt="Nome" data-en="Name">Nome</span><input name="client_name"></label><label><span>Email</span><input required type="email" name="client_email"></label></div>
-<label><span data-pt="Telefone (opcional)" data-en="Phone (optional)">Telefone (opcional)</span><input name="client_phone" inputmode="tel"></label>
+<div class="two"><label><span data-pt="Nome" data-en="Name">Nome</span><input name="client_name" autocomplete="name"></label><label><span>Email</span><input required type="email" name="client_email" autocomplete="email" inputmode="email"></label></div>
+<label><span data-pt="Telefone (opcional)" data-en="Phone (optional)">Telefone (opcional)</span><input name="client_phone" inputmode="tel" autocomplete="tel"></label>
 <div id="requestSubmitStatus" class="submit-status"></div>
 <button class="primary" type="submit" data-pt="Publicar pedido" data-en="Post request">Publicar pedido</button></form></aside>
 <aside id="contactSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</h2><form id="contactForm" class="form">
