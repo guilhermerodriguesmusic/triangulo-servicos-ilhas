@@ -323,7 +323,7 @@ function applyLang(){
  renderCats();
  updateResults(rq||(lang==='pt'?'jardim':'garden'));
  renderBookings();
- const suffix=lang==='en'?'?lang=en':'';$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
+ const suffix=lang==='en'?'?lang=en':'';$$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 function renderCats(){const make=(c,i,full=false)=>{const label=full?c[lang]:(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en));return `<button class="category c${i}" data-cat="${i}">${icons[c.icon]}<small>${label}</small></button>`};$('#homeCats').innerHTML=categories.slice(0,4).map((c,i)=>make(c,i,false)).join('');$('#allCats').innerHTML=categories.map((c,i)=>make(c,i,true)).join('');$$$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang])})}
