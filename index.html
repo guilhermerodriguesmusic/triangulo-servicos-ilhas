@@ -326,14 +326,37 @@ function applyLang(){
 }
 $('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 function renderCats(){const make=(c,i,full=false)=>{const label=full?c[lang]:(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en));return `<button class="category c${i}" data-cat="${i}">${icons[c.icon]}<small>${label}</small></button>`};$('#homeCats').innerHTML=categories.slice(0,4).map((c,i)=>make(c,i,false)).join('');$('#allCats').innerHTML=categories.map((c,i)=>make(c,i,true)).join('');$$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang])})}
-function renderProviders(){const el=$('#providerStrip');if(!el)return;let list=providers.slice(0,3);el.innerHTML=list.map(p=>`<button class="mini-provider" data-provider="${p.id}"><img src="${p.img}"><span class="demo-badge">DEMO</span><b>${p.name}</b><small>${localized(p)}</small></button>`).join('');bindProvider()}
+function providerMatchesIsland(p){return p.base_island===island||(Array.isArray(p.service_islands)&&p.service_islands.includes(island))}
+function providerPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang==='pt'?'Sob orçamento':'Quote';const raw=Number(p.price),n=raw.toFixed(raw%1?2:0);if(p.pricing_type==='hour')return '€'+n+(lang==='pt'?'/h':'/hr');if(p.pricing_type==='from')return (lang==='pt'?'Desde ':'From ')+'€'+n;return '€'+n}
+function providerCategoryLabels(p){return (p.categories||[]).map(code=>{const i=CATEGORY_CODES.indexOf(code),c=categories[i];return c?(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en)):code}).slice(0,3)}
+function renderProviders(){}
+async function loadProviders(){try{const res=await db.from('providers').select('id,name,business_name,base_island,service_islands,categories,description,pricing_type,price,availability,available_today,photo_data,website,approved_at').order('approved_at',{ascending:false});if(res.error)throw res.error;realProviders=res.data||[];updateResults($('#resultsInput')?.value||(lang==='pt'?'jardim':'garden'))}catch(e){console.error('loadProviders',e);realProviders=[];updateResults($('#resultsInput')?.value||(lang==='pt'?'jardim':'garden'))}}
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function categoryFor(q){q=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');return categories.findIndex(c=>c.keys.some(k=>q.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,''))))}
 function runSearch(q,urgent=false){q=(q||'').trim();if(!q)q=lang==='pt'?'jardim':'garden';$('#resultsInput').value=q;showScreen('explore');updateResults(q,urgent)}
-function updateResults(q,urgent=false){const ci=categoryFor(q);let list=ci>=0?providers.filter(p=>p.cat===ci):providers;if(ci===1)list=list.filter(p=>p.id>=4);if(urgent)list=list.filter(p=>p.available);const qLabel=q||(lang==='pt'?'serviços':'services');$('#resultsTitle').textContent=lang==='pt'?`Resultados para “${qLabel}”`:`Results for “${qLabel}”`;$('#resultsCount').textContent=`${list.length} ${tr('demoProfiles')}`;$('#resultsList').innerHTML=list.slice(0,6).map(p=>`<div class="result-card demo" role="button" tabindex="0" data-provider="${p.id}"><img src="${p.img}"><div><button class="heart" type="button">♡</button><span class="demo-badge">DEMO</span><b>${p.name}</b><div class="desc">${localized(p)}</div><div class="loc">📍 ${island}</div><small class="avail" style="${p.available?'':'background:#f0f2f5;color:#7a899a'}">${p.available?(lang==='pt'?'↓ Disponível hoje':'↓ Available today'):(lang==='pt'?'+ Indisponível hoje':'+ Unavailable today')}</small></div></div>`).join('');bindProvider()}
-function bindProvider(){$$('[data-provider]').forEach(b=>b.onclick=e=>{if(e.target.closest('.heart'))return;openBooking(+b.dataset.provider)})}
+function updateResults(q,urgent=false){
+ q=(q||'').trim();
+ const ci=categoryFor(q),code=ci>=0?CATEGORY_CODES[ci]:null;
+ let list=realProviders.filter(providerMatchesIsland);
+ if(code)list=list.filter(p=>(p.categories||[]).includes(code));
+ if(urgent)list=list.filter(p=>p.available_today);
+ const qLabel=q||(lang==='pt'?'serviços':'services');
+ $('#resultsTitle').textContent=lang==='pt'?'Resultados para “'+qLabel+'”':'Results for “'+qLabel+'”';
+ $('#resultsCount').textContent=lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' real'+(list.length===1?'':'is')):(list.length+' real provider'+(list.length===1?'':'s'));
+ if(!list.length){
+  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há prestadores nesta pesquisa.':'No providers for this search yet.')+'</b><span>'+(lang==='pt'?'Publica o que precisas e procuramos alguém para ti.':'Post what you need and we’ll try to find someone for you.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Publicar pedido':'Post request')+'</button></div>';
+  const ep=$('#emptyPost');if(ep)ep.onclick=openRequest;return;
+ }
+ $('#resultsList').innerHTML=list.map(p=>{
+  const tags=providerCategoryLabels(p),photo=p.photo_data||'logo.svg';
+  return '<div class="result-card" role="button" tabindex="0" data-provider="'+p.id+'"><img src="'+photo+'" alt=""><div><button class="heart" type="button">♡</button><b>'+escapeHtml(p.business_name||p.name)+'</b><div class="desc">'+escapeHtml(p.description||'')+'</div><div class="loc">📍 '+escapeHtml(p.base_island)+((p.service_islands||[]).length>1?' · '+(lang==='pt'?'outras ilhas por marcação':'other islands by appointment'):'')+'</div><div class="provider-price">'+providerPrice(p)+'</div><div class="provider-tags">'+tags.map(t=>'<span class="provider-tag">'+escapeHtml(t)+'</span>').join('')+'</div>'+(p.available_today?'<small class="avail">'+(lang==='pt'?'Disponível hoje':'Available today')+'</small>':'')+'</div></div>';
+ }).join('');
+ bindProvider();
+}
+function bindProvider(){$('[data-provider]').forEach(b=>b.onclick=e=>{if(e.target.closest('.heart'))return;openBooking(b.dataset.provider)})}
 function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));window.scrollTo({top:0,behavior:'auto'})}
 $$('[data-nav]').forEach(b=>b.onclick=()=>showScreen(b.dataset.nav));$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));
-function enterIsland(next){island=next;store.set('tri_island',island);$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();renderProviders();updateResults($('#resultsInput').value||'jardim')}
+function enterIsland(next){island=next;store.set('tri_island',island);$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();updateResults($('#resultsInput').value||(lang==='pt'?'jardim':'garden'))}
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){$('#islandPill span').textContent=island;$('#profileIsland').textContent=island;$('#profileIsland2').textContent=island}
 function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
