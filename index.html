@@ -424,7 +424,9 @@ $('#providerForm').onsubmit=async e=>{
 };
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice}catch{};return}toast(/iphone|ipad|ipod/i.test(navigator.userAgent)?(lang==='pt'?'No iPhone: Partilhar → Adicionar ao ecrã principal.':'On iPhone: Share → Add to Home Screen.'):(lang==='pt'?'Abre no Chrome/Safari para instalar.':'Open in Chrome/Safari to install.'))};
-function init(){updateIsland();applyLang();renderBookings();loadProviders();if(location.hash==='#app'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }else if(location.hash==='#prestador'||location.hash==='#provider'){openProviderSignup()}if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}init();
+function init(){updateIsland();applyLang();renderBookings();loadProviders();const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';if(location.hash==='#app'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }else if(providerEntry){openProviderSignup()}if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}
+window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
+init();
 </script>
 </body></html>
 <style id="provider-entry-polish">
