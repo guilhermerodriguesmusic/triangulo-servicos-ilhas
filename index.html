@@ -340,7 +340,7 @@ function providerMatchesIsland(p){return p.base_island===island||(Array.isArray(
 function providerPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang==='pt'?'Sob orçamento':'Quote';const raw=Number(p.price),n=raw.toFixed(raw%1?2:0);if(p.pricing_type==='hour')return '€'+n+(lang==='pt'?'/h':'/hr');if(p.pricing_type==='from')return (lang==='pt'?'Desde ':'From ')+'€'+n;return '€'+n}
 function providerCategoryLabels(p){return (p.categories||[]).map(code=>{const i=CATEGORY_CODES.indexOf(code),c=categories[i];return c?(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en)):code}).slice(0,3)}
 function renderProviders(){}
-async function loadProviders(){try{const res=await db.from('providers').select('id,name,business_name,base_island,service_islands,categories,description,pricing_type,price,availability,available_today,photo_data,website,approved_at').order('approved_at',{ascending:false});if(res.error)throw res.error;realProviders=res.data||[];updateResults($('#resultsInput')?.value||(lang==='pt'?'jardim':'garden'))}catch(e){console.error('loadProviders',e);realProviders=[];updateResults($('#resultsInput')?.value||(lang==='pt'?'jardim':'garden'))}}
+async function loadProviders(){try{const res=await db.from('providers').select('id,name,business_name,base_island,service_islands,categories,description,pricing_type,price,availability,available_today,photo_data,website,approved_at,founder_program,first_booking_at').order('approved_at',{ascending:false});if(res.error)throw res.error;realProviders=res.data||[];updateResults($('#resultsInput')?.value||(lang==='pt'?'jardim':'garden'))}catch(e){console.error('loadProviders',e);realProviders=[];updateResults($('#resultsInput')?.value||(lang==='pt'?'jardim':'garden'))}}
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function categoryFor(q){q=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');return categories.findIndex(c=>c.keys.some(k=>q.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,''))))}
 function runSearch(q,urgent=false){q=(q||'').trim();if(!q)q=lang==='pt'?'jardim':'garden';$('#resultsInput').value=q;showScreen('explore');updateResults(q,urgent)}
@@ -350,6 +350,7 @@ function updateResults(q,urgent=false){
  let list=realProviders.filter(providerMatchesIsland);
  if(code)list=list.filter(p=>(p.categories||[]).includes(code));
  if(urgent)list=list.filter(p=>p.available_today);
+ list=list.sort((a,b)=>{const af=!!(a.founder_program&&!a.first_booking_at),bf=!!(b.founder_program&&!b.first_booking_at);if(af!==bf)return af?-1:1;return new Date(b.approved_at||0)-new Date(a.approved_at||0)});
  const qLabel=q||(lang==='pt'?'serviços':'services');
  $('#resultsTitle').textContent=lang==='pt'?'Resultados para “'+qLabel+'”':'Results for “'+qLabel+'”';
  $('#resultsCount').textContent=lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' real'+(list.length===1?'':'is')):(list.length+' real provider'+(list.length===1?'':'s'));
