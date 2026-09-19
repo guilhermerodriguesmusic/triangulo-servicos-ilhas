@@ -3,331 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0d2f4f">
+<meta name="theme-color" content="#159e78">
 <title>TRIÂNGULO — Serviços locais nas ilhas</title>
-<meta name="description" content="TRIÂNGULO liga profissionais locais a pessoas que procuram serviços no Pico, Faial e São Jorge.">
+<meta name="description" content="Serviços locais no Pico, Faial e São Jorge.">
 <link rel="icon" href="logo.svg">
 <style>
-:root{
-  --ink:#0d2f4f;
-  --muted:#617789;
-  --green:#0b8b6d;
-  --green-soft:#e8f5f0;
-  --paper:#f7f8f5;
-  --white:#ffffff;
-  --line:#dfe6e7;
-  --dark:#0e2f4d;
-}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-a{color:inherit}
-.shell{max-width:1180px;margin:0 auto;padding:0 28px}
-header{
-  min-height:92px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:24px;
-  border-bottom:1px solid var(--line);
-}
-.brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:14px}
-.brand img{width:39px;height:39px}
-.nav{display:flex;align-items:center;gap:25px;font-size:13px;font-weight:700}
-.nav a{text-decoration:none;color:#35536b}
-.nav a:hover{color:var(--green)}
-.lang{display:flex;gap:2px;border-left:1px solid var(--line);padding-left:16px}
-.lang button{
-  border:0;background:transparent;color:#718595;font-weight:850;
-  padding:6px 7px;cursor:pointer;font-size:12px
-}
-.lang button.active{color:var(--ink)}
-
-.hero{
-  min-height:610px;
-  display:grid;
-  grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);
-  gap:70px;
-  align-items:center;
-  padding:72px 0 76px;
-}
-.kicker{
-  display:flex;align-items:center;gap:10px;
-  color:var(--green);font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase
-}
-.kicker:before{content:"";width:36px;height:2px;background:var(--green)}
-.hero h1{
-  max-width:760px;
-  font-size:clamp(48px,7vw,82px);
-  line-height:.98;
-  letter-spacing:-.045em;
-  margin:20px 0 24px;
-  font-weight:850;
-}
-.hero p{
-  max-width:650px;
-  margin:0;
-  color:var(--muted);
-  font-size:18px;
-  line-height:1.65;
-}
-.actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:32px}
-.primary{
-  display:inline-flex;align-items:center;justify-content:center;
-  padding:15px 21px;
-  background:var(--green);
-  color:#fff;
-  text-decoration:none;
-  font-weight:850;
-  border-radius:8px;
-  box-shadow:0 8px 24px rgba(11,139,109,.14);
-}
-.primary:hover{transform:translateY(-1px)}
-.text-link{font-size:13px;font-weight:800;text-decoration:none;color:var(--ink)}
-.text-link:hover{color:var(--green)}
-.micro{margin-top:11px;font-size:11px;color:#7c8e9b}
-
-.network{
-  position:relative;
-  min-height:440px;
-  background:var(--dark);
-  color:#fff;
-  overflow:hidden;
-  padding:30px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-.network:before{
-  content:"";
-  position:absolute;inset:0;
-  background:
-    radial-gradient(circle at 72% 18%,rgba(43,185,145,.18),transparent 34%),
-    linear-gradient(135deg,rgba(255,255,255,.04),transparent 42%);
-}
-.network-top,.network-bottom{position:relative;z-index:2}
-.network-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#9fb4c2;font-weight:800}
-.network-title{font-size:22px;line-height:1.2;font-weight:800;margin-top:7px;max-width:280px}
-.triangle{
-  width:78%;max-width:300px;aspect-ratio:1/1;margin:6px auto 0;position:relative;z-index:2
-}
-.triangle svg{width:100%;height:100%;overflow:visible}
-.network-bottom{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.18)}
-.island{padding-top:16px}
-.island b{display:block;font-size:13px}
-.island span{display:block;margin-top:4px;color:#91a8b8;font-size:10px}
-
-.how{
-  padding:72px 0;
-  border-top:1px solid var(--line);
-}
-.section-head{
-  display:grid;grid-template-columns:.7fr 1.3fr;gap:40px;align-items:end;margin-bottom:42px
-}
-.section-head .label{font-size:12px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--green)}
-.section-head h2{font-size:clamp(32px,4vw,50px);letter-spacing:-.035em;line-height:1.05;margin:0}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
-.step{padding:25px 26px 28px 0;border-bottom:1px solid var(--line)}
-.step+.step{padding-left:26px;border-left:1px solid var(--line)}
-.step .num{font-size:11px;color:var(--green);font-weight:900;letter-spacing:.12em}
-.step h3{font-size:18px;margin:24px 0 7px}
-.step p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
-
-.founder{
-  margin:14px 0 72px;
-  background:#0f3454;
-  color:white;
-  display:grid;
-  grid-template-columns:.7fr 1.3fr;
-  gap:40px;
-  padding:36px 40px;
-  align-items:center;
-}
-.founder .small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#93d5c2;font-weight:900}
-.founder h2{font-size:29px;line-height:1.1;margin:8px 0 0}
-.founder-copy{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-.founder-copy b{display:block;font-size:13px;margin-bottom:6px}
-.founder-copy p{margin:0;color:#cad9e2;font-size:12px;line-height:1.55}
-
-.client{
-  border-top:1px solid var(--line);
-  padding:34px 0 42px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:24px
-}
-.client strong{display:block;font-size:19px}
-.client span{display:block;margin-top:4px;color:var(--muted);font-size:13px}
-.client a{text-decoration:none;color:var(--green);font-size:13px;font-weight:900}
-
-footer{
-  border-top:1px solid var(--line);
-  min-height:78px;
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
-  color:#788a96;font-size:11px
-}
-footer .links{display:flex;gap:18px}
-footer a{text-decoration:none}
-
-@media(max-width:900px){
-  .nav>a{display:none}
-  .hero{grid-template-columns:1fr;gap:36px;padding:50px 0}
-  .network{min-height:360px}
-  .section-head,.founder{grid-template-columns:1fr}
-  .founder-copy{grid-template-columns:1fr 1fr}
-}
-@media(max-width:650px){
-  .shell{padding:0 18px}
-  header{min-height:76px}
-  .hero{padding:38px 0 46px}
-  .hero h1{font-size:48px}
-  .hero p{font-size:16px}
-  .actions{align-items:stretch;flex-direction:column}
-  .primary{width:100%}
-  .text-link{text-align:center;padding:8px}
-  .network{min-height:330px;padding:23px}
-  .network-title{font-size:19px}
-  .triangle{width:68%}
-  .how{padding:54px 0}
-  .section-head{margin-bottom:28px}
-  .steps{grid-template-columns:1fr}
-  .step,.step+.step{border-left:0;padding:22px 0}
-  .founder{margin-bottom:52px;padding:28px 24px}
-  .founder-copy{grid-template-columns:1fr}
-  .client{align-items:flex-start;flex-direction:column}
-  footer{align-items:flex-start;flex-direction:column;padding:24px 0}
-}
+body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:900px;margin:auto;padding:18px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:9px;color:#153458;text-decoration:none;font-weight:900;letter-spacing:.04em}
+.brand img{width:38px}
+.lang{display:flex;background:#fff;border:1px solid #d9e7ef;border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;padding:7px 10px;border-radius:999px;font-weight:900;color:#6a8295;cursor:pointer}
+.lang button.active{background:#e9f8f3;color:#08725b}
+.hero{background:linear-gradient(135deg,#def4ff,#ecfbf6);border:1px solid #d2e8ef;border-radius:26px;padding:46px 34px 40px;text-align:left}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0a8168}
+.hero h1{font-size:clamp(38px,7vw,66px);line-height:1.02;letter-spacing:-.035em;margin:10px 0 16px;max-width:760px}
+.hero p{margin:0;max-width:690px;color:#567187;line-height:1.6;font-size:17px}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.path{background:#fff;border:1px solid #dce9ef;border-radius:20px;padding:24px;text-decoration:none;color:#153458;display:flex;flex-direction:column;min-height:190px;transition:.15s ease}
+.path:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(21,52,88,.08);border-color:#c9dde6}
+.path.primary{background:#153458;color:#fff;border-color:#153458}
+.path .kicker{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0b8068}
+.path.primary .kicker{color:#7ce2c3}
+.path h2{font-size:27px;line-height:1.05;margin:14px 0 8px}
+.path p{font-size:13px;line-height:1.55;margin:0;color:#667f92;max-width:320px}
+.path.primary p{color:#d7e5ed}
+.path .go{margin-top:auto;padding-top:24px;font-size:13px;font-weight:900;color:#0b8068}
+.path.primary .go{color:#fff}
+.strip{margin-top:16px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.strip b{display:block;font-size:14px}
+.strip span{display:block;margin-top:3px;color:#6a8294;font-size:12px}
+.islands{display:flex;gap:7px;flex-wrap:wrap}
+.islands i{font-style:normal;background:#eef8f5;color:#08725b;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}
+.footer{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:24px 2px 8px;color:#718698;font-size:10px}
+.footer a{color:#55738b;text-decoration:none;margin-left:14px}
+@media(max-width:680px){.wrap{padding:12px}.hero{padding:32px 20px}.hero p{font-size:15px}.paths{grid-template-columns:1fr}.path{min-height:160px}.strip{grid-template-columns:1fr}.footer{align-items:flex-start;flex-direction:column}.footer a{margin:0 14px 0 0}}
 </style>
 </head>
 <body>
-<div class="shell">
-<header>
-  <a class="brand" href="./"><img src="logo.svg" alt="TRIÂNGULO"><span>TRIÂNGULO</span></a>
-  <nav class="nav">
-    <a href="#como-funciona" data-pt="Como funciona" data-en="How it works">Como funciona</a>
-    <a href="app.html" data-pt="Procurar serviços" data-en="Find services">Procurar serviços</a>
-    <div class="lang"><button id="pt" class="active">PT</button><button id="en">EN</button></div>
-  </nav>
+<div class="wrap">
+<header class="top">
+  <a class="brand" href="./"><img src="logo.svg" alt="TRIÂNGULO">TRIÂNGULO</a>
+  <div class="lang"><button id="pt" class="active">PT</button><button id="en">EN</button></div>
 </header>
 
 <main>
 <section class="hero">
-  <div>
-    <div class="kicker" data-pt="Serviços locais nas ilhas" data-en="Local services on the islands">Serviços locais nas ilhas</div>
-    <h1 data-pt="O teu trabalho merece ser encontrado." data-en="Your work deserves to be found.">O teu trabalho merece ser encontrado.</h1>
-    <p data-pt="O TRIÂNGULO liga profissionais e pequenos negócios do Pico, Faial e São Jorge a pessoas que procuram serviços locais." data-en="TRIÂNGULO connects professionals and small businesses on Pico, Faial and São Jorge with people looking for local services.">O TRIÂNGULO liga profissionais e pequenos negócios do Pico, Faial e São Jorge a pessoas que procuram serviços locais.</p>
-    <div class="actions">
-      <a class="primary" href="candidatura-prestador.html" data-pt="Criar perfil gratuitamente" data-en="Create a free profile">Criar perfil gratuitamente</a>
-      <a class="text-link" href="#como-funciona" data-pt="Ver como funciona →" data-en="See how it works →">Ver como funciona →</a>
-    </div>
-    <div class="micro" data-pt="Candidatura simples · revisão antes de publicação" data-en="Simple application · reviewed before publication">Candidatura simples · revisão antes de publicação</div>
-  </div>
-
-  <aside class="network" aria-label="Rede TRIÂNGULO">
-    <div class="network-top">
-      <div class="network-label" data-pt="Uma rede local" data-en="One local network">Uma rede local</div>
-      <div class="network-title" data-pt="Três ilhas ligadas por serviços de proximidade." data-en="Three islands connected by local services.">Três ilhas ligadas por serviços de proximidade.</div>
-    </div>
-
-    <div class="triangle" aria-hidden="true">
-      <svg viewBox="0 0 300 300">
-        <path d="M150 28 L268 246 L32 246 Z" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
-        <path d="M150 28 L268 246" fill="none" stroke="#2ab78f" stroke-width="3"/>
-        <circle cx="150" cy="28" r="10" fill="#2ab78f"/>
-        <circle cx="268" cy="246" r="10" fill="#ffffff"/>
-        <circle cx="32" cy="246" r="10" fill="#ffffff"/>
-        <circle cx="150" cy="158" r="5" fill="#2ab78f"/>
-      </svg>
-    </div>
-
-    <div class="network-bottom">
-      <div class="island"><b>Pico</b><span data-pt="serviços locais" data-en="local services">serviços locais</span></div>
-      <div class="island"><b>Faial</b><span data-pt="serviços locais" data-en="local services">serviços locais</span></div>
-      <div class="island"><b>São Jorge</b><span data-pt="serviços locais" data-en="local services">serviços locais</span></div>
-    </div>
-  </aside>
+  <div class="eyebrow">Pico · Faial · São Jorge</div>
+  <h1 data-pt="Serviços locais, mais fáceis de encontrar." data-en="Local services, easier to find.">Serviços locais, mais fáceis de encontrar.</h1>
+  <p data-pt="O TRIÂNGULO aproxima quem precisa de um serviço de quem sabe fazê-lo — nas três ilhas." data-en="TRIÂNGULO connects people who need a service with people who know how to do it — across the three islands.">O TRIÂNGULO aproxima quem precisa de um serviço de quem sabe fazê-lo — nas três ilhas.</p>
 </section>
 
-<section class="how" id="como-funciona">
-  <div class="section-head">
-    <div class="label" data-pt="Para prestadores" data-en="For providers">Para prestadores</div>
-    <h2 data-pt="Simples para quem trabalha. Claro para quem procura." data-en="Simple for those who work. Clear for those who search.">Simples para quem trabalha. Claro para quem procura.</h2>
-  </div>
+<section class="paths">
+  <a class="path primary" href="candidatura-prestador.html">
+    <div class="kicker" data-pt="Para profissionais" data-en="For professionals">Para profissionais</div>
+    <h2 data-pt="Quero prestar serviços" data-en="I want to offer services">Quero prestar serviços</h2>
+    <p data-pt="Cria gratuitamente o teu perfil e começa a receber pedidos de pessoas no Pico, Faial e São Jorge." data-en="Create your profile for free and start receiving requests from people on Pico, Faial and São Jorge.">Cria gratuitamente o teu perfil e começa a receber pedidos de pessoas no Pico, Faial e São Jorge.</p>
+    <div class="go" data-pt="Criar perfil →" data-en="Create profile →">Criar perfil →</div>
+  </a>
 
-  <div class="steps">
-    <article class="step">
-      <div class="num">01</div>
-      <h3 data-pt="Define o teu serviço" data-en="Define your service">Define o teu serviço</h3>
-      <p data-pt="Escolhes onde trabalhas, o que fazes e como apresentas o teu preço." data-en="Choose where you work, what you do and how you present your price.">Escolhes onde trabalhas, o que fazes e como apresentas o teu preço.</p>
-    </article>
-    <article class="step">
-      <div class="num">02</div>
-      <h3 data-pt="Recebe pedidos" data-en="Receive requests">Recebe pedidos</h3>
-      <p data-pt="Quando alguém te escolhe, recebes o pedido antes de existir qualquer confirmação." data-en="When someone chooses you, you receive the request before anything is confirmed.">Quando alguém te escolhe, recebes o pedido antes de existir qualquer confirmação.</p>
-    </article>
-    <article class="step">
-      <div class="num">03</div>
-      <h3 data-pt="Tu confirmas" data-en="You confirm">Tu confirmas</h3>
-      <p data-pt="Só fica reservado quando aceitas. Se não puderes, recusas sem complicações." data-en="It is only booked when you accept. If you cannot do it, you simply decline.">Só fica reservado quando aceitas. Se não puderes, recusas sem complicações.</p>
-    </article>
-  </div>
+  <a class="path" href="app.html">
+    <div class="kicker" data-pt="Para clientes" data-en="For customers">Para clientes</div>
+    <h2 data-pt="Procuro um serviço" data-en="I'm looking for a service">Procuro um serviço</h2>
+    <p data-pt="Entra na aplicação e encontra prestadores disponíveis nas ilhas." data-en="Open the app and find available local providers.">Entra na aplicação e encontra prestadores disponíveis nas ilhas.</p>
+    <div class="go" data-pt="Abrir aplicação →" data-en="Open app →">Abrir aplicação →</div>
+  </a>
 </section>
 
-<section class="founder">
+<section class="strip">
   <div>
-    <div class="small" data-pt="Nesta fase" data-en="At this stage">Nesta fase</div>
-    <h2 data-pt="Prestador Fundador" data-en="Founding Provider">Prestador Fundador</h2>
+    <b data-pt="Uma plataforma local para três ilhas." data-en="One local platform for three islands.">Uma plataforma local para três ilhas.</b>
+    <span data-pt="Perfis revistos antes de serem publicados." data-en="Profiles are reviewed before publication.">Perfis revistos antes de serem publicados.</span>
   </div>
-  <div class="founder-copy">
-    <div>
-      <b data-pt="Prioridade inicial" data-en="Early priority">Prioridade inicial</b>
-      <p data-pt="Os primeiros prestadores têm prioridade nos resultados até receberem a primeira reserva." data-en="Early providers get priority in results until their first booking.">Os primeiros prestadores têm prioridade nos resultados até receberem a primeira reserva.</p>
-    </div>
-    <div>
-      <b data-pt="Recomendação" data-en="Referral">Recomendação</b>
-      <p data-pt="Recomenda outro profissional. Se for aprovado, ganhas 1 serviço futuro sem comissão, até 5 recomendações." data-en="Refer another professional. If approved, earn 1 future commission-free service, up to 5 referrals.">Recomenda outro profissional. Se for aprovado, ganhas 1 serviço futuro sem comissão, até 5 recomendações.</p>
-    </div>
-  </div>
-</section>
-
-<section class="client">
-  <div>
-    <strong data-pt="Estás à procura de um serviço?" data-en="Looking for a service?">Estás à procura de um serviço?</strong>
-    <span data-pt="Entra diretamente na aplicação TRIÂNGULO." data-en="Open the TRIÂNGULO app directly.">Entra diretamente na aplicação TRIÂNGULO.</span>
-  </div>
-  <a href="app.html" data-pt="Abrir aplicação →" data-en="Open app →">Abrir aplicação →</a>
+  <div class="islands"><i>Pico</i><i>Faial</i><i>São Jorge</i></div>
 </section>
 </main>
 
-<footer>
-  <div>TRIÂNGULO · Pico · Faial · São Jorge</div>
-  <div class="links">
-    <a href="privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a>
-    <a href="terms.html" data-pt="Termos" data-en="Terms">Termos</a>
-  </div>
+<footer class="footer">
+  <span>TRIÂNGULO · 2026</span>
+  <span><a href="privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a><a href="terms.html" data-pt="Termos" data-en="Terms">Termos</a></span>
 </footer>
 </div>
-
 <script>
 let lang=localStorage.getItem('tri_lang')||'pt';
-function setLang(v){
-  lang=v;
-  localStorage.setItem('tri_lang',v);
-  document.documentElement.lang=v;
-  document.querySelectorAll('[data-pt]').forEach(el=>el.textContent=el.dataset[v]||el.textContent);
-  document.querySelector('#pt').classList.toggle('active',v==='pt');
-  document.querySelector('#en').classList.toggle('active',v==='en');
-}
-document.querySelector('#pt').onclick=()=>setLang('pt');
-document.querySelector('#en').onclick=()=>setLang('en');
-setLang(lang);
+function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt]').forEach(el=>el.textContent=el.dataset[v]||el.textContent);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
+document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
 </script>
 </body>
 </html>
