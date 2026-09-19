@@ -1,7 +1,8 @@
-const CACHE='triangulo-pwa-20260920-provider-simple';
+const CACHE='triangulo-pwa-20260920-welcome-provider';
 const CORE=[
   '/',
   '/index.html',
+  '/prestadores.html',
   '/app.html',
   '/manifest.json',
   '/logo.svg',
