@@ -45,7 +45,38 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 .islands i{font-style:normal;background:#eef8f5;color:#08725b;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}
 .footer{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:24px 2px 8px;color:#718698;font-size:10px}
 .footer a{color:#55738b;text-decoration:none;margin-left:14px}
-@media(max-width:680px){.wrap{padding:12px}.hero{padding:32px 20px}.hero p{font-size:15px}.paths{grid-template-columns:1fr}.path{min-height:160px}.installbar{align-items:flex-start;flex-direction:column}.strip{grid-template-columns:1fr}.footer{align-items:flex-start;flex-direction:column}.footer a{margin:0 14px 0 0}}
+@media(max-width:680px){
+  body{background:#f6fbfd}
+  .wrap{padding:10px 12px 14px}
+  .top{margin-bottom:10px;padding:2px 2px 0}
+  .brand{font-size:15px;gap:7px}
+  .brand img{width:32px}
+  .lang button{padding:6px 9px;font-size:11px}
+  .hero{padding:21px 18px 20px;border-radius:20px}
+  .eyebrow{font-size:10px;letter-spacing:.07em}
+  .hero h1{font-size:31px;line-height:1.02;margin:8px 0 10px;max-width:350px}
+  .hero p{font-size:13px;line-height:1.45}
+  .paths{grid-template-columns:1fr;gap:9px;margin-top:10px}
+  .path{min-height:0;border-radius:17px;padding:17px 18px}
+  .path .kicker{font-size:9px}
+  .path h2{font-size:22px;margin:7px 0 5px}
+  .path p{font-size:11px;line-height:1.42;max-width:none}
+  .path .go{padding-top:12px;font-size:12px}
+  .paths .path:not(.primary){padding:14px 18px}
+  .paths .path:not(.primary) h2{font-size:19px;margin:6px 0 3px}
+  .paths .path:not(.primary) p{display:none}
+  .paths .path:not(.primary) .go{padding-top:8px}
+  .installbar{margin-top:9px;border-radius:15px;padding:12px 15px;align-items:center;flex-direction:row}
+  .installbar b{font-size:11px}
+  .installbar button{font-size:11px}
+  .strip{margin-top:9px;padding:11px 14px;border-radius:15px;grid-template-columns:1fr}
+  .strip b{font-size:11px}
+  .strip span{font-size:10px}
+  .islands{gap:5px;margin-top:2px}
+  .islands i{padding:5px 8px;font-size:9px}
+  .footer{padding:13px 2px 4px;align-items:center;flex-direction:row;font-size:9px}
+  .footer a{margin-left:10px}
+}
 </style>
 </head>
 <body>
@@ -58,22 +89,22 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 <main>
 <section class="hero">
   <div class="eyebrow">Pico · Faial · São Jorge</div>
-  <h1 data-pt="Serviços locais, mais fáceis de encontrar." data-en="Local services, easier to find.">Serviços locais, mais fáceis de encontrar.</h1>
-  <p data-pt="O TRIÂNGULO aproxima quem precisa de um serviço de quem sabe fazê-lo — nas três ilhas." data-en="TRIÂNGULO connects people who need a service with people who know how to do it — across the three islands.">O TRIÂNGULO aproxima quem precisa de um serviço de quem sabe fazê-lo — nas três ilhas.</p>
+  <h1 data-pt="Encontra serviços locais nas ilhas." data-en="Find local services across the islands.">Encontra serviços locais nas ilhas.</h1>
+  <p data-pt="Profissionais do Pico, Faial e São Jorge — num só lugar." data-en="Local professionals from Pico, Faial and São Jorge — all in one place.">Profissionais do Pico, Faial e São Jorge — num só lugar.</p>
 </section>
 
 <section class="paths">
   <a class="path primary" href="app.html">
     <div class="kicker" data-pt="Preciso de ajuda" data-en="I need a service">Preciso de ajuda</div>
-    <h2 data-pt="Encontrar um profissional" data-en="Find a local professional">Encontrar um profissional</h2>
-    <p data-pt="Escolhe a tua ilha, pesquisa o serviço e envia um pedido diretamente pela aplicação." data-en="Choose your island, search for a service and send a request directly in the app.">Escolhe a tua ilha, pesquisa o serviço e envia um pedido diretamente pela aplicação.</p>
+    <h2 data-pt="Procurar um serviço" data-en="Find a service">Procurar um serviço</h2>
+    <p data-pt="Escolhe a ilha e encontra quem te pode ajudar." data-en="Choose your island and find someone who can help.">Escolhe a ilha e encontra quem te pode ajudar.</p>
     <div class="go" data-pt="Procurar serviços →" data-en="Find services →">Procurar serviços →</div>
   </a>
 
   <a class="path" href="candidatura-prestador.html">
     <div class="kicker" data-pt="Sou profissional" data-en="I'm a professional">Sou profissional</div>
     <h2 data-pt="Quero prestar serviços" data-en="I want to offer services">Quero prestar serviços</h2>
-    <p data-pt="Cria gratuitamente o teu perfil para receber pedidos no Pico, Faial e São Jorge." data-en="Create your profile for free to receive requests across Pico, Faial and São Jorge.">Cria gratuitamente o teu perfil para receber pedidos no Pico, Faial e São Jorge.</p>
+    <p data-pt="Cria gratuitamente o teu perfil e começa a receber pedidos." data-en="Create your profile for free and start receiving requests.">Cria gratuitamente o teu perfil e começa a receber pedidos.</p>
     <div class="go" data-pt="Criar perfil →" data-en="Create profile →">Criar perfil →</div>
   </a>
 </section>
@@ -160,10 +191,11 @@ installButton.addEventListener('click',async()=>{
   if(isIOS){
     showInstallSheet(
       '<p><b>'+(lang==='pt'?'Instalar no iPhone':'Install on iPhone')+'</b></p>'+
+      '<p>'+(lang==='pt'?'Se abriste o TRIÂNGULO dentro do ChatGPT ou de outra app, toca primeiro no ícone do Safari para abrir esta página no Safari.':'If you opened TRIÂNGULO inside ChatGPT or another app, first tap the Safari icon to open this page in Safari.')+'</p>'+
       '<div class="install-steps">'+
-      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Toca em Partilhar':'Tap Share')+'</b><span>'+(lang==='pt'?'Usa o botão Partilhar do navegador.':'Use the browser Share button.')+'</span></div></div>'+
-      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Adicionar ao ecrã principal':'Add to Home Screen')+'</b><span>'+(lang==='pt'?'Procura esta opção na lista.':'Find this option in the list.')+'</span></div></div>'+
-      '<div class="install-step"><i>3</i><div><b>'+(lang==='pt'?'Ativa “Abrir como app web”':'Turn on “Open as Web App”')+'</b><span>'+(lang==='pt'?'Depois toca em Adicionar. O TRIÂNGULO fica instalado como uma app.':'Then tap Add. TRIÂNGULO is installed like an app.')+'</span></div></div>'+
+      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Abrir no Safari':'Open in Safari')+'</b><span>'+(lang==='pt'?'Só é necessário se estiveres dentro de outra app.':'Only needed if you are inside another app.')+'</span></div></div>'+
+      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Partilhar → Adicionar ao ecrã principal':'Share → Add to Home Screen')+'</b><span>'+(lang==='pt'?'No Safari, toca em Partilhar e escolhe esta opção.':'In Safari, tap Share and choose this option.')+'</span></div></div>'+
+      '<div class="install-step"><i>3</i><div><b>'+(lang==='pt'?'Abrir como aplicação web':'Open as Web App')+'</b><span>'+(lang==='pt'?'Ativa a opção e toca em Adicionar.':'Turn it on and tap Add.')+'</span></div></div>'+
       '</div>'
     );
     return;
