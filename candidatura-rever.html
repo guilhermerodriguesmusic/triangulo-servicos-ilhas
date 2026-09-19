@@ -23,6 +23,7 @@
     <div class="row"><b>Ilha base</b><span id="base"></span></div>
     <div class="row"><b>Trabalha em</b><span id="islands"></span></div>
     <div class="row"><b>Categorias</b><span id="categories"></span></div>
+    <div class="row" id="otherRow" hidden><b>Outro serviço</b><span id="otherService"></span></div>
     <div class="row"><b>Preço</b><span id="price"></span></div>
     <div class="row"><b>Disponibilidade</b><span id="availability"></span></div>
     <div class="row"><b>Fundador</b><span id="founder"></span></div>
@@ -58,7 +59,7 @@ async function load(){
   }
   $('#loading').hidden=true;$('#review').hidden=false;
   $('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#base').textContent=data.base_island||'—';
-  $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#categories').textContent=(data.categories||[]).join(', ')||'—';
+  $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#categories').textContent=(data.categories||[]).join(', ')||'—';if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
   $('#price').textContent=fmtPrice(data);$('#availability').textContent=data.availability||'—';$('#founder').textContent=data.founder_program?'Sim':'Não';
   $('#referred').textContent=data.referred_by||'—';$('#description').textContent=data.description||'—';
   if(mode==='approve'){$('#title').textContent='Confirmar aprovação';$('#reject').style.display='none'}
