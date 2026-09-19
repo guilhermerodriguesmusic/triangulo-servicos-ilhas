@@ -38,7 +38,7 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 .path.primary p{color:#d7e5ed}
 .path .go{margin-top:auto;padding-top:24px;font-size:13px;font-weight:900;color:#0b8068}
 .path.primary .go{color:#fff}
-.installbar{margin-top:14px;background:#153458;color:#fff;border-radius:16px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}.installbar b{font-size:13px}.installbar button{border:0;background:transparent;color:#7ce2c3;padding:0;font:inherit;font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}.installbar button:hover{color:#fff}.install-sheet{position:fixed;inset:0;background:rgba(8,32,51,.48);display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:1000}.install-sheet.show{display:flex}.install-panel{width:min(520px,100%);background:#fff;border-radius:22px;padding:22px;color:#153458;box-shadow:0 24px 80px rgba(0,0,0,.22)}.install-panel .sheet-top{display:flex;justify-content:space-between;gap:12px;align-items:start}.install-panel h3{font-size:22px;margin:0}.install-panel .close-install{border:0;background:#eef4f6;width:32px;height:32px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer}.install-panel p{font-size:13px;line-height:1.5;color:#627a8d}.install-steps{display:grid;gap:8px;margin-top:14px}.install-step{display:grid;grid-template-columns:30px 1fr;gap:9px;align-items:start;background:#f6fafb;border-radius:11px;padding:10px}.install-step i{font-style:normal;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e6f7f1;color:#08725b;font-size:11px;font-weight:900}.install-step b{font-size:12px}.install-step span{display:block;font-size:11px;color:#6a8294;margin-top:2px;line-height:1.4}.strip{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.installbar{margin-top:14px;background:#153458;color:#fff;border-radius:16px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}.installbar b{font-size:13px}.installbar button{border:0;background:transparent;color:#7ce2c3;padding:0;font:inherit;font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}.installbar button:hover{color:#fff}.install-sheet{position:fixed;inset:0;background:rgba(8,32,51,.48);display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:1000}.install-sheet.show{display:flex}.install-panel{width:min(520px,100%);background:#fff;border-radius:22px;padding:22px;color:#153458;box-shadow:0 24px 80px rgba(0,0,0,.22)}.install-panel .sheet-top{display:flex;justify-content:space-between;gap:12px;align-items:start}.install-panel h3{font-size:22px;margin:0}.install-panel .close-install{border:0;background:#eef4f6;width:32px;height:32px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer}.install-panel p{font-size:13px;line-height:1.5;color:#627a8d}.install-steps{display:grid;gap:8px;margin-top:14px}.install-step{display:grid;grid-template-columns:30px 1fr;gap:9px;align-items:start;background:#f6fafb;border-radius:11px;padding:10px}.install-step i{font-style:normal;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e6f7f1;color:#08725b;font-size:11px;font-weight:900}.install-step b{font-size:12px}.install-step span{display:block;font-size:11px;color:#6a8294;margin-top:2px;line-height:1.4}.safari-note{margin-top:10px;background:#fff8dd;border:1px solid #f3e2a7;border-radius:11px;padding:10px 11px}.safari-note b{display:block;font-size:11px;color:#6f5a12}.safari-note span{display:block;font-size:10px;color:#756a42;line-height:1.45;margin-top:2px}.strip{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
 .strip b{display:block;font-size:14px}
 .strip span{display:block;margin-top:3px;color:#6a8294;font-size:12px}
 .islands{display:flex;gap:7px;flex-wrap:wrap}
@@ -85,6 +85,9 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
   .install-step i{width:23px;height:23px;font-size:10px}
   .install-step b{font-size:11px}
   .install-step span{font-size:10px}
+  .safari-note{margin-top:8px;padding:8px 9px}
+  .safari-note b{font-size:10px}
+  .safari-note span{font-size:9px}
 }
 </style>
 </head>
@@ -159,7 +162,6 @@ const installBody=document.querySelector('#installSheetBody');
 const ua=navigator.userAgent.toLowerCase();
 const isIOS=/iphone|ipad|ipod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isAndroid=/android/.test(ua);
-const isNativeSafari=isIOS&&/version\/[\d.]+.*safari/.test(ua)&&!/(crios|fxios|edgios|opios|chatgpt)/.test(ua);
 const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 
 function showInstallSheet(html){
@@ -199,24 +201,17 @@ installButton.addEventListener('click',async()=>{
   }
 
   if(isIOS){
-    if(isNativeSafari){
-      showInstallSheet(
-        '<p><b>'+(lang==='pt'?'Instalar no iPhone':'Install on iPhone')+'</b></p>'+
-        '<div class="install-steps">'+
-        '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Partilhar → Adicionar ao ecrã principal':'Share → Add to Home Screen')+'</b><span>'+(lang==='pt'?'Toca em Partilhar no Safari e escolhe esta opção.':'Tap Share in Safari and choose this option.')+'</span></div></div>'+
-        '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Abrir como aplicação web':'Open as Web App')+'</b><span>'+(lang==='pt'?'Ativa a opção e toca em Adicionar.':'Turn it on and tap Add.')+'</span></div></div>'+
-        '</div>'
-      );
-    }else{
-      showInstallSheet(
-        '<p><b>'+(lang==='pt'?'Instalar no iPhone':'Install on iPhone')+'</b></p>'+
-        '<div class="install-steps">'+
-        '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Abrir no Safari':'Open in Safari')+'</b><span>'+(lang==='pt'?'Toca no ícone do Safari para abrir esta página no Safari.':'Tap the Safari icon to open this page in Safari.')+'</span></div></div>'+
-        '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Partilhar → Adicionar ao ecrã principal':'Share → Add to Home Screen')+'</b><span>'+(lang==='pt'?'No Safari, toca em Partilhar e escolhe esta opção.':'In Safari, tap Share and choose this option.')+'</span></div></div>'+
-        '<div class="install-step"><i>3</i><div><b>'+(lang==='pt'?'Abrir como aplicação web':'Open as Web App')+'</b><span>'+(lang==='pt'?'Ativa a opção e toca em Adicionar.':'Turn it on and tap Add.')+'</span></div></div>'+
-        '</div>'
-      );
-    }
+    showInstallSheet(
+      '<p><b>'+(lang==='pt'?'Instalar no iPhone':'Install on iPhone')+'</b></p>'+
+      '<div class="safari-note">'+
+      '<b>'+(lang==='pt'?'Estás dentro do ChatGPT?':'Inside ChatGPT?')+'</b>'+
+      '<span>'+(lang==='pt'?'Se vês a bússola no canto inferior direito, toca nela primeiro para abrir esta página no Safari. Se já estás no Safari, ignora este aviso.':'If you see the compass in the bottom-right corner, tap it first to open this page in Safari. If you are already in Safari, ignore this note.')+'</span>'+
+      '</div>'+
+      '<div class="install-steps">'+
+      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Partilhar → Adicionar ao ecrã principal':'Share → Add to Home Screen')+'</b><span>'+(lang==='pt'?'Já no Safari, toca em Partilhar e escolhe esta opção.':'Once in Safari, tap Share and choose this option.')+'</span></div></div>'+
+      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Abrir como aplicação web':'Open as Web App')+'</b><span>'+(lang==='pt'?'Ativa a opção e toca em Adicionar.':'Turn it on and tap Add.')+'</span></div></div>'+
+      '</div>'
+    );
     return;
   }
 
