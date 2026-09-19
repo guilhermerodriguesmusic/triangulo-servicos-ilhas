@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#159e78">
 <title>TRIÂNGULO — Serviços locais nas ilhas</title>
 <meta name="description" content="Serviços locais no Pico, Faial e São Jorge.">
-<link rel="icon" href="logo.svg">
+<link rel="icon" href="logo.svg">\n<link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -32,7 +32,7 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 .path.primary p{color:#d7e5ed}
 .path .go{margin-top:auto;padding-top:24px;font-size:13px;font-weight:900;color:#0b8068}
 .path.primary .go{color:#fff}
-.installbar{margin-top:14px;background:#153458;color:#fff;border-radius:16px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}.installbar b{font-size:13px}.installbar a{color:#7ce2c3;text-decoration:none;font-size:12px;font-weight:900;white-space:nowrap}.strip{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.installbar{margin-top:14px;background:#153458;color:#fff;border-radius:16px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}.installbar b{font-size:13px}.installbar button{border:0;background:transparent;color:#7ce2c3;padding:0;font:inherit;font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}.installbar button:hover{color:#fff}.install-sheet{position:fixed;inset:0;background:rgba(8,32,51,.48);display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:1000}.install-sheet.show{display:flex}.install-panel{width:min(520px,100%);background:#fff;border-radius:22px;padding:22px;color:#153458;box-shadow:0 24px 80px rgba(0,0,0,.22)}.install-panel .sheet-top{display:flex;justify-content:space-between;gap:12px;align-items:start}.install-panel h3{font-size:22px;margin:0}.install-panel .close-install{border:0;background:#eef4f6;width:32px;height:32px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer}.install-panel p{font-size:13px;line-height:1.5;color:#627a8d}.install-steps{display:grid;gap:8px;margin-top:14px}.install-step{display:grid;grid-template-columns:30px 1fr;gap:9px;align-items:start;background:#f6fafb;border-radius:11px;padding:10px}.install-step i{font-style:normal;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e6f7f1;color:#08725b;font-size:11px;font-weight:900}.install-step b{font-size:12px}.install-step span{display:block;font-size:11px;color:#6a8294;margin-top:2px;line-height:1.4}.strip{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
 .strip b{display:block;font-size:14px}
 .strip span{display:block;margin-top:3px;color:#6a8294;font-size:12px}
 .islands{display:flex;gap:7px;flex-wrap:wrap}
@@ -74,7 +74,7 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 
 <section class="installbar">
   <b data-pt="Queres o TRIÂNGULO no telemóvel?" data-en="Want TRIÂNGULO on your phone?">Queres o TRIÂNGULO no telemóvel?</b>
-  <a href="instalar/" data-pt="Instalar app →" data-en="Install app →">Instalar app →</a>
+  <button id="directInstall" type="button" data-pt="Instalar app →" data-en="Install app →">Instalar app →</button>
 </section>
 
 <section class="strip">
@@ -86,6 +86,16 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 </section>
 </main>
 
+<div class="install-sheet" id="installSheet" aria-hidden="true">
+  <div class="install-panel" role="dialog" aria-modal="true" aria-labelledby="installTitle">
+    <div class="sheet-top">
+      <div><h3 id="installTitle">Instalar TRIÂNGULO</h3></div>
+      <button class="close-install" id="closeInstall" aria-label="Fechar">×</button>
+    </div>
+    <div id="installSheetBody"></div>
+  </div>
+</div>
+
 <footer class="footer">
   <span>TRIÂNGULO · 2026</span>
   <span><a href="privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a><a href="terms.html" data-pt="Termos" data-en="Terms">Termos</a></span>
@@ -95,6 +105,76 @@ body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-appl
 let lang=localStorage.getItem('tri_lang')||'pt';
 function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt]').forEach(el=>el.textContent=el.dataset[v]||el.textContent);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
 document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
+
+let deferredInstallPrompt=null;
+const installButton=document.querySelector('#directInstall');
+const installSheet=document.querySelector('#installSheet');
+const installBody=document.querySelector('#installSheetBody');
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isAndroid=/android/i.test(navigator.userAgent);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+
+function showInstallSheet(html){
+  installBody.innerHTML=html;
+  installSheet.classList.add('show');
+  installSheet.setAttribute('aria-hidden','false');
+}
+function hideInstallSheet(){
+  installSheet.classList.remove('show');
+  installSheet.setAttribute('aria-hidden','true');
+}
+document.querySelector('#closeInstall').onclick=hideInstallSheet;
+installSheet.addEventListener('click',e=>{if(e.target===installSheet)hideInstallSheet()});
+
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  if(installButton)installButton.textContent=lang==='pt'?'App instalada ✓':'App installed ✓';
+});
+
+if(isStandalone&&installButton){
+  installButton.textContent=lang==='pt'?'App instalada ✓':'App installed ✓';
+  installButton.disabled=true;
+}
+
+installButton.addEventListener('click',async()=>{
+  if(isStandalone)return;
+
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    try{await deferredInstallPrompt.userChoice}catch{}
+    deferredInstallPrompt=null;
+    return;
+  }
+
+  if(isIOS){
+    showInstallSheet(
+      '<p>'+(lang==='pt'?'No iPhone, a Apple pede uma confirmação rápida no Safari.':'On iPhone, Apple requires a quick confirmation in Safari.')+'</p>'+
+      '<div class="install-steps">'+
+      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Toca em Partilhar':'Tap Share')+'</b><span>'+(lang==='pt'?'Ícone do quadrado com a seta para cima.':'The square icon with the upward arrow.')+'</span></div></div>'+
+      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Adicionar ao ecrã principal':'Add to Home Screen')+'</b><span>'+(lang==='pt'?'Escolhe esta opção e confirma em Adicionar.':'Choose this option, then confirm Add.')+'</span></div></div>'+
+      '</div>'
+    );
+    return;
+  }
+
+  if(isAndroid){
+    showInstallSheet(
+      '<p>'+(lang==='pt'?'O teu browser ainda não disponibilizou o instalador automático.':'Your browser has not made the automatic installer available yet.')+'</p>'+
+      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Menu do browser → Instalar app':'Browser menu → Install app')+'</b><span>'+(lang==='pt'?'No Chrome também pode aparecer como “Adicionar ao ecrã principal”.':'In Chrome it may also appear as “Add to Home Screen”.')+'</span></div></div>'
+    );
+    return;
+  }
+
+  location.href='instalar/';
+});
+
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
 </script>
 </body>
 </html>
