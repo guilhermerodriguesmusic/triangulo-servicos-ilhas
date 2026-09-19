@@ -40,10 +40,22 @@ jobs:
           test -s assets/faial-real.jpg
           test -s assets/sao-jorge-real.jpg
           file assets/pico-real.jpg assets/faial-real.jpg assets/sao-jorge-real.jpg
+      - name: Prepare public site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='android-app' \
+            --exclude='_site' \
+            ./ _site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./_site
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
