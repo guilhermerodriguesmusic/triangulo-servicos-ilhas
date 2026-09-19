@@ -41,9 +41,9 @@
 #home .urgent{margin-top:18px}
 #home .section-head{margin-top:19px}
 #home .category-grid{margin-bottom:2px}
-.profile-card>.profile-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
-.profile-card>.profile-copy b{display:block;font-size:14px}
-.profile-card>.profile-copy small{display:block;color:var(--muted);font-size:11px}
+
+
+
 
 
 .c8{background:linear-gradient(145deg,#8797a8,#66798d)}
@@ -213,54 +213,14 @@
    <button id="postFromResults" class="not-found"><span class="people">👥</span><div><b data-t="notFound">Não encontraste o que precisas?</b><small data-t="publishRequest">Publica um pedido</small></div><span>›</span></button>
   </section>
   <section id="profile" class="screen"><div class="page-title"><h1 data-t="profile">Mais</h1></div><div class="card settings"><button id="providerBtn">🧰<div><b data-t="offerServices">Quero prestar serviços</b><small data-t="offerServicesSub">Cria o teu perfil de prestador</small></div>›</button><button id="bookingsBtn">📅<div><b data-t="myBookings">Pedidos de reserva</b><small data-t="myBookingsSub">Consulta os pedidos feitos neste dispositivo</small></div>›</button><button id="changeIslandBtn">📍<div><b data-t="island">Ilha</b><small id="profileIsland2">Pico</small></div>›</button><button id="contactTrianguloBtn" class="profile-row"><span>✉️</span><div><b data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</b><small data-pt="Envia-nos uma mensagem" data-en="Send us a message">Envia-nos uma mensagem</small></div><span>›</span></button><button id="installBtn">⬇️<div><b data-t="install">Instalar TRIÂNGULO</b><small data-t="installSub">Adicionar ao ecrã principal</small></div>›</button></div></section>
-  <section id="provider" class="screen">
-  <div class="page-title"><button class="back" data-profile>‹</button><h1 data-pt="Prestar serviços" data-en="Offer services">Prestar serviços</h1><span></span></div>
-  <div class="provider-intro"><img src="logo.svg"><h3 data-pt="Cria o teu perfil gratuitamente." data-en="Create your profile for free.">Cria o teu perfil gratuitamente.</h3><p data-pt="Tu defines serviços, preços e disponibilidade. Durante o beta não existem cobranças automáticas. Quando os pagamentos forem ativados, o modelo previsto é uma comissão de 15% sobre serviços concluídos através do TRIÂNGULO." data-en="You choose your services, prices and availability. During beta there are no automatic charges. When payments go live, the planned model is a 15% commission on services completed through TRIÂNGULO.">Tu defines serviços, preços e disponibilidade.</p></div>
-  <form id="providerForm" class="card form">
-    <label><span data-pt="Nome / nome profissional" data-en="Name / professional name">Nome / nome profissional</span><input required name="name" maxlength="120"></label>
-    <label><span data-pt="Nome do negócio (opcional)" data-en="Business name (optional)">Nome do negócio (opcional)</span><input name="business_name" maxlength="120"></label>
-    <div class="two"><label><span>Email</span><input required type="email" name="email"></label><label><span data-pt="Telefone *" data-en="Phone *">Telefone *</span><input required name="phone" inputmode="tel"></label></div>
-    <label><span data-pt="Ilha onde estás baseado" data-en="Your base island">Ilha onde estás baseado</span><select name="base_island"><option>Pico</option><option>Faial</option><option>São Jorge</option></select></label>
-    <div><span style="display:block;font-size:11px;font-weight:750;margin-bottom:7px" data-pt="Em que ilhas trabalhas?" data-en="Which islands do you work on?">Em que ilhas trabalhas?</span><div class="checkbox-grid">
-      <label class="check-card"><input type="checkbox" data-service-island value="Pico"><span>Pico</span></label>
-      <label class="check-card"><input type="checkbox" data-service-island value="Faial"><span>Faial</span></label>
-      <label class="check-card full"><input type="checkbox" data-service-island value="São Jorge"><span>São Jorge</span></label>
-    </div><p class="form-note" data-pt="Podes selecionar outras ilhas se aceitares deslocações por marcação." data-en="Select other islands if you accept travel by appointment.">Podes selecionar outras ilhas se aceitares deslocações por marcação.</p></div>
-    <div><span style="display:block;font-size:11px;font-weight:750;margin-bottom:7px" data-pt="Que serviços ofereces?" data-en="What services do you offer?">Que serviços ofereces?</span><div class="checkbox-grid">
-      <label class="check-card"><input type="checkbox" data-provider-cat value="home"><span data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</span></label>
-      <label class="check-card"><input type="checkbox" data-provider-cat value="garden"><span data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</span></label>
-      <label class="check-card"><input type="checkbox" data-provider-cat value="repairs"><span data-pt="Reparações" data-en="Repairs">Reparações</span></label>
-      <label class="check-card"><input type="checkbox" data-provider-cat value="moving"><span data-pt="Mudanças & Entregas" data-en="Moves & Deliveries">Mudanças & Entregas</span></label>
-      <label class="check-card"><input type="checkbox" data-provider-cat value="lessons"><span data-pt="Aulas" data-en="Lessons">Aulas</span></label>
-      <label class="check-card"><input type="checkbox" data-provider-cat value="wellness"><span data-pt="Bem-estar" data-en="Wellness">Bem-estar</span></label>
-      <label class="check-card"><input type="checkbox" data-provider-cat value="tech"><span data-pt="Tecnologia" data-en="Technology">Tecnologia</span></label>
-      <label class="check-card"><input type="checkbox" data-provider-cat value="creative"><span data-pt="Fotografia / Criativos" data-en="Photo / Creative">Fotografia / Criativos</span></label>
-      <label class="check-card full"><input type="checkbox" data-provider-cat value="pets"><span data-pt="Animais" data-en="Pets">Animais</span></label>
-    </div></div>
-    <label><span data-pt="Descreve o que fazes" data-en="Describe what you do">Descreve o que fazes</span><textarea required name="description" maxlength="1200" data-ph-pt="Ex.: Manutenção de jardins, corte de erva, podas e limpeza de terrenos." data-ph-en="E.g. Garden maintenance, grass cutting, pruning and land clearing."></textarea></label>
-    <div class="two"><label><span data-pt="Como cobras?" data-en="How do you charge?">Como cobras?</span><select name="pricing_type"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote">Sob orçamento</option></select></label><label><span data-pt="Preço (€)" data-en="Price (€)">Preço (€)</span><input name="price" type="number" min="0" step="0.01"></label></div>
-    <label><span data-pt="Disponibilidade" data-en="Availability">Disponibilidade</span><input name="availability" data-ph-pt="Ex.: Seg–Sex, 09:00–18:00" data-ph-en="E.g. Mon–Fri, 09:00–18:00"></label>
-    <label><span data-pt="Website / Instagram (opcional)" data-en="Website / Instagram (optional)">Website / Instagram (opcional)</span><input name="website" inputmode="url"></label>
-    <label><span data-pt="Foto ou logótipo (opcional)" data-en="Photo or logo (optional)">Foto ou logótipo (opcional)</span><input id="providerPhoto" type="file" accept="image/jpeg,image/png,image/webp"><img id="providerPhotoPreview" class="photo-preview" alt=""></label>
-    <label class="check-card"><input type="checkbox" name="today"><span data-pt="Estou disponível hoje" data-en="I'm available today">Estou disponível hoje</span></label>
-    <div class="consent-box">
-      <label><input required type="checkbox" name="consent_commission"><span data-pt="Compreendo o modelo previsto de comissão de 15% quando as reservas pagas forem ativadas." data-en="I understand the planned 15% commission model when paid bookings are enabled.">Compreendo o modelo previsto de comissão de 15%.</span></label>
-      <label><input required type="checkbox" name="consent_terms"><span data-pt="Aceito os Termos do beta." data-en="I accept the beta Terms.">Aceito os Termos do beta.</span></label>
-      <label><input required type="checkbox" name="consent_privacy"><span data-pt="Li a Política de Privacidade e autorizo o tratamento dos dados enviados para gerir a candidatura." data-en="I have read the Privacy Policy and consent to processing the submitted data to manage my application.">Li a Política de Privacidade.</span></label>
-    </div>
-    <p class="legal-links"><a href="terms.html" target="_blank" data-pt="Termos" data-en="Terms">Termos</a> · <a href="privacy.html" target="_blank" data-pt="Privacidade" data-en="Privacy">Privacidade</a> · <a href="how-it-works.html" target="_blank" data-pt="Como funciona" data-en="How it works">Como funciona</a></p>
-    <div id="providerSubmitStatus" class="submit-status"></div>
-    <button id="providerSubmit" class="primary" type="submit" data-pt="Enviar para verificação" data-en="Submit for review">Enviar para verificação</button>
-  </form>
- </section>
- <section id="bookings" class="screen"><div class="page-title"><button class="back" data-profile>‹</button><h1 data-t="myBookings">Pedidos de reserva</h1><span></span></div><div id="bookingList" class="stack"></div></section>
+ <section id="bookings" class="screen"><div class="page-title"><button class="back" type="button" data-profile aria-label="Voltar">‹</button><h1 data-t="myBookings">Pedidos de reserva</h1><span></span></div><div id="bookingList" class="stack"></div></section>
  </main>
  <nav class="bottom-nav"><button data-nav="home" class="active"><span id="icoHome"></span><small data-t="home">Início</small></button><button data-nav="explore"><span id="icoSearch"></span><small data-t="explore">Explorar</small></button><button id="publishNav" class="publish"><span id="icoPlus"></span><small data-t="publish">Publicar</small></button><button id="helpNav"><span id="icoChat"></span><small data-t="help">Ajuda</small></button><button data-nav="profile"><span id="icoUser"></span><small data-t="profile">Mais</small></button></nav>
 </section>
 </div>
 <div id="backdrop" class="backdrop"></div>
-<aside id="islandSheet" class="sheet"><div class="handle"></div><button class="close">×</button><h2 data-t="chooseIslandSimple">Escolher ilha</h2><div class="island-cards"><button class="island-card" data-set-island="Pico"><img src="/assets/pico-real.jpg"></button><button class="island-card" data-set-island="Faial"><img src="/assets/faial-real.jpg"></button><button class="island-card" data-set-island="São Jorge"><img src="/assets/sao-jorge-real.jpg"></button></div></aside>
-<aside id="catsSheet" class="sheet"><div class="handle"></div><button class="close">×</button><h2 data-t="allCategories">Todas as categorias</h2><div id="allCats" class="category-grid all-cats">
+<aside id="islandSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-t="chooseIslandSimple">Escolher ilha</h2><div class="island-cards"><button class="island-card" data-set-island="Pico"><img src="/assets/pico-real.jpg"></button><button class="island-card" data-set-island="Faial"><img src="/assets/faial-real.jpg"></button><button class="island-card" data-set-island="São Jorge"><img src="/assets/sao-jorge-real.jpg"></button></div></aside>
+<aside id="catsSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-t="allCategories">Todas as categorias</h2><div id="allCats" class="category-grid all-cats">
 <button class="category c0" data-cat="0"><small>Casa &amp; Limpeza</small></button>
 <button class="category c1" data-cat="1"><small>Jardim &amp; Terrenos</small></button>
 <button class="category c2" data-cat="2"><small>Reparações &amp; Manutenção</small></button>
@@ -271,7 +231,7 @@
 <button class="category c7" data-cat="7"><small>Fotografia &amp; Criativos</small></button>
 <button class="category c8" data-cat="8"><small>Animais</small></button>
 </div></aside>
-<aside id="requestSheet" class="sheet"><div class="handle"></div><button class="close">×</button><h2 data-pt="Publicar pedido" data-en="Post a request">Publicar pedido</h2><form id="requestForm" class="form">
+<aside id="requestSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-pt="Publicar pedido" data-en="Post a request">Publicar pedido</h2><form id="requestForm" class="form">
 <label><span data-pt="O que precisas?" data-en="What do you need?">O que precisas?</span><textarea name="description" required maxlength="1500" data-ph-pt="Ex.: Preciso de alguém para cortar a erva no sábado" data-ph-en="E.g. I need someone to cut the grass on Saturday"></textarea></label>
 <div class="two"><label><span data-pt="Quando?" data-en="When?">Quando?</span><input type="date" name="date"></label><label><span data-pt="Onde?" data-en="Where?">Onde?</span><input name="where" data-ph-pt="Ex.: São Mateus" data-ph-en="E.g. São Mateus"></label></div>
 <label><span data-pt="Tenho este orçamento (opcional)" data-en="My budget (optional)">Tenho este orçamento (opcional)</span><input name="budget" type="number" min="0" step="0.01" placeholder="€"></label>
@@ -279,7 +239,7 @@
 <label><span data-pt="Telefone (opcional)" data-en="Phone (optional)">Telefone (opcional)</span><input name="client_phone" inputmode="tel"></label>
 <div id="requestSubmitStatus" class="submit-status"></div>
 <button class="primary" type="submit" data-pt="Publicar pedido" data-en="Post request">Publicar pedido</button></form></aside>
-<aside id="contactSheet" class="sheet"><div class="handle"></div><button class="close">×</button><h2 data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</h2><form id="contactForm" class="form">
+<aside id="contactSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</h2><form id="contactForm" class="form">
 <label><span data-pt="Nome (opcional)" data-en="Name (optional)">Nome (opcional)</span><input name="name" maxlength="120"></label>
 <label><span>Email</span><input required type="email" name="email"></label>
 <label><span data-pt="Assunto (opcional)" data-en="Subject (optional)">Assunto (opcional)</span><input name="subject" maxlength="160"></label>
@@ -288,7 +248,7 @@
 <button class="primary" type="submit" data-pt="Enviar mensagem" data-en="Send message">Enviar mensagem</button>
 <p class="form-note" data-pt="O teu email é usado apenas para responder ao teu contacto." data-en="Your email is used only to reply to your enquiry.">O teu email é usado apenas para responder ao teu contacto.</p>
 </form></aside>
-<aside id="bookSheet" class="sheet"><div class="handle"></div><button class="close">×</button><div id="bookContent"></div></aside>
+<aside id="bookSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><div id="bookContent"></div></aside>
 <div id="toast" class="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -300,7 +260,6 @@ const CATEGORY_CODES=['home','garden','repairs','moving','lessons','wellness','t
 let realProviders=[];
 let providersLoading=true;
 let providersLoadError=false;
-let providerPhotoData=null;
 const icons={
 home:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10.5V20h5v-6h4v6h5v-9.5"/></svg>`,
 search:`<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>`,
@@ -453,31 +412,11 @@ function saveBookingLocal(entry){const items=getLocalBookings();items.unshift(en
 function renderBookings(){
  const items=getLocalBookings();
  if(!items.length){$('#bookingList').innerHTML='<div class="empty"><div class="big">📅</div><h3>'+(lang==='pt'?'Ainda não tens pedidos de reserva.':'No booking requests yet.')+'</h3><p>'+(lang==='pt'?'Os pedidos feitos neste dispositivo aparecem aqui.':'Requests made on this device appear here.')+'</p></div>';return}
- $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>'<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span>'+(lang==='pt'?'A aguardar confirmação':'Awaiting confirmation')+'</span></div>').join('')+'</div>';
+ $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>'<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span>'+(lang==='pt'?'Pedido enviado':'Request sent')+'</span></div>').join('')+'</div>';
 }
 function openProviderSignup(){location.href='candidatura-prestador.html'}
 $('#providerBtn').onclick=openProviderSignup;
-$('#bookingsBtn').onclick=()=>{renderBookings();showScreen('bookings')};const photoInput=$('#providerPhoto');
-if(photoInput)photoInput.onchange=async e=>{const file=e.target.files&&e.target.files[0];if(!file){providerPhotoData=null;return}try{providerPhotoData=await compressImage(file,640,.78);const im=$('#providerPhotoPreview');im.src=providerPhotoData;im.classList.add('show')}catch(err){console.error(err);toast(lang==='pt'?'Não foi possível preparar a imagem.':'Could not prepare the image.')}};
-function compressImage(file,max,quality){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{let w=img.width,h=img.height;if(Math.max(w,h)>max){const r=max/Math.max(w,h);w=Math.round(w*r);h=Math.round(h*r)}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);resolve(c.toDataURL('image/jpeg',quality))};img.onerror=reject;img.src=url})}
-$('#providerForm').onsubmit=async e=>{
- e.preventDefault();
- const form=e.target,status=$('#providerSubmitStatus'),btn=$('#providerSubmit');
- const cats=$$('[data-provider-cat]:checked').map(x=>x.value),islands=$$('[data-service-island]:checked').map(x=>x.value);
- if(!cats.length){toast(lang==='pt'?'Escolhe pelo menos uma categoria.':'Choose at least one category.');return}
- if(!islands.length){toast(lang==='pt'?'Escolhe pelo menos uma ilha onde trabalhas.':'Choose at least one island you work on.');return}
- const d=Object.fromEntries(new FormData(form));
- btn.disabled=true;status.textContent=lang==='pt'?'A enviar…':'Submitting…';
- const payload={name:d.name.trim(),business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,email:d.email.trim(),phone:d.phone&&d.phone.trim()?d.phone.trim():null,base_island:d.base_island,service_islands:islands,categories:cats,description:d.description.trim(),pricing_type:d.pricing_type,price:d.pricing_type==='quote'||!d.price?null:Number(d.price),availability:d.availability&&d.availability.trim()?d.availability.trim():null,available_today:!!d.today,photo_data:providerPhotoData,website:d.website&&d.website.trim()?d.website.trim():null,consent_commission:!!d.consent_commission,consent_terms:!!d.consent_terms,consent_privacy:!!d.consent_privacy,locale:lang,status:'pending'};
- try{
-  const res=await db.from('provider_applications').insert(payload);if(res.error)throw res.error;
-  form.reset();providerPhotoData=null;const im=$('#providerPhotoPreview');im.src='';im.classList.remove('show');
-  status.textContent=lang==='pt'?'Candidatura recebida ✓':'Application received ✓';
-  toast(lang==='pt'?'Recebemos a tua candidatura.':'We received your application.');
-  setTimeout(()=>showScreen('profile'),900);
- }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao enviar. Tenta novamente.':'Could not submit. Please try again.'}
- finally{btn.disabled=false}
-};
+$('#bookingsBtn').onclick=()=>{renderBookings();showScreen('bookings')};
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#installBtn').onclick=async()=>{
  if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){toast(lang==='pt'?'O TRIÂNGULO já está instalado ✓':'TRIÂNGULO is already installed ✓');return}
