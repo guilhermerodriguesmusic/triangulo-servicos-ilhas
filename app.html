@@ -385,14 +385,14 @@ function applyLang(){
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 function renderCats(){const make=(c,i,full=false)=>{const label=full?c[lang]:(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en));return `<button class="category c${i}" data-cat="${i}">${icons[c.icon]}<small>${label}</small></button>`};$('#homeCats').innerHTML=categories.slice(0,4).map((c,i)=>make(c,i,false)).join('');$('#allCats').innerHTML=categories.map((c,i)=>make(c,i,true)).join('');$$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang])})}
-function providerMatchesIsland(p){return p.base_island===island||(Array.isArray(p.service_islands)&&p.service_islands.includes(island))}
+function providerMatchesIsland(p){return Array.isArray(p.service_islands)?p.service_islands.includes(island):p.base_island===island}
 function providerPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang==='pt'?'Sob orçamento':'Quote';const raw=Number(p.price),n=raw.toFixed(raw%1?2:0);if(p.pricing_type==='hour')return '€'+n+(lang==='pt'?'/h':'/hr');if(p.pricing_type==='from')return (lang==='pt'?'Desde ':'From ')+'€'+n;return '€'+n}
 function providerCategoryLabels(p){return (p.categories||[]).map(code=>{if(code==='other'&&p.other_service)return p.other_service;const i=CATEGORY_CODES.indexOf(code),c=categories[i];return c?(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en)):code}).slice(0,3)}
 function renderProviders(){}
 async function loadProviders(){
  providersLoading=true;providersLoadError=false;updateResults($('#resultsInput')?.value||'');
  try{
-  const res=await db.from('providers').select('id,name,business_name,base_island,service_islands,categories,other_service,description,pricing_type,price,availability,available_today,photo_data,website,approved_at,founder_program,first_booking_at').order('approved_at',{ascending:false});
+  const res=await db.from('providers').select('id,name,business_name,base_island,service_islands,categories,other_service,description,pricing_type,price,availability,available_today,photo_data,website,approved_at').order('approved_at',{ascending:false});
   if(res.error)throw res.error;
   realProviders=res.data||[];
  }catch(e){
@@ -427,7 +427,7 @@ function updateResults(q,urgent=false){
   if(nq)list=list.filter(p=>[p.name,p.business_name,p.description,p.other_service,p.availability].some(v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(nq)));
  }
  if(urgent)list=list.filter(p=>p.available_today);
- list=list.sort((a,b)=>{const af=!!(a.founder_program&&!a.first_booking_at),bf=!!(b.founder_program&&!b.first_booking_at);if(af!==bf)return af?-1:1;return new Date(b.approved_at||0)-new Date(a.approved_at||0)});
+ list=list.sort((a,b)=>new Date(b.approved_at||0)-new Date(a.approved_at||0));
  const qLabel=q;
  $('#resultsTitle').textContent=urgent?(lang==='pt'?'Disponíveis hoje em '+island:'Available today in '+island):(qLabel?(lang==='pt'?'Resultados para “'+qLabel+'”':'Results for “'+qLabel+'”'):(lang==='pt'?'Profissionais em '+island:'Providers in '+island));
  $('#resultsCount').textContent=lang==='pt'?(list.length+' profissional'+(list.length===1?' encontrado':' encontrados')):(list.length+' provider'+(list.length===1?' found':'s found'));
@@ -437,7 +437,7 @@ function updateResults(q,urgent=false){
  }
  $('#resultsList').innerHTML=list.map(p=>{
   const tags=providerCategoryLabels(p),photo=p.photo_data||'logo.svg',displayName=escapeHtml(p.business_name||p.name);
-  return '<div class="result-card" role="button" tabindex="0" data-provider="'+p.id+'"><img src="'+photo+'" alt="'+displayName+'"><div><b>'+displayName+'</b><div class="desc">'+escapeHtml(p.description||'')+'</div><div class="loc">📍 '+escapeHtml(p.base_island)+((p.service_islands||[]).length>1?' · '+(lang==='pt'?'outras ilhas por marcação':'other islands by appointment'):'')+'</div><div class="provider-price">'+providerPrice(p)+'</div><div class="provider-tags">'+tags.map(t=>'<span class="provider-tag">'+escapeHtml(t)+'</span>').join('')+'</div>'+(p.available_today?'<small class="avail">'+(lang==='pt'?'Disponível hoje':'Available today')+'</small>':'')+'</div></div>';
+  return '<div class="result-card" role="button" tabindex="0" data-provider="'+p.id+'"><img src="'+photo+'" alt="'+displayName+'"><div><b>'+displayName+'</b><div class="desc">'+escapeHtml(p.description||'')+'</div><div class="loc">📍 '+escapeHtml((p.service_islands&&p.service_islands.length?p.service_islands:[p.base_island]).filter(Boolean).join(' · '))+'</div><div class="provider-price">'+providerPrice(p)+'</div><div class="provider-tags">'+tags.map(t=>'<span class="provider-tag">'+escapeHtml(t)+'</span>').join('')+'</div>'+(p.available_today?'<small class="avail">'+(lang==='pt'?'Disponível hoje':'Available today')+'</small>':'')+'</div></div>';
  }).join('');
  bindProvider();
 }
