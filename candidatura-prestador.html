@@ -42,10 +42,10 @@
 
       <div class="section-title" data-pt="1 · Quem és" data-en="1 · About you">1 · Quem és</div>
       <div class="grid2">
-        <label><span data-pt="Nome / nome profissional *" data-en="Name / professional name *">Nome / nome profissional *</span><input required name="name" maxlength="120"></label>
+        <label><span data-pt="Nome / nome profissional *" data-en="Name / professional name *">Nome / nome profissional *</span><input required name="name" minlength="2" maxlength="120"></label>
         <label><span data-pt="Nome do negócio" data-en="Business name">Nome do negócio</span><input name="business_name" maxlength="120"></label>
         <label><span>Email *</span><input required type="email" name="email" maxlength="254"></label>
-        <label><span data-pt="Telefone *" data-en="Phone *">Telefone *</span><input required name="phone" maxlength="50" inputmode="tel" autocomplete="tel"></label>
+        <label><span data-pt="Telefone *" data-en="Phone *">Telefone *</span><input required name="phone" minlength="6" maxlength="50" inputmode="tel" autocomplete="tel"></label>
       </div>
       <label style="display:block;margin-top:12px"><span data-pt="Website / Instagram" data-en="Website / Instagram">Website / Instagram</span><input name="website" maxlength="500" inputmode="url" placeholder="https://..."></label>
 
@@ -164,9 +164,10 @@ $('#providerForm').onsubmit=async e=>{
   };
   btn.disabled=true;status.textContent=lang==='pt'?'A enviar…':'Submitting…';
   try{
-    const r=await db.from('provider_applications').insert(payload); if(r.error)throw r.error;
+    const r=await db.rpc('submit_provider_application',{p_payload:payload}); if(r.error)throw r.error;
+    if(!r.data||r.data.ok!==true){status.textContent=(r.data&&r.data.message)?r.data.message:(lang==='pt'?'Revê os dados e tenta novamente.':'Check your details and try again.');return}
     f.reset();photoData=null;$('#formCard').style.display='none';$('#success').classList.add('show');window.scrollTo({top:0,behavior:'smooth'});
-  }catch(err){console.error(err);status.textContent=lang==='pt'?'Não foi possível enviar. Tenta novamente.':'Could not submit. Please try again.'}
+  }catch(err){console.error(err);status.textContent=lang==='pt'?'Não foi possível enviar neste momento. Tenta novamente dentro de alguns segundos.':'Could not submit right now. Please try again in a few seconds.'}
   finally{btn.disabled=false}
 };
 
