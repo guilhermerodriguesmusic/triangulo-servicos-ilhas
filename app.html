@@ -425,7 +425,16 @@ $('#providerForm').onsubmit=async e=>{
 };
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice}catch{};return}toast(/iphone|ipad|ipod/i.test(navigator.userAgent)?(lang==='pt'?'No iPhone: Partilhar → Adicionar ao ecrã principal.':'On iPhone: Share → Add to Home Screen.'):(lang==='pt'?'Abre no Chrome/Safari para instalar.':'Open in Chrome/Safari to install.'))};
-function init(){updateIsland();applyLang();renderBookings();loadProviders();const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';if(providerEntry){openProviderSignup();return}if(location.hash==='#app'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}
+function init(){
+ updateIsland();applyLang();renderBookings();loadProviders();
+ try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
+ window.addEventListener('focus',()=>loadProviders());
+ const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ if(providerEntry){openProviderSignup();return}
+ if(location.hash==='#app'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
+ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})
+}
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
 init();
 </script>
