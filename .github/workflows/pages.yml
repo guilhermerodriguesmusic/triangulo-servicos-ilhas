@@ -59,3 +59,41 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify live TRIÂNGULO
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://trianguloacores.pt"
+          fetch() {
+            local url="$1"
+            curl --fail --silent --show-error --location \
+              --retry 8 --retry-all-errors --retry-delay 2 \
+              --connect-timeout 10 --max-time 30 \
+              "$url"
+          }
+
+          index="$(fetch "$base/?verify=$GITHUB_SHA")"
+          app="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
+          manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
+          sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
+
+          grep -q "TRIÂNGULO" <<<"$index"
+          grep -q 'name="triangulo-build" content="ux-20260919"' <<<"$app"
+          grep -q '"start_url": "/app.html"' <<<"$manifest"
+          grep -q '"display": "standalone"' <<<"$manifest"
+          grep -q "triangulo-pwa-20260919-2" <<<"$sw"
+
+          python - <<'PY'
+          import json, urllib.request
+          url = "https://trianguloacores.pt/manifest.json?verify=github-actions"
+          with urllib.request.urlopen(url, timeout=30) as r:
+              data = json.load(r)
+          assert data["start_url"] == "/app.html"
+          assert data["scope"] == "/"
+          assert data["display"] == "standalone"
+          assert any(i["sizes"] == "192x192" for i in data["icons"])
+          assert any(i["sizes"] == "512x512" for i in data["icons"])
+          print("Live manifest OK")
+          PY
+
+          echo "Live site OK: $base"
