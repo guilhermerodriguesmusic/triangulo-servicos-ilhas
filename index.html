@@ -4,123 +4,149 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f3158">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
-<title>TRIÂNGULO — Serviços locais nas ilhas</title>
-<meta name="description" content="Encontra profissionais e serviços locais no Pico, Faial e São Jorge.">
+<title>TRIÂNGULO — Recebe pedidos de clientes nas ilhas</title>
+<meta name="description" content="Cria o teu perfil de prestador no TRIÂNGULO e recebe pedidos de clientes no Pico, Faial e São Jorge.">
 <link rel="icon" href="/logo.svg">
-<link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 <style>
-:root{--navy:#0f3158;--green:#69e0bc;--white:#fff;--glass:rgba(255,255,255,.14)}
+:root{--navy:#10345d;--navy2:#0b2746;--green:#159e78;--mint:#dff7ef;--ink:#16375e;--muted:#6a8295;--line:#dbe8ee;--bg:#f4fafc;--white:#fff}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f3158;color:#fff}
-body{min-height:100svh;overflow-x:hidden}
-.entry{position:relative;min-height:100svh;display:flex;flex-direction:column;isolation:isolate;overflow:hidden;background:#0f3158}
-.entry:before{content:"";position:absolute;inset:0;z-index:-3;background:url('/assets/pico-hero-real.jpg') center 44%/cover no-repeat;transform:scale(1.02)}
-.entry:after{content:"";position:absolute;inset:0;z-index:-2;background:
- linear-gradient(180deg,rgba(5,29,50,.28) 0%,rgba(6,37,63,.18) 28%,rgba(8,42,70,.35) 54%,rgba(7,30,52,.88) 82%,rgba(6,25,44,.97) 100%),
- radial-gradient(circle at 72% 14%,rgba(112,224,188,.18),transparent 29%)}
-.top{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 18px) 20px 0}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
-.brand-logo{width:48px;height:52px;padding:6px;border-radius:16px;background:rgba(255,255,255,.91);box-shadow:0 10px 32px rgba(0,0,0,.18);object-fit:contain}
-.brand-word{font-size:16px;font-weight:950;letter-spacing:.10em;text-shadow:0 2px 14px rgba(0,0,0,.26)}
-.lang{display:flex;padding:3px;border:1px solid rgba(255,255,255,.22);background:rgba(6,37,63,.30);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:999px}
-.lang button{border:0;background:transparent;color:rgba(255,255,255,.70);font-weight:900;font-size:11px;padding:7px 10px;border-radius:999px}
-.lang button.active{background:#fff;color:var(--navy)}
-.hero-spacer{flex:1;min-height:30vh}
-.content{padding:0 18px calc(env(safe-area-inset-bottom) + 22px)}
-.eyebrow{display:inline-flex;align-items:center;gap:7px;margin-bottom:10px;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#b5f4df}
-.eyebrow:before{content:"";width:22px;height:2px;border-radius:999px;background:var(--green)}
-h1{font-size:clamp(43px,12vw,74px);line-height:.93;letter-spacing:-.052em;margin:0;max-width:680px;text-wrap:balance;text-shadow:0 3px 24px rgba(0,0,0,.28)}
-.lead{font-size:14px;line-height:1.5;color:rgba(255,255,255,.80);max-width:520px;margin:16px 0 0}
-.islands{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}
-.islands span{font-size:10px;font-weight:850;padding:7px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.enter{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;text-decoration:none;color:var(--navy);background:#fff;border-radius:22px;padding:17px 18px 17px 20px;box-shadow:0 18px 42px rgba(0,0,0,.24);transition:transform .16s ease,box-shadow .16s ease}
-.enter:active{transform:scale(.985)}
-.enter-copy{display:grid;gap:2px}
-.enter-copy small{font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#4e6a82}
-.enter-copy b{font-size:17px;letter-spacing:-.015em}
-.enter-arrow{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#dff8ef;color:#08765c;font-size:25px;font-weight:600}
-.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}
-.trust div{min-height:48px;border-radius:14px;padding:8px 7px;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.78);font-size:9px;font-weight:800;line-height:1.2;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-@media(min-width:760px){
- .top{padding-left:36px;padding-right:36px}
- .content{padding-left:38px;padding-right:38px;max-width:760px}
- .hero-spacer{min-height:27vh}
- .enter{max-width:560px}
- .trust{max-width:560px}
-}
-@media(max-height:720px){
- .hero-spacer{min-height:15vh}
- h1{font-size:42px}
- .lead{margin-top:10px}
- .islands{margin:12px 0}
- .trust{display:none}
+html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{text-decoration:none;color:inherit} button{font:inherit}
+.wrap{max-width:1120px;margin:auto;padding:0 22px}
+.top{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.07em;color:var(--navy)}
+.brand img{width:42px;height:46px;object-fit:contain}
+.top-actions{display:flex;align-items:center;gap:12px}
+.lang{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;padding:7px 10px;border-radius:999px;font-weight:900;color:#6d8395;cursor:pointer}
+.lang button.active{background:var(--mint);color:#087158}
+.client-link{font-size:12px;font-weight:800;color:#5c758a}
+.hero{position:relative;overflow:hidden;border-radius:30px;background:var(--navy);color:#fff;min-height:560px;display:grid;grid-template-columns:1.05fr .95fr;box-shadow:0 24px 60px rgba(20,60,90,.16)}
+.hero-copy{padding:62px 52px;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center}
+.eyebrow{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#83e5c6}
+.hero h1{font-size:clamp(48px,6vw,78px);line-height:.96;letter-spacing:-.055em;margin:12px 0 18px;max-width:650px}
+.hero p{font-size:17px;line-height:1.55;color:#d9e8ef;max-width:590px;margin:0}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:15px;padding:14px 18px;font-weight:900;font-size:14px;transition:.16s ease}
+.cta.primary{background:#69e0bc;color:#0c3d31}
+.cta.secondary{border:1px solid rgba(255,255,255,.28);color:#fff;background:rgba(255,255,255,.07)}
+.cta:hover{transform:translateY(-2px)}
+.hero-note{display:flex;gap:16px;flex-wrap:wrap;margin-top:24px;color:#bcd1dc;font-size:11px;font-weight:750}
+.hero-note span:before{content:"✓";color:#71e2bf;margin-right:6px}
+.hero-visual{position:relative;min-height:560px;background:url('/assets/pico-real.jpg') center/cover no-repeat}
+.hero-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 0%,rgba(16,52,93,.35) 34%,rgba(6,31,54,.08) 70%),linear-gradient(180deg,transparent 50%,rgba(4,27,46,.38))}
+.floating{position:absolute;right:26px;bottom:26px;left:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;z-index:2}
+.floating div{padding:12px 10px;border-radius:15px;background:rgba(255,255,255,.90);backdrop-filter:blur(10px);color:var(--ink);text-align:center;box-shadow:0 10px 26px rgba(0,0,0,.12)}
+.floating b{display:block;font-size:13px}.floating small{display:block;font-size:9px;color:#688095;margin-top:2px}
+.section{padding:74px 0}.section-head{max-width:720px;margin-bottom:28px}.section-head .over{font-size:10px;text-transform:uppercase;font-weight:900;letter-spacing:.14em;color:var(--green)}.section-head h2{font-size:clamp(31px,4vw,48px);line-height:1.02;letter-spacing:-.035em;margin:8px 0 10px}.section-head p{margin:0;color:var(--muted);line-height:1.6}
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.benefit{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}.benefit .icon{width:42px;height:42px;border-radius:13px;background:var(--mint);display:grid;place-items:center;font-size:20px}.benefit h3{font-size:18px;margin:16px 0 7px}.benefit p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.how{background:#eaf6fa}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{background:#fff;border-radius:20px;padding:23px;border:1px solid #d6e7ed}.num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-size:12px;font-weight:900}.step h3{margin:15px 0 6px}.step p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.categories{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.cat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px 10px;text-align:center;font-size:11px;font-weight:850}
+.island-band{background:var(--navy);color:#fff;border-radius:26px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}.island-band h2{margin:0 0 7px;font-size:30px}.island-band p{margin:0;color:#cfe0e8}.chips{display:flex;gap:8px}.chips span{background:#fff;color:var(--navy);padding:9px 13px;border-radius:999px;font-size:11px;font-weight:900}
+.final{padding:26px 0 72px}.final-card{background:linear-gradient(135deg,#dff7ef,#e8f7ff);border:1px solid #cfe6e7;border-radius:28px;padding:44px;text-align:center}.final-card h2{font-size:40px;letter-spacing:-.035em;margin:0 0 10px}.final-card p{color:#5d788d;margin:0 auto 22px;max-width:620px;line-height:1.55}.final-card .cta.primary{background:var(--navy);color:#fff}
+.footer{border-top:1px solid var(--line);padding:24px 0 32px;font-size:11px;color:#708698}.footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer a{margin-left:16px}
+@media(max-width:760px){
+ .wrap{padding:0 14px}.top{height:67px}.brand{font-size:14px}.brand img{width:34px}.client-link{display:none}
+ .hero{grid-template-columns:1fr;min-height:auto}.hero-copy{padding:34px 24px 30px}.hero h1{font-size:46px}.hero p{font-size:14px}.hero-actions{display:grid}.cta{width:100%}
+ .hero-visual{min-height:260px}.hero-visual:after{background:linear-gradient(180deg,var(--navy) 0%,rgba(16,52,93,.05) 33%,rgba(6,31,54,.32) 100%)}
+ .floating{left:14px;right:14px;bottom:14px}.floating div{padding:9px 5px}.floating b{font-size:11px}
+ .section{padding:48px 0}.benefits,.steps{grid-template-columns:1fr}.categories{grid-template-columns:repeat(2,1fr)}
+ .island-band{grid-template-columns:1fr;padding:24px}.chips{flex-wrap:wrap}.final-card{padding:30px 20px}.final-card h2{font-size:31px}
+ .footer-inner{align-items:flex-start;flex-direction:column}.footer a{margin:0 14px 0 0}
 }
 </style>
 </head>
 <body>
-<main class="entry">
-  <header class="top">
-    <a class="brand" href="/" aria-label="TRIÂNGULO">
-      <img class="brand-logo" src="/logo.svg" alt="">
-      <span class="brand-word">TRIÂNGULO</span>
-    </a>
-    <div class="lang" aria-label="Idioma">
-      <button id="pt" class="active" type="button">PT</button>
-      <button id="en" type="button">EN</button>
+<header class="wrap top">
+  <a class="brand" href="/"><img src="/logo.svg" alt="">TRIÂNGULO</a>
+  <div class="top-actions">
+    <a class="client-link" href="/app.html" data-pt="Procuras um serviço? Abrir app →" data-en="Looking for a service? Open app →">Procuras um serviço? Abrir app →</a>
+    <div class="lang"><button id="pt" class="active">PT</button><button id="en">EN</button></div>
+  </div>
+</header>
+
+<main>
+<section class="wrap">
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow" data-pt="Para prestadores locais" data-en="For local service providers">Para prestadores locais</div>
+      <h1 data-pt="Trabalha na tua ilha. Recebe novos clientes." data-en="Work on your island. Reach new clients.">Trabalha na tua ilha. Recebe novos clientes.</h1>
+      <p data-pt="O TRIÂNGULO liga profissionais e pequenos negócios do Pico, Faial e São Jorge a pessoas que procuram serviços locais." data-en="TRIÂNGULO connects professionals and small businesses in Pico, Faial and São Jorge with people looking for local services.">O TRIÂNGULO liga profissionais e pequenos negócios do Pico, Faial e São Jorge a pessoas que procuram serviços locais.</p>
+      <div class="hero-actions">
+        <a class="cta primary" href="/candidatura-prestador.html" data-pt="Criar perfil gratuito →" data-en="Create free profile →">Criar perfil gratuito →</a>
+        <a class="cta secondary" href="#como" data-pt="Como funciona" data-en="How it works">Como funciona</a>
+      </div>
+      <div class="hero-note">
+        <span data-pt="Perfil gratuito" data-en="Free profile">Perfil gratuito</span>
+        <span data-pt="Presença local" data-en="Local presence">Presença local</span>
+        <span data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</span>
+      </div>
     </div>
-  </header>
-
-  <div class="hero-spacer"></div>
-
-  <section class="content">
-    <div class="eyebrow" data-pt="Serviços locais nas ilhas" data-en="Local services across the islands">Serviços locais nas ilhas</div>
-    <h1 data-pt="A tua ilha. O serviço certo." data-en="Your island. The right service.">A tua ilha.<br>O serviço certo.</h1>
-    <p class="lead" data-pt="Encontra pessoas locais para resolver o que precisas — de forma simples, próxima e direta." data-en="Find local people to help with what you need — simply, locally and directly.">Encontra pessoas locais para resolver o que precisas — de forma simples, próxima e direta.</p>
-
-    <div class="islands" aria-label="Ilhas disponíveis">
-      <span>Pico</span><span>Faial</span><span>São Jorge</span>
+    <div class="hero-visual" role="img" aria-label="Ilha do Pico">
+      <div class="floating">
+        <div><b>Pico</b><small data-pt="clientes locais" data-en="local clients">clientes locais</small></div>
+        <div><b>Faial</b><small data-pt="clientes locais" data-en="local clients">clientes locais</small></div>
+        <div><b>São Jorge</b><small data-pt="clientes locais" data-en="local clients">clientes locais</small></div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <a class="enter" href="/inicio.html">
-      <span class="enter-copy">
-        <small data-pt="Começar agora" data-en="Start now">Começar agora</small>
-        <b data-pt="Entrar no TRIÂNGULO" data-en="Enter TRIÂNGULO">Entrar no TRIÂNGULO</b>
-      </span>
-      <span class="enter-arrow" aria-hidden="true">→</span>
-    </a>
-
-    <div class="trust" aria-hidden="true">
-      <div data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</div>
-      <div data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</div>
-      <div data-pt="Três ilhas, uma rede" data-en="Three islands, one network">Três ilhas, uma rede</div>
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div class="over" data-pt="Porque aderir" data-en="Why join">Porque aderir</div><h2 data-pt="Mais visibilidade. Mais oportunidades locais." data-en="More visibility. More local opportunities.">Mais visibilidade. Mais oportunidades locais.</h2><p data-pt="Um perfil simples para que pessoas perto de ti encontrem o que fazes e possam enviar pedidos." data-en="A simple profile so nearby people can find what you do and send requests.">Um perfil simples para que pessoas perto de ti encontrem o que fazes e possam enviar pedidos.</p></div>
+    <div class="benefits">
+      <article class="benefit"><div class="icon">📍</div><h3 data-pt="Clientes na tua ilha" data-en="Clients on your island">Clientes na tua ilha</h3><p data-pt="Mostra os teus serviços a quem procura ajuda no Pico, Faial ou São Jorge." data-en="Show your services to people looking for help in Pico, Faial or São Jorge.">Mostra os teus serviços a quem procura ajuda no Pico, Faial ou São Jorge.</p></article>
+      <article class="benefit"><div class="icon">🧰</div><h3 data-pt="O teu trabalho, claro" data-en="Your work, clearly presented">O teu trabalho, claro</h3><p data-pt="Indica o que fazes, onde trabalhas, disponibilidade, preço e formas de contacto." data-en="Show what you do, where you work, availability, pricing and contact details.">Indica o que fazes, onde trabalhas, disponibilidade, preço e formas de contacto.</p></article>
+      <article class="benefit"><div class="icon">🤝</div><h3 data-pt="Uma rede local" data-en="A local network">Uma rede local</h3><p data-pt="O TRIÂNGULO cresce com profissionais locais e perfis revistos antes de serem publicados." data-en="TRIÂNGULO grows with local professionals and profiles reviewed before publication.">O TRIÂNGULO cresce com profissionais locais e perfis revistos antes de serem publicados.</p></article>
     </div>
-  </section>
+  </div>
+</section>
+
+<section class="section how" id="como">
+  <div class="wrap">
+    <div class="section-head"><div class="over" data-pt="Como funciona" data-en="How it works">Como funciona</div><h2 data-pt="Três passos. Sem complicações." data-en="Three steps. No complications.">Três passos. Sem complicações.</h2></div>
+    <div class="steps">
+      <article class="step"><div class="num">1</div><h3 data-pt="Cria o teu perfil" data-en="Create your profile">Cria o teu perfil</h3><p data-pt="Preenche uma candidatura curta com os teus serviços, ilhas e disponibilidade." data-en="Fill in a short application with your services, islands and availability.">Preenche uma candidatura curta com os teus serviços, ilhas e disponibilidade.</p></article>
+      <article class="step"><div class="num">2</div><h3 data-pt="Revemos os dados" data-en="We review your details">Revemos os dados</h3><p data-pt="O TRIÂNGULO revê o perfil antes de o disponibilizar aos clientes." data-en="TRIÂNGULO reviews the profile before making it available to clients.">O TRIÂNGULO revê o perfil antes de o disponibilizar aos clientes.</p></article>
+      <article class="step"><div class="num">3</div><h3 data-pt="Começas a receber pedidos" data-en="Start receiving requests">Começas a receber pedidos</h3><p data-pt="Clientes podem encontrar-te por categoria, ilha e disponibilidade." data-en="Clients can find you by category, island and availability.">Clientes podem encontrar-te por categoria, ilha e disponibilidade.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div class="over" data-pt="Serviços" data-en="Services">Serviços</div><h2 data-pt="Há lugar para o que sabes fazer." data-en="There's a place for what you do.">Há lugar para o que sabes fazer.</h2></div>
+    <div class="categories">
+      <div class="cat" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</div><div class="cat" data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</div><div class="cat" data-pt="Reparações" data-en="Repairs">Reparações</div><div class="cat" data-pt="Mudanças & Entregas" data-en="Moving & Delivery">Mudanças & Entregas</div><div class="cat" data-pt="Aulas" data-en="Lessons">Aulas</div><div class="cat" data-pt="Bem-estar" data-en="Wellness">Bem-estar</div><div class="cat" data-pt="Tecnologia" data-en="Technology">Tecnologia</div><div class="cat" data-pt="Fotografia & Criativos" data-en="Photography & Creative">Fotografia & Criativos</div><div class="cat" data-pt="Animais" data-en="Pets">Animais</div><div class="cat" data-pt="Outros serviços" data-en="Other services">Outros serviços</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="island-band">
+    <div><h2 data-pt="Uma rede feita para as ilhas." data-en="A network built for the islands.">Uma rede feita para as ilhas.</h2><p data-pt="Começamos no Pico, Faial e São Jorge — com foco em serviços realmente úteis no dia a dia." data-en="Starting in Pico, Faial and São Jorge — focused on services people genuinely need every day.">Começamos no Pico, Faial e São Jorge — com foco em serviços realmente úteis no dia a dia.</p></div>
+    <div class="chips"><span>Pico</span><span>Faial</span><span>São Jorge</span></div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <div class="final-card">
+      <h2 data-pt="Pronto para aparecer onde os clientes procuram?" data-en="Ready to appear where clients are looking?">Pronto para aparecer onde os clientes procuram?</h2>
+      <p data-pt="Cria gratuitamente o teu perfil de prestador. Leva poucos minutos e podes indicar exatamente onde e como trabalhas." data-en="Create your provider profile for free. It only takes a few minutes and you can specify exactly where and how you work.">Cria gratuitamente o teu perfil de prestador. Leva poucos minutos e podes indicar exatamente onde e como trabalhas.</p>
+      <a class="cta primary" href="/candidatura-prestador.html" data-pt="Quero prestar serviços →" data-en="I want to offer services →">Quero prestar serviços →</a>
+    </div>
+  </div>
+</section>
 </main>
+
+<footer class="footer"><div class="wrap footer-inner"><span>TRIÂNGULO · Pico · Faial · São Jorge</span><span><a href="/app.html" data-pt="Abrir app" data-en="Open app">Abrir app</a><a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a><a href="/terms.html" data-pt="Termos" data-en="Terms">Termos</a></span></div></footer>
+
 <script>
 let lang=localStorage.getItem('tri_lang')||'pt';
-function setLang(v){
-  lang=v;
-  localStorage.setItem('tri_lang',v);
-  document.documentElement.lang=v;
-  document.querySelectorAll('[data-pt][data-en]').forEach(el=>{
-    const value=v==='pt'?el.dataset.pt:el.dataset.en;
-    if(el.tagName==='H1')el.innerHTML=value.replace('. ','.<br>');
-    else el.textContent=value;
-  });
-  document.querySelector('#pt').classList.toggle('active',v==='pt');
-  document.querySelector('#en').classList.toggle('active',v==='en');
-}
-document.querySelector('#pt').onclick=()=>setLang('pt');
-document.querySelector('#en').onclick=()=>setLang('en');
-setLang(lang);
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
-  navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
-}
+function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=v==='pt'?el.dataset.pt:el.dataset.en);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
+document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
 </script>
 </body>
 </html>
