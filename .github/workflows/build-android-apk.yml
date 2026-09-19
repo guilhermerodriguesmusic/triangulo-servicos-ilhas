@@ -35,18 +35,18 @@ jobs:
           gradle-version: '8.10.2'
 
       - name: Build APK
-        run: gradle -p android-app :app:assembleDebug --no-daemon
+        run: gradle -p android-app :app:assembleRelease --no-daemon
 
-      - name: Publish APK to website
+      - name: Publish unsigned release artifact
         run: |
           mkdir -p downloads
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk downloads/triangulo-android.apk
+          cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk downloads/triangulo-android-unsigned.apk
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add downloads/triangulo-android.apk
           if git diff --cached --quiet; then
-            echo "APK unchanged"
+            echo "Unsigned APK unchanged"
           else
-            git commit -m "Publish Android APK [skip ci]"
+            git commit -m "Publish unsigned Android release [skip ci]"
             git push
           fi
