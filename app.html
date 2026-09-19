@@ -4,13 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#159e78">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
 <meta name="robots" content="noindex,nofollow">
 <title>TRIÂNGULO — Serviços locais nas ilhas</title>
-<link rel="manifest" href="manifest.json">\n<link rel="icon" href="logo.svg">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/logo.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 <style>
 :root{
  --navy:#123a68;--blue:#1d89ed;--sky:#eef8ff;--green:#14aa7d;--green2:#dff9ef;
@@ -430,7 +432,7 @@ $('#providerForm').onsubmit=async e=>{
  finally{btn.disabled=false}
 };
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
-$('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice}catch{};return}toast(/iphone|ipad|ipod/i.test(navigator.userAgent)?(lang==='pt'?'No iPhone: Partilhar → Adicionar ao ecrã principal.':'On iPhone: Share → Add to Home Screen.'):(lang==='pt'?'Abre no Chrome/Safari para instalar.':'Open in Chrome/Safari to install.'))};
+$('#installBtn').onclick=async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice}catch{};return}toast((/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))?(lang==='pt'?'No iPhone: Partilhar → Adicionar ao ecrã principal.':'On iPhone: Share → Add to Home Screen.'):(lang==='pt'?'Abre no Chrome/Safari para instalar.':'Open in Chrome/Safari to install.'))};
 function init(){
  updateIsland();applyLang();renderBookings();loadProviders();
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
@@ -439,7 +441,7 @@ function init(){
  const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
  if(providerEntry){openProviderSignup();return}
  if(location.hash==='#app'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
- if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})
+ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
 }
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
 init();
