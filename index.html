@@ -107,13 +107,11 @@ let lang=localStorage.getItem('tri_lang')||'pt';
 function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt]').forEach(el=>el.textContent=el.dataset[v]||el.textContent);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
 document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
 
-let deferredInstallPrompt=null;
 const installButton=document.querySelector('#directInstall');
 const installSheet=document.querySelector('#installSheet');
 const installBody=document.querySelector('#installSheetBody');
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 const isAndroid=/android/i.test(navigator.userAgent);
-const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 
 function showInstallSheet(html){
   installBody.innerHTML=html;
@@ -127,50 +125,29 @@ function hideInstallSheet(){
 document.querySelector('#closeInstall').onclick=hideInstallSheet;
 installSheet.addEventListener('click',e=>{if(e.target===installSheet)hideInstallSheet()});
 
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredInstallPrompt=e;
-});
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;
-  if(installButton)installButton.textContent=lang==='pt'?'App instalada ✓':'App installed ✓';
-});
-
-if(isStandalone&&installButton){
-  installButton.textContent=lang==='pt'?'App instalada ✓':'App installed ✓';
-  installButton.disabled=true;
-}
-
-installButton.addEventListener('click',async()=>{
-  if(isStandalone)return;
-
-  if(deferredInstallPrompt){
-    deferredInstallPrompt.prompt();
-    try{await deferredInstallPrompt.userChoice}catch{}
-    deferredInstallPrompt=null;
+installButton.addEventListener('click',()=>{
+  if(isAndroid){
+    window.location.href='downloads/triangulo-android.apk';
     return;
   }
 
   if(isIOS){
     showInstallSheet(
-      '<p>'+(lang==='pt'?'No iPhone, a Apple pede uma confirmação rápida no Safari.':'On iPhone, Apple requires a quick confirmation in Safari.')+'</p>'+
+      '<p><b>'+(lang==='pt'?'iPhone':'iPhone')+'</b></p>'+
+      '<p>'+(lang==='pt'?'A versão nativa para iPhone ainda não pode ser instalada diretamente como um APK. Por agora podes instalar a versão web no ecrã principal:':'The native iPhone version cannot yet be installed directly like an APK. For now you can install the web version on your Home Screen:')+'</p>'+
       '<div class="install-steps">'+
       '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Toca em Partilhar':'Tap Share')+'</b><span>'+(lang==='pt'?'Ícone do quadrado com a seta para cima.':'The square icon with the upward arrow.')+'</span></div></div>'+
-      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Adicionar ao ecrã principal':'Add to Home Screen')+'</b><span>'+(lang==='pt'?'Escolhe esta opção e confirma em Adicionar.':'Choose this option, then confirm Add.')+'</span></div></div>'+
+      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Adicionar ao ecrã principal':'Add to Home Screen')+'</b><span>'+(lang==='pt'?'Confirma em Adicionar.':'Confirm by tapping Add.')+'</span></div></div>'+
       '</div>'
     );
     return;
   }
 
-  if(isAndroid){
-    showInstallSheet(
-      '<p>'+(lang==='pt'?'O teu browser ainda não disponibilizou o instalador automático.':'Your browser has not made the automatic installer available yet.')+'</p>'+
-      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Menu do browser → Instalar app':'Browser menu → Install app')+'</b><span>'+(lang==='pt'?'No Chrome também pode aparecer como “Adicionar ao ecrã principal”.':'In Chrome it may also appear as “Add to Home Screen”.')+'</span></div></div>'
-    );
-    return;
-  }
-
-  location.href='instalar/';
+  showInstallSheet(
+    '<p>'+(lang==='pt'?'Escolhe a versão que queres instalar.':'Choose the version you want to install.')+'</p>'+
+    '<p><a href="downloads/triangulo-android.apk" style="display:block;background:#108b6e;color:#fff;text-decoration:none;text-align:center;font-weight:900;padding:13px 16px;border-radius:11px">'+(lang==='pt'?'Descarregar APK Android':'Download Android APK')+'</a></p>'+
+    '<p style="font-size:11px;color:#6a8294">'+(lang==='pt'?'No iPhone, a instalação nativa direta requer distribuição autorizada pela Apple.':'On iPhone, direct native installation requires Apple-authorized distribution.')+'</p>'
+  );
 });
 
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
