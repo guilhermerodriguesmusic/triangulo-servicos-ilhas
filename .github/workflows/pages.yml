@@ -74,6 +74,7 @@ jobs:
 
           index="$(fetch "$base/?verify=$GITHUB_SHA")"
           providers="$(fetch "$base/prestadores.html?verify=$GITHUB_SHA")"
+          application="$(fetch "$base/candidatura-prestador.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
@@ -82,6 +83,9 @@ jobs:
           grep -q "Entrar no TRIÂNGULO" <<<"$index"
           grep -q "Fazes um serviço nas ilhas" <<<"$providers"
           grep -q "Criar o meu perfil" <<<"$providers"
+          grep -q "Como conheceste o TRIÂNGULO" <<<"$application"
+          ! grep -q "Ilha onde estás baseado" <<<"$application"
+          ! grep -q "Prestador Fundador" <<<"$application"
           grep -q "Encontra ajuda local" <<<"$app"
           grep -q 'name="triangulo-build" content="business-split-20260920"' <<<"$app"
           grep -q '"start_url": "/app.html"' <<<"$manifest"
