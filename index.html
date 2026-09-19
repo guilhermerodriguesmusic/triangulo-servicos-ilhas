@@ -3,11 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#159e78">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-status-bar-style" content="default">\n<meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
+<meta name="theme-color" content="#159e78">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
 <title>TRIÂNGULO — Serviços locais nas ilhas</title>
 <meta name="description" content="Serviços locais no Pico, Faial e São Jorge.">
-<link rel="icon" href="logo.svg">
-<link rel="manifest" href="manifest.json">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="/logo.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -112,7 +117,7 @@ const installButton=document.querySelector('#directInstall');
 const installSheet=document.querySelector('#installSheet');
 const installBody=document.querySelector('#installSheetBody');
 const ua=navigator.userAgent.toLowerCase();
-const isIOS=/iphone|ipad|ipod/.test(ua);
+const isIOS=/iphone|ipad|ipod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isAndroid=/android/.test(ua);
 const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 
@@ -156,7 +161,7 @@ installButton.addEventListener('click',async()=>{
     showInstallSheet(
       '<p><b>'+(lang==='pt'?'Instalar no iPhone':'Install on iPhone')+'</b></p>'+
       '<div class="install-steps">'+
-      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Abre no Safari e toca em Partilhar':'Open in Safari and tap Share')+'</b><span>'+(lang==='pt'?'Usa o menu da página / botão Partilhar.':'Use the page menu / Share button.')+'</span></div></div>'+
+      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Toca em Partilhar':'Tap Share')+'</b><span>'+(lang==='pt'?'Usa o botão Partilhar do navegador.':'Use the browser Share button.')+'</span></div></div>'+
       '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Adicionar ao ecrã principal':'Add to Home Screen')+'</b><span>'+(lang==='pt'?'Procura esta opção na lista.':'Find this option in the list.')+'</span></div></div>'+
       '<div class="install-step"><i>3</i><div><b>'+(lang==='pt'?'Ativa “Abrir como app web”':'Turn on “Open as Web App”')+'</b><span>'+(lang==='pt'?'Depois toca em Adicionar. O TRIÂNGULO fica instalado como uma app.':'Then tap Add. TRIÂNGULO is installed like an app.')+'</span></div></div>'+
       '</div>'
@@ -172,11 +177,11 @@ installButton.addEventListener('click',async()=>{
     return;
   }
 
-  location.href='instalar/';
+  showInstallSheet('<p><b>'+(lang==='pt'?'Instalar TRIÂNGULO':'Install TRIÂNGULO')+'</b></p><p>'+(lang==='pt'?'Abre o menu do navegador e procura “Instalar app” ou “Adicionar ao ecrã principal”.':'Open your browser menu and choose “Install app” or “Add to Home Screen”.')+'</p>');
 });
 
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
+  navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
 }
 </script>
 </body>
