@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#159e78">
+<meta name="theme-color" content="#0f3158">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
 <title>TRIÂNGULO — Serviços locais nas ilhas</title>
 <meta name="description" content="Encontra profissionais e serviços locais no Pico, Faial e São Jorge.">
@@ -14,217 +14,110 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 <style>
+:root{--navy:#0f3158;--green:#69e0bc;--white:#fff;--glass:rgba(255,255,255,.14)}
 *{box-sizing:border-box}
-body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{max-width:900px;margin:auto;padding:18px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
-.brand{display:flex;align-items:center;gap:9px;color:#153458;text-decoration:none;font-weight:900;letter-spacing:.04em}
-.brand img{width:38px}
-.lang{display:flex;background:#fff;border:1px solid #d9e7ef;border-radius:999px;padding:3px}
-.lang button{border:0;background:transparent;padding:7px 10px;border-radius:999px;font-weight:900;color:#6a8295;cursor:pointer}
-.lang button.active{background:#e9f8f3;color:#08725b}
-.hero{background:linear-gradient(135deg,#def4ff,#ecfbf6);border:1px solid #d2e8ef;border-radius:26px;padding:46px 34px 40px;text-align:left}
-.eyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0a8168}
-.hero h1{font-size:clamp(38px,7vw,66px);line-height:1.02;letter-spacing:-.035em;margin:10px 0 16px;max-width:760px}
-.hero p{margin:0;max-width:690px;color:#567187;line-height:1.6;font-size:17px}
-.paths{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
-.path{background:#fff;border:1px solid #dce9ef;border-radius:20px;padding:24px;text-decoration:none;color:#153458;display:flex;flex-direction:column;min-height:190px;transition:.15s ease}
-.path:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(21,52,88,.08);border-color:#c9dde6}
-.path.primary{background:#153458;color:#fff;border-color:#153458}
-.path .kicker{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0b8068}
-.path.primary .kicker{color:#7ce2c3}
-.path h2{font-size:27px;line-height:1.05;margin:14px 0 8px}
-.path p{font-size:13px;line-height:1.55;margin:0;color:#667f92;max-width:320px}
-.path.primary p{color:#d7e5ed}
-.path .go{margin-top:auto;padding-top:24px;font-size:13px;font-weight:900;color:#0b8068}
-.path.primary .go{color:#fff}
-.installbar{margin-top:14px;background:#153458;color:#fff;border-radius:16px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}.installbar b{font-size:13px}.installbar button{border:0;background:transparent;color:#7ce2c3;padding:0;font:inherit;font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}.installbar button:hover{color:#fff}.install-sheet{position:fixed;inset:0;background:rgba(8,32,51,.48);display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:1000}.install-sheet.show{display:flex}.install-panel{width:min(520px,100%);background:#fff;border-radius:22px;padding:22px;color:#153458;box-shadow:0 24px 80px rgba(0,0,0,.22)}.install-panel .sheet-top{display:flex;justify-content:space-between;gap:12px;align-items:start}.install-panel h3{font-size:22px;margin:0}.install-panel .close-install{border:0;background:#eef4f6;width:32px;height:32px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer}.install-panel p{font-size:13px;line-height:1.5;color:#627a8d}.install-steps{display:grid;gap:8px;margin-top:14px}.install-step{display:grid;grid-template-columns:30px 1fr;gap:9px;align-items:start;background:#f6fafb;border-radius:11px;padding:10px}.install-step i{font-style:normal;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e6f7f1;color:#08725b;font-size:11px;font-weight:900}.install-step b{font-size:12px}.install-step span{display:block;font-size:11px;color:#6a8294;margin-top:2px;line-height:1.4}.safari-note{margin-top:10px;background:#fff8dd;border:1px solid #f3e2a7;border-radius:11px;padding:10px 11px}.safari-note b{display:block;font-size:11px;color:#6f5a12}.safari-note span{display:block;font-size:10px;color:#756a42;line-height:1.45;margin-top:2px}.strip{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:18px;padding:17px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
-.strip b{display:block;font-size:14px}
-.strip span{display:block;margin-top:3px;color:#6a8294;font-size:12px}
-.islands{display:flex;gap:7px;flex-wrap:wrap}
-.islands i{font-style:normal;background:#eef8f5;color:#08725b;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}
-.footer{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:24px 2px 8px;color:#718698;font-size:10px}
-.footer a{color:#55738b;text-decoration:none;margin-left:14px}
-.ios-install-coach{position:fixed;left:12px;right:12px;bottom:14px;z-index:1200;background:#153458;color:#fff;border-radius:14px;padding:11px 13px;font-size:11px;line-height:1.4;box-shadow:0 12px 35px rgba(0,0,0,.22);opacity:0;transform:translateY(16px);pointer-events:none;transition:.18s ease}.ios-install-coach.show{opacity:1;transform:translateY(0)}.ios-install-coach b{color:#8ce6ca}
-@media(max-width:680px){
-  body{background:#f6fbfd}
-  .wrap{padding:10px 12px 14px}
-  .top{margin-bottom:10px;padding:2px 2px 0}
-  .brand{font-size:15px;gap:7px}
-  .brand img{width:32px}
-  .lang button{padding:6px 9px;font-size:11px}
-  .hero{padding:21px 18px 20px;border-radius:20px}
-  .eyebrow{font-size:10px;letter-spacing:.07em}
-  .hero h1{font-size:31px;line-height:1.02;margin:8px 0 10px;max-width:350px}
-  .hero p{font-size:13px;line-height:1.45}
-  .paths{grid-template-columns:1fr;gap:9px;margin-top:10px}
-  .path{min-height:0;border-radius:17px;padding:17px 18px}
-  .path .kicker{font-size:9px}
-  .path h2{font-size:22px;margin:7px 0 5px}
-  .path p{font-size:11px;line-height:1.42;max-width:none}
-  .path .go{padding-top:12px;font-size:12px}
-  .paths .path:not(.primary){padding:14px 18px}
-  .paths .path:not(.primary) h2{font-size:19px;margin:6px 0 3px}
-  .paths .path:not(.primary) p{display:none}
-  .paths .path:not(.primary) .go{padding-top:8px}
-  .installbar{margin-top:9px;border-radius:15px;padding:12px 15px;align-items:center;flex-direction:row}
-  .installbar b{font-size:11px}
-  .installbar button{font-size:11px}
-  .strip{margin-top:9px;padding:11px 14px;border-radius:15px;grid-template-columns:1fr}
-  .strip b{font-size:11px}
-  .strip span{font-size:10px}
-  .islands{gap:5px;margin-top:2px}
-  .islands i{padding:5px 8px;font-size:9px}
-  .footer{padding:13px 2px 4px;align-items:center;flex-direction:row;font-size:9px}
-  .footer a{margin-left:10px}
-  .install-sheet{padding:8px}
-  .install-panel{padding:17px;border-radius:19px}
-  .install-panel h3{font-size:19px}
-  .install-panel p{font-size:11px;margin:9px 0}
-  .install-steps{gap:7px;margin-top:10px}
-  .install-step{padding:9px;grid-template-columns:27px 1fr;gap:8px}
-  .install-step i{width:23px;height:23px;font-size:10px}
-  .install-step b{font-size:11px}
-  .install-step span{font-size:10px}
-  .safari-note{margin-top:8px;padding:8px 9px}
-  .safari-note b{font-size:10px}
-  .safari-note span{font-size:9px}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f3158;color:#fff}
+body{min-height:100svh;overflow-x:hidden}
+.entry{position:relative;min-height:100svh;display:flex;flex-direction:column;isolation:isolate;overflow:hidden;background:#0f3158}
+.entry:before{content:"";position:absolute;inset:0;z-index:-3;background:url('/assets/pico-hero-real.jpg') center 44%/cover no-repeat;transform:scale(1.02)}
+.entry:after{content:"";position:absolute;inset:0;z-index:-2;background:
+ linear-gradient(180deg,rgba(5,29,50,.28) 0%,rgba(6,37,63,.18) 28%,rgba(8,42,70,.35) 54%,rgba(7,30,52,.88) 82%,rgba(6,25,44,.97) 100%),
+ radial-gradient(circle at 72% 14%,rgba(112,224,188,.18),transparent 29%)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 18px) 20px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.brand-logo{width:48px;height:52px;padding:6px;border-radius:16px;background:rgba(255,255,255,.91);box-shadow:0 10px 32px rgba(0,0,0,.18);object-fit:contain}
+.brand-word{font-size:16px;font-weight:950;letter-spacing:.10em;text-shadow:0 2px 14px rgba(0,0,0,.26)}
+.lang{display:flex;padding:3px;border:1px solid rgba(255,255,255,.22);background:rgba(6,37,63,.30);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:999px}
+.lang button{border:0;background:transparent;color:rgba(255,255,255,.70);font-weight:900;font-size:11px;padding:7px 10px;border-radius:999px}
+.lang button.active{background:#fff;color:var(--navy)}
+.hero-spacer{flex:1;min-height:30vh}
+.content{padding:0 18px calc(env(safe-area-inset-bottom) + 22px)}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;margin-bottom:10px;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#b5f4df}
+.eyebrow:before{content:"";width:22px;height:2px;border-radius:999px;background:var(--green)}
+h1{font-size:clamp(43px,12vw,74px);line-height:.93;letter-spacing:-.052em;margin:0;max-width:680px;text-wrap:balance;text-shadow:0 3px 24px rgba(0,0,0,.28)}
+.lead{font-size:14px;line-height:1.5;color:rgba(255,255,255,.80);max-width:520px;margin:16px 0 0}
+.islands{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}
+.islands span{font-size:10px;font-weight:850;padding:7px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.enter{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;text-decoration:none;color:var(--navy);background:#fff;border-radius:22px;padding:17px 18px 17px 20px;box-shadow:0 18px 42px rgba(0,0,0,.24);transition:transform .16s ease,box-shadow .16s ease}
+.enter:active{transform:scale(.985)}
+.enter-copy{display:grid;gap:2px}
+.enter-copy small{font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#4e6a82}
+.enter-copy b{font-size:17px;letter-spacing:-.015em}
+.enter-arrow{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#dff8ef;color:#08765c;font-size:25px;font-weight:600}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}
+.trust div{min-height:48px;border-radius:14px;padding:8px 7px;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.78);font-size:9px;font-weight:800;line-height:1.2;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+@media(min-width:760px){
+ .top{padding-left:36px;padding-right:36px}
+ .content{padding-left:38px;padding-right:38px;max-width:760px}
+ .hero-spacer{min-height:27vh}
+ .enter{max-width:560px}
+ .trust{max-width:560px}
+}
+@media(max-height:720px){
+ .hero-spacer{min-height:15vh}
+ h1{font-size:42px}
+ .lead{margin-top:10px}
+ .islands{margin:12px 0}
+ .trust{display:none}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-<header class="top">
-  <a class="brand" href="./"><img src="logo.svg" alt="TRIÂNGULO">TRIÂNGULO</a>
-  <div class="lang"><button id="pt" class="active">PT</button><button id="en">EN</button></div>
-</header>
-
-<main>
-<section class="hero">
-  <div class="eyebrow">Pico · Faial · São Jorge</div>
-  <h1 data-pt="Encontra serviços locais nas ilhas." data-en="Find local services across the islands.">Encontra serviços locais nas ilhas.</h1>
-  <p data-pt="Profissionais do Pico, Faial e São Jorge — num só lugar." data-en="Local professionals from Pico, Faial and São Jorge — all in one place.">Profissionais do Pico, Faial e São Jorge — num só lugar.</p>
-</section>
-
-<section class="paths">
-  <a class="path primary" href="app.html">
-    <div class="kicker" data-pt="Preciso de ajuda" data-en="I need a service">Preciso de ajuda</div>
-    <h2 data-pt="Procurar um serviço" data-en="Find a service">Procurar um serviço</h2>
-    <p data-pt="Escolhe a ilha e encontra quem te pode ajudar." data-en="Choose your island and find someone who can help.">Escolhe a ilha e encontra quem te pode ajudar.</p>
-    <div class="go" data-pt="Procurar serviços →" data-en="Find services →">Procurar serviços →</div>
-  </a>
-
-  <a class="path" href="candidatura-prestador.html">
-    <div class="kicker" data-pt="Sou profissional" data-en="I'm a professional">Sou profissional</div>
-    <h2 data-pt="Quero prestar serviços" data-en="I want to offer services">Quero prestar serviços</h2>
-    <p data-pt="Cria gratuitamente o teu perfil e começa a receber pedidos." data-en="Create your profile for free and start receiving requests.">Cria gratuitamente o teu perfil e começa a receber pedidos.</p>
-    <div class="go" data-pt="Criar perfil →" data-en="Create profile →">Criar perfil →</div>
-  </a>
-</section>
-
-<section class="installbar">
-  <b data-pt="Queres o TRIÂNGULO no telemóvel?" data-en="Want TRIÂNGULO on your phone?">Queres o TRIÂNGULO no telemóvel?</b>
-  <button id="directInstall" type="button" data-pt="Instalar app →" data-en="Install app →">Instalar app →</button>
-</section>
-
-<section class="strip">
-  <div>
-    <b data-pt="Uma plataforma local para três ilhas." data-en="One local platform for three islands.">Uma plataforma local para três ilhas.</b>
-    <span data-pt="Perfis revistos antes de serem publicados." data-en="Profiles are reviewed before publication.">Perfis revistos antes de serem publicados.</span>
-  </div>
-  <div class="islands"><i>Pico</i><i>Faial</i><i>São Jorge</i></div>
-</section>
-</main>
-
-<div class="install-sheet" id="installSheet" aria-hidden="true" hidden>
-  <div class="install-panel" role="dialog" aria-modal="true" aria-labelledby="installTitle">
-    <div class="sheet-top">
-      <div><h3 id="installTitle">Instalar TRIÂNGULO</h3></div>
-      <button class="close-install" id="closeInstall" aria-label="Fechar">×</button>
+<main class="entry">
+  <header class="top">
+    <a class="brand" href="/" aria-label="TRIÂNGULO">
+      <img class="brand-logo" src="/logo.svg" alt="">
+      <span class="brand-word">TRIÂNGULO</span>
+    </a>
+    <div class="lang" aria-label="Idioma">
+      <button id="pt" class="active" type="button">PT</button>
+      <button id="en" type="button">EN</button>
     </div>
-    <div id="installSheetBody"></div>
-  </div>
-</div>
+  </header>
 
-<div id="iosInstallCoach" class="ios-install-coach" role="status" aria-live="polite"></div>
-<footer class="footer">
-  <span>TRIÂNGULO · 2026</span>
-  <span><a href="privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a><a href="terms.html" data-pt="Termos" data-en="Terms">Termos</a></span>
-</footer>
-</div>
+  <div class="hero-spacer"></div>
+
+  <section class="content">
+    <div class="eyebrow" data-pt="Serviços locais nas ilhas" data-en="Local services across the islands">Serviços locais nas ilhas</div>
+    <h1 data-pt="A tua ilha. O serviço certo." data-en="Your island. The right service.">A tua ilha.<br>O serviço certo.</h1>
+    <p class="lead" data-pt="Encontra pessoas locais para resolver o que precisas — de forma simples, próxima e direta." data-en="Find local people to help with what you need — simply, locally and directly.">Encontra pessoas locais para resolver o que precisas — de forma simples, próxima e direta.</p>
+
+    <div class="islands" aria-label="Ilhas disponíveis">
+      <span>Pico</span><span>Faial</span><span>São Jorge</span>
+    </div>
+
+    <a class="enter" href="/inicio.html">
+      <span class="enter-copy">
+        <small data-pt="Começar agora" data-en="Start now">Começar agora</small>
+        <b data-pt="Entrar no TRIÂNGULO" data-en="Enter TRIÂNGULO">Entrar no TRIÂNGULO</b>
+      </span>
+      <span class="enter-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <div class="trust" aria-hidden="true">
+      <div data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</div>
+      <div data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</div>
+      <div data-pt="Três ilhas, uma rede" data-en="Three islands, one network">Três ilhas, uma rede</div>
+    </div>
+  </section>
+</main>
 <script>
 let lang=localStorage.getItem('tri_lang')||'pt';
-function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt]').forEach(el=>el.textContent=el.dataset[v]||el.textContent);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
-document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
-
-let deferredInstallPrompt=null;
-const installButton=document.querySelector('#directInstall');
-const installSheet=document.querySelector('#installSheet');
-const installBody=document.querySelector('#installSheetBody');
-const ua=navigator.userAgent.toLowerCase();
-const isIOS=/iphone|ipad|ipod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-const isAndroid=/android/.test(ua);
-const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-
-function showInstallSheet(html){
-  installSheet.hidden=false;
-  installBody.innerHTML=html;
-  installSheet.classList.add('show');
-  installSheet.setAttribute('aria-hidden','false');
+function setLang(v){
+  lang=v;
+  localStorage.setItem('tri_lang',v);
+  document.documentElement.lang=v;
+  document.querySelectorAll('[data-pt][data-en]').forEach(el=>{
+    const value=v==='pt'?el.dataset.pt:el.dataset.en;
+    if(el.tagName==='H1')el.innerHTML=value.replace('. ','.<br>');
+    else el.textContent=value;
+  });
+  document.querySelector('#pt').classList.toggle('active',v==='pt');
+  document.querySelector('#en').classList.toggle('active',v==='en');
 }
-function hideInstallSheet(){
-  installSheet.classList.remove('show');
-  installSheet.hidden=true;
-  installSheet.setAttribute('aria-hidden','true');
-}
-document.querySelector('#closeInstall').onclick=hideInstallSheet;
-installSheet.addEventListener('click',e=>{if(e.target===installSheet)hideInstallSheet()});
-
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredInstallPrompt=e;
-});
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;
-  installButton.textContent=lang==='pt'?'Instalado ✓':'Installed ✓';
-  installButton.disabled=true;
-});
-if(isStandalone){
-  installButton.textContent=lang==='pt'?'Instalado ✓':'Installed ✓';
-  installButton.disabled=true;
-}
-
-installButton.addEventListener('click',async()=>{
-  if(isStandalone)return;
-
-  if(deferredInstallPrompt){
-    deferredInstallPrompt.prompt();
-    try{await deferredInstallPrompt.userChoice}catch{}
-    deferredInstallPrompt=null;
-    return;
-  }
-
-  if(isIOS){
-    const coach=document.querySelector('#iosInstallCoach');
-    coach.innerHTML=lang==='pt'
-      ?'<b>iPhone:</b> toca em <b>Partilhar</b> no Safari → <b>Adicionar ao ecrã principal</b> → <b>Adicionar</b>.'
-      :'<b>iPhone:</b> tap <b>Share</b> in Safari → <b>Add to Home Screen</b> → <b>Add</b>.';
-    coach.classList.add('show');
-    setTimeout(()=>coach.classList.remove('show'),9000);
-    return;
-  }
-
-  if(isAndroid){
-    showInstallSheet(
-      '<p><b>'+(lang==='pt'?'Instalar no Android':'Install on Android')+'</b></p>'+
-      '<p>'+(lang==='pt'?'Se o instalador automático ainda não apareceu, abre o menu ⋮ do Chrome e escolhe “Instalar app” ou “Adicionar ao ecrã principal”.':'If the automatic installer is not available yet, open Chrome’s ⋮ menu and choose “Install app” or “Add to Home screen”.')+'</p>'
-    );
-    return;
-  }
-
-  showInstallSheet('<p><b>'+(lang==='pt'?'Instalar TRIÂNGULO':'Install TRIÂNGULO')+'</b></p><p>'+(lang==='pt'?'Abre o menu do navegador e procura “Instalar app” ou “Adicionar ao ecrã principal”.':'Open your browser menu and choose “Install app” or “Add to Home Screen”.')+'</p>');
-});
-
+document.querySelector('#pt').onclick=()=>setLang('pt');
+document.querySelector('#en').onclick=()=>setLang('en');
+setLang(lang);
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
   navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
 }
