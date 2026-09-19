@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-business-split';
+const CACHE='triangulo-pwa-20260920-provider-simple';
 const CORE=[
   '/',
   '/index.html',
