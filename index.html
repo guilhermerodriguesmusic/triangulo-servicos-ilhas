@@ -2,12 +2,12 @@
 <html lang="pt">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#159e78">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#159e78">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-status-bar-style" content="default">\n<meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
 <title>TRIÂNGULO — Serviços locais nas ilhas</title>
 <meta name="description" content="Serviços locais no Pico, Faial e São Jorge.">
 <link rel="icon" href="logo.svg">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -107,11 +107,14 @@ let lang=localStorage.getItem('tri_lang')||'pt';
 function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt]').forEach(el=>el.textContent=el.dataset[v]||el.textContent);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
 document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
 
+let deferredInstallPrompt=null;
 const installButton=document.querySelector('#directInstall');
 const installSheet=document.querySelector('#installSheet');
 const installBody=document.querySelector('#installSheetBody');
-const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-const isAndroid=/android/i.test(navigator.userAgent);
+const ua=navigator.userAgent.toLowerCase();
+const isIOS=/iphone|ipad|ipod/.test(ua);
+const isAndroid=/android/.test(ua);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 
 function showInstallSheet(html){
   installBody.innerHTML=html;
@@ -125,29 +128,51 @@ function hideInstallSheet(){
 document.querySelector('#closeInstall').onclick=hideInstallSheet;
 installSheet.addEventListener('click',e=>{if(e.target===installSheet)hideInstallSheet()});
 
-installButton.addEventListener('click',()=>{
-  if(isAndroid){
-    window.location.href='downloads/triangulo-android.apk';
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  installButton.textContent=lang==='pt'?'Instalado ✓':'Installed ✓';
+  installButton.disabled=true;
+});
+if(isStandalone){
+  installButton.textContent=lang==='pt'?'Instalado ✓':'Installed ✓';
+  installButton.disabled=true;
+}
+
+installButton.addEventListener('click',async()=>{
+  if(isStandalone)return;
+
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    try{await deferredInstallPrompt.userChoice}catch{}
+    deferredInstallPrompt=null;
     return;
   }
 
   if(isIOS){
     showInstallSheet(
-      '<p><b>'+(lang==='pt'?'iPhone':'iPhone')+'</b></p>'+
-      '<p>'+(lang==='pt'?'A versão nativa para iPhone ainda não pode ser instalada diretamente como um APK. Por agora podes instalar a versão web no ecrã principal:':'The native iPhone version cannot yet be installed directly like an APK. For now you can install the web version on your Home Screen:')+'</p>'+
+      '<p><b>'+(lang==='pt'?'Instalar no iPhone':'Install on iPhone')+'</b></p>'+
       '<div class="install-steps">'+
-      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Toca em Partilhar':'Tap Share')+'</b><span>'+(lang==='pt'?'Ícone do quadrado com a seta para cima.':'The square icon with the upward arrow.')+'</span></div></div>'+
-      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Adicionar ao ecrã principal':'Add to Home Screen')+'</b><span>'+(lang==='pt'?'Confirma em Adicionar.':'Confirm by tapping Add.')+'</span></div></div>'+
+      '<div class="install-step"><i>1</i><div><b>'+(lang==='pt'?'Abre no Safari e toca em Partilhar':'Open in Safari and tap Share')+'</b><span>'+(lang==='pt'?'Usa o menu da página / botão Partilhar.':'Use the page menu / Share button.')+'</span></div></div>'+
+      '<div class="install-step"><i>2</i><div><b>'+(lang==='pt'?'Adicionar ao ecrã principal':'Add to Home Screen')+'</b><span>'+(lang==='pt'?'Procura esta opção na lista.':'Find this option in the list.')+'</span></div></div>'+
+      '<div class="install-step"><i>3</i><div><b>'+(lang==='pt'?'Ativa “Abrir como app web”':'Turn on “Open as Web App”')+'</b><span>'+(lang==='pt'?'Depois toca em Adicionar. O TRIÂNGULO fica instalado como uma app.':'Then tap Add. TRIÂNGULO is installed like an app.')+'</span></div></div>'+
       '</div>'
     );
     return;
   }
 
-  showInstallSheet(
-    '<p>'+(lang==='pt'?'Escolhe a versão que queres instalar.':'Choose the version you want to install.')+'</p>'+
-    '<p><a href="downloads/triangulo-android.apk" style="display:block;background:#108b6e;color:#fff;text-decoration:none;text-align:center;font-weight:900;padding:13px 16px;border-radius:11px">'+(lang==='pt'?'Descarregar APK Android':'Download Android APK')+'</a></p>'+
-    '<p style="font-size:11px;color:#6a8294">'+(lang==='pt'?'No iPhone, a instalação nativa direta requer distribuição autorizada pela Apple.':'On iPhone, direct native installation requires Apple-authorized distribution.')+'</p>'
-  );
+  if(isAndroid){
+    showInstallSheet(
+      '<p><b>'+(lang==='pt'?'Instalar no Android':'Install on Android')+'</b></p>'+
+      '<p>'+(lang==='pt'?'Se o instalador automático ainda não apareceu, abre o menu ⋮ do Chrome e escolhe “Instalar app” ou “Adicionar ao ecrã principal”.':'If the automatic installer is not available yet, open Chrome’s ⋮ menu and choose “Install app” or “Add to Home screen”.')+'</p>'
+    );
+    return;
+  }
+
+  location.href='instalar/';
 });
 
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
