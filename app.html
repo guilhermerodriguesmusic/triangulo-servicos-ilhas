@@ -1324,6 +1324,13 @@ async function init(){
        history.replaceState({},'',location.pathname+'#app');
        $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
        await openClientBookings();
+       if(paymentResult==='success'){
+         toast(data.payment_status==='paid'
+           ?(lang==='pt'?'Pagamento confirmado ✓ Contactos desbloqueados.':'Payment confirmed ✓ Contact details unlocked.')
+           :(lang==='pt'?'Pagamento recebido. A aguardar confirmação…':'Payment received. Waiting for confirmation…'));
+       }else if(paymentResult==='cancelled'){
+         toast(lang==='pt'?'Pagamento cancelado. Podes tentar novamente.':'Payment cancelled. You can try again.');
+       }
        return;
      }
    }catch(e){console.error('client_token deep link',e)}
