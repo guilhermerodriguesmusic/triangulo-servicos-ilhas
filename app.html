@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="client-provider-split-v3-20260920">
+<meta name="triangulo-build" content="welcome-polish-v4-20260920">
 
 <style id="backend-v1-styles">
 
@@ -185,7 +185,7 @@
 #splash{position:fixed;inset:0;z-index:100;background:#dff4ff;overflow:auto;color:#123a66}
 .client-welcome{
   position:relative;min-height:100svh;width:min(100%,480px);margin:auto;
-  padding:calc(env(safe-area-inset-top) + 16px) 12px calc(env(safe-area-inset-bottom) + 14px);
+  padding:calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 10px);
   overflow:hidden;isolation:isolate;
   background:
     radial-gradient(circle at 13% 8%,rgba(255,255,255,.95),transparent 26%),
@@ -200,59 +200,59 @@
   content:"";position:absolute;z-index:-1;width:180px;height:180px;border-radius:50%;
   left:-95px;top:34%;background:rgba(13,91,135,.08)
 }
-.welcome-lang-wrap{display:flex;justify-content:flex-end;margin-bottom:2px}
+.welcome-lang-wrap{display:flex;justify-content:flex-end;margin-bottom:0}
 .welcome-lang{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.70);box-shadow:0 7px 18px rgba(17,63,94,.09)}
 .welcome-lang button{color:#4c6985}
 .welcome-lang button.active{background:#fff;color:#123a66;box-shadow:0 3px 10px rgba(20,63,95,.10)}
-.welcome-brand{text-align:center;padding:4px 12px 12px}
+.welcome-brand{text-align:center;padding:0 12px 8px}
 .welcome-brand img{
-  width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 5px;
+  width:64px;height:64px;object-fit:contain;display:block;margin:0 auto 3px;
   filter:drop-shadow(0 9px 15px rgba(18,68,98,.10))
 }
 .welcome-brand h1{
-  margin:0;font-size:32px;line-height:1;letter-spacing:.025em;font-weight:950;color:#123f70
+  margin:0;font-size:29px;line-height:1;letter-spacing:.025em;font-weight:950;color:#123f70
 }
 .welcome-brand .brand-sub{
-  margin:5px 0 0;font-size:12px;font-weight:850;color:#315b7e
+  margin:4px 0 0;font-size:11px;font-weight:850;color:#315b7e
 }
 .welcome-brand .brand-promise{
-  margin:5px 0 0;font-size:15px;font-weight:950;letter-spacing:.015em;color:#123a66
+  margin:4px 0 0;font-size:14px;font-weight:950;letter-spacing:.015em;color:#123a66
 }
 .welcome-trust{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 12px
+  display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 9px
 }
 .trust-card{
-  min-height:76px;background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.82);
-  border-radius:17px;padding:9px 6px 8px;text-align:center;
+  min-height:65px;background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.82);
+  border-radius:17px;padding:7px 5px 6px;text-align:center;
   box-shadow:0 9px 22px rgba(23,71,102,.08);display:flex;flex-direction:column;align-items:center;justify-content:center
 }
 .trust-icon{
-  width:29px;height:29px;border-radius:10px;display:grid;place-items:center;margin-bottom:5px;
+  width:25px;height:25px;border-radius:9px;display:grid;place-items:center;margin-bottom:4px;
   background:#e4f7f2;color:#0c9473
 }
-.trust-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.trust-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .trust-card b{font-size:9.5px;line-height:1.12;color:#123a66}
 .welcome-picker{
   background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.95);
-  border-radius:26px;padding:15px;box-shadow:0 18px 44px rgba(18,69,101,.16)
+  border-radius:24px;padding:12px;box-shadow:0 18px 44px rgba(18,69,101,.16)
 }
 .welcome-picker>strong{
-  display:block;text-align:center;font-size:14px;letter-spacing:.07em;margin:1px 0 12px;color:#173d66
+  display:block;text-align:center;font-size:13px;letter-spacing:.07em;margin:0 0 9px;color:#173d66
 }
-.welcome-islands{display:grid;gap:8px}
+.welcome-islands{display:grid;gap:7px}
 .welcome-island{
-  position:relative;height:102px;border:0;border-radius:18px;overflow:hidden;padding:0;
+  position:relative;height:94px;border:0;border-radius:17px;overflow:hidden;padding:0;
   background:#dceaf2;text-align:left;color:#fff;box-shadow:0 6px 16px rgba(19,61,89,.11);
   transition:transform .15s ease
 }
 .welcome-island:active{transform:scale(.985)}
-.welcome-island img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.welcome-island[data-island="Pico"] img{object-position:center 53%}
+.welcome-island img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.02) brightness(1.05)}
+.welcome-island[data-island="Pico"] img{object-position:center 53%;filter:saturate(1.10) contrast(1.01) brightness(1.22)}
 .welcome-island[data-island="Faial"] img{object-position:center 54%}
 .welcome-island[data-island="São Jorge"] img{object-position:center 53%}
-.welcome-island:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,31,50,.66) 0%,rgba(5,31,50,.12) 62%,rgba(5,31,50,.26) 100%)}
+.welcome-island:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,31,50,.52) 0%,rgba(5,31,50,.08) 62%,rgba(5,31,50,.20) 100%)}
 .welcome-island span{
-  position:absolute;left:15px;bottom:13px;z-index:2;font-size:23px;font-weight:950;
+  position:absolute;left:15px;bottom:11px;z-index:2;font-size:22px;font-weight:950;
   letter-spacing:-.025em;text-shadow:0 2px 9px rgba(0,0,0,.25)
 }
 .welcome-island i{
@@ -265,7 +265,7 @@
   display:block;text-align:center;margin-top:10px;color:#4d708b;font-size:9px;font-weight:700
 }
 .welcome-footerline{
-  text-align:center;color:rgba(255,255,255,.96);font-size:11px;font-style:italic;font-weight:800;margin-top:9px;
+  text-align:center;color:rgba(255,255,255,.96);font-size:11px;font-style:italic;font-weight:800;margin-top:7px;
   text-shadow:0 1px 8px rgba(19,68,97,.20)
 }
 @media(max-height:760px){
@@ -283,7 +283,6 @@
  .welcome-picker>strong{margin-bottom:9px;font-size:12px}
  .welcome-island{height:82px}
  .welcome-island span{font-size:20px;bottom:10px}
- .welcome-picker>small{margin-top:7px}
  .welcome-footerline{margin-top:6px}
 }
 @media(min-width:600px){#splash{position:absolute}}
@@ -309,8 +308,8 @@
 </style>
 <style id="provider-area-v1">
 .provider-entry{
-  margin:10px auto 0;border:0;background:rgba(255,255,255,.18);color:#fff;
-  border:1px solid rgba(255,255,255,.38);border-radius:999px;padding:9px 13px;
+  margin:7px auto 0;border:0;background:rgba(255,255,255,.20);color:#fff;
+  border:1px solid rgba(255,255,255,.38);border-radius:999px;padding:8px 13px;
   display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;font-weight:900;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)
 }
@@ -356,8 +355,8 @@
         <b data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</b>
       </div>
       <div class="trust-card">
-        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 4c-7 .2-12 3.3-14 9.3-1 3.1.6 5.7 3.8 5.7 6.2 0 9.4-6.4 10.2-15z"/><path d="M5 20c2.4-4 5.4-7 9.5-9"/></svg></span>
-        <b data-pt="Economia local" data-en="Local economy">Economia local</b>
+        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 9h8M8 13h5"/><path d="m14 17 1.5 1.5L19 15"/></svg></span>
+        <b data-pt="Pedido simples" data-en="Simple requests">Pedido simples</b>
       </div>
     </div>
 
@@ -377,13 +376,12 @@
           <span>São Jorge</span><i>›</i>
         </button>
       </div>
-      <small data-pt="Escolhe uma ilha para encontrar serviços perto de ti." data-en="Choose an island to find services near you.">Escolhe uma ilha para encontrar serviços perto de ti.</small>
     </div>
 
     <div class="welcome-footerline" data-pt="Três ilhas. Uma rede local." data-en="Three islands. One local network.">Três ilhas. Uma rede local.</div>
     <button id="providerEntryBtn" class="provider-entry" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3"/><path d="M5 21c.7-4.1 3-6.2 7-6.2s6.3 2.1 7 6.2"/><path d="M18 4v5M15.5 6.5h5"/></svg>
-      <span data-pt="Sou prestador" data-en="I'm a provider">Sou prestador</span>
+      <span data-pt="És prestador? Entrar →" data-en="Provider? Enter →">És prestador? Entrar →</span>
     </button>
   </div>
 </section>
