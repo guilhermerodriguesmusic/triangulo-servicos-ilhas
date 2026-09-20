@@ -762,6 +762,7 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredIns
 const tr=k=>T[lang][k]||k; const localized=p=>p?.[lang]||p?.pt||p?.description||'';
 function applyLang(){
  document.documentElement.lang=lang;
+ document.title=lang==='pt'?'TRIÂNGULO — Serviços locais nas ilhas':'TRIÂNGULO — Local services across the islands';
  $$('[data-t]').forEach(el=>{let v=tr(el.dataset.t);if(v.includes('<br>'))el.innerHTML=v;else el.textContent=v});
  $$('[data-pt][data-en]').forEach(el=>{el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en});
  $$('[data-ph-pt][data-ph-en]').forEach(el=>{el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn});
