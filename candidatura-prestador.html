@@ -27,13 +27,13 @@
     <p class="intro" data-pt="Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO." data-en="Fields marked * are required. You can request changes to your details later through TRIÂNGULO.">Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO.</p>
 
     <form id="providerForm">
-      <input class="honeypot" name="company_fax" autocomplete="off" tabindex="-1">
+      <input class="honeypot" name="company_fax" autocomplete="off" tabindex="-1" aria-hidden="true">
 
       <div class="section-title" data-pt="1 · Quem és" data-en="1 · About you">1 · Quem és</div>
       <div class="grid2">
-        <label><span data-pt="Nome / nome profissional *" data-en="Name / professional name *">Nome / nome profissional *</span><input required name="name" minlength="2" maxlength="120"></label>
-        <label><span data-pt="Nome do negócio" data-en="Business name">Nome do negócio</span><input name="business_name" maxlength="120"></label>
-        <label><span>Email *</span><input required type="email" name="email" maxlength="254"></label>
+        <label><span data-pt="Nome / nome profissional *" data-en="Name / professional name *">Nome / nome profissional *</span><input required name="name" minlength="2" maxlength="120" autocomplete="name"></label>
+        <label><span data-pt="Nome do negócio" data-en="Business name">Nome do negócio</span><input name="business_name" maxlength="120" autocomplete="organization"></label>
+        <label><span>Email *</span><input required type="email" name="email" maxlength="254" autocomplete="email"></label>
         <label><span data-pt="Telefone / WhatsApp *" data-en="Phone / WhatsApp *">Telefone / WhatsApp *</span><input required name="phone" minlength="6" maxlength="50" inputmode="tel" autocomplete="tel"><small class="note" data-pt="Obrigatório para verificação e comunicações operacionais. Poderemos confirmar este número por WhatsApp/SMS. Nunca é mostrado publicamente aos clientes antes do pagamento." data-en="Required for verification and operational messages. We may confirm this number by WhatsApp/SMS. It is never shown publicly to customers before payment.">Obrigatório para verificação e comunicações operacionais. Poderemos confirmar este número por WhatsApp/SMS. Nunca é mostrado publicamente aos clientes antes do pagamento.</small></label>
         <label><span data-pt="NIF / NIPC *" data-en="Portuguese tax ID (NIF/NIPC) *">NIF / NIPC *</span><input required name="tax_id" minlength="9" maxlength="9" inputmode="numeric" autocomplete="off" pattern="[0-9]{9}" placeholder="123456789"><small class="note" data-pt="Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes." data-en="Required for verification. It stays private, is not shown on your profile and is never displayed to customers.">Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes.</small></label>
       </div>
@@ -97,7 +97,7 @@
       <div class="consents">
         <label><input required type="checkbox" name="consent_all"><span><span data-pt="Li e aceito os" data-en="I have read and accept the">Li e aceito os</span> <a href="terms.html" target="_blank" data-pt="Termos" data-en="Terms">Termos</a> <span data-pt="e confirmo que li a" data-en="and confirm that I have read the">e confirmo que li a</span> <a href="privacy.html" target="_blank" data-pt="Política de Privacidade" data-en="Privacy Policy">Política de Privacidade</a>.</span></label>
       </div>
-      <div id="status" class="status"></div>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
       <button id="submitBtn" class="submit" type="submit" data-pt="Enviar candidatura" data-en="Submit application">Enviar candidatura</button>
       <p class="legal"><a href="terms.html" target="_blank" data-pt="Termos" data-en="Terms">Termos</a> · <a href="privacy.html" target="_blank" data-pt="Privacidade" data-en="Privacy">Privacidade</a></p>
     </form>
