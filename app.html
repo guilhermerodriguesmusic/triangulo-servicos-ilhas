@@ -1295,7 +1295,7 @@ async function providerAppRespond(action){
 $('#prAppAccept').onclick=()=>providerAppRespond('accept');
 $('#prAppDecline').onclick=()=>providerAppRespond('decline');
 
-function init(){
+async function init(){
  updateIsland();applyLang();renderBookings();loadProviders();
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
