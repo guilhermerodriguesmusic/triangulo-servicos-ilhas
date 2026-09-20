@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-legal-identity';
+const CACHE='triangulo-pwa-20260920-security-sync-v4';
 const CORE=[
   '/',
   '/index.html',
