@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-provider-recruitment-ready';
+const CACHE='triangulo-pwa-20260920-provider-account-v2';
 const CORE=[
   '/',
   '/index.html',
@@ -6,10 +6,10 @@ const CORE=[
   '/app.html',
   '/manifest.json',
   '/logo.svg',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
-  '/icons/icon-512-maskable.png',
-  '/icons/apple-touch-icon.png'
+  '/icons/triangulo-blue-192.png',
+  '/icons/triangulo-blue-512.png',
+  '/icons/triangulo-blue-maskable-512.png',
+  '/icons/triangulo-blue-180.png'
 ];
 
 self.addEventListener('install',event=>{
