@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-bilingual-all-v1';
+const CACHE='triangulo-pwa-20260920-stripe-checkout-v1';
 const CORE=[
   '/',
   '/index.html',
