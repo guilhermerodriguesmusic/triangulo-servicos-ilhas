@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="provider-account-whatsapp-v3-20260920">
+<meta name="triangulo-build" content="security-sync-v4-20260920">
 
 <style id="backend-v1-styles">
 
@@ -431,6 +431,11 @@
 .urgent .bolt{display:grid;place-items:center;width:30px;height:30px}
 .urgent .bolt svg{width:24px;height:24px;fill:none;stroke:#efad00;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 </style>
+<style id="client-booking-sync-v1">
+.booking-local .booking-state{display:inline-flex;width:max-content;margin-top:8px;padding:5px 8px;border-radius:999px;background:#eef3f6;color:#526d80;font-size:9px;font-weight:900}
+.booking-local .booking-state.confirmed{background:#e2f7f0;color:#087459}
+.booking-local .booking-state.declined,.booking-local .booking-state.expired,.booking-local .booking-state.cancelled{background:#fff0f1;color:#9a3a46}
+</style>
 <style id="provider-account-v2">
 .pa-center{text-align:center}.pa-spinner{width:26px;height:26px;border:3px solid #dce9ef;border-top-color:#0d9673;border-radius:50%;margin:6px auto 10px;animation:paSpin .8s linear infinite}@keyframes paSpin{to{transform:rotate(360deg)}}
 .pa-field{display:block;margin-top:13px}.pa-field>span{display:block;font-size:11px;font-weight:850;margin-bottom:6px;color:#35536a}.pa-field input,.pa-field textarea,.pa-field select{width:100%;border:1px solid #d2e1e9;background:#fbfdfe;border-radius:12px;padding:11px 12px;font-size:12px;outline:none}.pa-field textarea{min-height:92px;resize:vertical}.pa-field input:focus,.pa-field textarea:focus,.pa-field select:focus{border-color:#159e78;box-shadow:0 0 0 3px rgba(21,158,120,.09)}
@@ -509,7 +514,7 @@
 <button class="category c2" data-cat="2"><span>⌕</span><small>Reparações</small></button>
 <button class="category c3" data-cat="3"><span>⇄</span><small>Mudanças</small></button>
 </div>
-   <button id="urgentBtn" class="urgent"><span class="bolt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6z"/></svg></span><div><strong data-t="needToday">Preciso de alguém hoje</strong><small data-t="urgentSub">Encontra profissionais disponíveis agora.</small></div><span class="arrow">›</span></button>
+   <button id="urgentBtn" class="urgent"><span class="bolt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6z"/></svg></span><div><strong data-t="needToday">Preciso de alguém hoje</strong><small data-t="urgentSub">Publica um pedido para hoje.</small></div><span class="arrow">›</span></button>
   </section>
 
   <section id="explore" class="screen">
@@ -728,8 +733,8 @@ const categories=[
  {pt:'Animais',en:'Pets',shortPt:'Animais',shortEn:'Pets',icon:'paw',keys:['animal','animais','cão','cao','gato','pet','dog','cat','petsitting','pet sitting']},
  {pt:'Outro',en:'Other',shortPt:'Outro',shortEn:'Other',icon:'plus',keys:['outro','outros','other']}
 ];
-const T={pt:{descriptor:'Serviços locais nas ilhas',tagline:'Encontra. Reserva. Resolve.',localPros:'Profissionais locais',safeTrust:'De confiança',localEconomy:'Economia local',chooseIsland:'ESCOLHE A ILHA',threeIslands:'Três ilhas.<br>Uma comunidade.',requestExample:'Ex.: Preciso de alguém para cortar a erva no sábado',whereExample:'Ex.: São Mateus',availabilityExample:'Ex.: Seg–Sex, 09:00–18:00',demoProfiles:'perfis de demonstração',whatNeed:'O que precisas?',homeSub:'Serviços locais para o teu dia a dia.',categories:'Categorias',seeAll:'Ver todas ›',needToday:'Preciso de alguém hoje',urgentSub:'Publica um pedido para hoje.',availableToday:'Disponíveis hoje',all:'Todos',services:'Serviços',providers:'Prestadores',requests:'Pedidos',notFound:'Não encontraste o que precisas?',publishRequest:'Publica um pedido',help:'Ajuda',noMessages:'Ainda não tens mensagens.',noMessagesSub:'As conversas aparecem depois de uma reserva ou pedido.',profile:'Mais',user:'Utilizador',offerServices:'Quero prestar serviços',offerServicesSub:'Cria o teu perfil de prestador',myBookings:'Pedidos de reserva',myBookingsSub:'Consulta os pedidos feitos neste dispositivo',island:'Ilha',install:'Instalar TRIÂNGULO',installSub:'Adicionar ao ecrã principal',freeProfile:'Criar perfil é gratuito.',feeExpl:'Tu defines preços e disponibilidade. O TRIÂNGULO cobra 15% apenas nos serviços concluídos através da plataforma.',name:'Nome / nome profissional',mainIsland:'Ilha principal',serviceOffer:'Que serviço ofereces?',pricing:'Como cobras?',perHour:'Por hora',fixed:'Preço fixo',from:'Desde',quote:'Sob orçamento',price:'Preço (€)',availability:'Disponibilidade',contact:'Email ou telefone',availableToggle:'Quero aparecer como disponível hoje',submitVerify:'Enviar para verificação',home:'Início',explore:'Explorar',publish:'Publicar',chooseIslandSimple:'Escolher ilha',allCategories:'Todas as categorias',when:'Quando?',where:'Onde?',budget:'Tenho este orçamento (opcional)',noBookings:'Ainda não tens reservas.',noBookingsSub:'Quando reservares um serviço, aparece aqui.',book:'Reservar',requestQuote:'Pedir orçamento',payment:'Pagamento',total:'Total',confirm:'Confirmar reserva',demo:'Pagamento em modo demonstração. MB WAY, MULTIBANCO e PayPal serão ligados antes do lançamento comercial.',saved:'Reserva criada em modo de teste ✓',requestSaved:'Pedido publicado ✓',providerSaved:'Candidatura enviada para verificação ✓'},
-en:{descriptor:'Local services across the islands',tagline:'Find. Book. Get it done.',localPros:'Local professionals',safeTrust:'Trusted',localEconomy:'Local economy',chooseIsland:'CHOOSE YOUR ISLAND',threeIslands:'Three islands.<br>One community.',requestExample:'E.g. I need someone to cut the grass on Saturday',whereExample:'E.g. São Mateus',availabilityExample:'E.g. Mon–Fri, 09:00–18:00',demoProfiles:'demo profiles',whatNeed:'What do you need?',homeSub:'Local services for everyday life.',categories:'Categories',seeAll:'See all ›',needToday:'I need someone today',urgentSub:'Post a request for today.',availableToday:'Available today',all:'All',services:'Services',providers:'Providers',requests:'Requests',notFound:'Didn’t find what you need?',publishRequest:'Post a request',help:'Help',noMessages:'You have no messages yet.',noMessagesSub:'Conversations appear after a booking or request.',profile:'More',user:'User',offerServices:'I want to offer services',offerServicesSub:'Create your provider profile',myBookings:'Booking requests',myBookingsSub:'View requests made on this device',island:'Island',install:'Install TRIÂNGULO',installSub:'Add to Home Screen',freeProfile:'Creating a profile is free.',feeExpl:'You set prices and availability. TRIÂNGULO charges 15% only on services completed through the platform.',name:'Name / professional name',mainIsland:'Main island',serviceOffer:'What service do you offer?',pricing:'How do you charge?',perHour:'Per hour',fixed:'Fixed price',from:'From',quote:'Quote only',price:'Price (€)',availability:'Availability',contact:'Email or phone',availableToggle:'Show me as available today',submitVerify:'Submit for verification',home:'Home',explore:'Explore',publish:'Post',chooseIslandSimple:'Choose island',allCategories:'All categories',when:'When?',where:'Where?',budget:'My budget (optional)',noBookings:'You have no bookings yet.',noBookingsSub:'Bookings will appear here.',book:'Book',requestQuote:'Request quote',payment:'Payment',total:'Total',confirm:'Confirm booking',demo:'Payment is in demo mode. MB WAY, MULTIBANCO and PayPal will be connected before commercial launch.',saved:'Test booking created ✓',requestSaved:'Request posted ✓',providerSaved:'Application submitted for verification ✓'}};
+const T={pt:{descriptor:'Serviços locais nas ilhas',tagline:'Encontra. Reserva. Resolve.',localPros:'Profissionais locais',safeTrust:'De confiança',localEconomy:'Economia local',chooseIsland:'ESCOLHE A ILHA',threeIslands:'Três ilhas.<br>Uma comunidade.',requestExample:'Ex.: Preciso de alguém para cortar a erva no sábado',whereExample:'Ex.: São Mateus',availabilityExample:'Ex.: Seg–Sex, 09:00–18:00',whatNeed:'O que precisas?',homeSub:'Serviços locais para o teu dia a dia.',categories:'Categorias',seeAll:'Ver todas ›',needToday:'Preciso de alguém hoje',urgentSub:'Publica um pedido para hoje.',all:'Todos',services:'Serviços',providers:'Prestadores',requests:'Pedidos',notFound:'Não encontraste o que precisas?',publishRequest:'Publica um pedido',help:'Ajuda',noMessages:'Ainda não tens mensagens.',noMessagesSub:'As conversas aparecem depois de uma reserva ou pedido.',profile:'Mais',user:'Utilizador',offerServices:'Quero prestar serviços',offerServicesSub:'Cria o teu perfil de prestador',myBookings:'Pedidos de reserva',myBookingsSub:'Acompanha o estado dos teus pedidos',island:'Ilha',install:'Instalar TRIÂNGULO',installSub:'Adicionar ao ecrã principal',freeProfile:'Criar perfil é gratuito.',feeExpl:'Tu defines preços e disponibilidade. O TRIÂNGULO cobra 15% apenas nos serviços concluídos através da plataforma.',name:'Nome / nome profissional',mainIsland:'Ilha principal',serviceOffer:'Que serviço ofereces?',pricing:'Como cobras?',perHour:'Por hora',fixed:'Preço fixo',from:'Desde',quote:'Sob orçamento',price:'Preço (€)',availability:'Disponibilidade',contact:'Email ou telefone',submitVerify:'Enviar para verificação',home:'Início',explore:'Explorar',publish:'Publicar',chooseIslandSimple:'Escolher ilha',allCategories:'Todas as categorias',when:'Quando?',where:'Onde?',budget:'Tenho este orçamento (opcional)',noBookings:'Ainda não tens reservas.',noBookingsSub:'Quando reservares um serviço, aparece aqui.',book:'Reservar',requestQuote:'Pedir orçamento',total:'Total',requestSaved:'Pedido publicado ✓',providerSaved:'Candidatura enviada para verificação ✓'},
+en:{descriptor:'Local services across the islands',tagline:'Find. Book. Get it done.',localPros:'Local professionals',safeTrust:'Trusted',localEconomy:'Local economy',chooseIsland:'CHOOSE YOUR ISLAND',threeIslands:'Three islands.<br>One community.',requestExample:'E.g. I need someone to cut the grass on Saturday',whereExample:'E.g. São Mateus',availabilityExample:'E.g. Mon–Fri, 09:00–18:00',whatNeed:'What do you need?',homeSub:'Local services for everyday life.',categories:'Categories',seeAll:'See all ›',needToday:'I need someone today',urgentSub:'Post a request for today.',all:'All',services:'Services',providers:'Providers',requests:'Requests',notFound:'Didn’t find what you need?',publishRequest:'Post a request',help:'Help',noMessages:'You have no messages yet.',noMessagesSub:'Conversations appear after a booking or request.',profile:'More',user:'User',offerServices:'I want to offer services',offerServicesSub:'Create your provider profile',myBookings:'Booking requests',myBookingsSub:'Track the status of your requests',island:'Island',install:'Install TRIÂNGULO',installSub:'Add to Home Screen',freeProfile:'Creating a profile is free.',feeExpl:'You set prices and availability. TRIÂNGULO charges 15% only on services completed through the platform.',name:'Name / professional name',mainIsland:'Main island',serviceOffer:'What service do you offer?',pricing:'How do you charge?',perHour:'Per hour',fixed:'Fixed price',from:'From',quote:'Quote only',price:'Price (€)',availability:'Availability',contact:'Email or phone',submitVerify:'Submit for verification',home:'Home',explore:'Explore',publish:'Post',chooseIslandSimple:'Choose island',allCategories:'All categories',when:'When?',where:'Where?',budget:'My budget (optional)',noBookings:'You have no bookings yet.',noBookingsSub:'Bookings will appear here.',book:'Book',requestQuote:'Request quote',total:'Total',requestSaved:'Request posted ✓',providerSaved:'Application submitted for verification ✓'}};
 const memStore={};const store={get:(k,d='')=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch{return Object.prototype.hasOwnProperty.call(memStore,k)?memStore[k]:d}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{memStore[k]=String(v)}}};
 const urlLang=new URLSearchParams(location.search).get('lang');
 let lang=(urlLang==='en'||urlLang==='pt')?urlLang:store.get('tri_lang','pt'), island=store.get('tri_island','Pico'), deferredInstallPrompt=null;
@@ -772,11 +777,11 @@ async function loadProviders(){
 }
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function categoryFor(q){q=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');return categories.findIndex(c=>c.keys.some(k=>q.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,''))))}
-function runSearch(q,urgent=false){q=(q||'').trim();$('#resultsInput').value=q;showScreen('explore');updateResults(q,urgent)}
-function updateResults(q,urgent=false){
+function runSearch(q){q=(q||'').trim();$('#resultsInput').value=q;showScreen('explore');updateResults(q)}
+function updateResults(q){
  q=(q||'').trim();
  if(providersLoading){
-  $('#resultsTitle').textContent=urgent?(lang==='pt'?'Disponíveis hoje':'Available today'):(q?(lang==='pt'?'Resultados para “'+q+'”':'Results for “'+q+'”'):(lang==='pt'?'Profissionais em '+island:'Providers in '+island));
+  $('#resultsTitle').textContent=q?(lang==='pt'?'Resultados para “'+q+'”':'Results for “'+q+'”'):(lang==='pt'?'Profissionais em '+island:'Providers in '+island);
   $('#resultsCount').textContent=lang==='pt'?'A carregar profissionais…':'Loading providers…';
   $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'A procurar profissionais…':'Finding providers…')+'</b><span>'+(lang==='pt'?'Só demora um instante.':'This should only take a moment.')+'</span></div>';
   return;
@@ -797,7 +802,7 @@ function updateResults(q,urgent=false){
  }
  list=list.sort((a,b)=>new Date(b.approved_at||0)-new Date(a.approved_at||0));
  const qLabel=q;
- $('#resultsTitle').textContent=urgent?(lang==='pt'?'Disponíveis hoje em '+island:'Available today in '+island):(qLabel?(lang==='pt'?'Resultados para “'+qLabel+'”':'Results for “'+qLabel+'”'):(lang==='pt'?'Profissionais em '+island:'Providers in '+island));
+ $('#resultsTitle').textContent=qLabel?(lang==='pt'?'Resultados para “'+qLabel+'”':'Results for “'+qLabel+'”'):(lang==='pt'?'Profissionais em '+island:'Providers in '+island);
  $('#resultsCount').textContent=lang==='pt'?(list.length+' profissional'+(list.length===1?' encontrado':' encontrados')):(list.length+' provider'+(list.length===1?' found':'s found'));
  if(!list.length){
   $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há prestadores nesta pesquisa.':'No providers for this search yet.')+'</b><span>'+(lang==='pt'?'Publica o que precisas e procuramos alguém para ti.':'Post what you need and we’ll try to find someone for you.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Publicar pedido':'Post request')+'</button></div>';
@@ -835,10 +840,26 @@ $('#requestForm').onsubmit=async e=>{
  e.preventDefault();
  const form=e.target,d=Object.fromEntries(new FormData(form)),status=$('#requestSubmitStatus');
  status.textContent=lang==='pt'?'A publicar…':'Posting…';
- const payload={island,description:d.description.trim(),requested_date:d.date||null,location_text:d.where&&d.where.trim()?d.where.trim():null,budget:d.budget?Number(d.budget):null,client_name:d.client_name&&d.client_name.trim()?d.client_name.trim():null,client_email:d.client_email.trim(),client_phone:d.client_phone&&d.client_phone.trim()?d.client_phone.trim():null,status:'new'};
- try{const res=await db.from('service_requests').insert(payload);if(res.error)throw res.error;form.reset();status.textContent='';closeSheets();toast(lang==='pt'?'Pedido publicado ✓':'Request posted ✓')}catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.'}
+ const payload={island,description:d.description.trim(),requested_date:d.date||null,location_text:d.where&&d.where.trim()?d.where.trim():null,budget:d.budget?Number(d.budget):null,client_name:d.client_name&&d.client_name.trim()?d.client_name.trim():null,client_email:d.client_email.trim(),client_phone:d.client_phone&&d.client_phone.trim()?d.client_phone.trim():null};
+ try{
+  const {data,error}=await db.rpc('submit_service_request',{p_payload:payload});
+  if(error)throw error;
+  if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível publicar.':'Could not post.');return}
+  form.reset();status.textContent='';closeSheets();toast(lang==='pt'?'Pedido publicado ✓':'Request posted ✓')
+ }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.'}
 };
-$('#contactForm').onsubmit=async e=>{e.preventDefault();const form=e.target,d=Object.fromEntries(new FormData(form)),status=$('#contactSubmitStatus');status.textContent=lang==='pt'?'A enviar…':'Sending…';const payload={name:d.name&&d.name.trim()?d.name.trim():null,email:d.email.trim(),subject:d.subject&&d.subject.trim()?d.subject.trim():null,message:d.message.trim(),locale:lang,status:'new'};try{const res=await db.from('contact_messages').insert(payload);if(res.error)throw res.error;form.reset();status.textContent='';closeSheets();toast(lang==='pt'?'Mensagem enviada ✓':'Message sent ✓')}catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao enviar. Tenta novamente.':'Could not send. Please try again.'}};
+$('#contactForm').onsubmit=async e=>{
+ e.preventDefault();
+ const form=e.target,d=Object.fromEntries(new FormData(form)),status=$('#contactSubmitStatus');
+ status.textContent=lang==='pt'?'A enviar…':'Sending…';
+ const payload={name:d.name&&d.name.trim()?d.name.trim():null,email:d.email.trim(),subject:d.subject&&d.subject.trim()?d.subject.trim():null,message:d.message.trim(),locale:lang};
+ try{
+  const {data,error}=await db.rpc('submit_contact_message',{p_payload:payload});
+  if(error)throw error;
+  if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível enviar.':'Could not send.');return}
+  form.reset();status.textContent='';closeSheets();toast(lang==='pt'?'Mensagem enviada ✓':'Message sent ✓')
+ }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao enviar. Tenta novamente.':'Could not send. Please try again.'}
+};
 function dateObj(n){let d=new Date();d.setDate(d.getDate()+n);return {iso:localDateISO(d),num:d.getDate(),day:d.toLocaleDateString(lang==='pt'?'pt-PT':'en-GB',{weekday:'short'}).replace('.','')}}
 function openBooking(id){
  const p=realProviders.find(x=>x.id===id);if(!p)return;
@@ -851,23 +872,52 @@ function openBooking(id){
  $$('[data-time]').forEach(b=>b.onclick=()=>{$$('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
  $('#confirmBook').onclick=async()=>{
   const email=$('#bookEmail').value.trim();if(!email||!email.includes('@')){toast(lang==='pt'?'Indica um email válido.':'Enter a valid email.');return}
-  const payload={provider_id:p.id,island,service_date:$('[data-date].active').dataset.date,service_time:$('[data-time].active').dataset.time,client_name:$('#bookName').value.trim()||null,client_email:email,client_phone:$('#bookPhone').value.trim()||null,notes:$('#bookNote').value.trim()||null,payment_method:'offline',beta_no_charge:true,status:'requested'};
+  const payload={provider_id:p.id,island,service_date:$('[data-date].active').dataset.date,service_time:$('[data-time].active').dataset.time,client_name:$('#bookName').value.trim()||null,client_email:email,client_phone:$('#bookPhone').value.trim()||null,notes:$('#bookNote').value.trim()||null};
   try{
-   const res=await db.from('bookings').insert(payload);if(res.error)throw res.error;
-   saveBookingLocal({provider:p.business_name||p.name,island,date:payload.service_date,time:payload.service_time,quote,createdAt:new Date().toISOString()});
+   const {data,error}=await db.rpc('create_booking_request',{p_payload:payload});
+   if(error)throw error;
+   if(!data||!data.ok){toast((data&&data.message)?data.message:(lang==='pt'?'Não foi possível enviar.':'Could not submit.'));return}
+   saveBookingLocal({token:data.client_token,provider:p.business_name||p.name,island,date:payload.service_date,time:payload.service_time,quote,status:'requested',createdAt:new Date().toISOString()});
    closeSheets();toast(lang==='pt'?'Pedido enviado — a aguardar confirmação ✓':'Request sent — awaiting confirmation ✓');
   }catch(err){console.error(err);toast(lang==='pt'?'Não foi possível enviar.':'Could not submit.')}
  };
 }
 function getLocalBookings(){try{return JSON.parse(store.get('tri_booking_history','[]'))||[]}catch{return []}}
 function saveBookingLocal(entry){const items=getLocalBookings();items.unshift(entry);store.set('tri_booking_history',JSON.stringify(items.slice(0,12)));renderBookings()}
+function clientBookingStatus(status){
+ const pt={requested:'A aguardar confirmação',confirmed:'Confirmado',declined:'Prestador indisponível',expired:'Pedido expirado',completed:'Concluído',cancelled:'Cancelado'};
+ const en={requested:'Awaiting confirmation',confirmed:'Confirmed',declined:'Provider unavailable',expired:'Request expired',completed:'Completed',cancelled:'Cancelled'};
+ return (lang==='pt'?pt:en)[status]||(lang==='pt'?'Pedido enviado':'Request sent');
+}
+async function syncLocalBookings(){
+ const items=getLocalBookings();
+ let changed=false;
+ await Promise.all(items.map(async x=>{
+  if(!x.token)return;
+  try{
+   const {data,error}=await db.rpc('booking_client_context',{p_token:x.token});
+   if(error||!data||!data.ok)return;
+   const next={...x,status:data.state||x.status,provider:data.provider||x.provider,island:data.island||x.island,date:data.service_date||x.date,time:data.service_time||x.time};
+   if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
+  }catch(e){console.warn('booking sync',e)}
+ }));
+ if(changed)store.set('tri_booking_history',JSON.stringify(items.slice(0,12)));
+ return items;
+}
 function renderBookings(){
  const items=getLocalBookings();
- if(!items.length){$('#bookingList').innerHTML='<div class="empty"><div class="big">📅</div><h3>'+(lang==='pt'?'Ainda não tens pedidos de reserva.':'No booking requests yet.')+'</h3><p>'+(lang==='pt'?'Os pedidos feitos neste dispositivo aparecem aqui.':'Requests made on this device appear here.')+'</p></div>';return}
- $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>'<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span>'+(lang==='pt'?'Pedido enviado':'Request sent')+'</span></div>').join('')+'</div>';
+ if(!items.length){$('#bookingList').innerHTML='<div class="empty"><div class="big">📅</div><h3>'+(lang==='pt'?'Ainda não tens pedidos de reserva.':'No booking requests yet.')+'</h3><p>'+(lang==='pt'?'Quando enviares um pedido a um prestador, podes acompanhar aqui o estado.':'When you send a request to a provider, you can track its status here.')+'</p></div>';return}
+ $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>{
+  const state=x.status||'requested';
+  return '<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(clientBookingStatus(state))+'</span></div>'
+ }).join('')+'</div>';
+}
+async function openClientBookings(){
+ showScreen('bookings');renderBookings();
+ await syncLocalBookings();renderBookings();
 }
 function openProviderSignup(){openProviderArea()}
-$('#bookingsBtn').onclick=()=>{renderBookings();showScreen('bookings')};
+$('#bookingsBtn').onclick=openClientBookings;
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#installBtn').onclick=async()=>{
  if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){toast(lang==='pt'?'O TRIÂNGULO já está instalado ✓':'TRIÂNGULO is already installed ✓');return}
