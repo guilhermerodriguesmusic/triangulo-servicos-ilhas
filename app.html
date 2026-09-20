@@ -301,7 +301,7 @@
 .pr-app-card h1{font-size:28px;line-height:1.05;margin:7px 0 16px;letter-spacing:-.025em}
 .pr-app-details{background:#f5fafc;border-radius:17px;padding:13px;margin:15px 0}
 .pr-app-row{display:grid;grid-template-columns:92px 1fr;gap:8px;padding:8px 0;border-bottom:1px solid #e5eef3;font-size:13px;line-height:1.4}.pr-app-row:last-child{border-bottom:0}.pr-app-row b{color:#678096}
-.pr-app-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}.pr-app-btn{border:0;border-radius:14px;padding:14px 12px;font-size:14px;font-weight:950}.pr-app-btn:disabled{opacity:.55}.pr-app-yes{background:#128d70;color:#fff}.pr-app-no{background:#edf3f6;color:#35556d}
+.pr-app-quote{margin-top:14px;background:#f5fafc;border-radius:14px;padding:12px}.pr-app-quote label{display:block;font-size:11px;font-weight:850;color:#35536a}.pr-app-quote input{width:100%;margin-top:6px;border:1px solid #d2e1e9;border-radius:11px;padding:11px 12px;font-size:14px}.pr-app-quote small{display:block;margin-top:6px;font-size:9px;color:#718699;line-height:1.4}.pr-app-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}.pr-app-btn{border:0;border-radius:14px;padding:14px 12px;font-size:14px;font-weight:950}.pr-app-btn:disabled{opacity:.55}.pr-app-yes{background:#128d70;color:#fff}.pr-app-no{background:#edf3f6;color:#35556d}
 .pr-app-note{font-size:10px;line-height:1.45;color:#718699;text-align:center;margin:11px 0 0}
 .pr-app-state{text-align:center;padding:18px 3px}.pr-app-state .big{font-size:42px}.pr-app-state h2{font-size:24px;margin:8px 0}.pr-app-state p{font-size:13px;line-height:1.5;color:#647d91}
 .pr-app-contact{background:#edf8f4;border-radius:14px;padding:13px;text-align:left;margin-top:14px;font-size:12px;line-height:1.55}.pr-app-contact b{display:block;margin-bottom:5px}
@@ -698,6 +698,12 @@
           <div class="pr-app-row"><b data-pt="Pedido" data-en="Request">Pedido</b><span id="prAppNotes"></span></div>
           <div class="pr-app-row"><b data-pt="Responder até" data-en="Reply by">Responder até</b><span id="prAppExpires"></span></div>
         </div>
+        <div id="prAppQuoteBox" class="pr-app-quote" hidden>
+          <label><span data-pt="Quanto queres receber por este trabalho?" data-en="How much do you want to receive for this job?">Quanto queres receber por este trabalho?</span>
+            <input id="prAppQuoteAmount" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="€">
+            <small data-pt="O cliente verá este valor + 15% de taxa TRIÂNGULO. O teu valor não é reduzido." data-en="The customer will see this amount + TRIÂNGULO's 15% service fee. Your amount is not reduced.">O cliente verá este valor + 15% de taxa TRIÂNGULO. O teu valor não é reduzido.</small>
+          </label>
+        </div>
         <div class="pr-app-actions">
           <button id="prAppAccept" class="pr-app-btn pr-app-yes" data-pt="✓ Aceitar pedido" data-en="✓ Accept request">✓ Aceitar pedido</button>
           <button id="prAppDecline" class="pr-app-btn pr-app-no" data-pt="Não posso" data-en="I can't">Não posso</button>
@@ -886,7 +892,7 @@ function openBooking(id){
  const quote=p.pricing_type==='quote'||p.price==null,dates=[0,1,2,3].map(dateObj);
  const dateHtml=dates.map((d,i)=>'<button class="date-chip '+(i===0?'active':'')+'" data-date="'+d.iso+'"><small>'+(i===0?(lang==='pt'?'Hoje':'Today'):i===1?(lang==='pt'?'Amanhã':'Tomorrow'):d.day)+'</small><b>'+d.num+'</b></button>').join('');
  const timeHtml=['09:00','11:00','14:00','17:00'].map((x,i)=>'<button class="time-chip '+(i===0?'active':'')+'" data-time="'+x+'">'+x+'</button>').join('');
- $('#bookContent').innerHTML='<div class="book-provider"><img src="'+safeProviderPhoto(p.photo_data)+'"><div><b>'+escapeHtml(p.business_name||p.name)+'</b><small>'+escapeHtml(p.description||'')+'</small></div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form" style="margin:12px 0"><label><span>'+(lang==='pt'?'Nome':'Name')+'</span><input id="bookName" maxlength="120"></label><label><span>Email</span><input id="bookEmail" type="email" required></label><label><span>'+(lang==='pt'?'Telefone (opcional)':'Phone (optional)')+'</span><input id="bookPhone" inputmode="tel"></label><label><span>'+(lang==='pt'?'Nota (opcional)':'Note (optional)')+'</span><textarea id="bookNote"></textarea><small class="form-note">'+(lang==='pt'?'Não incluas telefone, email, WhatsApp, redes sociais ou links. Os contactos são protegidos até ao pagamento.':'Do not include phone numbers, email, WhatsApp, social media or links. Contact details stay protected until payment.')+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO (15%)':'TRIÂNGULO fee (15%)')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?tr('requestQuote'):(lang==='pt'?'Pedir reserva':'Request booking'))+'</button><p class="demo">'+(quote?(lang==='pt'?'Indica a tua preferência. O profissional confirma depois a disponibilidade e o orçamento. Nesta fase não há pagamentos online.':'Choose your preferred time. The provider confirms availability and the quote afterwards. There are no online payments at this stage.'):(lang==='pt'?'O total inclui a taxa de serviço TRIÂNGULO de 15%. O prestador recebe integralmente o valor que definiu. Nesta fase não há pagamentos online.':'The total includes TRIÂNGULO’s 15% service fee. The provider receives the full amount they set. There are no online payments at this stage.'))+'</p>';
+ $('#bookContent').innerHTML='<div class="book-provider"><img src="'+safeProviderPhoto(p.photo_data)+'"><div><b>'+escapeHtml(p.business_name||p.name)+'</b><small>'+escapeHtml(p.description||'')+'</small></div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form" style="margin:12px 0"><label><span>'+(lang==='pt'?'Nome':'Name')+'</span><input id="bookName" maxlength="120"></label><label><span>Email</span><input id="bookEmail" type="email" required></label><label><span>'+(lang==='pt'?'Telefone (opcional)':'Phone (optional)')+'</span><input id="bookPhone" inputmode="tel"></label><label><span>'+(lang==='pt'?'Nota (opcional)':'Note (optional)')+'</span><textarea id="bookNote"></textarea><small class="form-note">'+(lang==='pt'?'Não incluas telefone, email, WhatsApp, redes sociais ou links. Os contactos são protegidos até ao pagamento.':'Do not include phone numbers, email, WhatsApp, social media or links. Contact details stay protected until payment.')+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO (15%)':'TRIÂNGULO fee (15%)')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?tr('requestQuote'):(lang==='pt'?'Pedir reserva':'Request booking'))+'</button><p class="demo">'+(quote?(lang==='pt'?'Envia os detalhes. O prestador tem tempo para avaliar o pedido e indicar o valor real que quer receber. Depois verás esse valor + 15% de taxa TRIÂNGULO antes de pagar.':'Send the details. The provider has time to assess the request and set the real amount they want to receive. You will then see that amount + TRIÂNGULO’s 15% fee before paying.'):(lang==='pt'?'O total inclui a taxa de serviço TRIÂNGULO de 15%. O prestador recebe integralmente o valor que definiu. Nesta fase não há pagamentos online.':'The total includes TRIÂNGULO’s 15% service fee. The provider receives the full amount they set. There are no online payments at this stage.'))+'</p>';
  openSheet('bookSheet');
  $$('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
  $$('[data-time]').forEach(b=>b.onclick=()=>{$$('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
@@ -931,7 +937,7 @@ function renderBookings(){
  if(!items.length){$('#bookingList').innerHTML='<div class="empty"><div class="big">📅</div><h3>'+(lang==='pt'?'Ainda não tens pedidos de reserva.':'No booking requests yet.')+'</h3><p>'+(lang==='pt'?'Quando enviares um pedido a um prestador, podes acompanhar aqui o estado.':'When you send a request to a provider, you can track its status here.')+'</p></div>';return}
  $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>{
   const state=x.status||'requested';
-  return '<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(clientBookingStatus(state,x.payment_status))+'</span>'+(state==='confirmed'&&x.payment_status!=='paid'?'<small style="margin-top:6px">'+(lang==='pt'?'Os contactos permanecem protegidos até ao pagamento integral no TRIÂNGULO.':'Contact details remain protected until full payment through TRIÂNGULO.')+'</small>':'')+(x.payment_status==='paid'&&(x.provider_email||x.provider_phone)?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'')+'</div>'
+  return '<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(clientBookingStatus(state,x.payment_status))+'</span>'+(x.total_amount!=null?'<small style="margin-top:7px"><b>'+(lang==='pt'?'Total':'Total')+': €'+Number(x.total_amount).toFixed(2)+'</b> · '+(lang==='pt'?'inclui taxa TRIÂNGULO':'includes TRIÂNGULO fee')+'</small>':'')+(state==='confirmed'&&x.payment_status!=='paid'?'<small style="margin-top:6px">'+(lang==='pt'?'Orçamento/serviço aceite. Os contactos permanecem protegidos até ao pagamento integral no TRIÂNGULO.':'Quote/job accepted. Contact details remain protected until full payment through TRIÂNGULO.')+'</small>':'')+(x.payment_status==='paid'&&(x.provider_email||x.provider_phone)?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'')+'</div>'
  }).join('')+'</div>';
 }
 async function openClientBookings(){
@@ -1025,12 +1031,22 @@ function renderProviderDashboard(data){
     $('#paBookings').innerHTML=bookings.map(x=>{
       const when=escapeHtml((x.service_date||'')+(x.service_time?' · '+x.service_time:''));
       const note=escapeHtml(x.notes|| (lang==='pt'?'Sem nota adicional':'No additional note'));
-      const actions=x.status==='requested'&&x.response_token?'<div class="pa-booking-actions"><button class="accept" data-pa-respond="accept" data-token="'+x.response_token+'">'+(lang==='pt'?'Aceitar':'Accept')+'</button><button class="decline" data-pa-respond="decline" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>':'';
+      const actions=x.status==='requested'&&x.response_token?(x.requires_quote?'<div class="pa-booking-actions" style="grid-template-columns:1fr"><input data-pa-quote-amount="'+x.response_token+'" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="'+(lang==='pt'?'Valor que queres receber (€)':'Amount you want to receive (€)')+'" style="width:100%;border:1px solid #d5e3ea;border-radius:10px;padding:10px"><button class="accept" data-pa-quote="'+x.response_token+'">'+(lang==='pt'?'Enviar orçamento':'Send quote')+'</button><button class="decline" data-pa-respond="decline" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>':'<div class="pa-booking-actions"><button class="accept" data-pa-respond="accept" data-token="'+x.response_token+'">'+(lang==='pt'?'Aceitar':'Accept')+'</button><button class="decline" data-pa-respond="decline" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>'):'';
       const client=x.payment_status==='paid'&&(x.client_name||x.client_email||x.client_phone)?'<div class="pa-client"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><br>'+escapeHtml(x.client_name||'')+(x.client_email?'<br>'+escapeHtml(x.client_email):'')+(x.client_phone?'<br>'+escapeHtml(x.client_phone):'')+'</div>':'';
       const locked=x.status==='confirmed'&&x.payment_status!=='paid'?'<div class="pa-note" style="text-align:left">'+(lang==='pt'?'🔒 Contactos protegidos até o cliente concluir o pagamento integral no TRIÂNGULO.':'🔒 Contact details are protected until the customer completes full payment through TRIÂNGULO.')+'</div>':'';
       return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.island||'TRIÂNGULO')+' · '+when+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(providerBookingStatus(x.status,x.payment_status))+'</span></div><small>'+note+'</small>'+actions+locked+client+'</div>';
     }).join('');
-    $$('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
+    $('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
+      const token=btn.dataset.paQuote,input=$('[data-pa-quote-amount="'+token+'"]'),amount=Number(input&&input.value);
+      if(!amount||amount<=0){toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
+      btn.disabled=true;
+      const {data:r,error}=await db.rpc('submit_booking_quote',{p_token:token,p_amount:amount});
+      btn.disabled=false;
+      if(error||!r||!r.ok){toast((r&&r.message)||(lang==='pt'?'Não foi possível enviar o orçamento.':'Could not send the quote.'));return}
+      toast(lang==='pt'?'Orçamento enviado ✓':'Quote sent ✓');
+      await loadProviderAccount();
+    });
+    $('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
       btn.disabled=true;
       const {data:r,error}=await db.rpc('respond_to_booking',{p_token:btn.dataset.token,p_action:btn.dataset.paRespond});
       if(error||!r||!r.ok){toast(lang==='pt'?'Não foi possível responder.':'Could not respond.');btn.disabled=false;return}
@@ -1176,11 +1192,14 @@ function providerAppRenderState(state,data={}){
     $('#prAppTime').textContent=data.service_time||'—';
     $('#prAppNotes').textContent=data.notes||(lang==='pt'?'Sem notas adicionais':'No additional notes');
     $('#prAppExpires').textContent=data.expires_at?new Date(data.expires_at).toLocaleString(lang==='pt'?'pt-PT':'en-GB'):'—';
+    const qb=$('#prAppQuoteBox'),accept=$('#prAppAccept');
+    qb.hidden=!data.requires_quote;
+    accept.textContent=data.requires_quote?(lang==='pt'?'Enviar orçamento':'Send quote'):(lang==='pt'?'✓ Aceitar pedido':'✓ Accept request');
     return;
   }
   const result=$('#prAppResult');result.hidden=false;
   if(state==='confirmed'){
-    result.innerHTML='<div class="big">✓</div><h2>'+(lang==='pt'?'Pedido aceite':'Request accepted')+'</h2><p>'+(data.payment_status==='paid'?(lang==='pt'?'Pagamento confirmado. Os contactos estão desbloqueados.':'Payment confirmed. Contact details are unlocked.'):(lang==='pt'?'O cliente será agora convidado a concluir o pagamento no TRIÂNGULO. Os contactos permanecem protegidos até ao pagamento integral.':'The customer will now be asked to complete payment through TRIÂNGULO. Contact details remain protected until full payment.'))+'</p>'
+    result.innerHTML='<div class="big">✓</div><h2>'+(data.provider_amount!=null?(lang==='pt'?'Orçamento enviado':'Quote sent'):(lang==='pt'?'Pedido aceite':'Request accepted'))+'</h2>'+(data.total_amount!=null?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Resumo do valor':'Price summary')+'</b><div>'+(lang==='pt'?'Tu recebes':'You receive')+': €'+Number(data.provider_amount).toFixed(2)+'</div><div>'+(lang==='pt'?'Cliente paga':'Customer pays')+': €'+Number(data.total_amount).toFixed(2)+'</div></div>':'')+'<p>'+(data.payment_status==='paid'?(lang==='pt'?'Pagamento confirmado. Os contactos estão desbloqueados.':'Payment confirmed. Contact details are unlocked.'):(lang==='pt'?'O cliente será agora convidado a concluir o pagamento no TRIÂNGULO. Os contactos permanecem protegidos até ao pagamento integral.':'The customer will now be asked to complete payment through TRIÂNGULO. Contact details remain protected until full payment.'))+'</p>'
       +((data.payment_status==='paid'&&(data.client_name||data.client_email||data.client_phone))?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><div>'+escapeHtml(data.client_name||'')+'</div><div>'+escapeHtml(data.client_email||'')+'</div><div>'+escapeHtml(data.client_phone||'')+'</div></div>':'')
       +'<button class="pr-app-continue" id="prAppContinue">'+(lang==='pt'?'Continuar na app':'Continue in app')+'</button>';
   }else if(state==='declined'){
@@ -1204,9 +1223,17 @@ async function openProviderBookingInApp(token){
 async function providerAppRespond(action){
   if(!activeProviderBookingToken)return;
   $('#prAppAccept').disabled=true;$('#prAppDecline').disabled=true;
-  const {data,error}=await db.rpc('respond_to_booking',{p_token:activeProviderBookingToken,p_action:action});
+  let response;
+  if(action==='accept'&&!$('#prAppQuoteBox').hidden){
+    const amount=Number($('#prAppQuoteAmount').value);
+    if(!amount||amount<=0){$('#prAppAccept').disabled=false;$('#prAppDecline').disabled=false;toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
+    response=await db.rpc('submit_booking_quote',{p_token:activeProviderBookingToken,p_amount:amount});
+  }else{
+    response=await db.rpc('respond_to_booking',{p_token:activeProviderBookingToken,p_action:action});
+  }
+  const {data,error}=response;
   $('#prAppAccept').disabled=false;$('#prAppDecline').disabled=false;
-  if(error||!data||!data.ok){providerAppRenderState('invalid');return}
+  if(error||!data||!data.ok){toast((data&&data.message)||(lang==='pt'?'Não foi possível responder.':'Could not respond.'));return}
   providerAppRenderState(data.state,data);
 }
 $('#prAppAccept').onclick=()=>providerAppRespond('accept');
