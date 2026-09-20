@@ -11,15 +11,15 @@ Do not enable the flag until all steps below are complete.
 
 ## Stripe production
 1. Activate/verify the TRIÂNGULO Stripe platform account.
-2. Replace the test secret with the live STRIPE_SECRET_KEY in Supabase Edge Function Secrets.
+2. Keep the existing test key. Add the live key separately as STRIPE_LIVE_SECRET_KEY in Supabase Edge Function Secrets.
 3. Create a LIVE webhook endpoint:
    https://cozamrvrhmwgxbuubjub.supabase.co/functions/v1/stripe-webhook
 4. Subscribe the live webhook to the payment events used by the backend.
-5. Save the LIVE webhook signing secret as STRIPE_WEBHOOK_SECRET.
+5. Save the LIVE webhook signing secret as STRIPE_WEBHOOK_SECRET_LIVE. Keep the existing test webhook secret untouched.
 6. Confirm TRIANGULO_APP_URL=https://trianguloacores.pt.
 7. Keep STRIPE_CONNECT_PAYPAL_ENABLED unset/false until Stripe approves PayPal for Connect.
-8. Run one low-value end-to-end live transaction before public launch.
-9. Only after that test: set TRIANGULO_PAYMENTS_LIVE_ENABLED=true.
+8. For final activation set TRIANGULO_PAYMENTS_MODE=live and TRIANGULO_PAYMENTS_LIVE_ENABLED=true.
+9. Run one low-value end-to-end live transaction before public launch. If needed, switch back to test by setting TRIANGULO_PAYMENTS_MODE=test without deleting the live secrets.
 
 ## Payment methods
 Validated in Stripe sandbox:
