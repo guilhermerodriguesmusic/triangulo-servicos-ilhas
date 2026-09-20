@@ -926,7 +926,7 @@ async function syncLocalBookings(){
   try{
    const {data,error}=await db.rpc('booking_client_context',{p_token:x.token});
    if(error||!data||!data.ok)return;
-   const next={...x,status:data.state||x.status,payment_status:data.payment_status||x.payment_status,provider:data.provider||x.provider,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,island:data.island||x.island,date:data.service_date||x.date,time:data.service_time||x.time,provider_amount:data.provider_amount,total_amount:data.total_amount,service_fee_amount:data.service_fee_amount};
+   const next={...x,status:data.state||x.status,payment_status:data.payment_status||x.payment_status,provider:data.provider||x.provider,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,island:data.island||x.island,date:data.service_date||x.date,time:data.service_time||x.time,provider_amount:data.provider_amount,total_amount:data.total_amount,service_fee_amount:data.service_fee_amount,payment_ready:!!data.payment_ready,checkout_available:!!data.checkout_available};
    if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
   }catch(e){console.warn('booking sync',e)}
  }));
@@ -938,8 +938,25 @@ function renderBookings(){
  if(!items.length){$('#bookingList').innerHTML='<div class="empty"><div class="big">📅</div><h3>'+(lang==='pt'?'Ainda não tens pedidos de reserva.':'No booking requests yet.')+'</h3><p>'+(lang==='pt'?'Quando enviares um pedido a um prestador, podes acompanhar aqui o estado.':'When you send a request to a provider, you can track its status here.')+'</p></div>';return}
  $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>{
   const state=x.status||'requested';
-  return '<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(clientBookingStatus(state,x.payment_status))+'</span>'+(x.total_amount!=null?'<small style="margin-top:7px"><b>'+(lang==='pt'?'Total':'Total')+': €'+Number(x.total_amount).toFixed(2)+'</b> · '+(lang==='pt'?'inclui taxa TRIÂNGULO':'includes TRIÂNGULO fee')+'</small>':'')+(state==='confirmed'&&x.payment_status!=='paid'?'<small style="margin-top:6px">'+(lang==='pt'?'Orçamento/serviço aceite. Os contactos permanecem protegidos até ao pagamento integral no TRIÂNGULO.':'Quote/job accepted. Contact details remain protected until full payment through TRIÂNGULO.')+'</small>':'')+(x.payment_status==='paid'&&(x.provider_email||x.provider_phone)?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'')+'</div>'
+  return '<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(clientBookingStatus(state,x.payment_status))+'</span>'+(x.total_amount!=null?'<small style="margin-top:7px"><b>'+(lang==='pt'?'Total':'Total')+': €'+Number(x.total_amount).toFixed(2)+'</b> · '+(lang==='pt'?'inclui taxa TRIÂNGULO':'includes TRIÂNGULO fee')+'</small>':'')+(state==='confirmed'&&x.payment_status!=='paid'?'<small style="margin-top:6px">'+(lang==='pt'?'Orçamento/serviço aceite. Os contactos permanecem protegidos até ao pagamento integral no TRIÂNGULO.':'Quote/job accepted. Contact details remain protected until full payment through TRIÂNGULO.')+'</small>':'')+(state==='confirmed'&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Pagar agora':'Pay now')+'</button>':'')+(state==='confirmed'&&x.payment_status!=='paid'&&!x.checkout_available&&x.payment_ready===false?'<small style="margin-top:6px">'+(lang==='pt'?'Pagamento ainda indisponível enquanto o prestador conclui a verificação de pagamentos.':'Payment is not yet available while the provider completes payment verification.')+'</small>':'')+(x.payment_status==='paid'&&(x.provider_email||x.provider_phone)?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'')+'</div>'
  }).join('')+'</div>';
+ $('[data-pay-booking]').forEach(btn=>btn.onclick=()=>startBookingCheckout(btn.dataset.payBooking,btn));
+}
+async function startBookingCheckout(token,btn){
+ if(!token)return;
+ const old=btn?btn.textContent:'';
+ if(btn){btn.disabled=true;btn.textContent=lang==='pt'?'A abrir pagamento…':'Opening payment…'}
+ try{
+  const {data,error}=await db.functions.invoke('stripe-create-checkout',{body:{client_token:token}});
+  if(error||!data||!data.ok){
+    console.error('stripe-create-checkout',error,data);
+    toast(lang==='pt'?'Não foi possível abrir o pagamento.':'Could not open payment.');
+    return;
+  }
+  if(data.url){location.href=data.url;return}
+  toast(lang==='pt'?'Checkout indisponível.':'Checkout unavailable.');
+ }catch(e){console.error(e);toast(lang==='pt'?'Não foi possível abrir o pagamento.':'Could not open payment.')}
+ finally{if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
 async function openClientBookings(){
  showScreen('bookings');renderBookings();
@@ -1245,11 +1262,15 @@ function init(){
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),paymentResult=qs.get('payment'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
  if(providerPasswordToken){openProviderPasswordSetup(providerPasswordToken);return}
  if(bookingToken){openProviderBookingInApp(bookingToken);return}
  if(providerEntry){openProviderSignup();return}
- if(location.hash==='#app'||store.get('tri_client_welcome_v4','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
+ if(paymentResult){
+   $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+   history.replaceState({},'',location.pathname+'#app');
+   setTimeout(async()=>{await openClientBookings();toast(paymentResult==='success'?(lang==='pt'?'Pagamento recebido/ a confirmar ✓':'Payment received / confirming ✓'):(lang==='pt'?'Pagamento cancelado.':'Payment cancelled.'))},50);
+ }else if(location.hash==='#app'||store.get('tri_client_welcome_v4','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
 }
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
