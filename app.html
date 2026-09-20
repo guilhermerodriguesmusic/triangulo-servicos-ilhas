@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="client-welcome-v2-20260920">
+<meta name="triangulo-build" content="provider-response-app-20260920">
 
 <style id="backend-v1-styles">
 
@@ -288,6 +288,25 @@
 }
 @media(min-width:600px){#splash{position:absolute}}
 </style>
+<style id="provider-request-app">
+#providerRequestView{position:fixed;inset:0;z-index:180;background:linear-gradient(180deg,#eaf8ff 0%,#f8fcff 100%);overflow:auto;padding:calc(env(safe-area-inset-top) + 14px) 14px calc(env(safe-area-inset-bottom) + 24px)}
+#providerRequestView[hidden]{display:none!important}
+.pr-app-shell{width:min(100%,480px);margin:auto}
+.pr-app-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.pr-app-brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.04em;color:#153458}.pr-app-brand img{width:38px;height:42px;object-fit:contain}
+.pr-app-card{background:#fff;border:1px solid #dce9f1;border-radius:25px;padding:22px;box-shadow:0 16px 38px rgba(21,52,88,.08)}
+.pr-app-kicker{font-size:10px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;color:#0a896b}
+.pr-app-card h1{font-size:28px;line-height:1.05;margin:7px 0 16px;letter-spacing:-.025em}
+.pr-app-details{background:#f5fafc;border-radius:17px;padding:13px;margin:15px 0}
+.pr-app-row{display:grid;grid-template-columns:92px 1fr;gap:8px;padding:8px 0;border-bottom:1px solid #e5eef3;font-size:13px;line-height:1.4}.pr-app-row:last-child{border-bottom:0}.pr-app-row b{color:#678096}
+.pr-app-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}.pr-app-btn{border:0;border-radius:14px;padding:14px 12px;font-size:14px;font-weight:950}.pr-app-btn:disabled{opacity:.55}.pr-app-yes{background:#128d70;color:#fff}.pr-app-no{background:#edf3f6;color:#35556d}
+.pr-app-note{font-size:10px;line-height:1.45;color:#718699;text-align:center;margin:11px 0 0}
+.pr-app-state{text-align:center;padding:18px 3px}.pr-app-state .big{font-size:42px}.pr-app-state h2{font-size:24px;margin:8px 0}.pr-app-state p{font-size:13px;line-height:1.5;color:#647d91}
+.pr-app-contact{background:#edf8f4;border-radius:14px;padding:13px;text-align:left;margin-top:14px;font-size:12px;line-height:1.55}.pr-app-contact b{display:block;margin-bottom:5px}
+.pr-app-continue{width:100%;margin-top:14px;background:#153458;color:#fff;border:0;border-radius:14px;padding:13px;font-weight:900}
+.pr-app-loading{text-align:center;color:#6e8498;padding:34px 0}
+@media(max-width:420px){.pr-app-card{padding:18px}.pr-app-actions{grid-template-columns:1fr}.pr-app-row{grid-template-columns:80px 1fr}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -398,6 +417,34 @@
 <p class="form-note" data-pt="O teu email é usado apenas para responder ao teu contacto." data-en="Your email is used only to reply to your enquiry.">O teu email é usado apenas para responder ao teu contacto.</p>
 </form></aside>
 <aside id="bookSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><div id="bookContent"></div></aside>
+<section id="providerRequestView" hidden>
+  <div class="pr-app-shell">
+    <div class="pr-app-top">
+      <div class="pr-app-brand"><img src="/logo.svg" alt="">TRIÂNGULO</div>
+      <div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div>
+    </div>
+    <div class="pr-app-card">
+      <div id="prAppLoading" class="pr-app-loading" data-pt="A carregar pedido…" data-en="Loading request…">A carregar pedido…</div>
+      <div id="prAppRequest" hidden>
+        <div class="pr-app-kicker" data-pt="Novo pedido para ti" data-en="New request for you">Novo pedido para ti</div>
+        <h1 data-pt="Podes aceitar este serviço?" data-en="Can you accept this job?">Podes aceitar este serviço?</h1>
+        <div class="pr-app-details">
+          <div class="pr-app-row"><b data-pt="Ilha" data-en="Island">Ilha</b><span id="prAppIsland"></span></div>
+          <div class="pr-app-row"><b data-pt="Data" data-en="Date">Data</b><span id="prAppDate"></span></div>
+          <div class="pr-app-row"><b data-pt="Hora" data-en="Time">Hora</b><span id="prAppTime"></span></div>
+          <div class="pr-app-row"><b data-pt="Pedido" data-en="Request">Pedido</b><span id="prAppNotes"></span></div>
+          <div class="pr-app-row"><b data-pt="Responder até" data-en="Reply by">Responder até</b><span id="prAppExpires"></span></div>
+        </div>
+        <div class="pr-app-actions">
+          <button id="prAppAccept" class="pr-app-btn pr-app-yes" data-pt="✓ Aceitar pedido" data-en="✓ Accept request">✓ Aceitar pedido</button>
+          <button id="prAppDecline" class="pr-app-btn pr-app-no" data-pt="Não posso" data-en="I can't">Não posso</button>
+        </div>
+        <p class="pr-app-note" data-pt="O cliente só recebe confirmação depois de aceitares." data-en="The customer only receives confirmation after you accept.">O cliente só recebe confirmação depois de aceitares.</p>
+      </div>
+      <div id="prAppResult" class="pr-app-state" hidden></div>
+    </div>
+  </div>
+</section>
 <div id="toast" class="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -576,12 +623,74 @@ $('#installBtn').onclick=async()=>{
  }
  $('#bookContent').innerHTML='<h2>'+(lang==='pt'?'Instalar TRIÂNGULO':'Install TRIÂNGULO')+'</h2><p class="demo">'+(lang==='pt'?'Abre o menu do navegador e escolhe “Instalar app” ou “Adicionar ao ecrã principal”.':'Open the browser menu and choose “Install app” or “Add to Home Screen”.')+'</p>'; openSheet('bookSheet');
 };
+let activeProviderBookingToken=null;
+function providerAppHideAll(){
+  $('#prAppLoading').hidden=true;
+  $('#prAppRequest').hidden=true;
+  $('#prAppResult').hidden=true;
+}
+function providerAppContinue(){
+  history.replaceState({},'',location.pathname);
+  activeProviderBookingToken=null;
+  $('#providerRequestView').hidden=true;
+  if(store.get('tri_client_welcome_v2','')==='1'){
+    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+  }else{
+    $('#mainShell').classList.add('hidden');$('#splash').classList.remove('hidden');
+  }
+}
+function providerAppRenderState(state,data={}){
+  providerAppHideAll();
+  if(state==='requested'){
+    $('#prAppRequest').hidden=false;
+    $('#prAppIsland').textContent=data.island||'—';
+    $('#prAppDate').textContent=data.service_date||'—';
+    $('#prAppTime').textContent=data.service_time||'—';
+    $('#prAppNotes').textContent=data.notes||(lang==='pt'?'Sem notas adicionais':'No additional notes');
+    $('#prAppExpires').textContent=data.expires_at?new Date(data.expires_at).toLocaleString(lang==='pt'?'pt-PT':'en-GB'):'—';
+    return;
+  }
+  const result=$('#prAppResult');result.hidden=false;
+  if(state==='confirmed'){
+    result.innerHTML='<div class="big">✓</div><h2>'+(lang==='pt'?'Pedido aceite':'Request accepted')+'</h2><p>'+(lang==='pt'?'A reserva ficou confirmada e o cliente será avisado automaticamente.':'The booking is confirmed and the customer will be notified automatically.')+'</p>'
+      +((data.client_name||data.client_email||data.client_phone)?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><div>'+escapeHtml(data.client_name||'')+'</div><div>'+escapeHtml(data.client_email||'')+'</div><div>'+escapeHtml(data.client_phone||'')+'</div></div>':'')
+      +'<button class="pr-app-continue" id="prAppContinue">'+(lang==='pt'?'Continuar na app':'Continue in app')+'</button>';
+  }else if(state==='declined'){
+    result.innerHTML='<div class="big">✓</div><h2>'+(lang==='pt'?'Resposta registada':'Response saved')+'</h2><p>'+(lang==='pt'?'O cliente será informado de que não podes aceitar este pedido.':'The customer will be told you cannot accept this request.')+'</p><button class="pr-app-continue" id="prAppContinue">'+(lang==='pt'?'Continuar na app':'Continue in app')+'</button>';
+  }else if(state==='expired'){
+    result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Pedido expirado':'Request expired')+'</h2><p>'+(lang==='pt'?'O prazo terminou e a reserva não foi confirmada.':'The response deadline passed and the booking was not confirmed.')+'</p><button class="pr-app-continue" id="prAppContinue">'+(lang==='pt'?'Continuar na app':'Continue in app')+'</button>';
+  }else{
+    result.innerHTML='<div class="big">!</div><h2>'+(lang==='pt'?'Link inválido':'Invalid link')+'</h2><p>'+(lang==='pt'?'Este pedido já não está disponível ou o link não é válido.':'This request is no longer available or the link is invalid.')+'</p><button class="pr-app-continue" id="prAppContinue">'+(lang==='pt'?'Continuar na app':'Continue in app')+'</button>';
+  }
+  const c=$('#prAppContinue');if(c)c.onclick=providerAppContinue;
+}
+async function openProviderBookingInApp(token){
+  if(!token)return;
+  activeProviderBookingToken=token;
+  $('#splash').classList.add('hidden');$('#mainShell').classList.add('hidden');
+  $('#providerRequestView').hidden=false;providerAppHideAll();$('#prAppLoading').hidden=false;
+  const {data,error}=await db.rpc('booking_response_context',{p_token:token});
+  if(error||!data||!data.ok){providerAppRenderState('invalid');return}
+  providerAppRenderState(data.state,data);
+}
+async function providerAppRespond(action){
+  if(!activeProviderBookingToken)return;
+  $('#prAppAccept').disabled=true;$('#prAppDecline').disabled=true;
+  const {data,error}=await db.rpc('respond_to_booking',{p_token:activeProviderBookingToken,p_action:action});
+  $('#prAppAccept').disabled=false;$('#prAppDecline').disabled=false;
+  if(error||!data||!data.ok){providerAppRenderState('invalid');return}
+  providerAppRenderState(data.state,data);
+}
+$('#prAppAccept').onclick=()=>providerAppRespond('accept');
+$('#prAppDecline').onclick=()=>providerAppRespond('decline');
+
 function init(){
  updateIsland();applyLang();renderBookings();loadProviders();
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ if(bookingToken){openProviderBookingInApp(bookingToken);return}
  if(providerEntry){openProviderSignup();return}
  if(location.hash==='#app'||store.get('tri_client_welcome_v2','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
