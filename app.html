@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="welcome-polish-v4-refresh-20260920">
+<meta name="triangulo-build" content="home-polish-v5-20260920">
 
 <style id="backend-v1-styles">
 
@@ -328,6 +328,100 @@
 .pa-primary{display:flex;align-items:center;justify-content:center;width:100%;margin-top:14px;border:0;border-radius:14px;padding:13px 15px;background:#123a68;color:#fff;font-size:13px;font-weight:950;text-decoration:none}
 .pa-note{text-align:center;font-size:9px!important;margin-top:9px!important;color:#8091a0!important}
 .settings .provider-area-row span:first-child{font-size:18px}
+</style>
+<style id="home-polish-v5">
+/* Main client screen: compact, calmer, more app-like */
+.topbar{
+  height:60px!important;
+  padding:10px 18px 8px!important;
+  box-shadow:0 1px 0 rgba(20,58,91,.035)
+}
+.topbar .brand-icon{width:29px!important;height:31px!important}
+.topbar .brand-word{font-size:16px!important}
+.topbar .lang-switch button{padding:6px 9px!important;font-size:11px!important}
+
+.home-hero{
+  padding:5px 18px 15px!important;
+  background:linear-gradient(180deg,#edf9ff 0%,#fff 94%)!important
+}
+.island-select button{
+  padding:7px 12px!important;
+  font-size:11px!important;
+  font-weight:850!important;
+  color:#08775d!important;
+  background:#e3f7f0!important;
+  border:1px solid #c7ece0!important;
+  box-shadow:none!important
+}
+.home-title{margin:11px 0 10px!important}
+.home-title h1{font-size:30px!important}
+.home-title p{margin-top:4px!important;font-size:11.5px!important;color:#60788e!important}
+
+.searchbar{
+  height:50px!important;
+  border-color:#cedee9!important;
+  box-shadow:0 6px 19px rgba(18,58,104,.075)!important
+}
+.searchbar span{font-size:21px!important;color:#173e71}
+.searchbar input{font-size:14px!important}
+.searchbar button{
+  width:34px;height:34px;border-radius:50%!important;
+  display:grid;place-items:center;
+  background:#e2f7f0!important;
+  color:#08775d!important;
+  font-size:20px!important;
+  font-weight:850!important
+}
+
+#home .section-head{margin-top:16px!important}
+.section-head{margin-bottom:9px!important}
+.category-grid{gap:9px!important}
+.category{
+  min-height:74px!important;
+  border-radius:15px!important;
+  padding:9px 3px 7px!important;
+  gap:5px!important;
+  box-shadow:0 5px 13px rgba(26,76,124,.07)!important
+}
+.category svg{width:24px!important;height:24px!important}
+.category small{font-size:10.5px!important;font-weight:760!important}
+.c0{background:linear-gradient(145deg,#f56682,#e84f70)!important}
+.c1{background:linear-gradient(145deg,#71cc61,#56b84b)!important}
+.c2{background:linear-gradient(145deg,#55aaf0,#2e8bd7)!important}
+.c3{background:linear-gradient(145deg,#f8aa43,#ee922b)!important}
+
+#home .urgent{margin-top:15px!important}
+.urgent{
+  min-height:64px;
+  border:1px solid #cdebe4!important;
+  background:linear-gradient(135deg,#e7f8f4,#d9f2f7)!important;
+  padding:12px 14px!important;
+  box-shadow:0 6px 16px rgba(24,101,108,.08)!important
+}
+.urgent strong{color:#153f68!important}
+.urgent small{color:#5c7486!important}
+.urgent .bolt{color:#f3b300!important;filter:saturate(1.1)}
+.urgent .arrow{color:#0b8368!important}
+
+/* Make the central action unmistakably active */
+.bottom-nav button.publish{
+  transform:translateY(-4px);
+  color:#0a896b!important;
+  font-weight:850
+}
+.bottom-nav button.publish svg{
+  width:34px!important;height:34px!important;
+  padding:7px!important;
+  border-radius:11px!important;
+  background:#12a77c!important;
+  color:#fff!important;
+  box-shadow:0 7px 16px rgba(18,167,124,.22)
+}
+.bottom-nav button.publish small{
+  margin-top:1px;
+  color:#0a896b!important;
+  font-weight:800
+}
 </style>
 </head>
 <body>
@@ -561,7 +655,8 @@ function applyLang(){
  renderCats();
  updateResults(rq);
  renderBookings();
- const suffix=lang==='en'?'?lang=en':'';$$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
+ const suffix=lang==='en'?'?lang=en':'';$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
+ updateIsland();
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 function renderCats(){const make=(c,i,full=false)=>{const label=full?c[lang]:(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en));return `<button class="category c${i}" data-cat="${i}">${icons[c.icon]}<small>${label}</small></button>`};$('#homeCats').innerHTML=categories.slice(0,4).map((c,i)=>make(c,i,false)).join('');$('#allCats').innerHTML=categories.map((c,i)=>make(c,i,true)).join('');$$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang])})}
@@ -625,7 +720,19 @@ function bindProvider(){$$('[data-provider]').forEach(b=>{b.onclick=()=>openBook
 function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));window.scrollTo({top:0,behavior:'auto'})}
 $$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));
 function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v4','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();updateResults($('#resultsInput').value||'')}
-$$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){$('#islandPill span').textContent=island;const p2=$('#profileIsland2');if(p2)p2.textContent=island}
+$$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){
+ $('#islandPill span').textContent=island;
+ const p2=$('#profileIsland2');if(p2)p2.textContent=island;
+ const sub=$('.home-title p');
+ if(sub){
+  if(lang==='pt'){
+   const place=island==='Pico'?'no Pico':island==='Faial'?'no Faial':'em São Jorge';
+   sub.textContent='Encontra serviços locais '+place+'.';
+  }else{
+   sub.textContent='Find local services on '+island+'.';
+  }
+ }
+}
 function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
 $('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};$('#urgentBtn').onclick=()=>runSearch(lang==='pt'?'serviços':'services',true);const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>runSearch(lang==='pt'?'serviços':'services',true);$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')updateResults(e.target.value)};
