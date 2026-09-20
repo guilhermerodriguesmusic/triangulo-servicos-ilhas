@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-contact-lock-v2';
+const CACHE='triangulo-pwa-20260920-founder-nif-v1';
 const CORE=[
   '/',
   '/index.html',
