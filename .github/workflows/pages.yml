@@ -133,7 +133,7 @@ jobs:
           ! grep -q "Prestador Fundador" <<<"$application"
           grep -q "Encontra. Pede. Resolve." <<<"$app"
           grep -q "ONDE PRECISAS DE AJUDA?" <<<"$app"
-          grep -q 'name="triangulo-build" content="home-polish-v5-20260920"' <<<"$app"
+          grep -q 'name="triangulo-build" content="home-micro-polish-v6-20260920"' <<<"$app"
           grep -q "És prestador? Entrar" <<<"$app"
           grep -q "Pedido simples" <<<"$app"
           grep -q "Área do prestador" <<<"$app"
