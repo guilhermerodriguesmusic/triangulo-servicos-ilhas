@@ -19,7 +19,7 @@
 
   <section class="hero">
     <h1 data-pt="Torna-te Prestador de Serviços Fundador TRIÂNGULO" data-en="Become a TRIÂNGULO Founding Service Provider">Torna-te Prestador de Serviços Fundador TRIÂNGULO</h1>
-    <p data-pt="0 € para entrar e 0 € por pedido. Tu defines quanto queres receber pelo teu trabalho e o TRIÂNGULO não retira comissão a esse valor." data-en="€0 to join and €0 per request. You decide how much you want to earn for your work and TRIÂNGULO does not deduct a commission from that amount.">0 € para entrar e 0 € por pedido. Tu defines quanto queres receber pelo teu trabalho e o TRIÂNGULO não retira comissão a esse valor.</p>
+    <p data-pt="0 € para entrar e 0 € por pedido. Tu defines quanto queres receber pelo teu trabalho e o TRIÂNGULO não retira comissão a esse valor. Os primeiros 2 Prestadores de Serviços Fundadores verificados de cada categoria recebem ainda 1 € de Crédito Fundador." data-en="€0 to join and €0 per request. You decide how much you want to earn for your work and TRIÂNGULO does not deduct a commission from that amount. The first 2 verified Founding Service Providers in each category also receive €1 Founding Credit.">0 € para entrar e 0 € por pedido. Tu defines quanto queres receber pelo teu trabalho e o TRIÂNGULO não retira comissão a esse valor. Os primeiros 2 Prestadores de Serviços Fundadores verificados de cada categoria recebem ainda 1 € de Crédito Fundador.</p>
   </section>
 
   <section id="formCard" class="formcard">
@@ -35,6 +35,7 @@
         <label><span data-pt="Nome do negócio" data-en="Business name">Nome do negócio</span><input name="business_name" maxlength="120"></label>
         <label><span>Email *</span><input required type="email" name="email" maxlength="254"></label>
         <label><span data-pt="Telefone / WhatsApp *" data-en="Phone / WhatsApp *">Telefone / WhatsApp *</span><input required name="phone" minlength="6" maxlength="50" inputmode="tel" autocomplete="tel"><small class="note" data-pt="Pode ser usado para comunicações operacionais sobre a candidatura e pedidos." data-en="May be used for operational messages about your application and requests.">Pode ser usado para comunicações operacionais sobre a candidatura e pedidos.</small></label>
+        <label><span data-pt="NIF / NIPC *" data-en="Portuguese tax ID (NIF/NIPC) *">NIF / NIPC *</span><input required name="tax_id" minlength="9" maxlength="9" inputmode="numeric" autocomplete="off" pattern="[0-9]{9}" placeholder="123456789"><small class="note" data-pt="Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes." data-en="Required for verification. It stays private, is not shown on your profile and is never displayed to customers.">Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes.</small></label>
       </div>
       <label style="display:block;margin-top:12px"><span data-pt="Website / Instagram (privado)" data-en="Website / Instagram (private)">Website / Instagram (privado)</span><input name="website" maxlength="500" inputmode="url" placeholder="https://..."><small class="note" data-pt="Usado apenas pelo TRIÂNGULO para verificação. Não será mostrado aos clientes." data-en="Used only by TRIÂNGULO for verification. It will not be shown to customers.">Usado apenas pelo TRIÂNGULO para verificação. Não será mostrado aos clientes.</small></label>
 
@@ -59,7 +60,13 @@
       </div>
       <div id="otherServiceWrap" class="other-service">
         <label><span data-pt="Qual?" data-en="Which service?">Qual?</span><input name="other_service" id="otherService" maxlength="120" data-ph-pt="Ex.: costura, tradução, apoio administrativo…" data-ph-en="E.g. sewing, translation, admin support…"></label>
-      </div></div>
+      </div>
+      <label style="display:block;margin-top:12px"><span data-pt="Categoria principal *" data-en="Main category *">Categoria principal *</span>
+        <select required name="primary_category" id="primaryCategory">
+          <option value="" data-pt="Seleciona primeiro os serviços acima" data-en="Select your services above first">Seleciona primeiro os serviços acima</option>
+        </select>
+        <small class="note" data-pt="É a categoria usada para o Crédito Fundador de 1 €. Só conta uma categoria principal por prestador." data-en="This is the category used for the €1 Founding Credit. Only one main category counts per provider.">É a categoria usada para o Crédito Fundador de 1 €. Só conta uma categoria principal por prestador.</small>
+      </label></div>
 
       <label style="display:block;margin-top:13px"><span data-pt="Descreve o que fazes *" data-en="Describe what you do *">Descreve o que fazes *</span><textarea required name="description" minlength="10" maxlength="1200" data-ph-pt="Ex.: Manutenção de jardins, corte de erva, podas e limpeza de terrenos." data-ph-en="E.g. Garden maintenance, grass cutting, pruning and land clearing."></textarea><small class="note" data-pt="Não coloques telefone, email, WhatsApp, redes sociais ou links na descrição. O contacto com clientes é gerido pelo TRIÂNGULO." data-en="Do not add phone numbers, email, WhatsApp, social media or links to the description. Customer contact is managed through TRIÂNGULO.">Não coloques telefone, email, WhatsApp, redes sociais ou links na descrição. O contacto com clientes é gerido pelo TRIÂNGULO.</small></label>
 
@@ -99,7 +106,7 @@
   <section id="success" class="success">
     <div class="tick">✓</div>
     <h2 data-pt="Candidatura recebida!" data-en="Application received!">Candidatura recebida!</h2>
-    <p data-pt="Obrigado. Vamos rever os teus dados antes de publicar o perfil. Enviámos também um email a confirmar a receção da candidatura. Assim que for analisada, receberás nova mensagem." data-en="Thank you. We will review your details before publishing your profile. We have also sent you an email confirming receipt. You will receive another message once the application has been reviewed.">Obrigado. Vamos rever os teus dados antes de publicar o perfil. Enviámos também um email a confirmar a receção da candidatura. Assim que for analisada, receberás nova mensagem.</p>
+    <p data-pt="Obrigado. Vamos verificar os teus dados, incluindo o NIF/NIPC, antes de publicar o perfil. Se fores um dos primeiros 2 verificados na tua categoria principal, recebes automaticamente 1 € de Crédito Fundador. Assim que a candidatura for analisada, receberás nova mensagem." data-en="Thank you. We will verify your details, including your Portuguese tax ID, before publishing your profile. If you are one of the first 2 verified providers in your main category, you automatically receive €1 Founding Credit. You will receive another message once the application has been reviewed.">Obrigado. Vamos verificar os teus dados, incluindo o NIF/NIPC, antes de publicar o perfil. Se fores um dos primeiros 2 verificados na tua categoria principal, recebes automaticamente 1 € de Crédito Fundador. Assim que a candidatura for analisada, receberás nova mensagem.</p>
     <a class="back" href="./" data-pt="Voltar ao TRIÂNGULO" data-en="Back to TRIÂNGULO">Voltar ao TRIÂNGULO</a>
   </section>
 
@@ -116,11 +123,11 @@ let lang=localStorage.getItem('tri_lang')||'pt', photoData=null, started=Date.no
 
 function setLang(next){
   lang=next; localStorage.setItem('tri_lang',lang); document.documentElement.lang=lang;
-  $$('[data-pt]').forEach(el=>{el.textContent=el.dataset[lang]||el.textContent});
+  $('[data-pt]').forEach(el=>{el.textContent=el.dataset[lang]||el.textContent});
   $$('[data-ph-pt]').forEach(el=>{el.placeholder=el.dataset['ph'+lang.charAt(0).toUpperCase()+lang.slice(1)]||el.dataset['ph-'+lang]||el.dataset[lang==='pt'?'phPt':'phEn']||''});
   $('#pt').classList.toggle('active',lang==='pt'); $('#en').classList.toggle('active',lang==='en');
 }
-$('#pt').onclick=()=>setLang('pt'); $('#en').onclick=()=>setLang('en');
+$('#pt').onclick=()=>{setLang('pt');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()}; $('#en').onclick=()=>{setLang('en');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()};
 
 function applyPlaceholders(){
   $$('[data-ph-pt]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
@@ -149,6 +156,21 @@ function syncOtherService(){
 }
 if($('#otherCategory'))$('#otherCategory').onchange=syncOtherService;syncOtherService();
 
+const CAT_LABELS={
+ home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Land'},
+ repairs:{pt:'Reparações',en:'Repairs'},moving:{pt:'Mudanças & Entregas',en:'Moves & Deliveries'},
+ lessons:{pt:'Aulas',en:'Lessons'},wellness:{pt:'Bem-estar',en:'Wellness'},tech:{pt:'Tecnologia',en:'Technology'},
+ creative:{pt:'Fotografia / Criativos',en:'Photo / Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
+};
+function syncPrimaryCategory(){
+  const sel=$('#primaryCategory'),chosen=sel.value,cats=$('[data-provider-cat]:checked').map(x=>x.value);
+  sel.innerHTML='<option value="">'+(lang==='pt'?'Seleciona uma categoria principal':'Choose a main category')+'</option>'+
+    cats.map(code=>'<option value="'+code+'">'+(CAT_LABELS[code]?.[lang]||code)+'</option>').join('');
+  if(cats.includes(chosen))sel.value=chosen;
+}
+$('[data-provider-cat]').forEach(x=>x.addEventListener('change',syncPrimaryCategory));
+syncPrimaryCategory();
+
 $('#providerForm').onsubmit=async e=>{
   e.preventDefault();
   const f=e.target, status=$('#status'), btn=$('#submitBtn');
@@ -158,13 +180,17 @@ $('#providerForm').onsubmit=async e=>{
   if(!islands.length){status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return}
   if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return}
   const d=Object.fromEntries(new FormData(f));
+  const nif=String(d.tax_id||'').replace(/\D/g,'');
+  function validNif(n){if(!/^\d{9}$/.test(n))return false;let s=0;for(let i=0;i<8;i++)s+=Number(n[i])*(9-i);let check=11-(s%11);if(check>=10)check=0;return check===Number(n[8])}
+  if(!validNif(nif)){status.textContent=lang==='pt'?'Indica um NIF/NIPC português válido com 9 dígitos.':'Enter a valid 9-digit Portuguese NIF/NIPC.';f.tax_id.focus();return}
+  if(!d.primary_category||!cats.includes(d.primary_category)){status.textContent=lang==='pt'?'Escolhe uma categoria principal.':'Choose a main category.';$('#primaryCategory').focus();return}
   const contactPattern=/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/|(\+?\d[ .()\/-]*){9,}/i;
   if(contactPattern.test(d.description||'')||contactPattern.test(d.other_service||'')){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na descrição pública.':'Do not add phone numbers, email, WhatsApp, social media or links to the public description.';return}
   if(cats.includes('other')&&(!d.other_service||d.other_service.trim().length<2)){status.textContent=lang==='pt'?'Escreve qual é o outro serviço que ofereces.':'Tell us which other service you offer.';$('#otherService').focus();return}
   const payload={
     name:d.name.trim(), business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,
-    email:d.email.trim(), phone:d.phone&&d.phone.trim()?d.phone.trim():null,
-    base_island:islands[0], service_islands:islands, categories:cats, other_service:cats.includes('other')?d.other_service.trim():null, description:d.description.trim(),
+    email:d.email.trim(), phone:d.phone&&d.phone.trim()?d.phone.trim():null, tax_id:nif,
+    base_island:islands[0], service_islands:islands, categories:cats, primary_category:d.primary_category, other_service:cats.includes('other')?d.other_service.trim():null, description:d.description.trim(),
     pricing_type:d.pricing_type, price:d.pricing_type==='quote'||!d.price?null:Number(d.price),
     availability:d.availability&&d.availability.trim()?d.availability.trim():null,
     photo_data:photoData, website:d.website&&d.website.trim()?d.website.trim():null,
