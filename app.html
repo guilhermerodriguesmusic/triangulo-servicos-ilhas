@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="secure-provider-session-v5-20260920">
+<meta name="triangulo-build" content="secure-provider-session-v6-20260920">
 
 <style id="backend-v1-styles">
 
@@ -776,6 +776,7 @@ async function loadProviders(){
  }
 }
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function safeProviderPhoto(v){const s=String(v||'');return /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(s)?s:'/logo.svg'}
 function categoryFor(q){q=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');return categories.findIndex(c=>c.keys.some(k=>q.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,''))))}
 function runSearch(q){q=(q||'').trim();$('#resultsInput').value=q;showScreen('explore');updateResults(q)}
 function updateResults(q){
@@ -809,7 +810,7 @@ function updateResults(q){
   const ep=$('#emptyPost');if(ep)ep.onclick=openRequest;return;
  }
  $('#resultsList').innerHTML=list.map(p=>{
-  const tags=providerCategoryLabels(p),photo=p.photo_data||'logo.svg',displayName=escapeHtml(p.business_name||p.name);
+  const tags=providerCategoryLabels(p),photo=safeProviderPhoto(p.photo_data),displayName=escapeHtml(p.business_name||p.name);
   return '<div class="result-card" role="button" tabindex="0" data-provider="'+p.id+'"><img src="'+photo+'" alt="'+displayName+'"><div><b>'+displayName+'</b><div class="desc">'+escapeHtml(p.description||'')+'</div><div class="loc">📍 '+escapeHtml((p.service_islands&&p.service_islands.length?p.service_islands:[p.base_island]).filter(Boolean).join(' · '))+'</div><div class="provider-price">'+providerPrice(p)+'</div><div class="provider-tags">'+tags.map(t=>'<span class="provider-tag">'+escapeHtml(t)+'</span>').join('')+'</div>' +'</div></div>';
  }).join('');
  bindProvider();
@@ -866,7 +867,7 @@ function openBooking(id){
  const quote=p.pricing_type==='quote'||p.price==null,dates=[0,1,2,3].map(dateObj);
  const dateHtml=dates.map((d,i)=>'<button class="date-chip '+(i===0?'active':'')+'" data-date="'+d.iso+'"><small>'+(i===0?(lang==='pt'?'Hoje':'Today'):i===1?(lang==='pt'?'Amanhã':'Tomorrow'):d.day)+'</small><b>'+d.num+'</b></button>').join('');
  const timeHtml=['09:00','11:00','14:00','17:00'].map((x,i)=>'<button class="time-chip '+(i===0?'active':'')+'" data-time="'+x+'">'+x+'</button>').join('');
- $('#bookContent').innerHTML='<div class="book-provider"><img src="'+(p.photo_data||'logo.svg')+'"><div><b>'+escapeHtml(p.business_name||p.name)+'</b><small>'+escapeHtml(p.description||'')+'</small></div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form" style="margin:12px 0"><label><span>'+(lang==='pt'?'Nome':'Name')+'</span><input id="bookName" maxlength="120"></label><label><span>Email</span><input id="bookEmail" type="email" required></label><label><span>'+(lang==='pt'?'Telefone (opcional)':'Phone (optional)')+'</span><input id="bookPhone" inputmode="tel"></label><label><span>'+(lang==='pt'?'Nota (opcional)':'Note (optional)')+'</span><textarea id="bookNote"></textarea></label></div><div class="summary"><span>'+(quote?(lang==='pt'?'Preço':'Price'):tr('total'))+'</span><span>'+providerPrice(p)+'</span></div><button id="confirmBook" class="primary" style="width:100%">'+(quote?tr('requestQuote'):(lang==='pt'?'Pedir reserva':'Request booking'))+'</button><p class="demo">'+(lang==='pt'?'Indica a tua preferência. O profissional confirma depois a disponibilidade. Nesta fase não há pagamentos online.':'Choose your preferred time. The provider confirms availability afterwards. There are no online payments at this stage.')+'</p>';
+ $('#bookContent').innerHTML='<div class="book-provider"><img src="'+safeProviderPhoto(p.photo_data)+'"><div><b>'+escapeHtml(p.business_name||p.name)+'</b><small>'+escapeHtml(p.description||'')+'</small></div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form" style="margin:12px 0"><label><span>'+(lang==='pt'?'Nome':'Name')+'</span><input id="bookName" maxlength="120"></label><label><span>Email</span><input id="bookEmail" type="email" required></label><label><span>'+(lang==='pt'?'Telefone (opcional)':'Phone (optional)')+'</span><input id="bookPhone" inputmode="tel"></label><label><span>'+(lang==='pt'?'Nota (opcional)':'Note (optional)')+'</span><textarea id="bookNote"></textarea></label></div><div class="summary"><span>'+(quote?(lang==='pt'?'Preço':'Price'):tr('total'))+'</span><span>'+providerPrice(p)+'</span></div><button id="confirmBook" class="primary" style="width:100%">'+(quote?tr('requestQuote'):(lang==='pt'?'Pedir reserva':'Request booking'))+'</button><p class="demo">'+(lang==='pt'?'Indica a tua preferência. O profissional confirma depois a disponibilidade. Nesta fase não há pagamentos online.':'Choose your preferred time. The provider confirms availability afterwards. There are no online payments at this stage.')+'</p>';
  openSheet('bookSheet');
  $$('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
  $$('[data-time]').forEach(b=>b.onclick=()=>{$$('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
