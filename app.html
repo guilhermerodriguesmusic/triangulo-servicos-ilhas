@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="client-provider-split-icon-b-20260920">
+<meta name="triangulo-build" content="client-provider-split-v3-20260920">
 
 <style id="backend-v1-styles">
 
@@ -626,7 +626,7 @@ function updateResults(q,urgent=false){
 function bindProvider(){$$('[data-provider]').forEach(b=>{b.onclick=()=>openBooking(b.dataset.provider);b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(b.dataset.provider)}}})}
 function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));window.scrollTo({top:0,behavior:'auto'})}
 $$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));
-function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v2','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();updateResults($('#resultsInput').value||'')}
+function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v3','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();updateResults($('#resultsInput').value||'')}
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){$('#islandPill span').textContent=island;const p2=$('#profileIsland2');if(p2)p2.textContent=island}
 function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
@@ -690,7 +690,7 @@ function openProviderArea(){
 function closeProviderArea(){
   $('#providerAreaView').hidden=true;
   history.replaceState({},'',location.pathname);
-  if(store.get('tri_client_welcome_v2','')==='1'){
+  if(store.get('tri_client_welcome_v3','')==='1'){
     $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
   }else{
     $('#mainShell').classList.add('hidden');$('#splash').classList.remove('hidden');
@@ -710,7 +710,7 @@ function providerAppContinue(){
   history.replaceState({},'',location.pathname);
   activeProviderBookingToken=null;
   $('#providerRequestView').hidden=true;
-  if(store.get('tri_client_welcome_v2','')==='1'){
+  if(store.get('tri_client_welcome_v3','')==='1'){
     $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
   }else{
     $('#mainShell').classList.add('hidden');$('#splash').classList.remove('hidden');
@@ -769,7 +769,7 @@ function init(){
  const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
  if(bookingToken){openProviderBookingInApp(bookingToken);return}
  if(providerEntry){openProviderSignup();return}
- if(location.hash==='#app'||store.get('tri_client_welcome_v2','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
+ if(location.hash==='#app'||store.get('tri_client_welcome_v3','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
 }
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
