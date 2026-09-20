@@ -6,7 +6,7 @@
 <title>Rever candidatura — TRIÂNGULO</title>
 <link rel="icon" href="logo.svg">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:620px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.04em;margin-bottom:18px}.brand img{width:40px}.card{background:#fff;border:1px solid #dce9ef;border-radius:22px;padding:24px}.state{font-size:12px;font-weight:950;color:#0a8068;text-transform:uppercase;letter-spacing:.08em}.card h1{font-size:28px;margin:8px 0 18px}.details{background:#f7fafc;border-radius:15px;padding:15px}.row{display:grid;grid-template-columns:130px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #e5eef2;font-size:13px}.row:last-child{border:0}.row b{color:#668095}.desc{white-space:pre-wrap}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.btn{border:0;border-radius:13px;padding:14px;font-weight:900;font-size:14px;cursor:pointer}.yes{background:#108b6e;color:#fff}.no{background:#eef3f6;color:#37566d}.btn:disabled{opacity:.5}.rejectbox{display:none;margin-top:12px}.rejectbox.show{display:block}.rejectbox textarea{width:100%;min-height:90px;border:1px solid #d5e3ea;border-radius:12px;padding:11px;font:inherit}.loginbox{display:none}.loginbox.show{display:block}.loginbox input{width:100%;border:1px solid #d5e3ea;border-radius:12px;padding:12px;margin:6px 0;font:inherit}.loginbox .btn{width:100%;margin-top:6px}.login-note{font-size:11px;color:#718799;line-height:1.45}.message{text-align:center;padding:25px 5px}.message h2{margin:8px 0}.message p{color:#657e91}.loading{text-align:center;color:#718799;padding:40px 0}.footer{text-align:center;font-size:11px;color:#7c91a2;padding:18px}@media(max-width:520px){.row{grid-template-columns:95px 1fr}.actions{grid-template-columns:1fr}}
+*{box-sizing:border-box}body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:620px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.04em;margin-bottom:18px}.brand img{width:40px}.card{background:#fff;border:1px solid #dce9ef;border-radius:22px;padding:24px}.state{font-size:12px;font-weight:950;color:#0a8068;text-transform:uppercase;letter-spacing:.08em}.card h1{font-size:28px;margin:8px 0 18px}.details{background:#f7fafc;border-radius:15px;padding:15px}.row{display:grid;grid-template-columns:130px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #e5eef2;font-size:13px}.row:last-child{border:0}.row b{color:#668095}.verify-inline{display:flex;align-items:center;justify-content:space-between;gap:8px}.verify-inline button{border:0;border-radius:9px;padding:6px 8px;font-size:10px;font-weight:850;background:#e9f7f2;color:#08745c;cursor:pointer}.verify-inline button.pending{background:#fff1d8;color:#8a5b00}.desc{white-space:pre-wrap}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.btn{border:0;border-radius:13px;padding:14px;font-weight:900;font-size:14px;cursor:pointer}.yes{background:#108b6e;color:#fff}.no{background:#eef3f6;color:#37566d}.btn:disabled{opacity:.5}.rejectbox{display:none;margin-top:12px}.rejectbox.show{display:block}.rejectbox textarea{width:100%;min-height:90px;border:1px solid #d5e3ea;border-radius:12px;padding:11px;font:inherit}.loginbox{display:none}.loginbox.show{display:block}.loginbox input{width:100%;border:1px solid #d5e3ea;border-radius:12px;padding:12px;margin:6px 0;font:inherit}.loginbox .btn{width:100%;margin-top:6px}.login-note{font-size:11px;color:#718799;line-height:1.45}.message{text-align:center;padding:25px 5px}.message h2{margin:8px 0}.message p{color:#657e91}.loading{text-align:center;color:#718799;padding:40px 0}.footer{text-align:center;font-size:11px;color:#7c91a2;padding:18px}@media(max-width:520px){.row{grid-template-columns:95px 1fr}.actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -28,7 +28,7 @@
   <h1 id="title">Rever candidatura</h1>
   <div class="details">
     <div class="row"><b>Nome</b><span id="name"></span></div>
-    <div class="row"><b>Negócio</b><span id="business"></span></div><div class="row"><b>NIF / NIPC</b><span id="taxId"></span></div>
+    <div class="row"><b>Negócio</b><span id="business"></span></div><div class="row"><b>NIF / NIPC</b><span id="taxId"></span></div><div class="row"><b>Email</b><span class="verify-inline"><span id="emailVerifyStatus"></span><button id="emailVerifyBtn" type="button"></button></span></div><div class="row"><b>Telefone / WhatsApp</b><span class="verify-inline"><span id="phoneVerifyStatus"></span><button id="phoneVerifyBtn" type="button"></button></span></div>
     <div class="row"><b>Ilha base</b><span id="base"></span></div>
     <div class="row"><b>Trabalha em</b><span id="islands"></span></div>
     <div class="row"><b>Categoria principal</b><span id="primaryCategory"></span></div><div class="row"><b>Categorias</b><span id="categories"></span></div><div class="row"><b>Crédito Fundador</b><span id="founderCredit"></span></div>
@@ -54,7 +54,7 @@
 <script>
 const $=s=>document.querySelector(s);
 const db=window.supabase.createClient('https://cozamrvrhmwgxbuubjub.supabase.co','sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9');
-const qs=new URLSearchParams(location.search),token=qs.get('token'),mode=qs.get('mode');
+const qs=new URLSearchParams(location.search),token=qs.get('token'),mode=qs.get('mode');let currentApplicationId=null;
 function showMessage(title,text){$('#loading').hidden=true;$('#loginbox').classList.remove('show');$('#review').hidden=true;$('#message').hidden=false;$('#message').innerHTML='<div style="font-size:40px">✓</div><h2>'+title+'</h2><p>'+text+'</p>'}
 function fmtPrice(d){if(d.pricing_type==='quote'||d.price==null)return 'Sob orçamento';return d.price+' € · '+d.pricing_type}
 async function load(){
@@ -74,13 +74,16 @@ async function load(){
     const m=map[data.state]||['Candidatura processada','Esta candidatura já não está pendente.'];showMessage(m[0],m[1]);return
   }
   $('#loading').hidden=true;$('#review').hidden=false;
-  $('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#taxId').textContent=data.tax_id||'—';$('#base').textContent=data.base_island||'—';
+  currentApplicationId=data.application_id||null;$('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#taxId').textContent=data.tax_id||'—';$('#base').textContent=data.base_island||'—';renderVerify('email',data.email_verification_status);renderVerify('phone',data.phone_verification_status);
   $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#primaryCategory').textContent=data.primary_category||'—';$('#categories').textContent=(data.categories||[]).join(', ')||'—';$('#founderCredit').textContent=(data.founder_credit_slots_left>0?'Elegível se aprovada agora · '+data.founder_credit_slots_left+' vaga(s) disponível(eis)':'Sem vaga de Crédito Fundador nesta categoria');if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
   $('#price').textContent=fmtPrice(data);$('#availability').textContent=data.availability||'—';
   $('#referred').textContent=data.referred_by||'—';$('#description').textContent=data.description||'—';
   if(mode==='approve'){$('#title').textContent='Confirmar aprovação';$('#reject').style.display='none'}
   if(mode==='reject'){$('#title').textContent='Confirmar recusa';$('#approve').style.display='none';$('#rejectbox').classList.add('show')}
 }
+function renderVerify(channel,status){const verified=status==='verified',label=verified?'Verificado':'Pendente';$('#'+channel+'VerifyStatus').textContent=label;const btn=$('#'+channel+'VerifyBtn');btn.textContent=verified?'Desmarcar':'Marcar verificado';btn.classList.toggle('pending',!verified);btn.dataset.verified=verified?'1':'0'}
+async function setVerification(channel){if(!currentApplicationId)return;const btn=$('#'+channel+'VerifyBtn'),next=btn.dataset.verified!=='1';btn.disabled=true;const {data,error}=await db.rpc('admin_set_provider_verification',{p_application_id:currentApplicationId,p_channel:channel,p_verified:next});btn.disabled=false;if(error||!data||!data.ok){alert('Não foi possível atualizar a verificação.');return}renderVerify(channel,next?'verified':'pending')}
+$('#emailVerifyBtn').onclick=()=>setVerification('email');$('#phoneVerifyBtn').onclick=()=>setVerification('phone');
 async function act(action){
   if(action==='reject'&&!$('#rejectbox').classList.contains('show')){$('#rejectbox').classList.add('show');$('#approve').style.display='none';$('#title').textContent='Confirmar recusa';return}
   $('#approve').disabled=true;$('#reject').disabled=true;
