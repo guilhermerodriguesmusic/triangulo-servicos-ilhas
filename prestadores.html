@@ -97,7 +97,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 24px;color:#788c9c;font-s
 
 <script>
 let lang=localStorage.getItem('tri_lang')||'pt';
-function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=v==='pt'?el.dataset.pt:el.dataset.en);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en')}
+function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=v==='pt'?el.dataset.pt:el.dataset.en);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en');document.title=v==='pt'?'Prestar serviços — TRIÂNGULO Açores':'Offer services — TRIÂNGULO Azores'}
 document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
 </script>
 </body>
