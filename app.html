@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#159e78">
+<meta name="theme-color" content="#123a68">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -12,7 +12,7 @@
 <title>TRIÂNGULO — Serviços locais nas ilhas</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/logo.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/triangulo-blue-180.png">
 <style>
 :root{
  --navy:#123a68;--blue:#1d89ed;--sky:#eef8ff;--green:#14aa7d;--green2:#dff9ef;
@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="provider-response-app-20260920">
+<meta name="triangulo-build" content="client-provider-split-icon-b-20260920">
 
 <style id="backend-v1-styles">
 
@@ -307,6 +307,29 @@
 .pr-app-loading{text-align:center;color:#6e8498;padding:34px 0}
 @media(max-width:420px){.pr-app-card{padding:18px}.pr-app-actions{grid-template-columns:1fr}.pr-app-row{grid-template-columns:80px 1fr}}
 </style>
+<style id="provider-area-v1">
+.provider-entry{
+  margin:10px auto 0;border:0;background:rgba(255,255,255,.18);color:#fff;
+  border:1px solid rgba(255,255,255,.38);border-radius:999px;padding:9px 13px;
+  display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;font-weight:900;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)
+}
+.provider-entry svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#providerAreaView{position:fixed;inset:0;z-index:185;background:linear-gradient(180deg,#eaf7ff 0%,#f8fcff 100%);overflow:auto;padding:calc(env(safe-area-inset-top) + 14px) 14px calc(env(safe-area-inset-bottom) + 26px)}
+#providerAreaView[hidden]{display:none!important}
+.pa-shell{width:min(100%,480px);margin:auto}
+.pa-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.pa-back{width:38px;height:38px;border:1px solid #dbe7ee;background:#fff;border-radius:50%;font-size:24px;line-height:1;color:#153458;box-shadow:0 5px 16px rgba(21,52,88,.06)}
+.pa-brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:950;letter-spacing:.055em;color:#153458}.pa-brand img{width:34px;height:37px;object-fit:contain}
+.pa-spacer{width:38px}
+.pa-hero{padding:7px 3px 17px}.pa-kicker{font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.14em;color:#0a8b6c}.pa-hero h1{font-size:34px;line-height:1.02;letter-spacing:-.035em;margin:7px 0 9px}.pa-hero p{margin:0;color:#637b8e;font-size:13px;line-height:1.5}
+.pa-card{background:#fff;border:1px solid #dce8ef;border-radius:21px;padding:17px;margin-bottom:11px;box-shadow:0 10px 28px rgba(21,52,88,.06)}
+.pa-card h2{font-size:17px;margin:0 0 7px}.pa-card p{font-size:11px;color:#687f91;line-height:1.5;margin:0}
+.pa-steps{display:grid;gap:9px;margin-top:13px}.pa-step{display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:start}.pa-step i{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:#e3f7f1;color:#0b8a6c;font-style:normal;font-size:11px;font-weight:950}.pa-step b{display:block;font-size:11px;margin-bottom:2px}.pa-step span{font-size:10px;color:#708497;line-height:1.35}
+.pa-primary{display:flex;align-items:center;justify-content:center;width:100%;margin-top:14px;border:0;border-radius:14px;padding:13px 15px;background:#123a68;color:#fff;font-size:13px;font-weight:950;text-decoration:none}
+.pa-note{text-align:center;font-size:9px!important;margin-top:9px!important;color:#8091a0!important}
+.settings .provider-area-row span:first-child{font-size:18px}
+</style>
 </head>
 <body>
 <div class="app">
@@ -358,6 +381,10 @@
     </div>
 
     <div class="welcome-footerline" data-pt="Três ilhas. Uma rede local." data-en="Three islands. One local network.">Três ilhas. Uma rede local.</div>
+    <button id="providerEntryBtn" class="provider-entry" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3"/><path d="M5 21c.7-4.1 3-6.2 7-6.2s6.3 2.1 7 6.2"/><path d="M18 4v5M15.5 6.5h5"/></svg>
+      <span data-pt="Sou prestador" data-en="I'm a provider">Sou prestador</span>
+    </button>
   </div>
 </section>
 <section id="mainShell" class="hidden">
@@ -380,7 +407,7 @@
    <div id="resultsList" class="results-list"></div>
    <button id="postFromResults" class="not-found"><span class="people">👥</span><div><b data-t="notFound">Não encontraste o que precisas?</b><small data-t="publishRequest">Publica um pedido</small></div><span>›</span></button>
   </section>
-  <section id="profile" class="screen"><div class="page-title"><h1 data-t="profile">Mais</h1></div><div class="card settings"><button id="bookingsBtn">📅<div><b data-t="myBookings">Pedidos de reserva</b><small data-t="myBookingsSub">Consulta os pedidos feitos neste dispositivo</small></div>›</button><button id="changeIslandBtn">📍<div><b data-t="island">Ilha</b><small id="profileIsland2">Pico</small></div>›</button><button id="contactTrianguloBtn" class="profile-row"><span>✉️</span><div><b data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</b><small data-pt="Envia-nos uma mensagem" data-en="Send us a message">Envia-nos uma mensagem</small></div><span>›</span></button><button id="installBtn">⬇️<div><b data-t="install">Instalar TRIÂNGULO</b><small data-t="installSub">Adicionar ao ecrã principal</small></div>›</button></div></section>
+  <section id="profile" class="screen"><div class="page-title"><h1 data-t="profile">Mais</h1></div><div class="card settings"><button id="bookingsBtn">📅<div><b data-t="myBookings">Pedidos de reserva</b><small data-t="myBookingsSub">Consulta os pedidos feitos neste dispositivo</small></div>›</button><button id="changeIslandBtn">📍<div><b data-t="island">Ilha</b><small id="profileIsland2">Pico</small></div>›</button><button id="providerAreaBtn" class="profile-row provider-area-row"><span>🧰</span><div><b data-pt="Área do prestador" data-en="Provider area">Área do prestador</b><small data-pt="Pedidos e acesso para prestadores" data-en="Requests and provider access">Pedidos e acesso para prestadores</small></div><span>›</span></button><button id="contactTrianguloBtn" class="profile-row"><span>✉️</span><div><b data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</b><small data-pt="Envia-nos uma mensagem" data-en="Send us a message">Envia-nos uma mensagem</small></div><span>›</span></button><button id="installBtn">⬇️<div><b data-t="install">Instalar TRIÂNGULO</b><small data-t="installSub">Adicionar ao ecrã principal</small></div>›</button></div></section>
  <section id="bookings" class="screen"><div class="page-title"><button class="back" type="button" data-profile aria-label="Voltar">‹</button><h1 data-t="myBookings">Pedidos de reserva</h1><span></span></div><div id="bookingList" class="stack"></div></section>
  </main>
  <nav class="bottom-nav"><button data-nav="home" class="active"><span id="icoHome"></span><small data-t="home">Início</small></button><button data-nav="explore"><span id="icoSearch"></span><small data-t="explore">Explorar</small></button><button id="publishNav" class="publish"><span id="icoPlus"></span><small data-t="publish">Publicar</small></button><button id="helpNav"><span id="icoChat"></span><small data-t="help">Ajuda</small></button><button data-nav="profile"><span id="icoUser"></span><small data-t="profile">Mais</small></button></nav>
@@ -417,6 +444,37 @@
 <p class="form-note" data-pt="O teu email é usado apenas para responder ao teu contacto." data-en="Your email is used only to reply to your enquiry.">O teu email é usado apenas para responder ao teu contacto.</p>
 </form></aside>
 <aside id="bookSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><div id="bookContent"></div></aside>
+<section id="providerAreaView" hidden>
+  <div class="pa-shell">
+    <div class="pa-top">
+      <button id="providerAreaBack" class="pa-back" type="button" aria-label="Voltar">‹</button>
+      <div class="pa-brand"><img src="/logo.svg" alt="">TRIÂNGULO</div>
+      <div class="pa-spacer"></div>
+    </div>
+    <div class="pa-hero">
+      <div class="pa-kicker" data-pt="Para prestadores" data-en="For providers">Para prestadores</div>
+      <h1 data-pt="Área do prestador" data-en="Provider area">Área do prestador</h1>
+      <p data-pt="O cliente continua no centro da app. Aqui encontras apenas o que precisas para trabalhar com pedidos do TRIÂNGULO." data-en="The customer remains at the centre of the app. Here you only see what you need to handle TRIÂNGULO requests.">O cliente continua no centro da app. Aqui encontras apenas o que precisas para trabalhar com pedidos do TRIÂNGULO.</p>
+    </div>
+
+    <div class="pa-card">
+      <h2 data-pt="Já és prestador?" data-en="Already a provider?">Já és prestador?</h2>
+      <p data-pt="Quando receberes um pedido, o email ou SMS abre-o diretamente nesta app. Aí podes aceitar ou recusar sem procurar menus." data-en="When you receive a request, the email or SMS opens it directly in this app. You can accept or decline without searching through menus.">Quando receberes um pedido, o email ou SMS abre-o diretamente nesta app. Aí podes aceitar ou recusar sem procurar menus.</p>
+      <div class="pa-steps">
+        <div class="pa-step"><i>1</i><div><b data-pt="Recebes o pedido" data-en="Receive the request">Recebes o pedido</b><span data-pt="Por email e, quando disponível, SMS." data-en="By email and, when available, SMS.">Por email e, quando disponível, SMS.</span></div></div>
+        <div class="pa-step"><i>2</i><div><b data-pt="Abres na app" data-en="Open it in the app">Abres na app</b><span data-pt="Vês ilha, data, hora e descrição." data-en="See island, date, time and description.">Vês ilha, data, hora e descrição.</span></div></div>
+        <div class="pa-step"><i>3</i><div><b data-pt="Aceitas ou recusas" data-en="Accept or decline">Aceitas ou recusas</b><span data-pt="O cliente é avisado automaticamente." data-en="The customer is notified automatically.">O cliente é avisado automaticamente.</span></div></div>
+      </div>
+    </div>
+
+    <div class="pa-card">
+      <h2 data-pt="Ainda não tens perfil?" data-en="Don't have a profile yet?">Ainda não tens perfil?</h2>
+      <p data-pt="Cria gratuitamente o teu perfil para mais clientes do Pico, Faial e São Jorge te encontrarem." data-en="Create your profile for free so more customers on Pico, Faial and São Jorge can find you.">Cria gratuitamente o teu perfil para mais clientes do Pico, Faial e São Jorge te encontrarem.</p>
+      <a class="pa-primary" href="/candidatura-prestador.html" data-pt="Criar perfil de prestador →" data-en="Create provider profile →">Criar perfil de prestador →</a>
+      <p class="pa-note" data-pt="A candidatura continua a ser revista antes de o perfil aparecer aos clientes." data-en="Applications are reviewed before the profile appears to customers.">A candidatura continua a ser revista antes de o perfil aparecer aos clientes.</p>
+    </div>
+  </div>
+</section>
 <section id="providerRequestView" hidden>
   <div class="pr-app-shell">
     <div class="pr-app-top">
@@ -610,7 +668,7 @@ function renderBookings(){
  if(!items.length){$('#bookingList').innerHTML='<div class="empty"><div class="big">📅</div><h3>'+(lang==='pt'?'Ainda não tens pedidos de reserva.':'No booking requests yet.')+'</h3><p>'+(lang==='pt'?'Os pedidos feitos neste dispositivo aparecem aqui.':'Requests made on this device appear here.')+'</p></div>';return}
  $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>'<div class="card booking-local"><b>'+escapeHtml(x.provider||'TRIÂNGULO')+'</b><small>📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+' · '+escapeHtml(x.time||'')+'</small><span>'+(lang==='pt'?'Pedido enviado':'Request sent')+'</span></div>').join('')+'</div>';
 }
-function openProviderSignup(){location.href='/'}
+function openProviderSignup(){openProviderArea()}
 $('#bookingsBtn').onclick=()=>{renderBookings();showScreen('bookings')};
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#installBtn').onclick=async()=>{
@@ -623,6 +681,25 @@ $('#installBtn').onclick=async()=>{
  }
  $('#bookContent').innerHTML='<h2>'+(lang==='pt'?'Instalar TRIÂNGULO':'Install TRIÂNGULO')+'</h2><p class="demo">'+(lang==='pt'?'Abre o menu do navegador e escolhe “Instalar app” ou “Adicionar ao ecrã principal”.':'Open the browser menu and choose “Install app” or “Add to Home Screen”.')+'</p>'; openSheet('bookSheet');
 };
+function openProviderArea(){
+  $('#splash').classList.add('hidden');
+  $('#mainShell').classList.add('hidden');
+  $('#providerRequestView').hidden=true;
+  $('#providerAreaView').hidden=false;
+}
+function closeProviderArea(){
+  $('#providerAreaView').hidden=true;
+  history.replaceState({},'',location.pathname);
+  if(store.get('tri_client_welcome_v2','')==='1'){
+    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+  }else{
+    $('#mainShell').classList.add('hidden');$('#splash').classList.remove('hidden');
+  }
+}
+$('#providerEntryBtn').onclick=openProviderArea;
+$('#providerAreaBtn').onclick=openProviderArea;
+$('#providerAreaBack').onclick=closeProviderArea;
+
 let activeProviderBookingToken=null;
 function providerAppHideAll(){
   $('#prAppLoading').hidden=true;
