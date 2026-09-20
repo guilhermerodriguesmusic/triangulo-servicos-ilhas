@@ -29,7 +29,7 @@ h1{font-size:30px;margin:8px 0 6px}h2{font-size:20px;margin:28px 0 8px}p,li{font
 <h2>Your rights</h2><p>Under the GDPR you may request access, correction, erasure, restriction, objection or portability where applicable, and withdraw consent where processing relies on it. You may also complain to the Portuguese data protection authority (CNPD).</p>
 <h2>Contact</h2><p>To exercise your rights or ask privacy questions, use the <strong>“Contact TRIÂNGULO”</strong> form available in the app.</p></section>
 <a class="back" href="./">← TRIÂNGULO</a></main><script>
-const qs=new URLSearchParams(location.search);let lang=qs.get('lang')==='en'?'en':'pt';
-function apply(){document.body.classList.toggle('en',lang==='en');document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang))}
+const qs=new URLSearchParams(location.search);let lang=qs.get('lang')==='en'?'en':(qs.get('lang')==='pt'?'pt':(localStorage.getItem('tri_lang')||'pt'));
+function apply(){localStorage.setItem('tri_lang',lang);document.documentElement.lang=lang;document.body.classList.toggle('en',lang==='en');document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));document.title=lang==='en'?'TRIÂNGULO — Privacy Policy':'TRIÂNGULO — Privacidade'}
 document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;apply()});apply();
 </script></body></html>
