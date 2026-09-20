@@ -84,7 +84,7 @@ const token=new URLSearchParams(location.search).get('token');
 function setLang(v){
   lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;
   $$('[data-pt]').forEach(x=>x.textContent=x.dataset[v]||x.textContent);
-  $('#pt').classList.toggle('active',v==='pt');$('#en').classList.toggle('active',v==='en');
+  $('#pt').classList.toggle('active',v==='pt');$('#en').classList.toggle('active',v==='en');document.title=v==='pt'?'Responder ao pedido — TRIÂNGULO':'Reply to request — TRIÂNGULO';
 }
 $('#pt').onclick=()=>setLang('pt');$('#en').onclick=()=>setLang('en');
 
