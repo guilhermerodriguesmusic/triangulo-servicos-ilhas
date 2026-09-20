@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-security-v6';
+const CACHE='triangulo-pwa-20260920-provider-password-v7';
 const CORE=[
   '/',
   '/index.html',
