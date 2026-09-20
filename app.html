@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="security-sync-v4-20260920">
+<meta name="triangulo-build" content="secure-provider-session-v5-20260920">
 
 <style id="backend-v1-styles">
 
@@ -929,7 +929,7 @@ $('#installBtn').onclick=async()=>{
  }
  $('#bookContent').innerHTML='<h2>'+(lang==='pt'?'Instalar TRIÂNGULO':'Install TRIÂNGULO')+'</h2><p class="demo">'+(lang==='pt'?'Abre o menu do navegador e escolhe “Instalar app” ou “Adicionar ao ecrã principal”.':'Open the browser menu and choose “Install app” or “Add to Home Screen”.')+'</p>'; openSheet('bookSheet');
 };
-let providerAccountData=null;
+let providerAccountData=null,providerSessionToken=store.get('tri_provider_session','');
 
 function paShow(id){
   ['paLoading','paSignedOut','paNotProvider','paDashboard'].forEach(x=>{const el=$('#'+x);if(el)el.hidden=x!==id});
@@ -961,16 +961,13 @@ function closeProviderArea(){
 }
 async function loadProviderAccount(){
   paShow('paLoading');
-  const sessionRes=await db.auth.getSession();
-  const session=sessionRes.data&&sessionRes.data.session;
-  if(!session){providerAccountData=null;paShow('paSignedOut');return}
-  const {data,error}=await db.rpc('provider_account_context');
-  if(error||!data){console.error('provider_account_context',error);paShow('paSignedOut');return}
-  if(!data.ok&&data.state==='not_provider'){
-    $('#paNotProviderText').textContent=lang==='pt'?'O email '+(data.email||'')+' ainda não está associado a um perfil de prestador aprovado.':'The email '+(data.email||'')+' is not yet linked to an approved provider profile.';
-    paShow('paNotProvider');return
+  providerSessionToken=store.get('tri_provider_session','');
+  if(!providerSessionToken){providerAccountData=null;paShow('paSignedOut');return}
+  const {data,error}=await db.rpc('provider_session_context',{p_session_token:providerSessionToken});
+  if(error||!data||!data.ok){
+    if(error)console.error('provider_session_context',error);
+    providerAccountData=null;providerSessionToken='';store.set('tri_provider_session','');paShow('paSignedOut');return
   }
-  if(!data.ok){paShow('paSignedOut');return}
   providerAccountData=data;
   renderProviderDashboard(data);
   paShow('paDashboard');
@@ -1028,8 +1025,9 @@ function syncProviderPrice(){
   $('#paPrice').disabled=quote;if(quote)$('#paPrice').value='';
 }
 async function providerSignOut(){
-  await db.auth.signOut();
-  providerAccountData=null;
+  const token=store.get('tri_provider_session','');
+  if(token){try{await db.rpc('provider_logout',{p_session_token:token})}catch{}}
+  providerSessionToken='';providerAccountData=null;store.set('tri_provider_session','');
   $('#providerLoginStatus').textContent='';
   paShow('paSignedOut');
 }
@@ -1043,11 +1041,10 @@ $('#paPricingType').onchange=syncProviderPrice;
 $('#providerLoginBtn').onclick=async()=>{
   const email=$('#providerLoginEmail').value.trim(),status=$('#providerLoginStatus');
   if(!email||!email.includes('@')){status.textContent=lang==='pt'?'Indica um email válido.':'Enter a valid email.';return}
-  status.textContent=lang==='pt'?'A enviar ligação…':'Sending sign-in link…';
-  const redirect=location.origin+'/app.html?prestador=1';
-  const {error}=await db.auth.signInWithOtp({email,options:{emailRedirectTo:redirect,shouldCreateUser:true}});
-  if(error){console.error(error);status.textContent=lang==='pt'?'Não foi possível enviar a ligação. Tenta novamente.':'Could not send the link. Please try again.';return}
-  status.textContent=lang==='pt'?'Ligação enviada. Abre o email neste dispositivo para entrares.':'Link sent. Open the email on this device to sign in.';
+  status.textContent=lang==='pt'?'A enviar ligação segura…':'Sending secure sign-in link…';
+  const {data,error}=await db.rpc('request_provider_login',{p_email:email});
+  if(error||!data||!data.ok){console.error(error);status.textContent=lang==='pt'?'Não foi possível enviar a ligação. Tenta novamente.':'Could not send the link. Please try again.';return}
+  status.textContent=lang==='pt'?'Se este email estiver associado a um perfil aprovado, vais receber uma ligação de acesso.':'If this email is linked to an approved profile, you will receive a sign-in link.';
 };
 $('#paPauseBtn').onclick=async()=>{
   if(!providerAccountData)return;
@@ -1059,7 +1056,7 @@ $('#paPauseBtn').onclick=async()=>{
     service_islands:p.service_islands||[],categories:p.categories||[],other_service:p.other_service,status:next
   };
   $('#paPauseBtn').disabled=true;
-  const {data,error}=await db.rpc('provider_update_profile',{p_payload:payload});
+  const {data,error}=await db.rpc('provider_session_update_profile',{p_session_token:providerSessionToken,p_payload:payload});
   $('#paPauseBtn').disabled=false;
   if(error||!data||!data.ok){toast(lang==='pt'?'Não foi possível alterar o perfil.':'Could not update profile.');return}
   toast(next==='paused'?(lang==='pt'?'Perfil pausado':'Profile paused'):(lang==='pt'?'Perfil reativado ✓':'Profile reactivated ✓'));
@@ -1083,16 +1080,21 @@ $('#providerProfileForm').onsubmit=async e=>{
     status:(providerAccountData.profile&&providerAccountData.profile.status)||'active'
   };
   status.textContent=lang==='pt'?'A guardar…':'Saving…';
-  const {data,error}=await db.rpc('provider_update_profile',{p_payload:payload});
+  const {data,error}=await db.rpc('provider_session_update_profile',{p_session_token:providerSessionToken,p_payload:payload});
   if(error||!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível guardar.':'Could not save.');return}
   status.textContent=lang==='pt'?'Alterações guardadas ✓':'Changes saved ✓';
   await loadProviderAccount();loadProviders();
 };
-db.auth.onAuthStateChange((event,session)=>{
-  if($('#providerAreaView')&&!$('#providerAreaView').hidden){
-    setTimeout(()=>loadProviderAccount(),0);
-  }
-});
+async function exchangeProviderLoginLink(token){
+  if(!token)return false;
+  const {data,error}=await db.rpc('exchange_provider_login',{p_token:token});
+  if(error||!data||!data.ok){console.error('exchange_provider_login',error);return false}
+  providerSessionToken=data.session_token;store.set('tri_provider_session',providerSessionToken);
+  history.replaceState({},'',location.pathname+'?prestador=1');
+  await openProviderArea();
+  toast(lang==='pt'?'Sessão iniciada ✓':'Signed in ✓');
+  return true;
+}
 
 let activeProviderBookingToken=null;
 function providerAppHideAll(){
@@ -1160,7 +1162,8 @@ function init(){
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),providerLoginToken=qs.get('provider_login_token'),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ if(providerLoginToken){exchangeProviderLoginLink(providerLoginToken).then(ok=>{if(!ok){history.replaceState({},'',location.pathname+'?prestador=1');openProviderSignup();toast(lang==='pt'?'Ligação inválida ou expirada.':'Invalid or expired link.')}});return}
  if(bookingToken){openProviderBookingInApp(bookingToken);return}
  if(providerEntry){openProviderSignup();return}
  if(location.hash==='#app'||store.get('tri_client_welcome_v4','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
