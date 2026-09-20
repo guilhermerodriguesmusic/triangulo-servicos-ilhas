@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="home-polish-v5-20260920">
+<meta name="triangulo-build" content="home-micro-polish-v6-20260920">
 
 <style id="backend-v1-styles">
 
@@ -423,6 +423,14 @@
   font-weight:800
 }
 </style>
+<style id="home-micro-polish-v6">
+.island-select{margin-bottom:-2px}
+.island-select button{display:inline-flex;align-items:center;gap:5px}
+.island-select .pin-icon{width:14px;height:14px;fill:none;stroke:#0b8a6b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.home-title{margin-top:8px!important}
+.urgent .bolt{display:grid;place-items:center;width:30px;height:30px}
+.urgent .bolt svg{width:24px;height:24px;fill:none;stroke:#efad00;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+</style>
 </head>
 <body>
 <div class="app">
@@ -483,14 +491,14 @@
  <header class="topbar"><div class="logo-row"><img class="brand-icon" src="/logo.svg" alt="TRIÂNGULO"><span class="brand-word">TRIÂNGULO</span></div><div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div></header>
  <main>
   <section id="home" class="screen active">
-   <div class="home-hero"><div class="island-select"><button id="islandPill">📍 <span>Pico</span>⌄</button></div><div class="home-title"><h1 data-t="whatNeed">O que precisas?</h1><p data-t="homeSub">Serviços locais para o teu dia a dia.</p></div><form id="searchForm" class="searchbar"><span>⌕</span><input id="searchInput" placeholder="Limpeza, jardim, aulas..."><button type="submit" aria-label="Pesquisar">→</button></form></div>
+   <div class="home-hero"><div class="island-select"><button id="islandPill"><svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Pico</span><span aria-hidden="true">⌄</span></button></div><div class="home-title"><h1 data-t="whatNeed">O que precisas?</h1><p data-t="homeSub">Serviços locais para o teu dia a dia.</p></div><form id="searchForm" class="searchbar"><span>⌕</span><input id="searchInput" placeholder="Limpeza, jardim, aulas..."><button type="submit" aria-label="Pesquisar">→</button></form></div>
    <div class="section-head"><h2 data-t="categories">Categorias</h2><button id="allCatsBtn" data-t="seeAll">Ver todas ›</button></div><div id="homeCats" class="category-grid">
 <button class="category c0" data-cat="0"><span>⌂</span><small>Casa</small></button>
 <button class="category c1" data-cat="1"><span>⌁</span><small>Jardim</small></button>
 <button class="category c2" data-cat="2"><span>⌕</span><small>Reparações</small></button>
 <button class="category c3" data-cat="3"><span>⇄</span><small>Mudanças</small></button>
 </div>
-   <button id="urgentBtn" class="urgent"><span class="bolt">⚡</span><div><strong data-t="needToday">Preciso de alguém hoje</strong><small data-t="urgentSub">Encontra profissionais disponíveis agora.</small></div><span class="arrow">›</span></button>
+   <button id="urgentBtn" class="urgent"><span class="bolt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 5 13h6l-1 9 9-12h-6z"/></svg></span><div><strong data-t="needToday">Preciso de alguém hoje</strong><small data-t="urgentSub">Encontra profissionais disponíveis agora.</small></div><span class="arrow">›</span></button>
   </section>
 
   <section id="explore" class="screen">
