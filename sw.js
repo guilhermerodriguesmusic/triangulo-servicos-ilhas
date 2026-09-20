@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-provider-illustration-commission';
+const CACHE='triangulo-pwa-20260920-client-welcome-v2';
 const CORE=[
   '/',
   '/index.html',
