@@ -28,10 +28,10 @@
   <h1 id="title">Rever candidatura</h1>
   <div class="details">
     <div class="row"><b>Nome</b><span id="name"></span></div>
-    <div class="row"><b>Negócio</b><span id="business"></span></div>
+    <div class="row"><b>Negócio</b><span id="business"></span></div><div class="row"><b>NIF / NIPC</b><span id="taxId"></span></div>
     <div class="row"><b>Ilha base</b><span id="base"></span></div>
     <div class="row"><b>Trabalha em</b><span id="islands"></span></div>
-    <div class="row"><b>Categorias</b><span id="categories"></span></div>
+    <div class="row"><b>Categoria principal</b><span id="primaryCategory"></span></div><div class="row"><b>Categorias</b><span id="categories"></span></div><div class="row"><b>Crédito Fundador</b><span id="founderCredit"></span></div>
     <div class="row" id="otherRow" hidden><b>Outro serviço</b><span id="otherService"></span></div>
     <div class="row"><b>Preço</b><span id="price"></span></div>
     <div class="row"><b>Disponibilidade</b><span id="availability"></span></div>
@@ -74,8 +74,8 @@ async function load(){
     const m=map[data.state]||['Candidatura processada','Esta candidatura já não está pendente.'];showMessage(m[0],m[1]);return
   }
   $('#loading').hidden=true;$('#review').hidden=false;
-  $('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#base').textContent=data.base_island||'—';
-  $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#categories').textContent=(data.categories||[]).join(', ')||'—';if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
+  $('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#taxId').textContent=data.tax_id||'—';$('#base').textContent=data.base_island||'—';
+  $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#primaryCategory').textContent=data.primary_category||'—';$('#categories').textContent=(data.categories||[]).join(', ')||'—';$('#founderCredit').textContent=(data.founder_credit_slots_left>0?'Elegível se aprovada agora · '+data.founder_credit_slots_left+' vaga(s) disponível(eis)':'Sem vaga de Crédito Fundador nesta categoria');if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
   $('#price').textContent=fmtPrice(data);$('#availability').textContent=data.availability||'—';
   $('#referred').textContent=data.referred_by||'—';$('#description').textContent=data.description||'—';
   if(mode==='approve'){$('#title').textContent='Confirmar aprovação';$('#reject').style.display='none'}
