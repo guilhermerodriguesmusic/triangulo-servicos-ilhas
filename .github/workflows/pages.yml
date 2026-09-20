@@ -92,7 +92,6 @@ jobs:
           rsync -a \
             --exclude='.git' \
             --exclude='.github' \
-            --exclude='android-app' \
             --exclude='_site' \
             ./ _site/
       - name: Upload artifact
