@@ -21,7 +21,7 @@ a{text-decoration:none;color:inherit}button{font:inherit}
 .lang button{border:0;background:transparent;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;color:#728697;cursor:pointer}
 .lang button.active{background:var(--mint);color:#087158}
 main{min-height:calc(100svh - 126px);display:grid;align-items:center;padding:28px 0 50px}
-.hero{background:#fff;border:1px solid var(--line);border-radius:28px;padding:48px;box-shadow:0 18px 45px rgba(18,58,86,.08)}
+.hero{position:relative;background:#fff;border:1px solid var(--line);border-radius:28px;padding:48px 150px 48px 48px;box-shadow:0 18px 45px rgba(18,58,86,.08)}.worker{position:absolute;right:40px;top:42px;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#e5f8f2,#e8f4ff);border:1px solid #d4e9e9;font-size:48px;box-shadow:0 10px 28px rgba(18,58,86,.08);transform:rotate(2deg)}
 .kicker{font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:11px}
 h1{font-size:clamp(43px,7vw,66px);line-height:.98;letter-spacing:-.05em;margin:0 0 18px;max-width:700px}
 .lead{font-size:18px;line-height:1.55;color:#59758a;margin:0;max-width:720px}
@@ -35,7 +35,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 24px;color:#788c9c;font-s
 @media(max-width:620px){
  .wrap{padding:0 12px}.top{height:62px}.brand{font-size:13px}.brand img{width:31px}
  main{min-height:calc(100svh - 112px);padding:14px 0 36px}
- .hero{padding:29px 20px;border-radius:21px}
+ .hero{padding:29px 20px;border-radius:21px}.worker{width:66px;height:66px;right:16px;top:18px;font-size:34px}h1{padding-right:62px}
  h1{font-size:41px}.lead{font-size:15px}
  .cta{width:100%;margin-top:22px}
  .points{grid-template-columns:1fr;gap:6px}.point{padding:10px 11px}
@@ -52,6 +52,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 24px;color:#788c9c;font-s
 <main>
   <div class="wrap">
     <section class="hero">
+      <div class="worker" aria-hidden="true">🧑‍🔧</div>
       <div class="kicker" data-pt="Para prestadores de serviços" data-en="For service providers">Para prestadores de serviços</div>
       <h1 data-pt="Fazes um serviço nas ilhas?" data-en="Do you provide a service on the islands?">Fazes um serviço nas ilhas?</h1>
       <p class="lead" data-pt="Jardinagem, limpezas, reparações, transportes, aulas, tecnologia, fotografia, animais ou outra área — queremos que os clientes te consigam encontrar." data-en="Gardening, cleaning, repairs, transport, lessons, technology, photography, pets or another service — we want clients to be able to find you.">Jardinagem, limpezas, reparações, transportes, aulas, tecnologia, fotografia, animais ou outra área — queremos que os clientes te consigam encontrar.</p>
