@@ -33,13 +33,13 @@
       <button id="accept" class="btn yes" data-pt="✓ Aceitar serviço" data-en="✓ Accept job">✓ Aceitar serviço</button>
       <button id="decline" class="btn no" data-pt="Não posso aceitar" data-en="I can't accept">Não posso aceitar</button>
     </div>
-    <p class="note" data-pt="O cliente só recebe confirmação depois de aceitares." data-en="The customer only receives confirmation after you accept.">O cliente só recebe confirmação depois de aceitares.</p>
+    <p class="note" data-pt="Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral." data-en="When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.">Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.</p>
   </div>
 
   <div id="accepted" class="message">
     <div class="icon">✓</div>
     <h2 data-pt="Serviço aceite" data-en="Job accepted">Serviço aceite</h2>
-    <p data-pt="A reserva ficou confirmada e o cliente será avisado automaticamente." data-en="The booking is confirmed and the customer will be notified automatically.">A reserva ficou confirmada e o cliente será avisado automaticamente.</p>
+    <p data-pt="O pedido foi aceite. O cliente será convidado a concluir o pagamento no TRIÂNGULO; até lá, os contactos permanecem protegidos." data-en="The request was accepted. The customer will be asked to complete payment through TRIÂNGULO; until then, contact details remain protected.">O pedido foi aceite. O cliente será convidado a concluir o pagamento no TRIÂNGULO; até lá, os contactos permanecem protegidos.</p>
     <div id="clientContact" class="contact" hidden>
       <b data-pt="Contacto do cliente" data-en="Customer contact">Contacto do cliente</b>
       <div id="clientName"></div>
@@ -111,7 +111,7 @@ async function respond(action){
   const {data,error}=await db.rpc('respond_to_booking',{p_token:token,p_action:action});
   if(error||!data||!data.ok){$('#accept').disabled=false;$('#decline').disabled=false;showState('invalid');return}
   showState(data.state,data);
-  if(data.state==='confirmed'&&(data.client_name||data.client_email||data.client_phone)){
+  if(data.state==='confirmed'&&data.payment_status==='paid'&&(data.client_name||data.client_email||data.client_phone)){
     $('#clientContact').hidden=false;
     $('#clientName').textContent=data.client_name||'';
     $('#clientEmail').textContent=data.client_email||'';
