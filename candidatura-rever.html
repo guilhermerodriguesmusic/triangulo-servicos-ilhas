@@ -6,14 +6,23 @@
 <title>Rever candidatura — TRIÂNGULO</title>
 <link rel="icon" href="logo.svg">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:620px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.04em;margin-bottom:18px}.brand img{width:40px}.card{background:#fff;border:1px solid #dce9ef;border-radius:22px;padding:24px}.state{font-size:12px;font-weight:950;color:#0a8068;text-transform:uppercase;letter-spacing:.08em}.card h1{font-size:28px;margin:8px 0 18px}.details{background:#f7fafc;border-radius:15px;padding:15px}.row{display:grid;grid-template-columns:130px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #e5eef2;font-size:13px}.row:last-child{border:0}.row b{color:#668095}.desc{white-space:pre-wrap}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.btn{border:0;border-radius:13px;padding:14px;font-weight:900;font-size:14px;cursor:pointer}.yes{background:#108b6e;color:#fff}.no{background:#eef3f6;color:#37566d}.btn:disabled{opacity:.5}.rejectbox{display:none;margin-top:12px}.rejectbox.show{display:block}.rejectbox textarea{width:100%;min-height:90px;border:1px solid #d5e3ea;border-radius:12px;padding:11px;font:inherit}.message{text-align:center;padding:25px 5px}.message h2{margin:8px 0}.message p{color:#657e91}.loading{text-align:center;color:#718799;padding:40px 0}.footer{text-align:center;font-size:11px;color:#7c91a2;padding:18px}@media(max-width:520px){.row{grid-template-columns:95px 1fr}.actions{grid-template-columns:1fr}}
+*{box-sizing:border-box}body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:620px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.04em;margin-bottom:18px}.brand img{width:40px}.card{background:#fff;border:1px solid #dce9ef;border-radius:22px;padding:24px}.state{font-size:12px;font-weight:950;color:#0a8068;text-transform:uppercase;letter-spacing:.08em}.card h1{font-size:28px;margin:8px 0 18px}.details{background:#f7fafc;border-radius:15px;padding:15px}.row{display:grid;grid-template-columns:130px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid #e5eef2;font-size:13px}.row:last-child{border:0}.row b{color:#668095}.desc{white-space:pre-wrap}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.btn{border:0;border-radius:13px;padding:14px;font-weight:900;font-size:14px;cursor:pointer}.yes{background:#108b6e;color:#fff}.no{background:#eef3f6;color:#37566d}.btn:disabled{opacity:.5}.rejectbox{display:none;margin-top:12px}.rejectbox.show{display:block}.rejectbox textarea{width:100%;min-height:90px;border:1px solid #d5e3ea;border-radius:12px;padding:11px;font:inherit}.loginbox{display:none}.loginbox.show{display:block}.loginbox input{width:100%;border:1px solid #d5e3ea;border-radius:12px;padding:12px;margin:6px 0;font:inherit}.loginbox .btn{width:100%;margin-top:6px}.login-note{font-size:11px;color:#718799;line-height:1.45}.message{text-align:center;padding:25px 5px}.message h2{margin:8px 0}.message p{color:#657e91}.loading{text-align:center;color:#718799;padding:40px 0}.footer{text-align:center;font-size:11px;color:#7c91a2;padding:18px}@media(max-width:520px){.row{grid-template-columns:95px 1fr}.actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="brand"><img src="logo.svg" alt="">TRIÂNGULO</div>
 <section class="card">
-<div id="loading" class="loading">A carregar candidatura…</div>
+<div id="loading" class="loading">A verificar acesso…</div>
+<div id="loginbox" class="loginbox">
+  <div class="state">Acesso administrativo</div>
+  <h1>Rever candidatura</h1>
+  <p class="login-note">Por segurança, é necessário iniciar sessão como administrador antes de abrir os dados da candidatura.</p>
+  <input id="adminEmail" type="email" autocomplete="email" placeholder="Email">
+  <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Password">
+  <button id="adminLogin" class="btn yes" type="button">Entrar e rever</button>
+  <p id="loginMsg" class="login-note"></p>
+</div>
 <div id="review" hidden>
   <div class="state">Candidatura de prestador</div>
   <h1 id="title">Rever candidatura</h1>
@@ -26,7 +35,6 @@
     <div class="row" id="otherRow" hidden><b>Outro serviço</b><span id="otherService"></span></div>
     <div class="row"><b>Preço</b><span id="price"></span></div>
     <div class="row"><b>Disponibilidade</b><span id="availability"></span></div>
-    <div class="row"><b>Fundador</b><span id="founder"></span></div>
     <div class="row"><b>Recomendado por</b><span id="referred"></span></div>
     <div class="row"><b>Descrição</b><span id="description" class="desc"></span></div>
   </div>
@@ -47,12 +55,20 @@
 const $=s=>document.querySelector(s);
 const db=window.supabase.createClient('https://cozamrvrhmwgxbuubjub.supabase.co','sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9');
 const qs=new URLSearchParams(location.search),token=qs.get('token'),mode=qs.get('mode');
-function showMessage(title,text){$('#loading').hidden=true;$('#review').hidden=true;$('#message').hidden=false;$('#message').innerHTML='<div style="font-size:40px">✓</div><h2>'+title+'</h2><p>'+text+'</p>'}
+function showMessage(title,text){$('#loading').hidden=true;$('#loginbox').classList.remove('show');$('#review').hidden=true;$('#message').hidden=false;$('#message').innerHTML='<div style="font-size:40px">✓</div><h2>'+title+'</h2><p>'+text+'</p>'}
 function fmtPrice(d){if(d.pricing_type==='quote'||d.price==null)return 'Sob orçamento';return d.price+' € · '+d.pricing_type}
 async function load(){
   if(!token){showMessage('Link inválido','Esta ligação não é válida.');return}
+  $('#message').hidden=true;$('#review').hidden=true;$('#loginbox').classList.remove('show');$('#loading').hidden=false;
+  const sessionRes=await db.auth.getSession();
+  if(!sessionRes.data||!sessionRes.data.session){
+    $('#loading').hidden=true;$('#loginbox').classList.add('show');return
+  }
   const {data,error}=await db.rpc('provider_review_context',{p_token:token});
-  if(error||!data||!data.ok){showMessage('Link inválido','Esta ligação não é válida.');return}
+  if(error||!data||!data.ok){
+    if(data&&data.state==='unauthorized'){showMessage('Sem autorização','Esta conta não tem acesso administrativo.');return}
+    showMessage('Não foi possível abrir','Confirma que estás autenticado como administrador e que o link ainda é válido.');return
+  }
   if(data.state!=='pending'){
     const map={approved:['Já aprovada','Esta candidatura já foi aprovada.'],rejected:['Já recusada','Esta candidatura já foi recusada.'],expired:['Link expirado','Este link de revisão expirou.']};
     const m=map[data.state]||['Candidatura processada','Esta candidatura já não está pendente.'];showMessage(m[0],m[1]);return
@@ -60,7 +76,7 @@ async function load(){
   $('#loading').hidden=true;$('#review').hidden=false;
   $('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#base').textContent=data.base_island||'—';
   $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#categories').textContent=(data.categories||[]).join(', ')||'—';if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
-  $('#price').textContent=fmtPrice(data);$('#availability').textContent=data.availability||'—';$('#founder').textContent=data.founder_program?'Sim':'Não';
+  $('#price').textContent=fmtPrice(data);$('#availability').textContent=data.availability||'—';
   $('#referred').textContent=data.referred_by||'—';$('#description').textContent=data.description||'—';
   if(mode==='approve'){$('#title').textContent='Confirmar aprovação';$('#reject').style.display='none'}
   if(mode==='reject'){$('#title').textContent='Confirmar recusa';$('#approve').style.display='none';$('#rejectbox').classList.add('show')}
@@ -75,6 +91,17 @@ async function act(action){
   else if(data.state==='expired')showMessage('Link expirado','Este link de revisão expirou.');
   else showMessage('Candidatura processada','Esta candidatura já tinha sido processada.');
 }
-$('#approve').onclick=()=>act('approve');$('#reject').onclick=()=>act('reject');load();
+$('#approve').onclick=()=>act('approve');$('#reject').onclick=()=>act('reject');
+$('#adminLogin').onclick=async()=>{
+  const email=$('#adminEmail').value.trim(),password=$('#adminPassword').value,msg=$('#loginMsg');
+  if(!email||!password){msg.textContent='Indica email e password.';return}
+  msg.textContent='A entrar…';$('#adminLogin').disabled=true;
+  const {error}=await db.auth.signInWithPassword({email,password});
+  $('#adminLogin').disabled=false;
+  if(error){msg.textContent='Não foi possível iniciar sessão.';return}
+  msg.textContent='';await load();
+};
+db.auth.onAuthStateChange(()=>{});
+load();
 </script>
 </body></html>
