@@ -153,6 +153,8 @@ jobs:
           ! grep -q "Termos do Beta" <<<"$terms"
           grep -q "Política de Privacidade" <<<"$privacy"
           grep -q "Responsável pelo tratamento" <<<"$privacy"
+          grep -q "Guilherme Águas" <<<"$privacy"
+          grep -q "Guilherme Águas" <<<"$terms"
           ! grep -q "Rascunho operacional" <<<"$privacy"
           grep -q "Encontra. Pede. Resolve." <<<"$app"
           grep -q "ONDE PRECISAS DE AJUDA?" <<<"$app"
