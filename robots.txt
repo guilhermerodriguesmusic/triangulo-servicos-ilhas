@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /candidatura-rever.html
+Disallow: /reserva-responder.html
+
+Sitemap: https://trianguloacores.pt/sitemap.xml
