@@ -120,6 +120,8 @@ jobs:
           app="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
+          robots="$(fetch "$base/robots.txt?verify=$GITHUB_SHA")"
+          sitemap="$(fetch "$base/sitemap.xml?verify=$GITHUB_SHA")"
 
           grep -q "TRIÂNGULO" <<<"$index"
           grep -q "Prestador de Serviços Fundador" <<<"$providers"
@@ -129,11 +131,22 @@ jobs:
           grep -q "stripe-create-checkout" <<<"$app"
           grep -q "Ativar pagamentos" <<<"$app"
           grep -q "Pagar agora" <<<"$app"
+          grep -q "loadAppConfig" <<<"$app"
+          grep -q "Pagamentos em breve" <<<"$app"
           grep -q "Termos de Utilização" <<<"$terms"
           grep -q "Política de Privacidade" <<<"$privacy"
           grep -q '"start_url": "/app.html"' <<<"$manifest"
           grep -q '"display": "standalone"' <<<"$manifest"
           grep -q "triangulo-pwa-" <<<"$sw"
+          grep -q "Sitemap: https://trianguloacores.pt/sitemap.xml" <<<"$robots"
+          grep -q "https://trianguloacores.pt/prestadores.html" <<<"$sitemap"
+
+          fetch "$base/assets/pico-real.jpg?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/assets/pico-hero-real.jpg?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/assets/faial-real.jpg?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/assets/sao-jorge-real.jpg?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icons/triangulo-blue-192.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icons/triangulo-blue-512.png?verify=$GITHUB_SHA" >/dev/null
 
           if curl --fail --silent --location "$base/checkout-teste-20260920.html?verify=$GITHUB_SHA" >/dev/null 2>&1; then
             echo "Temporary checkout test page is still publicly reachable"
