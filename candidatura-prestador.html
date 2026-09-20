@@ -70,8 +70,6 @@
         <label><span data-pt="Disponibilidade" data-en="Availability">Disponibilidade</span><input name="availability" maxlength="500" data-ph-pt="Ex.: Seg–Sex, 09:00–18:00" data-ph-en="E.g. Mon–Fri, 09:00–18:00"></label>
         <label><span data-pt="Foto ou logótipo" data-en="Photo or logo">Foto ou logótipo</span><input id="providerPhoto" type="file" accept="image/jpeg,image/png,image/webp"><img id="providerPhotoPreview" class="photo-preview" alt=""></label>
       </div>
-      <label class="check" style="margin-top:12px"><input type="checkbox" name="today"><span data-pt="Estou disponível hoje" data-en="I'm available today">Estou disponível hoje</span></label>
-
       <div class="section-title" data-pt="4 · Só uma última pergunta" data-en="4 · One last question">4 · Só uma última pergunta</div>
       <label><span data-pt="Como conheceste o TRIÂNGULO?" data-en="How did you hear about TRIÂNGULO?">Como conheceste o TRIÂNGULO?</span>
         <select name="discovery_source">
@@ -166,7 +164,7 @@ $('#providerForm').onsubmit=async e=>{
     email:d.email.trim(), phone:d.phone&&d.phone.trim()?d.phone.trim():null,
     base_island:islands[0], service_islands:islands, categories:cats, other_service:cats.includes('other')?d.other_service.trim():null, description:d.description.trim(),
     pricing_type:d.pricing_type, price:d.pricing_type==='quote'||!d.price?null:Number(d.price),
-    availability:d.availability&&d.availability.trim()?d.availability.trim():null, available_today:!!d.today,
+    availability:d.availability&&d.availability.trim()?d.availability.trim():null, available_today:false,
     photo_data:photoData, website:d.website&&d.website.trim()?d.website.trim():null,
     referred_by:d.discovery_source&&d.discovery_source.trim()?d.discovery_source.trim():null ,
     consent_commission:!!d.consent_all, consent_terms:!!d.consent_all, consent_privacy:!!d.consent_all,
