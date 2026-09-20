@@ -619,7 +619,7 @@
 
       <div class="pa-card">
         <div class="pa-status-line">
-          <div><span id="paStatusBadge" class="pa-status active" data-pt="Perfil ativo" data-en="Profile active">Perfil ativo</span><p id="paStatusHelp" data-pt="O teu perfil aparece aos clientes." data-en="Your profile is visible to customers.">O teu perfil aparece aos clientes.</p></div>
+          <div><span id="paStatusBadge" class="pa-status active" data-pt="Perfil ativo" data-en="Profile active">Perfil ativo</span><span id="paFounderCredit" class="pa-status active" style="margin-left:6px;display:none"></span><p id="paStatusHelp" data-pt="O teu perfil aparece aos clientes." data-en="Your profile is visible to customers.">O teu perfil aparece aos clientes.</p></div>
           <button id="paPauseBtn" class="pa-outline" type="button">Pausar</button>
         </div>
       </div>
@@ -1001,6 +1001,7 @@ function renderProviderDashboard(data){
   $('#paAccountEmail').textContent=data.email||'';
   $('#paStatusBadge').textContent=providerStatusLabel(p.status);
   $('#paStatusBadge').classList.toggle('paused',p.status!=='active');
+  const fc=Number(data.founder_credit_cents||0),fcEl=$('#paFounderCredit');fcEl.style.display=fc>0?'inline-flex':'none';fcEl.textContent=fc>0?(lang==='pt'?'Crédito Fundador · €'+(fc/100).toFixed(2):'Founding Credit · €'+(fc/100).toFixed(2)):'';
   $('#paStatusHelp').textContent=p.status==='active'?(lang==='pt'?'O teu perfil aparece aos clientes.':'Your profile is visible to customers.'):(lang==='pt'?'O teu perfil está escondido dos clientes.':'Your profile is hidden from customers.');
   $('#paPauseBtn').textContent=p.status==='active'?(lang==='pt'?'Pausar perfil':'Pause profile'):(lang==='pt'?'Reativar perfil':'Reactivate profile');
 
