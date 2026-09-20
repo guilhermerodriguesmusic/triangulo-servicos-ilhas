@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-client-provider-v3';
+const CACHE='triangulo-pwa-20260920-welcome-polish-v4';
 const CORE=[
   '/',
   '/index.html',
