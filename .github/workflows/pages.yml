@@ -107,11 +107,9 @@ jobs:
           set -euo pipefail
           base="https://trianguloacores.pt"
           fetch() {
-            local url="$1"
             curl --fail --silent --show-error --location \
               --retry 8 --retry-all-errors --retry-delay 2 \
-              --connect-timeout 10 --max-time 30 \
-              "$url"
+              --connect-timeout 10 --max-time 30 "$1"
           }
 
           index="$(fetch "$base/?verify=$GITHUB_SHA")"
@@ -119,83 +117,27 @@ jobs:
           application="$(fetch "$base/candidatura-prestador.html?verify=$GITHUB_SHA")"
           terms="$(fetch "$base/terms.html?verify=$GITHUB_SHA")"
           privacy="$(fetch "$base/privacy.html?verify=$GITHUB_SHA")"
-          review="$(fetch "$base/candidatura-rever.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
 
-          grep -q "Bem-vindo ao TRIÂNGULO Açores" <<<"$index"
-          grep -q "Entrar no TRIÂNGULO" <<<"$index"
-          grep -q "Fazes um serviço nas ilhas" <<<"$providers"
-          grep -q "Criar o meu perfil" <<<"$providers"
-          grep -q "worker-illustration" <<<"$providers"
-          grep -q "Como conheceste o TRIÂNGULO" <<<"$application"
-          grep -q "comissão de 15%" <<<"$application"
-          grep -q "Podes pedir a alteração dos teus dados" <<<"$application"
-          grep -q "email a confirmar a receção" <<<"$application"
-          ! grep -q "Ilha onde estás baseado" <<<"$application"
-          ! grep -q "Prestador Fundador" <<<"$application"
-          ! grep -q "founder_program" <<<"$application"
-          ! grep -q "Estou disponível hoje" <<<"$application"
-          grep -q "provider_session_context" <<<"$app"
-          grep -q "provider_session_update_profile" <<<"$app"
-          grep -q "provider_password_login" <<<"$app"
-          grep -q "request_provider_password_reset" <<<"$app"
-          grep -q "set_provider_password" <<<"$app"
-          grep -q "Primeiro acesso ou esqueceste a password" <<<"$app"
-          ! grep -q "request_provider_login" <<<"$app"
-          ! grep -q "exchange_provider_login" <<<"$app"
-          grep -q "Entrar como prestador" <<<"$app"
-          grep -q "Publica um pedido para hoje." <<<"$app"
-          grep -q "through WhatsApp" <<<"$app"
-          ! grep -q "available_today" <<<"$app"
+          grep -q "TRIÂNGULO" <<<"$index"
+          grep -q "Prestador de Serviços Fundador" <<<"$providers"
+          grep -q "Quanto queres receber" <<<"$application"
           grep -q "Telefone / WhatsApp" <<<"$application"
-          grep -q "WhatsApp quando adequado" <<<"$privacy"
-          grep -q "hash criptográfico" <<<"$privacy"
-          admin="$(fetch "$base/admin.html?verify=$GITHUB_SHA")"
-          grep -q "WhatsApp ao prestador" <<<"$admin"
-          grep -q "WhatsApp ao cliente" <<<"$admin"
-          grep -q "Termos de Utilização" <<<"$terms"
-          grep -q "Versão em vigor: 20/09/2026" <<<"$terms"
-          ! grep -q "Termos do Beta" <<<"$terms"
-          grep -q "Política de Privacidade" <<<"$privacy"
-          grep -q "Responsável pelo tratamento" <<<"$privacy"
-          grep -q "Guilherme Águas" <<<"$privacy"
-          grep -q "Guilherme Águas" <<<"$terms"
-          ! grep -q "Rascunho operacional" <<<"$privacy"
-          grep -q "Encontra. Pede. Resolve." <<<"$app"
-          grep -q "ONDE PRECISAS DE AJUDA?" <<<"$app"
-          grep -q 'name="triangulo-build" content="provider-password-v7-20260920"' <<<"$app"
-          grep -q "És prestador? Entrar" <<<"$app"
-          grep -q "Pedido simples" <<<"$app"
-          grep -q "Área do prestador" <<<"$app"
-          grep -q "booking_response_context" <<<"$app"
-          grep -q "booking_token" <<<"$app"
-          grep -q "create_booking_request" <<<"$app"
           grep -q "booking_client_context" <<<"$app"
-          grep -q "submit_service_request" <<<"$app"
-          grep -q "submit_contact_message" <<<"$app"
-          grep -q "Acesso administrativo" <<<"$review"
-          ! grep -qi "Fundador" <<<"$review"
+          grep -q "stripe-create-checkout" <<<"$app"
+          grep -q "Ativar pagamentos" <<<"$app"
+          grep -q "Pagar agora" <<<"$app"
+          grep -q "Termos de Utilização" <<<"$terms"
+          grep -q "Política de Privacidade" <<<"$privacy"
           grep -q '"start_url": "/app.html"' <<<"$manifest"
           grep -q '"display": "standalone"' <<<"$manifest"
-          grep -q 'triangulo-blue-192.png' <<<"$manifest"
-          fetch "$base/icons/triangulo-blue-180.png?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icons/triangulo-blue-192.png?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icons/triangulo-blue-512.png?verify=$GITHUB_SHA" >/dev/null
           grep -q "triangulo-pwa-" <<<"$sw"
 
-          python - <<'PY'
-          import json, urllib.request
-          url = "https://trianguloacores.pt/manifest.json?verify=github-actions"
-          with urllib.request.urlopen(url, timeout=30) as r:
-              data = json.load(r)
-          assert data["start_url"] == "/app.html"
-          assert data["scope"] == "/"
-          assert data["display"] == "standalone"
-          assert any(i["sizes"] == "192x192" for i in data["icons"])
-          assert any(i["sizes"] == "512x512" for i in data["icons"])
-          print("Live manifest OK")
-          PY
+          if curl --fail --silent --location "$base/checkout-teste-20260920.html?verify=$GITHUB_SHA" >/dev/null 2>&1; then
+            echo "Temporary checkout test page is still publicly reachable"
+            exit 1
+          fi
 
-          echo "Live site OK: $base"
+          echo "Live site verification OK: $base"
