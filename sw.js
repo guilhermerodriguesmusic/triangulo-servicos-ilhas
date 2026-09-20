@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-whatsapp-v3b';
+const CACHE='triangulo-pwa-20260920-legal-identity';
 const CORE=[
   '/',
   '/index.html',
