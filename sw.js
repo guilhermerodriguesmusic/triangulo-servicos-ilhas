@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-customer-fee-v1';
+const CACHE='triangulo-pwa-20260920-provider-founder-v2';
 const CORE=[
   '/',
   '/index.html',
