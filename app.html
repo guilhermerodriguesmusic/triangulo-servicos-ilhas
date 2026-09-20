@@ -625,6 +625,12 @@
       </div>
 
       <div class="pa-card">
+        <div class="pa-card-head"><div><h2 data-pt="Pagamentos" data-en="Payments">Pagamentos</h2><p id="paPaymentsHelp" data-pt="Ativa os pagamentos para poderes receber através do TRIÂNGULO." data-en="Activate payments so you can receive money through TRIÂNGULO.">Ativa os pagamentos para poderes receber através do TRIÂNGULO.</p></div><span id="paPaymentsBadge" class="pa-status paused">Por ativar</span></div>
+        <button id="paPaymentsBtn" class="pa-primary" type="button" data-pt="Ativar pagamentos →" data-en="Activate payments →">Ativar pagamentos →</button>
+        <p class="pa-note" data-pt="A verificação é feita de forma segura pela Stripe. O TRIÂNGULO não guarda os teus dados bancários." data-en="Verification is securely handled by Stripe. TRIÂNGULO does not store your bank details.">A verificação é feita de forma segura pela Stripe. O TRIÂNGULO não guarda os teus dados bancários.</p>
+      </div>
+
+      <div class="pa-card">
         <div class="pa-card-head"><div><h2 data-pt="Pedidos" data-en="Requests">Pedidos</h2><p data-pt="Os pedidos mais recentes feitos diretamente ao teu perfil." data-en="Recent requests sent directly to your profile.">Os pedidos mais recentes feitos diretamente ao teu perfil.</p></div><span id="paRequestCount" class="pa-count">0</span></div>
         <div id="paBookings" class="pa-bookings"></div>
       </div>
@@ -1029,6 +1035,24 @@ function renderProviderDashboard(data){
   $('#paStatusHelp').textContent=p.status==='active'?(lang==='pt'?'O teu perfil aparece aos clientes.':'Your profile is visible to customers.'):(lang==='pt'?'O teu perfil está escondido dos clientes.':'Your profile is hidden from customers.');
   $('#paPauseBtn').textContent=p.status==='active'?(lang==='pt'?'Pausar perfil':'Pause profile'):(lang==='pt'?'Reativar perfil':'Reactivate profile');
 
+  const pay=data.payment_account||{},payBadge=$('#paPaymentsBadge'),payHelp=$('#paPaymentsHelp'),payBtn=$('#paPaymentsBtn');
+  const paymentsReady=!!pay.payouts_enabled&&pay.transfers_capability==='active';
+  payBadge.classList.toggle('active',paymentsReady);
+  payBadge.classList.toggle('paused',!paymentsReady);
+  if(paymentsReady){
+    payBadge.textContent=lang==='pt'?'Ativo':'Active';
+    payHelp.textContent=lang==='pt'?'Pronto para receber pagamentos através do TRIÂNGULO.':'Ready to receive payments through TRIÂNGULO.';
+    payBtn.textContent=lang==='pt'?'Gerir pagamentos →':'Manage payments →';
+  }else if(pay.connected){
+    payBadge.textContent=lang==='pt'?'Verificação pendente':'Verification pending';
+    payHelp.textContent=lang==='pt'?'Conclui a verificação da Stripe para poderes receber.':'Complete Stripe verification so you can receive payments.';
+    payBtn.textContent=lang==='pt'?'Continuar verificação →':'Continue verification →';
+  }else{
+    payBadge.textContent=lang==='pt'?'Por ativar':'Not active';
+    payHelp.textContent=lang==='pt'?'Ativa os pagamentos para poderes receber através do TRIÂNGULO.':'Activate payments so you can receive money through TRIÂNGULO.';
+    payBtn.textContent=lang==='pt'?'Ativar pagamentos →':'Activate payments →';
+  }
+
   const f=$('#providerProfileForm');
   f.name.value=p.name||'';
   f.business_name.value=p.business_name||'';
@@ -1090,8 +1114,22 @@ async function providerSignOut(){
   $('#providerLoginStatus').textContent='';
   paShow('paSignedOut');
 }
+async function openProviderPayments(){
+  if(!providerSessionToken){toast(lang==='pt'?'Inicia sessão primeiro.':'Sign in first.');return}
+  const btn=$('#paPaymentsBtn'),old=btn.textContent;
+  btn.disabled=true;btn.textContent=lang==='pt'?'A abrir Stripe…':'Opening Stripe…';
+  try{
+    const {data,error}=await db.functions.invoke('stripe-connect-onboarding',{body:{provider_session_token:providerSessionToken}});
+    if(error||!data||!data.ok){console.error(error,data);toast(lang==='pt'?'Não foi possível abrir a verificação.':'Could not open verification.');return}
+    if(data.state==='ready'){toast(lang==='pt'?'Pagamentos já estão ativos ✓':'Payments are already active ✓');await loadProviderAccount();return}
+    if(data.url){location.href=data.url;return}
+    toast(lang==='pt'?'Verificação indisponível.':'Verification unavailable.');
+  }catch(e){console.error(e);toast(lang==='pt'?'Não foi possível abrir a Stripe.':'Could not open Stripe.')}
+  finally{if(document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
+}
 $('#providerEntryBtn').onclick=openProviderArea;
 $('#providerAreaBtn').onclick=openProviderArea;
+$('#paPaymentsBtn').onclick=openProviderPayments;
 $('#providerAreaBack').onclick=closeProviderArea;
 $('#providerLogoutBtn').onclick=providerSignOut;
 $('#providerLogoutFromMissing').onclick=providerSignOut;
@@ -1262,9 +1300,16 @@ function init(){
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),paymentResult=qs.get('payment'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
  if(providerPasswordToken){openProviderPasswordSetup(providerPasswordToken);return}
  if(bookingToken){openProviderBookingInApp(bookingToken);return}
+ if(stripeReturn){
+   history.replaceState({},'',location.pathname+'?prestador=1');
+   if(stripeReturn==='refresh'){
+     openProviderArea().then(()=>setTimeout(()=>openProviderPayments(),50));return;
+   }
+   openProviderArea().then(()=>toast(lang==='pt'?'Verificação Stripe atualizada.':'Stripe verification updated.'));return;
+ }
  if(providerEntry){openProviderSignup();return}
  if(paymentResult){
    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
