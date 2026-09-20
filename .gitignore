@@ -1,0 +1,6 @@
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
+supabase/functions/.env
+supabase/functions/.env.*
