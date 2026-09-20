@@ -158,6 +158,8 @@ $('#providerForm').onsubmit=async e=>{
   if(!islands.length){status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return}
   if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return}
   const d=Object.fromEntries(new FormData(f));
+  const contactPattern=/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/|(\+?\d[ .()\/-]*){9,}/i;
+  if(contactPattern.test(d.description||'')||contactPattern.test(d.other_service||'')){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na descrição pública.':'Do not add phone numbers, email, WhatsApp, social media or links to the public description.';return}
   if(cats.includes('other')&&(!d.other_service||d.other_service.trim().length<2)){status.textContent=lang==='pt'?'Escreve qual é o outro serviço que ofereces.':'Tell us which other service you offer.';$('#otherService').focus();return}
   const payload={
     name:d.name.trim(), business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,
