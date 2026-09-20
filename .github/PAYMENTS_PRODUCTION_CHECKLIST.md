@@ -11,7 +11,7 @@ Status: PREPARED, LIVE PAYMENTS DISABLED.
 - TEST and LIVE Stripe credentials are separated in the deployed function logic.
 - Checkout and provider onboarding refuse LIVE mode unless `TRIANGULO_PAYMENTS_LIVE_ENABLED=true`.
 - LIVE keys must match Stripe LIVE key prefixes before use.
-- Webhook verification separates TEST and LIVE signing secrets and rejects mode mismatches.
+- Webhook verification separates TEST and LIVE signing secrets, rejects mode mismatches, and refuses LIVE webhook processing while `TRIANGULO_PAYMENTS_LIVE_ENABLED` is not `true`.
 - Internal Stripe RPC helpers are not executable by `anon` or ordinary `authenticated` roles; they are restricted to the backend/service role.
 - No `sk_live_` key is stored in this public GitHub repository.
 - Repository environment files are ignored via `.gitignore`.
