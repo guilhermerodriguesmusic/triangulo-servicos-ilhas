@@ -41,6 +41,48 @@ jobs:
           test -s assets/faial-real.jpg
           test -s assets/sao-jorge-real.jpg
           file assets/pico-real.jpg assets/pico-hero-real.jpg assets/faial-real.jpg assets/sao-jorge-real.jpg
+      - name: Generate TRIÂNGULO app icons
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet cairosvg
+          mkdir -p icons
+          python - <<'PY'
+          import base64
+          import cairosvg
+          from pathlib import Path
+
+          logo = Path("logo.svg").read_bytes()
+          logo_data = base64.b64encode(logo).decode("ascii")
+
+          def make_icon(size, mark_ratio, output):
+              mark = round(size * mark_ratio)
+              pos = (size - mark) // 2
+              svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 {size} {size}">
+                <defs>
+                  <linearGradient id="bg" x1="0" y1="0" x2="0.85" y2="1">
+                    <stop offset="0" stop-color="#10355f"/>
+                    <stop offset="1" stop-color="#187fab"/>
+                  </linearGradient>
+                  <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+                    <feDropShadow dx="0" dy="{max(3, round(size*.018))}" stdDeviation="{max(3, round(size*.012))}" flood-color="#062844" flood-opacity=".35"/>
+                  </filter>
+                </defs>
+                <rect width="{size}" height="{size}" fill="url(#bg)"/>
+                <circle cx="{size/2}" cy="{size/2}" r="{size*.30}" fill="#ffffff" opacity=".035"/>
+                <image href="data:image/svg+xml;base64,{logo_data}" x="{pos}" y="{pos}" width="{mark}" height="{mark}" filter="url(#shadow)"/>
+              </svg>'''
+              cairosvg.svg2png(bytestring=svg.encode(), write_to=output, output_width=size, output_height=size)
+
+          make_icon(180, .62, "icons/triangulo-blue-180.png")
+          make_icon(192, .62, "icons/triangulo-blue-192.png")
+          make_icon(512, .62, "icons/triangulo-blue-512.png")
+          make_icon(512, .52, "icons/triangulo-blue-maskable-512.png")
+          PY
+          test -s icons/triangulo-blue-180.png
+          test -s icons/triangulo-blue-192.png
+          test -s icons/triangulo-blue-512.png
+          test -s icons/triangulo-blue-maskable-512.png
       - name: Prepare public site
         shell: bash
         run: |
@@ -91,11 +133,17 @@ jobs:
           ! grep -q "Prestador Fundador" <<<"$application"
           grep -q "Encontra. Pede. Resolve." <<<"$app"
           grep -q "ONDE PRECISAS DE AJUDA?" <<<"$app"
-          grep -q 'name="triangulo-build" content="provider-response-app-20260920"' <<<"$app"
+          grep -q 'name="triangulo-build" content="client-provider-split-icon-b-20260920"' <<<"$app"
+          grep -q "Sou prestador" <<<"$app"
+          grep -q "Área do prestador" <<<"$app"
           grep -q "booking_response_context" <<<"$app"
           grep -q "booking_token" <<<"$app"
           grep -q '"start_url": "/app.html"' <<<"$manifest"
           grep -q '"display": "standalone"' <<<"$manifest"
+          grep -q 'triangulo-blue-192.png' <<<"$manifest"
+          fetch "$base/icons/triangulo-blue-180.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icons/triangulo-blue-192.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icons/triangulo-blue-512.png?verify=$GITHUB_SHA" >/dev/null
           grep -q "triangulo-pwa-" <<<"$sw"
 
           python - <<'PY'
