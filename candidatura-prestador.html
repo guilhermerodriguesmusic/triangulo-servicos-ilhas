@@ -24,7 +24,7 @@
 
   <section id="formCard" class="formcard">
     <h2 data-pt="Cria o teu perfil" data-en="Create your profile">Cria o teu perfil</h2>
-    <p class="intro" data-pt="Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO." data-en="Fields marked * are required. You can request changes to your details later through TRIÂNGULO.">Os campos com * são obrigatórios. Podes alterar os dados mais tarde através do TRIÂNGULO.</p>
+    <p class="intro" data-pt="Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO." data-en="Fields marked * are required. You can request changes to your details later through TRIÂNGULO.">Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO.</p>
 
     <form id="providerForm">
       <input class="honeypot" name="company_fax" autocomplete="off" tabindex="-1">
@@ -99,7 +99,7 @@
   <section id="success" class="success">
     <div class="tick">✓</div>
     <h2 data-pt="Candidatura recebida!" data-en="Application received!">Candidatura recebida!</h2>
-    <p data-pt="Obrigado. Vamos rever os teus dados antes de publicar o perfil. Enviámos também um email a confirmar a receção da candidatura. Assim que for analisada, receberás nova mensagem." data-en="Thank you. We will review your details before publishing your profile. We have also sent you an email confirming receipt. You will receive another message once the application has been reviewed.">Obrigado. Vamos rever os teus dados antes de publicar o perfil. Se precisarmos de alguma informação adicional, entraremos em contacto.</p>
+    <p data-pt="Obrigado. Vamos rever os teus dados antes de publicar o perfil. Enviámos também um email a confirmar a receção da candidatura. Assim que for analisada, receberás nova mensagem." data-en="Thank you. We will review your details before publishing your profile. We have also sent you an email confirming receipt. You will receive another message once the application has been reviewed.">Obrigado. Vamos rever os teus dados antes de publicar o perfil. Enviámos também um email a confirmar a receção da candidatura. Assim que for analisada, receberás nova mensagem.</p>
     <a class="back" href="./" data-pt="Voltar ao TRIÂNGULO" data-en="Back to TRIÂNGULO">Voltar ao TRIÂNGULO</a>
   </section>
 
@@ -164,7 +164,7 @@ $('#providerForm').onsubmit=async e=>{
     email:d.email.trim(), phone:d.phone&&d.phone.trim()?d.phone.trim():null,
     base_island:islands[0], service_islands:islands, categories:cats, other_service:cats.includes('other')?d.other_service.trim():null, description:d.description.trim(),
     pricing_type:d.pricing_type, price:d.pricing_type==='quote'||!d.price?null:Number(d.price),
-    availability:d.availability&&d.availability.trim()?d.availability.trim():null, available_today:false,
+    availability:d.availability&&d.availability.trim()?d.availability.trim():null,
     photo_data:photoData, website:d.website&&d.website.trim()?d.website.trim():null,
     referred_by:d.discovery_source&&d.discovery_source.trim()?d.discovery_source.trim():null ,
     consent_commission:!!d.consent_all, consent_terms:!!d.consent_all, consent_privacy:!!d.consent_all,
