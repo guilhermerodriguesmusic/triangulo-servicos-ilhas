@@ -6,7 +6,7 @@
 <div class="top"><div><img src="logo.svg"> <strong>TRIÂNGULO ADMIN</strong></div><div class="row"><button id="refresh" class="btn blue" hidden>Atualizar</button><button id="logout" class="btn blue" hidden>Sair</button></div></div>
 <section id="login" class="card login"><h2>Acesso administrativo</h2><p class="muted">Acesso reservado à administração do TRIÂNGULO.</p><input id="email" type="email" placeholder="Email"><input id="password" type="password" placeholder="Password (mín. 6 caracteres)"><div class="row"><button id="signin" class="btn ok">Entrar</button></div><p id="loginMsg" class="muted"></p></section>
 <section id="panel" hidden><div class="grid"><div class="stat"><b id="nPending">0</b>Pendentes</div><div class="stat"><b id="nProviders">0</b>Prestadores</div><div class="stat"><b id="nRequests">0</b>Pedidos</div><div class="stat"><b id="nBookings">0</b>Reservas</div><div class="stat"><b id="nContacts">0</b>Mensagens</div></div>
-<h2>Candidaturas pendentes</h2><div id="apps" class="list"></div><h2>Mensagens para o TRIÂNGULO</h2><div id="contacts" class="list"></div><h2>Pedidos de clientes</h2><div id="requests" class="list"></div><h2>Reservas beta</h2><div id="bookings" class="list"></div></section>
+<h2>Candidaturas pendentes</h2><div id="apps" class="list"></div><h2>Mensagens para o TRIÂNGULO</h2><div id="contacts" class="list"></div><h2>Pedidos de clientes</h2><div id="requests" class="list"></div><h2>Reservas</h2><div id="bookings" class="list"></div></section>
 </main>
 <script>
 const db=window.supabase.createClient('https://cozamrvrhmwgxbuubjub.supabase.co','sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9',{auth:{persistSession:true,autoRefreshToken:true}});
