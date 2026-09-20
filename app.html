@@ -1300,8 +1300,34 @@ function init(){
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ const qs=new URLSearchParams(location.search),bookingToken=qs.get('booking_token'),clientBookingToken=qs.get('client_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
  if(providerPasswordToken){openProviderPasswordSetup(providerPasswordToken);return}
+ if(clientBookingToken){
+   try{
+     const {data,error}=await db.rpc('booking_client_context',{p_token:clientBookingToken});
+     if(!error&&data&&data.ok){
+       saveBookingLocal({
+         token:clientBookingToken,
+         provider:data.provider||'TRIÂNGULO',
+         island:data.island||'',
+         date:data.service_date||'',
+         time:data.service_time||'',
+         status:data.state||'requested',
+         payment_status:data.payment_status||null,
+         provider_amount:data.provider_amount,
+         service_fee_amount:data.service_fee_amount,
+         total_amount:data.total_amount,
+         payment_ready:!!data.payment_ready,
+         checkout_available:!!data.checkout_available,
+         createdAt:new Date().toISOString()
+       });
+       history.replaceState({},'',location.pathname+'#app');
+       $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+       await openClientBookings();
+       return;
+     }
+   }catch(e){console.error('client_token deep link',e)}
+ }
  if(bookingToken){openProviderBookingInApp(bookingToken);return}
  if(stripeReturn){
    history.replaceState({},'',location.pathname+'?prestador=1');
