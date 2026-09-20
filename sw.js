@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-home-micro-v6';
+const CACHE='triangulo-pwa-20260920-provider-recruitment-ready';
 const CORE=[
   '/',
   '/index.html',
