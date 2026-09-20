@@ -137,7 +137,7 @@
 }
 </style>
 
-<meta name="triangulo-build" content="business-split-20260920">
+<meta name="triangulo-build" content="client-welcome-v2-20260920">
 
 <style id="backend-v1-styles">
 
@@ -181,87 +181,164 @@
 
 #profile .settings{margin-top:0}
 </style>
-<style id="client-welcome-v1">
-#splash{position:fixed;inset:0;z-index:100;background:#0d3157;overflow:auto;color:#fff}
-.client-welcome{position:relative;min-height:100svh;width:min(100%,480px);margin:auto;display:flex;flex-direction:column;isolation:isolate;overflow:hidden;background:#0d3157}
-.client-welcome:before{content:"";position:absolute;inset:0;z-index:-3;background:url('/assets/pico-hero-real.jpg') center 43%/cover no-repeat;transform:scale(1.02)}
-.welcome-shade{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(6,30,51,.18) 0%,rgba(7,35,59,.20) 32%,rgba(5,34,58,.54) 60%,rgba(5,28,48,.94) 86%,rgba(5,26,45,.99) 100%)}
-.welcome-top{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 14px) 16px 0;position:relative;z-index:2}
-.welcome-brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.075em;font-size:15px;text-shadow:0 2px 14px rgba(0,0,0,.28)}
-.welcome-brand img{width:43px;height:47px;object-fit:contain;background:rgba(255,255,255,.92);padding:5px;border-radius:14px}
-.welcome-lang{background:rgba(8,37,62,.38);border:1px solid rgba(255,255,255,.20);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.welcome-lang button{color:rgba(255,255,255,.72)}
-.welcome-lang button.active{background:#fff;color:#153458}
-.welcome-spacer{flex:1;min-height:26vh}
-.welcome-content{padding:0 16px calc(env(safe-area-inset-bottom) + 18px)}
-.welcome-kicker{font-size:10px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:#8be5c8;margin-bottom:9px}
-.welcome-content h1{font-size:43px;line-height:.96;letter-spacing:-.045em;margin:0;text-shadow:0 3px 22px rgba(0,0,0,.30)}
-.welcome-content>p{font-size:13px;line-height:1.5;color:rgba(255,255,255,.80);margin:13px 0 0;max-width:410px}
-.welcome-trust{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
-.welcome-trust span{font-size:9px;font-weight:800;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(8px)}
-.welcome-picker{background:rgba(255,255,255,.96);color:#153458;border-radius:20px;padding:13px;box-shadow:0 18px 45px rgba(0,0,0,.20)}
-.welcome-picker>strong{display:block;font-size:12px;margin:0 2px 9px}
-.welcome-islands{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.welcome-island{position:relative;height:92px;border:0;border-radius:13px;overflow:hidden;padding:0;background:#dceaf2;text-align:left;color:#fff}
+<style id="client-welcome-v2">
+#splash{position:fixed;inset:0;z-index:100;background:#dff4ff;overflow:auto;color:#123a66}
+.client-welcome{
+  position:relative;min-height:100svh;width:min(100%,480px);margin:auto;
+  padding:calc(env(safe-area-inset-top) + 16px) 12px calc(env(safe-area-inset-bottom) + 14px);
+  overflow:hidden;isolation:isolate;
+  background:
+    radial-gradient(circle at 13% 8%,rgba(255,255,255,.95),transparent 26%),
+    radial-gradient(circle at 88% 18%,rgba(112,224,188,.28),transparent 25%),
+    linear-gradient(180deg,#d9f3ff 0%,#9bdcff 50%,#4eb4e3 100%);
+}
+.client-welcome:before{
+  content:"";position:absolute;z-index:-1;width:230px;height:230px;border-radius:50%;
+  right:-110px;bottom:22%;background:rgba(255,255,255,.14);filter:blur(2px)
+}
+.client-welcome:after{
+  content:"";position:absolute;z-index:-1;width:180px;height:180px;border-radius:50%;
+  left:-95px;top:34%;background:rgba(13,91,135,.08)
+}
+.welcome-lang-wrap{display:flex;justify-content:flex-end;margin-bottom:2px}
+.welcome-lang{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.70);box-shadow:0 7px 18px rgba(17,63,94,.09)}
+.welcome-lang button{color:#4c6985}
+.welcome-lang button.active{background:#fff;color:#123a66;box-shadow:0 3px 10px rgba(20,63,95,.10)}
+.welcome-brand{text-align:center;padding:4px 12px 12px}
+.welcome-brand img{
+  width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 5px;
+  filter:drop-shadow(0 9px 15px rgba(18,68,98,.10))
+}
+.welcome-brand h1{
+  margin:0;font-size:32px;line-height:1;letter-spacing:.025em;font-weight:950;color:#123f70
+}
+.welcome-brand .brand-sub{
+  margin:5px 0 0;font-size:12px;font-weight:850;color:#315b7e
+}
+.welcome-brand .brand-promise{
+  margin:5px 0 0;font-size:15px;font-weight:950;letter-spacing:.015em;color:#123a66
+}
+.welcome-trust{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 12px
+}
+.trust-card{
+  min-height:76px;background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.82);
+  border-radius:17px;padding:9px 6px 8px;text-align:center;
+  box-shadow:0 9px 22px rgba(23,71,102,.08);display:flex;flex-direction:column;align-items:center;justify-content:center
+}
+.trust-icon{
+  width:29px;height:29px;border-radius:10px;display:grid;place-items:center;margin-bottom:5px;
+  background:#e4f7f2;color:#0c9473
+}
+.trust-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.trust-card b{font-size:9.5px;line-height:1.12;color:#123a66}
+.welcome-picker{
+  background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.95);
+  border-radius:26px;padding:15px;box-shadow:0 18px 44px rgba(18,69,101,.16)
+}
+.welcome-picker>strong{
+  display:block;text-align:center;font-size:14px;letter-spacing:.07em;margin:1px 0 12px;color:#173d66
+}
+.welcome-islands{display:grid;gap:8px}
+.welcome-island{
+  position:relative;height:102px;border:0;border-radius:18px;overflow:hidden;padding:0;
+  background:#dceaf2;text-align:left;color:#fff;box-shadow:0 6px 16px rgba(19,61,89,.11);
+  transition:transform .15s ease
+}
+.welcome-island:active{transform:scale(.985)}
 .welcome-island img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.welcome-island:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(180deg,transparent,rgba(5,28,47,.86))}
-.welcome-island span{position:absolute;left:9px;bottom:8px;z-index:2;font-size:12px;font-weight:900;text-shadow:0 2px 8px rgba(0,0,0,.34)}
-.welcome-island i{position:absolute;right:8px;bottom:7px;z-index:2;font-style:normal;font-size:15px}
-.welcome-picker>small{display:block;font-size:8px;color:#7a8d9d;text-align:center;margin-top:8px}
-@media(max-height:740px){
- .welcome-spacer{min-height:12vh}
- .welcome-content h1{font-size:38px}
- .welcome-content>p{margin-top:9px}
- .welcome-trust{margin:10px 0}
- .welcome-island{height:80px}
+.welcome-island[data-island="Pico"] img{object-position:center 53%}
+.welcome-island[data-island="Faial"] img{object-position:center 54%}
+.welcome-island[data-island="São Jorge"] img{object-position:center 53%}
+.welcome-island:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,31,50,.66) 0%,rgba(5,31,50,.12) 62%,rgba(5,31,50,.26) 100%)}
+.welcome-island span{
+  position:absolute;left:15px;bottom:13px;z-index:2;font-size:23px;font-weight:950;
+  letter-spacing:-.025em;text-shadow:0 2px 9px rgba(0,0,0,.25)
 }
-@media(min-width:600px){
- #splash{position:absolute}
+.welcome-island i{
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);z-index:2;font-style:normal;
+  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font-size:18px;font-weight:700
 }
+.welcome-picker>small{
+  display:block;text-align:center;margin-top:10px;color:#4d708b;font-size:9px;font-weight:700
+}
+.welcome-footerline{
+  text-align:center;color:rgba(255,255,255,.96);font-size:11px;font-style:italic;font-weight:800;margin-top:9px;
+  text-shadow:0 1px 8px rgba(19,68,97,.20)
+}
+@media(max-height:760px){
+ .client-welcome{padding-top:calc(env(safe-area-inset-top) + 9px)}
+ .welcome-brand{padding-top:0;padding-bottom:8px}
+ .welcome-brand img{width:62px;height:62px}
+ .welcome-brand h1{font-size:28px}
+ .welcome-brand .brand-sub{font-size:10px}
+ .welcome-brand .brand-promise{font-size:13px}
+ .welcome-trust{margin-bottom:9px}
+ .trust-card{min-height:62px;padding:6px 4px}
+ .trust-icon{width:24px;height:24px;margin-bottom:3px}
+ .trust-icon svg{width:15px;height:15px}
+ .welcome-picker{padding:12px}
+ .welcome-picker>strong{margin-bottom:9px;font-size:12px}
+ .welcome-island{height:82px}
+ .welcome-island span{font-size:20px;bottom:10px}
+ .welcome-picker>small{margin-top:7px}
+ .welcome-footerline{margin-top:6px}
+}
+@media(min-width:600px){#splash{position:absolute}}
 </style>
 </head>
 <body>
 <div class="app">
 <section id="splash">
   <div class="client-welcome">
-    <div class="welcome-shade"></div>
-    <header class="welcome-top">
-      <div class="welcome-brand"><img src="/logo.svg" alt=""><span>TRIÂNGULO</span></div>
+    <div class="welcome-lang-wrap">
       <div class="lang-switch welcome-lang"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div>
-    </header>
+    </div>
 
-    <div class="welcome-spacer"></div>
+    <div class="welcome-brand">
+      <img src="/logo.svg" alt="TRIÂNGULO">
+      <h1>TRIÂNGULO</h1>
+      <p class="brand-sub" data-pt="Serviços locais nas ilhas" data-en="Local services across the islands">Serviços locais nas ilhas</p>
+      <p class="brand-promise" data-pt="Encontra. Pede. Resolve." data-en="Find. Request. Get it done.">Encontra. Pede. Resolve.</p>
+    </div>
 
-    <div class="welcome-content">
-      <div class="welcome-kicker" data-pt="Pico · Faial · São Jorge" data-en="Pico · Faial · São Jorge">Pico · Faial · São Jorge</div>
-      <h1 data-pt="Encontra ajuda local. Sem complicações." data-en="Find local help. No hassle.">Encontra ajuda local.<br>Sem complicações.</h1>
-      <p data-pt="Escolhe a tua ilha e encontra profissionais para o que precisas — perto de ti." data-en="Choose your island and find local professionals for whatever you need.">Escolhe a tua ilha e encontra profissionais para o que precisas — perto de ti.</p>
-
-      <div class="welcome-trust">
-        <span data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</span>
-        <span data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</span>
-        <span data-pt="Pedido simples" data-en="Simple requests">Pedido simples</span>
+    <div class="welcome-trust">
+      <div class="trust-card">
+        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9.5" r="2.5"/><path d="M3.5 19c.5-3.3 2.3-5 5.5-5s5 1.7 5.5 5"/><path d="M14 15c3.4-.6 5.5.8 6.2 4"/></svg></span>
+        <b data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</b>
       </div>
-
-      <div class="welcome-picker">
-        <strong data-pt="Escolhe a tua ilha para começar" data-en="Choose your island to begin">Escolhe a tua ilha para começar</strong>
-        <div class="welcome-islands">
-          <button class="welcome-island" data-island="Pico">
-            <img src="/assets/pico-real.jpg" alt="Pico">
-            <span>Pico</span><i>→</i>
-          </button>
-          <button class="welcome-island" data-island="Faial">
-            <img src="/assets/faial-real.jpg" alt="Faial">
-            <span>Faial</span><i>→</i>
-          </button>
-          <button class="welcome-island" data-island="São Jorge">
-            <img src="/assets/sao-jorge-real.jpg" alt="São Jorge">
-            <span>São Jorge</span><i>→</i>
-          </button>
-        </div>
-        <small data-pt="Depois podes mudar de ilha a qualquer momento." data-en="You can change island at any time.">Depois podes mudar de ilha a qualquer momento.</small>
+      <div class="trust-card">
+        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.4-2.6 7.7-7 10-4.4-2.3-7-5.6-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <b data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</b>
+      </div>
+      <div class="trust-card">
+        <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 4c-7 .2-12 3.3-14 9.3-1 3.1.6 5.7 3.8 5.7 6.2 0 9.4-6.4 10.2-15z"/><path d="M5 20c2.4-4 5.4-7 9.5-9"/></svg></span>
+        <b data-pt="Economia local" data-en="Local economy">Economia local</b>
       </div>
     </div>
+
+    <div class="welcome-picker">
+      <strong data-pt="ONDE PRECISAS DE AJUDA?" data-en="WHERE DO YOU NEED HELP?">ONDE PRECISAS DE AJUDA?</strong>
+      <div class="welcome-islands">
+        <button class="welcome-island" data-island="Pico" aria-label="Pico">
+          <img src="/assets/pico-real.jpg" alt="">
+          <span>Pico</span><i>›</i>
+        </button>
+        <button class="welcome-island" data-island="Faial" aria-label="Faial">
+          <img src="/assets/faial-real.jpg" alt="">
+          <span>Faial</span><i>›</i>
+        </button>
+        <button class="welcome-island" data-island="São Jorge" aria-label="São Jorge">
+          <img src="/assets/sao-jorge-real.jpg" alt="">
+          <span>São Jorge</span><i>›</i>
+        </button>
+      </div>
+      <small data-pt="Escolhe uma ilha para encontrar serviços perto de ti." data-en="Choose an island to find services near you.">Escolhe uma ilha para encontrar serviços perto de ti.</small>
+    </div>
+
+    <div class="welcome-footerline" data-pt="Três ilhas. Uma rede local." data-en="Three islands. One local network.">Três ilhas. Uma rede local.</div>
   </div>
 </section>
 <section id="mainShell" class="hidden">
@@ -444,7 +521,7 @@ function updateResults(q,urgent=false){
 function bindProvider(){$$('[data-provider]').forEach(b=>{b.onclick=()=>openBooking(b.dataset.provider);b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(b.dataset.provider)}}})}
 function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));window.scrollTo({top:0,behavior:'auto'})}
 $$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));
-function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v1','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();updateResults($('#resultsInput').value||'')}
+function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v2','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();updateResults($('#resultsInput').value||'')}
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){$('#islandPill span').textContent=island;const p2=$('#profileIsland2');if(p2)p2.textContent=island}
 function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
@@ -506,7 +583,7 @@ function init(){
  window.addEventListener('focus',()=>loadProviders());
  const qs=new URLSearchParams(location.search),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
  if(providerEntry){openProviderSignup();return}
- if(location.hash==='#app'||store.get('tri_client_welcome_v1','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
+ if(location.hash==='#app'||store.get('tri_client_welcome_v2','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
 }
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
