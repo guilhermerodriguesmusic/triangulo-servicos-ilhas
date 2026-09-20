@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260920-client-checkout-link-v2';
+const CACHE='triangulo-pwa-20260920-payments-return-v1';
 const CORE=[
   '/',
   '/index.html',
