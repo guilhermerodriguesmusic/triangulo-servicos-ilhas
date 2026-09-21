@@ -782,6 +782,44 @@
   }
 }
 </style>
+
+<style id="request-flow-polish-v7">
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+body.sheet-open{overflow:hidden}
+.request-category-details{border:1px solid #e1e9ee;border-radius:12px;background:#f8fbfc;overflow:hidden}
+.request-category-details summary{cursor:pointer;list-style:none;padding:10px 12px;font-size:10.5px;font-weight:850;color:#547084;display:flex;align-items:center;justify-content:space-between}
+.request-category-details summary::-webkit-details-marker{display:none}
+.request-category-details summary:after{content:'+';font-size:17px;font-weight:500;color:#7890a0}
+.request-category-details[open] summary:after{content:'−'}
+.request-category-details label{display:block;padding:0 10px 10px}
+.request-category-details select{background:#fff}
+.request-contact{border:1px solid #dce8ee;border-radius:14px;padding:11px 12px 10px;margin:0;min-width:0;background:#fbfdfd}
+.request-contact legend{padding:0 6px;font-size:10.5px;font-weight:850;color:#153458}
+.request-contact .form-note{display:block;margin:5px 1px 0}
+.money-input{display:flex;align-items:center;border:1px solid #dce5ed;border-radius:12px;background:#fff;overflow:hidden}
+.money-input:focus-within{border-color:#198f77;box-shadow:0 0 0 3px rgba(25,143,119,.09)}
+.money-input>span{padding-left:12px;color:#6f8495;font-weight:800}
+.money-input input{border:0!important;box-shadow:none!important;padding-left:7px!important}
+.money-input input::-webkit-inner-spin-button,.money-input input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.money-input input[type=number]{-moz-appearance:textfield}
+.request-submit-block{position:sticky;bottom:-30px;z-index:3;margin:2px -18px -30px;padding:10px 18px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,.82),#fff 26%);border-top:1px solid #edf1f3;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.request-submit-block .primary{width:100%;min-height:48px;font-size:14px}
+.request-submit-block .form-note{text-align:center;margin:7px 4px 0}
+#requestSubmitStatus:not(:empty){margin-bottom:7px;min-height:0}
+#requestSheet .close{z-index:4}
+@media(min-width:760px){
+  #requestSheet{width:min(100%,520px);max-height:min(88vh,760px)}
+  #requestSheet .form{gap:10px}
+  #requestSheet .form textarea{min-height:82px}
+}
+@media(max-width:520px){
+  .request-submit-block{bottom:calc(-22px - env(safe-area-inset-bottom));margin-bottom:calc(-22px - env(safe-area-inset-bottom));}
+  .request-secondary-row{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:390px){
+  .request-secondary-row{grid-template-columns:1fr!important}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -885,16 +923,14 @@
 <button class="category c7" data-cat="7"><small>Fotografia &amp; Criativos</small></button>
 <button class="category c8" data-cat="8"><small>Animais</small></button>
 </div></aside>
-<aside id="requestSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-pt="Encontra alguém por mim" data-en="Find someone for me">Encontra alguém por mim</h2><form id="requestForm" class="form">
-<label><span data-pt="O que precisas?" data-en="What do you need?">O que precisas?</span><textarea name="description" required maxlength="1500" data-ph-pt="Ex.: Preciso de alguém para cortar a erva no sábado" data-ph-en="E.g. I need someone to cut the grass on Saturday"></textarea><small class="form-note" data-pt="Não coloques telefone, email, WhatsApp, redes sociais ou links aqui. Usa os campos de contacto abaixo." data-en="Do not add phone numbers, email, WhatsApp, social media or links here. Use the contact fields below.">Não coloques telefone, email, WhatsApp, redes sociais ou links aqui. Usa os campos de contacto abaixo.</small></label>
-<label><span data-pt="Tipo de serviço" data-en="Type of service">Tipo de serviço</span><select name="category_code"><option value="" data-pt="Detetar automaticamente" data-en="Detect automatically">Detetar automaticamente</option><option value="home" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</option><option value="garden" data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</option><option value="repairs" data-pt="Reparações & Manutenção" data-en="Repairs & Maintenance">Reparações & Manutenção</option><option value="moving" data-pt="Mudanças & Entregas" data-en="Moves & Deliveries">Mudanças & Entregas</option><option value="lessons" data-pt="Aulas & Explicações" data-en="Lessons & Tutoring">Aulas & Explicações</option><option value="wellness" data-pt="Bem-estar" data-en="Wellness">Bem-estar</option><option value="tech" data-pt="Tecnologia" data-en="Technology">Tecnologia</option><option value="creative" data-pt="Fotografia & Criativos" data-en="Photo & Creative">Fotografia & Criativos</option><option value="pets" data-pt="Animais" data-en="Pets">Animais</option><option value="other" data-pt="Outro" data-en="Other">Outro</option></select></label>
-<div class="two"><label><span data-pt="Quando?" data-en="When?">Quando?</span><input type="date" name="date"></label><label><span data-pt="Onde?" data-en="Where?">Onde?</span><input name="where" autocomplete="street-address" data-ph-pt="Ex.: São Mateus" data-ph-en="E.g. São Mateus"></label></div>
-<label><span data-pt="Tenho este orçamento (opcional)" data-en="My budget (optional)">Tenho este orçamento (opcional)</span><input name="budget" type="number" min="0" step="0.01" placeholder="€"></label>
-<label><span data-pt="Nome (opcional)" data-en="Name (optional)">Nome (opcional)</span><input name="client_name" autocomplete="name"></label>
-<div class="two"><label><span data-pt="Email (opcional)" data-en="Email (optional)">Email (opcional)</span><input type="email" name="client_email" autocomplete="email" inputmode="email"></label><label><span data-pt="WhatsApp (opcional)" data-en="WhatsApp (optional)">WhatsApp (opcional)</span><input name="client_phone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div>
-<label><span data-pt="Como queres receber atualizações?" data-en="How should we update you?">Como queres receber atualizações?</span><select name="contact_preference"><option value="both" data-pt="WhatsApp e email" data-en="WhatsApp and email">WhatsApp e email</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note" data-pt="Basta indicar email ou WhatsApp. Não precisas de criar conta; só quem tiver a ligação segura consegue acompanhar este pedido." data-en="Email or WhatsApp is enough. No account is required; only someone with the secure link can track this request.">Basta indicar email ou WhatsApp. Não precisas de criar conta; só quem tiver a ligação segura consegue acompanhar este pedido.</small></label>
-<div id="requestSubmitStatus" class="submit-status" role="status" aria-live="polite"></div>
-<button class="primary" type="submit" data-pt="Procurar serviços →" data-en="Find services →">Procurar serviços →</button><p class="form-note" data-pt="O TRIÂNGULO envia o pedido aos serviços compatíveis. O serviço só fica confirmado depois de escolheres uma resposta." data-en="TRIÂNGULO sends the request to matching services. The service is only confirmed after you choose a response.">O TRIÂNGULO envia o pedido aos serviços compatíveis. O serviço só fica confirmado depois de escolheres uma resposta.</p></form></aside>
+<aside id="requestSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="requestSheetTitle"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 id="requestSheetTitle" data-pt="Encontra alguém por mim" data-en="Find someone for me">Encontra alguém por mim</h2><form id="requestForm" class="form">
+<label><span data-pt="O que precisas?" data-en="What do you need?">O que precisas?</span><textarea name="description" required maxlength="1500" data-ph-pt="Ex.: Preciso de alguém para cortar a erva no sábado" data-ph-en="E.g. I need someone to cut the grass on Saturday"></textarea><small class="form-note" data-pt="Descreve o trabalho sem contactos ou links. O TRIÂNGULO trata de encontrar alguém compatível." data-en="Describe the job without contact details or links. TRIÂNGULO will look for someone suitable.">Descreve o trabalho sem contactos ou links. O TRIÂNGULO trata de encontrar alguém compatível.</small></label>
+<details class="request-category-details"><summary data-pt="Tipo de serviço · opcional" data-en="Service type · optional">Tipo de serviço · opcional</summary><label><span class="sr-only" data-pt="Tipo de serviço" data-en="Type of service">Tipo de serviço</span><select name="category_code"><option value="" data-pt="Detetar automaticamente" data-en="Detect automatically">Detetar automaticamente</option><option value="home" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</option><option value="garden" data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</option><option value="repairs" data-pt="Reparações & Manutenção" data-en="Repairs & Maintenance">Reparações & Manutenção</option><option value="moving" data-pt="Mudanças & Entregas" data-en="Moves & Deliveries">Mudanças & Entregas</option><option value="lessons" data-pt="Aulas & Explicações" data-en="Lessons & Tutoring">Aulas & Explicações</option><option value="wellness" data-pt="Bem-estar" data-en="Wellness">Bem-estar</option><option value="tech" data-pt="Tecnologia" data-en="Technology">Tecnologia</option><option value="creative" data-pt="Fotografia & Criativos" data-en="Photo & Creative">Fotografia & Criativos</option><option value="pets" data-pt="Animais" data-en="Pets">Animais</option><option value="other" data-pt="Outro" data-en="Other">Outro</option></select></label></details>
+<div class="two"><label><span data-pt="Quando? (opcional)" data-en="When? (optional)">Quando? (opcional)</span><input type="date" name="date"></label><label><span data-pt="Onde? (opcional)" data-en="Where? (optional)">Onde? (opcional)</span><input name="where" autocomplete="street-address" data-ph-pt="Ex.: São Mateus" data-ph-en="E.g. São Mateus"></label></div>
+<div class="two request-secondary-row"><label><span data-pt="Orçamento máximo (opcional)" data-en="Maximum budget (optional)">Orçamento máximo (opcional)</span><div class="money-input"><span>€</span><input name="budget" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ex.: 50"></div></label><label><span data-pt="Nome (opcional)" data-en="Name (optional)">Nome (opcional)</span><input name="client_name" autocomplete="name"></label></div>
+<fieldset class="request-contact"><legend data-pt="Email ou WhatsApp — indica pelo menos um" data-en="Email or WhatsApp — enter at least one">Email ou WhatsApp — indica pelo menos um</legend><div class="two"><label><span>Email</span><input type="email" name="client_email" autocomplete="email" inputmode="email"></label><label><span>WhatsApp</span><input name="client_phone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><small class="form-note" data-pt="Não precisas de criar conta. Recebes uma ligação privada para acompanhar o pedido." data-en="No account is required. You receive a private link to track the request.">Não precisas de criar conta. Recebes uma ligação privada para acompanhar o pedido.</small></fieldset>
+<label id="requestPreferenceRow" hidden><span data-pt="Como queres receber atualizações?" data-en="How should we update you?">Como queres receber atualizações?</span><select name="contact_preference"><option value="both" data-pt="WhatsApp e email" data-en="WhatsApp and email">WhatsApp e email</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select></label>
+<div class="request-submit-block"><div id="requestSubmitStatus" class="submit-status" role="status" aria-live="polite"></div><button id="requestSubmitBtn" class="primary" type="submit" data-pt="Encontrar alguém →" data-en="Find someone →">Encontrar alguém →</button><p class="form-note" data-pt="Enviamos o pedido a prestadores compatíveis. Só confirmas um serviço quando escolheres uma resposta." data-en="We send the request to matching providers. A service is only confirmed when you choose a response.">Enviamos o pedido a prestadores compatíveis. Só confirmas um serviço quando escolheres uma resposta.</p></div></form></aside>
 <aside id="contactSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</h2><form id="contactForm" class="form">
 <label><span data-pt="Nome (opcional)" data-en="Name (optional)">Nome (opcional)</span><input name="name" maxlength="120"></label>
 <label><span>Email</span><input required type="email" name="email"></label>
@@ -1312,7 +1348,17 @@ $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));func
   }
  }
 }
-function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
+let sheetReturnFocus=null;
+function openSheet(id){
+ sheetReturnFocus=document.activeElement;
+ $('#backdrop').classList.add('open');const sheet=$('#'+id);sheet.classList.add('open');document.body.classList.add('sheet-open');
+ requestAnimationFrame(()=>{const target=sheet.querySelector('textarea,input:not([type="hidden"]),select,button:not(.close)');if(target)target.focus({preventScroll:true})});
+}
+function closeSheets(){
+ $('#backdrop').classList.remove('open');$('.sheet').forEach(s=>s.classList.remove('open'));document.body.classList.remove('sheet-open');
+ if(sheetReturnFocus&&typeof sheetReturnFocus.focus==='function')sheetReturnFocus.focus({preventScroll:true});sheetReturnFocus=null;
+}
+$('#backdrop').onclick=closeSheets;$('.close').forEach(b=>b.onclick=closeSheets);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.sheet.open'))closeSheets()});
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
 $('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};
 $$('[data-results-group]').forEach(b=>b.onclick=()=>runSearch(activeSearchQuery,b.dataset.resultsGroup||null));
@@ -1321,21 +1367,30 @@ const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{acti
 const desktopPublishNav=$('#desktopPublishNav');if(desktopPublishNav)desktopPublishNav.onclick=()=>openRequest();const desktopHelpNav=$('#desktopHelpNav');if(desktopHelpNav)desktopHelpNav.onclick=()=>openSheet('contactSheet');
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
 $('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const helpNav=$('#helpNav');if(helpNav)helpNav.onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
+function syncRequestContactPreference(){
+ const f=$('#requestForm'),email=f.client_email.value.trim(),phone=f.client_phone.value.trim(),row=$('#requestPreferenceRow');
+ if(email&&phone){row.hidden=false;if(!f.contact_preference.value)f.contact_preference.value='both'}
+ else{row.hidden=true;f.contact_preference.value=email?'email':phone?'whatsapp':'both'}
+}
 function openRequest(prefill=''){
- const f=$('#requestForm'),today=localDateISO();f.date.min=today;
+ const f=$('#requestForm'),today=localDateISO();f.date.min=today;$('#requestSubmitStatus').textContent='';
  if(prefill)f.description.value=prefill;
  if(activeServiceGroup==='home')f.category_code.value='home';
  else if(activeServiceGroup==='garden')f.category_code.value='garden';
  else if(activeServiceGroup==='repairs')f.category_code.value='repairs';
- openSheet('requestSheet');
+ syncRequestContactPreference();openSheet('requestSheet');
+ requestAnimationFrame(()=>{if(prefill){f.description.focus();f.description.setSelectionRange(f.description.value.length,f.description.value.length)}})
 }
+$('#requestForm').client_email.addEventListener('input',syncRequestContactPreference);
+$('#requestForm').client_phone.addEventListener('input',syncRequestContactPreference);
 $('#requestForm').onsubmit=async e=>{
  e.preventDefault();
- const form=e.target,d=Object.fromEntries(new FormData(form)),status=$('#requestSubmitStatus');
+ const form=e.target,d=Object.fromEntries(new FormData(form)),status=$('#requestSubmitStatus'),submitBtn=$('#requestSubmitBtn');
+ submitBtn.disabled=true;
  const email=(d.client_email||'').trim(),phone=(d.client_phone||'').trim();
  const requestDescription=(d.description||'').trim(),requestLocation=(d.where||'').trim();
- if(containsDirectContactText(requestDescription)||containsDirectContactText(requestLocation)){status.textContent=lang==='pt'?'Não coloques contactos ou links na descrição/localização. Usa os campos de contacto próprios do pedido.':'Do not add contact details or links to the description/location. Use the request contact fields instead.';return}
- if(!email&&!phone){status.textContent=lang==='pt'?'Indica um email ou WhatsApp para acompanhares o pedido.':'Enter an email or WhatsApp number to track the request.';return}
+ if(containsDirectContactText(requestDescription)||containsDirectContactText(requestLocation)){status.textContent=lang==='pt'?'Não coloques contactos ou links na descrição/localização. Usa os campos de contacto próprios do pedido.':'Do not add contact details or links to the description/location. Use the request contact fields instead.';submitBtn.disabled=false;return}
+ if(!email&&!phone){status.textContent=lang==='pt'?'Indica pelo menos um contacto: email ou WhatsApp.':'Enter at least one contact method: email or WhatsApp.';submitBtn.disabled=false;return}
  let pref=d.contact_preference||'both';
  if(!email)pref='whatsapp';else if(!phone)pref='email';
  status.textContent=lang==='pt'?'A procurar serviços…':'Finding services…';
@@ -1343,11 +1398,11 @@ $('#requestForm').onsubmit=async e=>{
  try{
   const {data,error}=await db.rpc('submit_service_request',{p_payload:payload});
   if(error)throw error;
-  if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível publicar.':'Could not post.');return}
+  if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível publicar.':'Could not post.');submitBtn.disabled=false;return}
   saveBookingLocal({kind:'matching',token:data.client_token,island,description:payload.description,date:payload.requested_date||'',status:data.state||'matching',matched_count:Number(data.matched_count||0),createdAt:new Date().toISOString()});
-  form.reset();status.textContent='';closeSheets();
+  form.reset();syncRequestContactPreference();status.textContent='';submitBtn.disabled=false;closeSheets();
   toast(lang==='pt'?'Pedido recebido ✓ Acompanha em “Os meus pedidos”.':'Request received ✓ Track it in “My requests”.');
- }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.'}
+ }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.';submitBtn.disabled=false}
 };
 $('#contactForm').onsubmit=async e=>{
  e.preventDefault();
