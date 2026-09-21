@@ -43,7 +43,7 @@ window.addEventListener('beforeinstallprompt',function(e){
 <section class="card" id="androidCard">
   <h2>Android</h2>
   <div class="steps">
-    <div class="step"><div class="num">1</div><div><b data-pt="Abre esta página num navegador compatível" data-en="Open this page in a compatible browser">Abre esta página num navegador compatível</b><span data-pt="No Android, Chrome e outros navegadores compatíveis podem instalar o TRIÂNGULO." data-en="On Android, Chrome and other compatible browsers can install TRIÂNGULO.">No Android, Chrome e outros navegadores compatíveis podem instalar o TRIÂNGULO.</span></div></div>
+    <div class="step"><div class="num">1</div><div><b data-pt="Abre esta página num navegador compatível" data-en="Open this page in a compatible browser">Abre esta página num navegador compatível</b><span data-pt="No Android, Chrome e outros navegadores compatíveis podem instalar o TRIÂNGULO." data-en="On Android, you can install TRIÂNGULO using Chrome or another compatible browser.">No Android, Chrome e outros navegadores compatíveis podem instalar o TRIÂNGULO.</span></div></div>
     <div class="step"><div class="num">2</div><div><b data-pt="Carrega em “Instalar TRIÂNGULO”" data-en="Tap “Install TRIÂNGULO”">Carrega em “Instalar TRIÂNGULO”</b><span data-pt="O Android adiciona o TRIÂNGULO ao ecrã principal." data-en="Android adds TRIÂNGULO to your home screen.">O Android adiciona o TRIÂNGULO ao ecrã principal.</span></div></div>
   </div>
   <button class="install" id="installBtn" type="button" data-pt="Instalar TRIÂNGULO" data-en="Install TRIÂNGULO">Instalar TRIÂNGULO</button>
@@ -71,13 +71,15 @@ window.addEventListener('beforeinstallprompt',function(e){
 </div>
 <script>
 let deferredPrompt=window.__triInstallPrompt||null;
-let lang=localStorage.getItem('tri_lang')||'pt';
+const urlLang=new URLSearchParams(location.search).get('lang');
+let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt');
 function tr(pt,en){return lang==='pt'?pt:en}
 function applyLang(){
   document.documentElement.lang=lang;
   document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en);
   document.querySelector('#pt').classList.toggle('active',lang==='pt');
   document.querySelector('#en').classList.toggle('active',lang==='en');
+  document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
   document.title=tr('Instalar TRIÂNGULO','Install TRIÂNGULO');
 }
 document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()};
