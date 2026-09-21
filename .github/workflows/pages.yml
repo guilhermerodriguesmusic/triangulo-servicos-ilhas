@@ -118,6 +118,7 @@ jobs:
           terms="$(fetch "$base/terms.html?verify=$GITHUB_SHA")"
           privacy="$(fetch "$base/privacy.html?verify=$GITHUB_SHA")"
           how="$(fetch "$base/how-it-works.html?verify=$GITHUB_SHA")"
+          legacy_reply="$(fetch "$base/reserva-responder.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/servicos/?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
@@ -142,14 +143,24 @@ jobs:
           grep -q "Política de Privacidade" <<<"$privacy"
           grep -q "pagamentos automáticos ainda não estão ativos" <<<"$how"
           grep -q "Prestas este serviço? Junta-te ao TRIÂNGULO" <<<"$app"
+          grep -q "Como funciona" <<<"$app"
+          grep -q "Privacidade" <<<"$app"
+          grep -q "Termos" <<<"$app"
+          grep -q "booking_token" <<<"$legacy_reply"
           grep -q '"start_url": "/servicos/"' <<<"$manifest"
           grep -q '"display": "standalone"' <<<"$manifest"
+          grep -q '"shortcuts"' <<<"$manifest"
           grep -q "triangulo-pwa-" <<<"$sw"
           grep -q "Sitemap: https://trianguloacores.pt/sitemap.xml" <<<"$robots"
           grep -q "https://trianguloacores.pt/prestadores.html" <<<"$sitemap"
 
           if grep -Eqi "Fundador|Founding Service Provider|Founding Credit" <<<"$providers$application$terms$app"; then
             echo "Obsolete founding-provider copy is still public"
+            exit 1
+          fi
+
+          if grep -q "#app" <<<"$index$app"; then
+            echo "Legacy #app navigation returned"
             exit 1
           fi
 
