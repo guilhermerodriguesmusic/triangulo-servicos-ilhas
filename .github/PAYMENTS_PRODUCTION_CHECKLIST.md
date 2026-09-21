@@ -56,7 +56,7 @@ Pending:
 ## Marketplace rules
 - Client pays the full amount through TRIÂNGULO.
 - Provider amount is transferred to the connected provider account.
-- TRIÂNGULO retains the 15% client-side service fee before Stripe processing costs.
+- TRIÂNGULO retains the 12% client-side service fee before Stripe processing costs.
 - Provider contact details remain hidden until payment_status=paid.
 - A generated Multibanco reference must not unlock contact details.
 - Failed/cancelled/processing payments must not unlock contact details.
