@@ -35,10 +35,46 @@
 }
 
 </style>
+<style id="persistent-choice-nav-v1">
+.persistent-choice-nav{
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  margin:0 auto 18px;padding:10px 12px;
+  max-width:1180px;border:1px solid rgba(23,61,78,.09);
+  border-radius:16px;background:rgba(255,255,255,.92);
+  box-shadow:0 7px 22px rgba(24,58,87,.06);
+  overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;white-space:nowrap
+}
+.persistent-choice-nav::-webkit-scrollbar{display:none}
+.persistent-choice-nav a{
+  flex:0 0 auto;color:#35566d;text-decoration:none;
+  font-size:11px;font-weight:850;padding:7px 5px;border-radius:9px
+}
+.persistent-choice-nav a:hover,.persistent-choice-nav a:focus-visible{
+  color:#08725b;background:#edf8f3;outline:none
+}
+@media(max-width:760px){
+  .persistent-choice-nav{
+    justify-content:flex-start;margin-bottom:14px;border-radius:13px;
+    padding:8px 10px;gap:10px
+  }
+  .persistent-choice-nav a{font-size:10px;padding:7px 8px;background:#f5f8fa}
+}
+</style>
 </head>
 <body>
 <div class="wrap">
 <header class="top"><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div></header>
+<nav class="persistent-choice-nav" aria-label="Navegação principal" data-aria-pt="Navegação principal" data-aria-en="Main navigation">
+  <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
+  <a href="/servicos/?island=Pico">Pico</a>
+  <a href="/servicos/?island=Faial">Faial</a>
+  <a href="/servicos/?island=S%C3%A3o+Jorge">São Jorge</a>
+  <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
+  <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
+  <a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a>
+  <a href="/prestadores.html" data-pt="Para prestadores" data-en="For providers">Para prestadores</a>
+</nav>
 <section data-pt>
 <div class="hero"><div class="eyebrow">Simples do início ao fim</div><h1>Como funciona</h1><p>O TRIÂNGULO ajuda-te a encontrar serviços locais no Pico, Faial e São Jorge sem complicar o processo.</p></div>
 <div class="steps">
