@@ -52,37 +52,33 @@ jobs:
           import cairosvg
           from pathlib import Path
 
-          logo = Path("logo.svg").read_bytes()
-          logo_data = base64.b64encode(logo).decode("ascii")
+          mark_svg = Path("app-icon.svg").read_bytes()
+          mark_data = base64.b64encode(mark_svg).decode("ascii")
 
-          def make_icon(size, mark_ratio, output):
+          def make_icon(size, mark_ratio, output, background="#f8faf8"):
               mark = round(size * mark_ratio)
               pos = (size - mark) // 2
               svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 {size} {size}">
-                <defs>
-                  <linearGradient id="bg" x1="0" y1="0" x2="0.85" y2="1">
-                    <stop offset="0" stop-color="#10355f"/>
-                    <stop offset="1" stop-color="#187fab"/>
-                  </linearGradient>
-                  <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
-                    <feDropShadow dx="0" dy="{max(3, round(size*.018))}" stdDeviation="{max(3, round(size*.012))}" flood-color="#062844" flood-opacity=".35"/>
-                  </filter>
-                </defs>
-                <rect width="{size}" height="{size}" fill="url(#bg)"/>
-                <circle cx="{size/2}" cy="{size/2}" r="{size*.30}" fill="#ffffff" opacity=".035"/>
-                <image href="data:image/svg+xml;base64,{logo_data}" x="{pos}" y="{pos}" width="{mark}" height="{mark}" filter="url(#shadow)"/>
+                <rect width="{size}" height="{size}" fill="{background}"/>
+                <image href="data:image/svg+xml;base64,{mark_data}" x="{pos}" y="{pos}" width="{mark}" height="{mark}"/>
               </svg>'''
               cairosvg.svg2png(bytestring=svg.encode(), write_to=output, output_width=size, output_height=size)
 
-          make_icon(180, .62, "icons/triangulo-blue-180.png")
-          make_icon(192, .62, "icons/triangulo-blue-192.png")
-          make_icon(512, .62, "icons/triangulo-blue-512.png")
-          make_icon(512, .52, "icons/triangulo-blue-maskable-512.png")
+          make_icon(180, .78, "apple-touch-icon-v2.png")
+          make_icon(180, .78, "apple-touch-icon-precomposed-v2.png")
+          make_icon(192, .78, "icon-192-v2.png")
+          make_icon(512, .78, "icon-512-v2.png")
+          make_icon(512, .62, "icon-512-maskable-v2.png")
+          make_icon(180, .78, "icons/apple-touch-icon-v2.png")
+          make_icon(192, .78, "icons/icon-192-v2.png")
+          make_icon(512, .78, "icons/icon-512-v2.png")
+          make_icon(512, .62, "icons/icon-512-maskable-v2.png")
           PY
-          test -s icons/triangulo-blue-180.png
-          test -s icons/triangulo-blue-192.png
-          test -s icons/triangulo-blue-512.png
-          test -s icons/triangulo-blue-maskable-512.png
+          test -s apple-touch-icon-v2.png
+          test -s apple-touch-icon-precomposed-v2.png
+          test -s icon-192-v2.png
+          test -s icon-512-v2.png
+          test -s icon-512-maskable-v2.png
       - name: Prepare public site
         shell: bash
         run: |
@@ -125,8 +121,8 @@ jobs:
           install_page="$(fetch "$base/instalar/?verify=$GITHUB_SHA")"
           live_apple_icon="/tmp/tri-live-apple-touch-icon.png"
           live_precomposed_icon="/tmp/tri-live-apple-touch-icon-precomposed.png"
-          curl --fail --silent --show-error --location --retry 8 --retry-all-errors --retry-delay 2 "$base/apple-touch-icon.png?verify=$GITHUB_SHA" -o "$live_apple_icon"
-          curl --fail --silent --show-error --location --retry 8 --retry-all-errors --retry-delay 2 "$base/apple-touch-icon-precomposed.png?verify=$GITHUB_SHA" -o "$live_precomposed_icon"
+          curl --fail --silent --show-error --location --retry 8 --retry-all-errors --retry-delay 2 "$base/apple-touch-icon-v2.png?verify=$GITHUB_SHA" -o "$live_apple_icon"
+          curl --fail --silent --show-error --location --retry 8 --retry-all-errors --retry-delay 2 "$base/apple-touch-icon-precomposed-v2.png?verify=$GITHUB_SHA" -o "$live_precomposed_icon"
           app_redirect="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           home_redirect="$(fetch "$base/inicio.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/servicos/?verify=$GITHUB_SHA")"
@@ -174,10 +170,10 @@ jobs:
           grep -q "Termos" <<<"$app"
           grep -q "booking_token" <<<"$legacy_reply"
           grep -q '<title>TRIÂNGULO</title>' <<<"$install_page"
-          grep -q 'href="/apple-touch-icon.png?v=20260921c"' <<<"$install_page"
-          grep -q 'href="/apple-touch-icon-precomposed.png?v=20260921c"' <<<"$install_page"
-          cmp -s apple-touch-icon.png "$live_apple_icon"
-          cmp -s apple-touch-icon-precomposed.png "$live_precomposed_icon"
+          grep -q 'href="/apple-touch-icon-v2.png"' <<<"$install_page"
+          grep -q 'href="/apple-touch-icon-precomposed-v2.png"' <<<"$install_page"
+          cmp -s apple-touch-icon-v2.png "$live_apple_icon"
+          cmp -s apple-touch-icon-precomposed-v2.png "$live_precomposed_icon"
           grep -q "Instalar TRIÂNGULO" <<<"$install_page"
           grep -q "beforeinstallprompt" <<<"$install_page"
           grep -q "package=com.android.chrome" <<<"$install_page"
@@ -230,8 +226,8 @@ jobs:
           fetch "$base/assets/pico-hero-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/faial-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/sao-jorge-real.jpg?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icons/icon-192.png?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icons/icon-512.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icon-192-v2.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icon-512-v2.png?verify=$GITHUB_SHA" >/dev/null
 
           if curl --fail --silent --location "$base/checkout-teste-20260920.html?verify=$GITHUB_SHA" >/dev/null 2>&1; then
             echo "Temporary checkout test page is still publicly reachable"
