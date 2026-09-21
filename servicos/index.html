@@ -1256,10 +1256,10 @@ body.route-public-results #explore{display:block!important}
 
         <div class="pa-grid2">
           <label class="pa-field"><span data-pt="Nome / nome profissional" data-en="Name / professional name">Nome / nome profissional</span><input name="name" required maxlength="120"></label>
-          <label class="pa-field"><span data-pt="Nome do negócio" data-en="Business name">Nome do negócio</span><input name="business_name" maxlength="120"></label>
+          <label class="pa-field"><span data-pt="Nome do negócio (privado)" data-en="Business name (private)">Nome do negócio (privado)</span><input name="business_name" maxlength="120"><small class="pa-note" style="display:block;text-align:left;margin-top:5px!important" data-pt="Guardado pelo TRIÂNGULO. Não aparece publicamente antes de um serviço ser confirmado." data-en="Stored by TRIÂNGULO. It is not shown publicly before a service is confirmed.">Guardado pelo TRIÂNGULO. Não aparece publicamente antes de um serviço ser confirmado.</small></label>
         </div>
 
-        <label class="pa-field"><span data-pt="Descrição" data-en="Description">Descrição</span><textarea name="description" required minlength="10" maxlength="1200"></textarea></label>
+        <label class="pa-field"><span data-pt="Descrição" data-en="Description">Descrição</span><textarea name="description" required minlength="10" maxlength="1200"></textarea><small class="pa-note" style="display:block;text-align:left;margin-top:5px!important" data-pt="Não incluas nome comercial, telefone, email, redes sociais ou links. Esses dados só são partilhados quando o serviço é confirmado." data-en="Do not include a business name, phone number, email, social media or links. Those details are only shared once a service is confirmed.">Não incluas nome comercial, telefone, email, redes sociais ou links. Esses dados só são partilhados quando o serviço é confirmado.</small></label>
 
         <div class="pa-field">
           <span data-pt="Ilhas onde trabalhas" data-en="Islands you work on">Ilhas onde trabalhas</span>
@@ -1457,7 +1457,7 @@ async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
     id:s.service_id,service_id:s.service_id,provider_id:s.provider_id,
     title:s.service_title,description:s.service_description,category_code:s.category_code,
     pricing_type:s.pricing_type,price:s.price,availability:s.availability,
-    name:s.provider_name,business_name:s.business_name,service_islands:s.service_islands||[],
+    name:s.provider_name,service_islands:s.service_islands||[],
     photo_data:s.photo_data,completed_jobs:Number(s.completed_jobs||0),response_rate:Number(s.response_rate||0),
     rank_score:Number(s.rank_score||0)
   }));
@@ -1522,7 +1522,7 @@ function updateResults(q=activeSearchQuery){
   const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
  $('#resultsList').innerHTML=list.map(s=>{
-  const photo=safeProviderPhoto(s.photo_data),provider=escapeHtml(s.business_name||s.name),title=escapeHtml(s.title||(lang==='pt'?'Serviço':'Service'));
+  const photo=safeProviderPhoto(s.photo_data),provider=escapeHtml(s.name||(lang==='pt'?'Prestador verificado':'Verified provider')),title=escapeHtml(s.title||(lang==='pt'?'Serviço':'Service'));
   const proof=s.completed_jobs>0
     ?'<span class="provider-tag">✓ '+s.completed_jobs+' '+(lang==='pt'?'serviço'+(s.completed_jobs===1?'':'s')+' concluído'+(s.completed_jobs===1?'':'s'):'completed job'+(s.completed_jobs===1?'':'s'))+'</span>'
     :'<span class="provider-tag">✓ '+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
@@ -1640,7 +1640,7 @@ function openBooking(id){
  const dateHtml=dates.map((d,i)=>'<button class="date-chip '+(i===0?'active':'')+'" type="button" data-date="'+d.iso+'"><small>'+(i===0?(lang==='pt'?'Hoje':'Today'):i===1?(lang==='pt'?'Amanhã':'Tomorrow'):d.day)+'</small><b>'+d.num+'</b></button>').join('');
  const timeHtml=['09:00','11:00','14:00','17:00',''].map((x,i)=>'<button class="time-chip '+(i===0?'active':'')+'" type="button" data-time="'+x+'">'+(x||(lang==='pt'?'A combinar':'Flexible'))+'</button>').join('');
  const maxBookDate=new Date();maxBookDate.setDate(maxBookDate.getDate()+90);
- const providerName=escapeHtml(p.business_name||p.name||(lang==='pt'?'Prestador':'Provider')),serviceTitle=escapeHtml(p.title||(lang==='pt'?'Serviço':'Service'));
+ const providerName=escapeHtml(p.name||(lang==='pt'?'Prestador verificado':'Verified provider')),serviceTitle=escapeHtml(p.title||(lang==='pt'?'Serviço':'Service'));
  $('#bookContent').innerHTML='<div class="book-provider"><img src="'+safeProviderPhoto(p.photo_data)+'" alt="'+providerName+'"><div><b>'+serviceTitle+'</b><small>'+(lang==='pt'?'por ':'by ')+providerName+' · '+escapeHtml(p.description||'')+'</small></div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><label class="pa-field" style="margin-top:-4px"><span>'+(lang==='pt'?'Outra data':'Another date')+'</span><input id="bookCustomDate" type="date" min="'+localDateISO()+'" max="'+localDateISO(maxBookDate)+'"></label><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form" style="margin:12px 0"><label><span>'+(lang==='pt'?'Nome (opcional)':'Name (optional)')+'</span><input id="bookName" maxlength="120" autocomplete="name"></label><div class="two"><label><span>'+(lang==='pt'?'Email (opcional)':'Email (optional)')+'</span><input id="bookEmail" type="email" autocomplete="email" inputmode="email"></label><label><span>'+(lang==='pt'?'WhatsApp (opcional)':'WhatsApp (optional)')+'</span><input id="bookPhone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><label><span>'+(lang==='pt'?'Atualizações por':'Updates via')+'</span><select id="bookPreference"><option value="both">'+(lang==='pt'?'WhatsApp e email':'WhatsApp and email')+'</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note">'+(lang==='pt'?'Basta um contacto. Não precisas de criar conta.':'One contact method is enough. No account is required.')+'</small></label><label><span>'+(lang==='pt'?'Nota (opcional)':'Note (optional)')+'</span><textarea id="bookNote"></textarea><small class="form-note">'+(paymentsLive?(lang==='pt'?'Não incluas contactos ou links nas notas. Os contactos são protegidos até ao pagamento.':'Do not include contact details or links in the note. Contact details stay protected until payment.'):(lang==='pt'?'Não incluas contactos ou links nas notas. Quando o serviço for aceite, o TRIÂNGULO disponibiliza os contactos para combinarem os detalhes.':'Do not include contact details or links in the note. Once the service is accepted, TRIÂNGULO releases contact details so you can coordinate.'))+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO (12%)':'TRIÂNGULO fee (12%)')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Enviar pedido':'Send request'))+'</button><p class="demo">'+(quote?(lang==='pt'?'O prestador avalia o pedido e indica quanto quer receber. Depois vês o total final antes de confirmar.':'The provider assesses the request and sets the amount they want to receive. You then see the final total before confirming.'):(paymentsLive?(lang==='pt'?'O total inclui a taxa TRIÂNGULO. O serviço fica confirmado depois do pagamento.':'The total includes the TRIÂNGULO fee. The service is confirmed after payment.'):(lang==='pt'?'O preço final inclui a taxa TRIÂNGULO. Enquanto os pagamentos estão desligados, os contactos são libertados quando o prestador aceita.':'The final price includes the TRIÂNGULO fee. While payments are off, contact details are released when the provider accepts.')))+'</p>';
  openSheet('bookSheet');
  $$('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#bookCustomDate').value=''});
@@ -1659,7 +1659,7 @@ function openBooking(id){
    const {data,error}=await db.rpc('create_booking_request',{p_payload:payload});
    if(error)throw error;
    if(!data||!data.ok){toast((data&&data.message)?data.message:(lang==='pt'?'Não foi possível enviar.':'Could not submit.'));return}
-   saveBookingLocal({kind:'direct',token:data.client_token,provider:p.business_name||p.name,service_title:p.title,island,date:payload.service_date,time:payload.service_time,quote,status:'requested',createdAt:new Date().toISOString()});
+   saveBookingLocal({kind:'direct',token:data.client_token,provider:p.name||(lang==='pt'?'Prestador verificado':'Verified provider'),service_title:p.title,island,date:payload.service_date,time:payload.service_time,quote,status:'requested',createdAt:new Date().toISOString()});
    closeSheets();toast(lang==='pt'?'Pedido enviado ✓ Acompanha em “Os meus pedidos”.':'Request sent ✓ Track it in “My requests”.');
   }catch(err){console.error(err);toast(lang==='pt'?'Não foi possível enviar.':'Could not submit.')}
  };
