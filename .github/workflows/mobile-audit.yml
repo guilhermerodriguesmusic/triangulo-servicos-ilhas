@@ -10,6 +10,11 @@ on:
       - "prestadores.html"
       - "candidatura-prestador.html"
       - "instalar/index.html"
+      - "how-it-works.html"
+      - "sobre-nos.html"
+      - "privacy.html"
+      - "terms.html"
+      - "manifest.json"
       - "sw.js"
   workflow_dispatch:
 
@@ -61,6 +66,10 @@ jobs:
             {name:'services',path:'/servicos/'},
             {name:'providers',path:'/prestadores.html'},
             {name:'application',path:'/candidatura-prestador.html'},
+            {name:'how',path:'/how-it-works.html'},
+            {name:'about',path:'/sobre-nos.html'},
+            {name:'privacy',path:'/privacy.html'},
+            {name:'terms',path:'/terms.html'},
             {name:'provider-login',path:'/servicos/?prestador=1&entry=mobile-audit'},
             {name:'install-android',path:'/instalar/',ua:androidUA},
             {name:'install-iphone',path:'/instalar/',ua:iphoneUA}
@@ -132,12 +141,16 @@ jobs:
 
                   const selectors='button,.cta,a.primary,a.secondary,.platform-btn,.pa-primary,input:not([type="hidden"]),select';
                   const tiny=[...document.querySelectorAll(selectors)].filter(visible).map(el=>{
-                    const r=el.getBoundingClientRect();
+                    const isChoice=el.matches('input[type="checkbox"],input[type="radio"]');
+                    const target=isChoice?(el.closest('label')||el):el;
+                    const r=target.getBoundingClientRect();
                     return {
-                      tag:el.tagName.toLowerCase(),id:el.id||'',text:(el.textContent||el.getAttribute('aria-label')||'').trim().replace(/\s+/g,' ').slice(0,70),
+                      tag:el.tagName.toLowerCase(),id:el.id||'',text:(target.textContent||el.getAttribute('aria-label')||'').trim().replace(/\s+/g,' ').slice(0,70),
                       width:Math.round(r.width),height:Math.round(r.height)
                     };
                   }).filter(x=>x.width<30||x.height<30).slice(0,20);
+                  const mainCount=document.querySelectorAll('main').length;
+                  const skipLink=!!document.querySelector('a.skip-link[href="#main-content"]');
 
                   return {
                     title:document.title,
@@ -146,7 +159,9 @@ jobs:
                     scrollWidth:Math.max(root.scrollWidth,body?.scrollWidth||0),
                     horizontalOverflow:Math.max(root.scrollWidth,body?.scrollWidth||0)>vw+2,
                     offenders,
-                    tiny
+                    tiny,
+                    mainCount,
+                    skipLink
                   };
                 });
 
@@ -156,7 +171,7 @@ jobs:
                 const record={name,url,navError,errors:uniqueErrors,...metrics};
                 results.push(record);
 
-                if(navError||metrics.horizontalOverflow||uniqueErrors.length){
+                if(navError||metrics.horizontalOverflow||uniqueErrors.length||metrics.mainCount!==1){
                   hardFailures++;
                   console.log('FAIL',name,JSON.stringify(record));
                 }else{
@@ -174,7 +189,9 @@ jobs:
             hardFailures,
             overflow:results.filter(x=>x.horizontalOverflow).map(x=>x.name),
             pageErrors:results.filter(x=>x.navError||x.errors.length).map(x=>({name:x.name,navError:x.navError,errors:x.errors})),
-            tinyWarnings:results.filter(x=>x.tiny.length).map(x=>({name:x.name,tiny:x.tiny}))
+            tinyWarnings:results.filter(x=>x.tiny.length).map(x=>({name:x.name,tiny:x.tiny})),
+            missingSkipLinks:results.filter(x=>!x.skipLink).map(x=>x.name),
+            invalidMainLandmarks:results.filter(x=>x.mainCount!==1).map(x=>({name:x.name,mainCount:x.mainCount}))
           };
           fs.writeFileSync('mobile-audit/summary.json',JSON.stringify(summary,null,2));
           console.log('SUMMARY',JSON.stringify(summary));
