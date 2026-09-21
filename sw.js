@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260921-app-nav-v2';
+const CACHE='triangulo-pwa-20260921-servicos-v1';
 const CORE=[
   '/',
   '/index.html',
@@ -8,6 +8,7 @@ const CORE=[
   '/privacy.html',
   '/terms.html',
   '/instalar/',
+  '/servicos/',
   '/app.html',
   '/manifest.json',
   '/logo.svg',
@@ -59,7 +60,7 @@ self.addEventListener('fetch',event=>{
   if(url.origin!==self.location.origin) return;
 
   if(request.mode==='navigate'){
-    event.respondWith(networkFirst(request,'/app.html'));
+    event.respondWith(networkFirst(request,'/servicos/'));
     return;
   }
 
