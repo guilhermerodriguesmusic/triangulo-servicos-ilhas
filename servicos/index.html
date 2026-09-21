@@ -1147,6 +1147,7 @@ let lang=(urlLang==='en'||urlLang==='pt')?urlLang:store.get('tri_lang','pt'), is
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e});
 const tr=k=>T[lang][k]||k; const localized=p=>p?.[lang]||p?.pt||p?.description||'';
 function applyLang(){
+ store.set('tri_lang',lang);
  document.documentElement.lang=lang;
  document.title=lang==='pt'?'TRIÂNGULO — Serviços locais nas ilhas':'TRIÂNGULO — Local services across the islands';
  $$('[data-t]').forEach(el=>{let v=tr(el.dataset.t);if(v.includes('<br>'))el.innerHTML=v;else el.textContent=v});
