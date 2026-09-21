@@ -87,6 +87,20 @@ body{min-height:100svh;overflow-x:hidden}
 }
 .nav .with-chevron::after{content:"⌄";font-size:15px;margin-left:8px;position:relative;top:-1px}
 .nav a:hover,.nav button:hover{opacity:.82}
+.nav-islands{position:relative;display:flex;align-items:center}
+.islands-menu{
+  position:absolute;top:calc(100% + 10px);left:50%;transform:translate(-50%,-4px);
+  min-width:180px;padding:7px;background:rgba(255,255,255,.98);border:1px solid rgba(255,255,255,.75);
+  border-radius:15px;box-shadow:0 16px 34px rgba(5,38,65,.22);opacity:0;visibility:hidden;
+  pointer-events:none;transition:.16s ease;z-index:40
+}
+.nav-islands.open .islands-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+.islands-menu a{
+  display:flex!important;align-items:center;justify-content:space-between;width:100%;padding:10px 11px!important;
+  border-radius:10px;color:#173d4e!important;text-shadow:none!important;font-size:12px!important;font-weight:800!important
+}
+.islands-menu a:hover{background:#edf5e8;opacity:1!important}
+.islands-menu a span{color:#5f8d50;font-size:16px}
 .nav a:focus-visible,.nav button:focus-visible,.login:focus-visible,.provider-join:focus-visible,.provider-mobile-cta a:focus-visible,.island-pill:focus-visible,.searchbar button:focus-visible,.category:focus-visible{outline:3px solid rgba(255,255,255,.92);outline-offset:3px}
 .island-pill:hover{transform:translateY(-1px)}
 .searchbar:focus-within{box-shadow:0 18px 44px rgba(0,0,0,.25),0 0 0 2px rgba(255,255,255,.75)}
@@ -338,7 +352,14 @@ h1{
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
     <nav class="nav" aria-label="Principal">
       <a href="/servicos/" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
-      <button type="button" class="with-chevron" id="navIslands" data-pt="Ilhas" data-en="Islands">Ilhas</button>
+      <div class="nav-islands" id="navIslandsWrap">
+        <button type="button" class="with-chevron" id="navIslands" aria-haspopup="true" aria-expanded="false" data-pt="Ilhas" data-en="Islands">Ilhas</button>
+        <div class="islands-menu" id="islandsMenu" aria-label="Ilhas">
+          <a href="/servicos/?island=Pico" data-nav-island="Pico">Pico <span>›</span></a>
+          <a href="/servicos/?island=Faial" data-nav-island="Faial">Faial <span>›</span></a>
+          <a href="/servicos/?island=S%C3%A3o+Jorge" data-nav-island="São Jorge">São Jorge <span>›</span></a>
+        </div>
+      </div>
       <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
       <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a><a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a>
     </nav>
@@ -461,7 +482,31 @@ function openSearch(q,group=null){
 }
 document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
 document.querySelector('#islandSelect').onchange=e=>setIsland(e.target.value);
-document.querySelector('#navIslands').onclick=()=>document.querySelector('.island-pills').scrollIntoView({behavior:'smooth',block:'center'});
+const navIslands=document.querySelector('#navIslands'),navIslandsWrap=document.querySelector('#navIslandsWrap');
+navIslands.onclick=e=>{
+  e.stopPropagation();
+  const open=navIslandsWrap.classList.toggle('open');
+  navIslands.setAttribute('aria-expanded',open?'true':'false');
+};
+document.querySelectorAll('[data-nav-island]').forEach(a=>a.onclick=e=>{
+  e.preventDefault();
+  const next=a.dataset.navIsland;
+  localStorage.setItem('tri_island',next);
+  localStorage.setItem('tri_client_welcome_v4','1');
+  const params=new URLSearchParams({island:next});
+  if(lang==='en')params.set('lang','en');
+  location.href='/servicos/?'+params.toString();
+});
+document.addEventListener('click',e=>{
+  if(navIslandsWrap.classList.contains('open')&&!navIslandsWrap.contains(e.target)){
+    navIslandsWrap.classList.remove('open');navIslands.setAttribute('aria-expanded','false');
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&navIslandsWrap.classList.contains('open')){
+    navIslandsWrap.classList.remove('open');navIslands.setAttribute('aria-expanded','false');navIslands.focus();
+  }
+});
 document.querySelector('#topSearch').onclick=()=>document.querySelector('#searchInput').focus();
 document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch(document.querySelector('#searchInput').value)};
 document.querySelectorAll('[data-group]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch('',a.dataset.group)});
