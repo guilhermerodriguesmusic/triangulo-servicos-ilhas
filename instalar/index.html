@@ -21,10 +21,10 @@ window.addEventListener('beforeinstallprompt',function(e){
   window.dispatchEvent(new Event('tri-install-ready'));
 });
 </script>
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-v2.png">
-<link rel="shortcut icon" type="image/png" href="/icon-192-v2.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v2.png">
-<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-precomposed-v2.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-v3.png">
+<link rel="shortcut icon" type="image/png" href="/icon-192-v3.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v3.png">
+<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-precomposed-v3.png">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:760px;margin:auto;padding:18px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;text-decoration:none;color:#153458}.brand img{width:205px;height:auto;display:block}.lang{display:flex;background:#fff;border:1px solid #d9e7ef;border-radius:999px;padding:3px}.lang button{border:0;background:transparent;min-width:38px;min-height:36px;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;color:#728697;cursor:pointer}.lang button.active{background:#e9f8f3;color:#08725b}.hero{background:linear-gradient(135deg,#def4ff,#ecfbf6);border:1px solid #d2e8ef;border-radius:24px;padding:30px}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0a8168}.hero h1{font-size:clamp(34px,7vw,50px);line-height:1.04;margin:9px 0 12px}.hero p{margin:0;color:#567187;line-height:1.55}.platform-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.platform-btn{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:14px 16px;font-size:14px;font-weight:900;text-decoration:none;cursor:pointer}.platform-btn.android{background:#108b6e;color:#fff}.platform-btn.ios{background:#153458;color:#fff}.platform-btn small{font-size:11px;font-weight:700;opacity:.8}.store-note{margin-top:12px;font-size:11px;color:#6b8193;line-height:1.45}.card{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:20px;padding:22px}.card h2{margin:0 0 14px;font-size:22px}.steps{display:grid;gap:10px}.step{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:10px 0}.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#e9f8f3;color:#08725b;font-size:12px;font-weight:900}.step b{display:block;font-size:13px}.step span{display:block;color:#657e91;font-size:12px;line-height:1.45;margin-top:2px}.step b>span{display:inline;color:inherit;font-size:inherit;line-height:inherit;margin:0}.install{width:100%;border:0;background:#108b6e;color:#fff;border-radius:13px;padding:14px 18px;font-size:14px;font-weight:900;cursor:pointer;margin-top:16px}.install:disabled{opacity:.58;cursor:wait}.platform-btn:disabled{opacity:.68;cursor:wait}.install[hidden]{display:none}.secondary{display:flex;align-items:center;justify-content:center;width:max-content;max-width:100%;margin:14px auto 0;text-align:center;color:#0b8068;text-decoration:none;font-weight:900;font-size:12px;border:1px solid #d5e9e2;background:#f7fbf9;border-radius:999px;padding:9px 13px;transition:.15s ease}.secondary:hover{background:#eaf7f1;transform:translateY(-1px)}.status{margin-top:12px;color:#62798b;font-size:12px;line-height:1.5}.android-install-note{margin-top:9px;padding:10px 12px;border-radius:11px;background:#f0faf6;color:#557568;font-size:10.5px;line-height:1.45}.install.is-ready,.platform-btn.android.is-ready{box-shadow:0 10px 24px rgba(16,139,110,.22)}.install.is-installing,.platform-btn.android.is-installing{opacity:.82;cursor:progress}.ios-share{font-weight:900;color:#153458}.note{margin-top:14px;padding:12px 14px;background:#f6fafb;border-radius:12px;color:#657e91;font-size:11px;line-height:1.5}.footer{text-align:center;padding:20px 0;color:#7c90a0;font-size:10px}.footer-links{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-top:7px}.footer-links a{color:#557487;text-decoration:none;font-weight:800;padding:6px 8px;border-radius:999px}.footer-links a:hover{background:#edf5e8;color:#315f45}@media(max-width:600px){.wrap{padding:12px}.hero{padding:24px 19px}.platform-choice{grid-template-columns:1fr}.on-android #androidCard{border-color:#bfe7d9;box-shadow:0 12px 30px rgba(16,139,110,.08)}.on-ios #iosCard{border-color:#cbd8e7;box-shadow:0 12px 30px rgba(21,52,88,.08)}.on-android #iosCard,.on-android #iosHeroBtn{display:none}.on-ios #androidCard,.on-ios #androidHeroBtn{display:none}}
 .ios-browser-warning{margin:0 0 18px;padding:14px 15px;border:1px solid #f0c97a;background:#fff8e8;border-radius:16px;color:#6d5317;display:grid;gap:6px}.ios-browser-warning[hidden]{display:none}.ios-browser-warning b{font-size:14px}.ios-browser-warning span{font-size:12px;line-height:1.5}.ios-browser-warning button{margin-top:5px;border:0;border-radius:999px;padding:10px 13px;background:#123a68;color:#fff;font-size:11px;font-weight:900}.ios-browser-warning small{min-height:14px;font-size:10px;font-weight:800;color:#0a8068}
@@ -72,9 +72,12 @@ window.addEventListener('beforeinstallprompt',function(e){
   }
   .persistent-choice-nav a{font-size:10px;padding:7px 8px;background:#f5f8fa}
 }
+
+.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
 <div class="wrap">
 <header class="top"><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div></header>
 <nav class="persistent-choice-nav" aria-label="Navegação principal" data-aria-pt="Navegação principal" data-aria-en="Main navigation">
@@ -87,6 +90,7 @@ window.addEventListener('beforeinstallprompt',function(e){
   <a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a>
   <a href="/prestadores.html" data-pt="Para prestadores" data-en="For providers">Para prestadores</a>
 </nav>
+<main id="main-content">
 <section class="hero">
   <div class="eyebrow">iPhone · Android</div>
   <h1 data-pt="Instala o TRIÂNGULO no teu telemóvel." data-en="Install TRIÂNGULO on your phone.">Instala o TRIÂNGULO no teu telemóvel.</h1>
@@ -132,6 +136,7 @@ window.addEventListener('beforeinstallprompt',function(e){
 </section>
 
 <div class="note" data-pt="A versão instalada atualiza-se automaticamente a partir de trianguloacores.pt. Não precisas de voltar a descarregar quando houver melhorias." data-en="The installed version updates automatically from trianguloacores.pt. You do not need to reinstall it when there are improvements.">A versão instalada atualiza-se automaticamente a partir de trianguloacores.pt. Não precisas de voltar a descarregar quando houver melhorias.</div>
+</main>
 <div class="footer">TRIÂNGULO · Pico · Faial · São Jorge<br><span class="footer-links"><a href="/" data-pt="Início" data-en="Home">Início</a> · <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a> · <a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a> · <a href="/terms.html" data-pt="Termos" data-en="Terms">Termos</a></span></div>
 </div>
 <script>
