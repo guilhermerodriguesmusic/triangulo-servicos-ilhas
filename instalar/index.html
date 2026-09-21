@@ -33,7 +33,7 @@ window.addEventListener('beforeinstallprompt',function(e){
   <div class="eyebrow">iPhone · Android</div>
   <h1 data-pt="Instala o TRIÂNGULO no teu telemóvel." data-en="Install TRIÂNGULO on your phone.">Instala o TRIÂNGULO no teu telemóvel.</h1>
   <p data-pt="Podes instalar o TRIÂNGULO diretamente a partir do navegador. Fica no ecrã principal e abre como uma aplicação independente." data-en="You can install TRIÂNGULO directly from your browser. It stays on your home screen and opens as a standalone web app.">Podes instalar o TRIÂNGULO diretamente a partir do navegador. Fica no ecrã principal e abre como uma aplicação independente.</p>
-  <div class="platform-choice" aria-label="Escolher dispositivo">
+  <div class="platform-choice" aria-label="Escolher dispositivo" data-aria-pt="Escolher dispositivo" data-aria-en="Choose device">
     <button class="platform-btn android" id="androidHeroBtn" type="button" data-pt="Instalar agora no Android" data-en="Install now on Android">Instalar agora no Android</button>
     <button class="platform-btn ios" id="iosHeroBtn" type="button" data-pt="Instalar no iPhone ↓" data-en="Install on iPhone ↓">Instalar no iPhone ↓</button>
   </div>
@@ -78,13 +78,14 @@ function tr(pt,en){return lang==='pt'?pt:en}
 function applyLang(){
   document.documentElement.lang=lang;
   document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en);
+  document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
   document.querySelector('#pt').classList.toggle('active',lang==='pt');
   document.querySelector('#en').classList.toggle('active',lang==='en');
   document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
   document.title=tr('Instalar TRIÂNGULO','Install TRIÂNGULO');
 }
-document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()};
-document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()};
+document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang();show();if(isAndroid&&!standalone)setInstallReady(!!deferredPrompt)};
+document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang();show();if(isAndroid&&!standalone)setInstallReady(!!deferredPrompt)};
 const ua=navigator.userAgent.toLowerCase();
 const isIOS=/iphone|ipad|ipod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isAndroid=/android/.test(ua);
