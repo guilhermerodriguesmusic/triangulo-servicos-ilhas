@@ -1,37 +1,71 @@
-<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TRIÂNGULO — Como funciona</title>
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#123a68">
-<meta name="description" content="Descobre como funciona o TRIÂNGULO para encontrar e prestar serviços locais no Pico, Faial e São Jorge.">
+<title>TRIÂNGULO — Como funciona</title>
+<meta name="description" content="Percebe como encontrar, pedir e combinar serviços locais no Pico, Faial e São Jorge através do TRIÂNGULO.">
 <link rel="canonical" href="https://trianguloacores.pt/how-it-works.html">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/logo.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/triangulo-blue-180.png"><style>
-:root{--ink:#153458;--blue:#1d89ed;--green:#14aa7d;--bg:#f5fbff;--line:#dce7ef}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:linear-gradient(180deg,#dff3ff,#f8fcff)}
-main{max-width:760px;margin:0 auto;min-height:100vh;background:#fff;padding:22px 22px 60px}
-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:24px}.brand{display:flex;align-items:center;text-decoration:none}.brand img{width:205px;height:auto;display:block}
-.lang{display:flex;gap:4px;background:#eef3f7;padding:3px;border-radius:999px}.lang button{border:0;background:transparent;padding:6px 9px;border-radius:999px;font-weight:800}.lang button.on{background:#fff;box-shadow:0 2px 7px #0001}
-h1{font-size:30px;margin:8px 0 6px}h2{font-size:20px;margin:28px 0 8px}p,li{font-size:14px;line-height:1.65;color:#4e667f}strong{color:var(--ink)}.note{background:#eef9f5;border:1px solid #d8eee6;border-radius:14px;padding:12px 14px;margin:14px 0}.draft{background:#fff5cf;border:1px solid #f4df8a;border-radius:14px;padding:10px 12px;font-size:12px;font-weight:800;color:#765700}.back{display:inline-block;margin-top:24px;color:#1269b0;font-weight:800;text-decoration:none}.page-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}.page-links a{padding:8px 10px;border-radius:999px;background:#f3f7f9;color:#35566d;text-decoration:none;font-size:11px;font-weight:850}.page-links a.primary{background:#e9f8f3;color:#08725b}
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/triangulo-blue-180.png">
+<style>
+:root{--ink:#153458;--muted:#60778a;--green:#108b6e;--green2:#eaf8f3;--line:#dce8ef}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#f3f8fb}
+.wrap{max-width:980px;margin:auto;padding:18px 18px 50px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand img{display:block;width:205px;height:auto}.lang{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px}.lang button{border:0;background:transparent;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;color:#728697}.lang button.on{background:var(--green2);color:#08725b}
+.hero{background:linear-gradient(135deg,#dff4ff,#edf9f4);border:1px solid #d4e7ee;border-radius:26px;padding:34px}.eyebrow{font-size:10px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;color:#0a8068}.hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,7vw,62px);line-height:.98;letter-spacing:-.035em;margin:8px 0 12px}.hero p{max-width:700px;margin:0;color:#537087;font-size:15px;line-height:1.6}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.step{background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;min-height:170px}.num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--green2);color:#08725b;font-weight:950;font-size:12px}.step h2{font-size:16px;margin:14px 0 6px}.step p{font-size:12px;line-height:1.5;color:var(--muted);margin:0}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:21px}.card h2{font-size:18px;margin:0 0 8px}.card p{font-size:13px;line-height:1.6;color:var(--muted);margin:0}.status{margin-top:14px;background:#fff8dd;border:1px solid #efe2a6;border-radius:17px;padding:15px 17px;font-size:12px;line-height:1.55;color:#6f5a16}.status strong{color:#4f3e08}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.cta a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:999px;padding:12px 17px;font-size:12px;font-weight:900}.cta .primary{background:var(--green);color:#fff}.cta .secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.footer{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:11px;color:#718698}.footer a{color:#48697d;text-decoration:none;font-weight:800}
 [data-en]{display:none}body.en [data-pt]{display:none}body.en [data-en]{display:block}
-</style></head><body><main>
-<header><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div></header>
-<section data-pt><h1>Como funciona</h1><div class="note"><strong>Objetivo:</strong> tornar mais fácil encontrar e contratar prestadores de serviços no Pico, Faial e São Jorge, mantendo o preço e o contacto protegidos dentro do TRIÂNGULO.</div>
-<h2>Para quem procura</h2><p>Escolhe a ilha, pesquisa um serviço ou abre uma categoria. Podes enviar um pedido diretamente a um Prestador de Serviços aprovado. Se o serviço tiver preço definido, vês o valor do prestador e a taxa TRIÂNGULO. Se for um trabalho que precise de avaliação, envias os detalhes e aguardas o orçamento.</p>
-<h2>Trabalhos sob orçamento</h2><p>Quando o preço depende do trabalho real, o prestador recebe o pedido, tem tempo para o avaliar e indica quanto quer receber. O TRIÂNGULO acrescenta 12% a esse valor e apresenta o total ao cliente antes de este confirmar o serviço.</p>
-<h2>Preço e pagamento</h2><p>O prestador define quanto quer receber e esse valor não é reduzido. O TRIÂNGULO acrescenta uma taxa de serviço de <strong>12%</strong> ao cliente. <strong>Neste momento os pagamentos automáticos ainda não estão ativos.</strong> Enquanto assim for, o serviço fica confirmado quando o prestador aceita um pedido direto ou quando o cliente escolhe uma resposta/orçamento; nessa fase, os contactos necessários podem ser partilhados para combinarem os detalhes. Quando o checkout for ativado, o fluxo poderá exigir pagamento antes da libertação dos contactos.</p>
-<h2>Para Prestadores de Serviços</h2><p>A candidatura inclui dados profissionais, NIF/NIPC, email e telefone/WhatsApp para verificação. O perfil só fica visível depois de revisto e aprovado. O NIF/NIPC e os contactos privados nunca aparecem no perfil público.</p>
-<h2>Contactos protegidos</h2><p>O perfil público não mostra telefone, email, WhatsApp, Instagram ou website do prestador. Enquanto os pagamentos automáticos estiverem desligados, os contactos necessários só podem ser disponibilizados quando o serviço entra na fase de confirmação descrita acima. Quando os pagamentos forem ativados, essa libertação poderá depender do pagamento confirmado.</p>
-<h2>Entre ilhas</h2><p>Um prestador pode indicar uma ilha base e selecionar outras ilhas onde aceita trabalhar por marcação.</p>
-<h2 id="sobre-nos">Sobre nós</h2><p>O TRIÂNGULO Açores é uma plataforma criada para aproximar quem precisa de ajuda e quem presta serviços no Pico, Faial e São Jorge. O objetivo é tornar a contratação local mais simples, transparente e útil para a economia das três ilhas.</p></section>
-<section data-en><h1>How it works</h1><div class="note"><strong>Goal:</strong> make it easier to find and hire service providers across Pico, Faial and São Jorge while keeping pricing transparent and contact details protected within TRIÂNGULO.</div>
-<h2>For customers</h2><p>Choose an island, search for a service or browse a category. You can send a request directly to an approved service provider. If the service has a set price, you see the provider amount and the TRIÂNGULO fee. If the job needs assessment, send the details and wait for a quote.</p>
-<h2>Jobs that require a quote</h2><p>When the price depends on the actual job, the provider receives the request, has time to assess it and sets the amount they want to receive. TRIÂNGULO adds 12% to that amount and shows the final total to the customer before they confirm the service.</p>
-<h2>Price and payment</h2><p>The provider decides how much they want to receive and that amount is not reduced. TRIÂNGULO adds a <strong>12%</strong> service fee for the customer. <strong>Automatic payments are not active yet.</strong> While that remains the case, a service is confirmed when the provider accepts a direct request or when the customer selects a response/quote; at that stage the necessary contact details may be shared so both sides can arrange the service. When checkout is activated, the flow may require payment before contact details are released.</p>
-<h2>For service providers</h2><p>The application includes professional details, Portuguese tax ID (NIF/NIPC), email and phone/WhatsApp for verification. A profile only becomes visible after review and approval. Tax ID and private contact details never appear on the public profile.</p>
-<h2>Protected contact details</h2><p>Public profiles do not show the provider’s phone number, email, WhatsApp, Instagram or website. While automatic payments are off, necessary contact details may only be released once the service reaches the confirmation stage described above. When payments are activated, that release may depend on confirmed payment.</p>
-<h2>Across islands</h2><p>Providers can select a base island and additional islands where they are willing to work by appointment.</p>
-<h2>About us</h2><p>TRIÂNGULO Açores is a local platform built to connect people who need help with service providers across Pico, Faial and São Jorge. The goal is to make local hiring simpler, more transparent and more useful to the economy of the three islands.</p></section>
-<nav class="page-links" aria-label="TRIÂNGULO"><a href="/" data-pt="Início" data-en="Home">Início</a><a class="primary" href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a><a href="/prestadores.html" data-pt="Prestar serviços" data-en="Offer services">Prestar serviços</a><a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a></nav><a class="back" href="/">← TRIÂNGULO</a></main><script>
+@media(max-width:760px){.steps{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}.hero{padding:26px 21px}.wrap{padding:12px 12px 40px}}@media(max-width:480px){.steps{grid-template-columns:1fr}.step{min-height:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div></header>
+<section data-pt>
+<div class="hero"><div class="eyebrow">Simples do início ao fim</div><h1>Como funciona</h1><p>O TRIÂNGULO ajuda-te a encontrar serviços locais no Pico, Faial e São Jorge sem complicar o processo.</p></div>
+<div class="steps">
+<article class="step"><div class="num">1</div><h2>Procura</h2><p>Escolhe a ilha e pesquisa o serviço de que precisas.</p></article>
+<article class="step"><div class="num">2</div><h2>Escolhe</h2><p>Vê prestadores aprovados e os serviços disponíveis. Se não encontrares a pessoa certa, podes pedir ao TRIÂNGULO para procurar por ti.</p></article>
+<article class="step"><div class="num">3</div><h2>Confirma</h2><p>Envia o pedido. Se o trabalho precisar de avaliação, o prestador pode responder com um orçamento.</p></article>
+<article class="step"><div class="num">4</div><h2>Combina</h2><p>Quando o serviço fica confirmado, são disponibilizados os contactos necessários para acertarem os detalhes.</p></article>
+</div>
+<div class="info-grid">
+<article class="card"><h2>Preços claros</h2><p>O prestador define o valor do serviço. O TRIÂNGULO acrescenta ao cliente uma taxa de serviço de <strong>12%</strong>, sem reduzir o valor definido pelo prestador.</p></article>
+<article class="card"><h2>Perfis revistos</h2><p>As candidaturas de prestadores são revistas antes de os perfis ficarem públicos. Dados privados como NIF/NIPC, email e telefone não aparecem no perfil.</p></article>
+<article class="card"><h2>Trabalhos sob orçamento</h2><p>Quando não é possível saber o preço à partida, envias os detalhes e o prestador apresenta o valor antes de confirmares.</p></article>
+<article class="card"><h2>Uma rede para três ilhas</h2><p>Os prestadores escolhem em que ilhas trabalham: Pico, Faial, São Jorge ou uma combinação das três.</p></article>
+</div>
+<div class="status"><strong>Pagamentos:</strong> os pagamentos automáticos ainda não estão ativos. Nesta fase, a confirmação e a partilha dos contactos seguem o fluxo atual da plataforma. Quando o checkout for ativado, esta página será atualizada.</div>
+<div class="cta"><a class="primary" href="/servicos/">Encontrar um serviço →</a><a class="secondary" href="/prestadores.html">Para prestadores</a></div>
+</section>
+<section data-en>
+<div class="hero"><div class="eyebrow">Simple from start to finish</div><h1>How it works</h1><p>TRIÂNGULO helps you find local services across Pico, Faial and São Jorge without making the process complicated.</p></div>
+<div class="steps">
+<article class="step"><div class="num">1</div><h2>Search</h2><p>Choose the island and search for the service you need.</p></article>
+<article class="step"><div class="num">2</div><h2>Choose</h2><p>See approved providers and available services. If you cannot find the right person, TRIÂNGULO can look for someone for you.</p></article>
+<article class="step"><div class="num">3</div><h2>Confirm</h2><p>Send your request. If the job needs assessment, the provider can reply with a quote.</p></article>
+<article class="step"><div class="num">4</div><h2>Arrange</h2><p>Once the service is confirmed, the contact details needed to arrange the job are released.</p></article>
+</div>
+<div class="info-grid">
+<article class="card"><h2>Clear pricing</h2><p>The provider sets the service price. TRIÂNGULO adds a <strong>12%</strong> service fee for the customer without reducing the price set by the provider.</p></article>
+<article class="card"><h2>Reviewed profiles</h2><p>Provider applications are reviewed before profiles become public. Private data such as tax ID, email and phone number are not shown on the public profile.</p></article>
+<article class="card"><h2>Jobs requiring a quote</h2><p>When the price cannot be known upfront, you send the details and the provider proposes a price before you confirm.</p></article>
+<article class="card"><h2>One network across three islands</h2><p>Providers choose where they work: Pico, Faial, São Jorge or a combination of the three.</p></article>
+</div>
+<div class="status"><strong>Payments:</strong> automatic payments are not active yet. For now, confirmation and contact sharing follow the platform's current flow. This page will be updated when checkout goes live.</div>
+<div class="cta"><a class="primary" href="/servicos/">Find a service →</a><a class="secondary" href="/prestadores.html">For providers</a></div>
+</section>
+<footer class="footer"><span>TRIÂNGULO · Pico · Faial · São Jorge</span><span><a href="/" data-pt="Início" data-en="Home">Início</a> · <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a> · <a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a> · <a href="/terms.html" data-pt="Termos" data-en="Terms">Termos</a></span></footer>
+</div>
+<script>
 const qs=new URLSearchParams(location.search);let lang=qs.get('lang')==='en'?'en':(qs.get('lang')==='pt'?'pt':(localStorage.getItem('tri_lang')||'pt'));
-function apply(){localStorage.setItem('tri_lang',lang);document.documentElement.lang=lang;document.body.classList.toggle('en',lang==='en');document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='en'?el.dataset.en:el.dataset.pt);document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});document.title=lang==='en'?'TRIÂNGULO — How it works':'TRIÂNGULO — Como funciona';if(location.hash==='#sobre-nos')setTimeout(()=>{const target=lang==='en'?document.querySelector('[data-en] h2:last-of-type'):document.querySelector('#sobre-nos');if(target)target.scrollIntoView({block:'start'})},0)}
+function apply(){localStorage.setItem('tri_lang',lang);document.documentElement.lang=lang;document.body.classList.toggle('en',lang==='en');document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='en'?el.dataset.en:el.dataset.pt);document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});document.title=lang==='en'?'TRIÂNGULO — How it works':'TRIÂNGULO — Como funciona'}
 document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;apply()});apply();
-</script></body></html>
+</script>
+</body>
+</html>
