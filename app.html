@@ -1468,7 +1468,7 @@ $('#providerSetPasswordBtn').onclick=async()=>{
   status.textContent='';await loadProviderAccount();toast(lang==='pt'?'Password guardada ✓':'Password saved ✓');
 }
 
-let activeProviderBookingToken=null;
+let activeProviderBookingToken=null,activeProviderRequestKind='direct';
 function providerAppHideAll(){
   $('#prAppLoading').hidden=true;
   $('#prAppRequest').hidden=true;
@@ -1476,7 +1476,7 @@ function providerAppHideAll(){
 }
 function providerAppContinue(){
   history.replaceState({},'',location.pathname);
-  activeProviderBookingToken=null;
+  activeProviderBookingToken=null;activeProviderRequestKind='direct';
   $('#providerRequestView').hidden=true;
   if(store.get('tri_client_welcome_v4','')==='1'){
     $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
@@ -1486,6 +1486,7 @@ function providerAppContinue(){
 }
 function providerAppRenderState(state,data={}){
   providerAppHideAll();
+  if(state==='sent')state='requested';
   if(state==='requested'){
     $('#prAppRequest').hidden=false;
     $('#prAppIsland').textContent=data.island||'—';
@@ -1496,15 +1497,18 @@ function providerAppRenderState(state,data={}){
     const qb=$('#prAppQuoteBox'),accept=$('#prAppAccept'),paymentNote=$('#prAppPaymentNote');
     qb.hidden=!data.requires_quote;
     accept.textContent=data.requires_quote?(lang==='pt'?'Enviar orçamento':'Send quote'):(lang==='pt'?'✓ Aceitar pedido':'✓ Accept request');
-    if(paymentNote)paymentNote.textContent=paymentsLive
-      ?(lang==='pt'?'Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.':'When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.')
-      :(lang==='pt'?'Os pagamentos ainda estão em preparação. Podes aceitar o pedido; o TRIÂNGULO avisará antes de ativar pagamentos e desbloquear contactos.':'Payments are still being prepared. You can accept the request; TRIÂNGULO will notify you before payments and contact unlocking are activated.');
+    if(paymentNote)paymentNote.textContent=activeProviderRequestKind==='matching'
+      ?(lang==='pt'?'Ao responderes, o cliente recebe a tua disponibilidade ou orçamento e decide se quer confirmar o teu serviço.':'When you respond, the customer receives your availability or quote and decides whether to confirm your service.')
+      :(paymentsLive
+        ?(lang==='pt'?'Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.':'When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.')
+        :(lang==='pt'?'Ao aceitares, o serviço fica confirmado e os contactos são disponibilizados para combinarem os detalhes.':'When you accept, the service is confirmed and contact details are released so you can coordinate.'));
     return;
   }
   const result=$('#prAppResult');result.hidden=false;
-  if(state==='confirmed'){
-    result.innerHTML='<div class="big">✓</div><h2>'+(data.requires_quote?(lang==='pt'?'Orçamento enviado':'Quote sent'):(lang==='pt'?'Pedido aceite':'Request accepted'))+'</h2>'+(data.total_amount!=null?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Resumo do valor':'Price summary')+'</b><div>'+(lang==='pt'?'Tu recebes':'You receive')+': €'+Number(data.provider_amount).toFixed(2)+'</div><div>'+(lang==='pt'?'Cliente paga':'Customer pays')+': €'+Number(data.total_amount).toFixed(2)+'</div></div>':'')+'<p>'+(data.payment_status==='paid'?(lang==='pt'?'Pagamento confirmado. Os contactos estão desbloqueados.':'Payment confirmed. Contact details are unlocked.'):(paymentsLive?(lang==='pt'?'O pedido ficou aceite. O pagamento integral será concluído no TRIÂNGULO antes de os contactos serem desbloqueados.':'The request has been accepted. Full payment will be completed through TRIÂNGULO before contact details are unlocked.'):(lang==='pt'?'O pedido ficou aceite. Os pagamentos ainda estão em preparação; o TRIÂNGULO avisará antes da ativação.':'The request has been accepted. Payments are still being prepared; TRIÂNGULO will notify you before activation.')))+'</p>'
-      +((data.payment_status==='paid'&&(data.client_name||data.client_email||data.client_phone))?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><div>'+escapeHtml(data.client_name||'')+'</div><div>'+escapeHtml(data.client_email||'')+'</div><div>'+escapeHtml(data.client_phone||'')+'</div></div>':'')
+  if(state==='confirmed'||state==='accepted'||state==='quoted'){
+    const waitingChoice=state==='accepted'||state==='quoted';
+    result.innerHTML='<div class="big">✓</div><h2>'+(waitingChoice?(state==='quoted'?(lang==='pt'?'Orçamento enviado':'Quote sent'):(lang==='pt'?'Disponibilidade enviada':'Availability sent')):(data.requires_quote?(lang==='pt'?'Orçamento aceite':'Quote accepted'):(lang==='pt'?'Serviço aceite':'Service accepted')))+'</h2>'+(data.total_amount!=null?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Resumo do valor':'Price summary')+'</b><div>'+(lang==='pt'?'Tu recebes':'You receive')+': €'+Number(data.provider_amount).toFixed(2)+'</div><div>'+(lang==='pt'?'Cliente vê':'Customer sees')+': €'+Number(data.total_amount).toFixed(2)+'</div></div>':'')+'<p>'+(waitingChoice?(lang==='pt'?'A tua resposta foi enviada. O cliente pode agora escolher o teu serviço.':'Your response was sent. The customer can now choose your service.'):(paymentsLive&&data.payment_status!=='paid'?(lang==='pt'?'O serviço foi aceite. Aguarda a confirmação do pagamento.':'The service was accepted. Wait for payment confirmation.'):(lang==='pt'?'O serviço ficou confirmado.':'The service is confirmed.')))+'</p>'
+      +(((data.client_name||data.client_email||data.client_phone))?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><div>'+escapeHtml(data.client_name||'')+'</div><div>'+escapeHtml(data.client_email||'')+'</div><div>'+escapeHtml(data.client_phone||'')+'</div></div>':'')
       +'<button class="pr-app-continue" id="prAppContinue">'+(lang==='pt'?'Continuar na app':'Continue in app')+'</button>';
   }else if(state==='declined'){
     result.innerHTML='<div class="big">✓</div><h2>'+(lang==='pt'?'Resposta registada':'Response saved')+'</h2><p>'+(lang==='pt'?'O cliente será informado de que não podes aceitar este pedido.':'The customer will be told you cannot accept this request.')+'</p><button class="pr-app-continue" id="prAppContinue">'+(lang==='pt'?'Continuar na app':'Continue in app')+'</button>';
@@ -1516,19 +1520,34 @@ function providerAppRenderState(state,data={}){
   const c=$('#prAppContinue');if(c)c.onclick=providerAppContinue;
 }
 async function openProviderBookingInApp(token){
-  if(!token)return;
-  activeProviderBookingToken=token;
+  if(!token)return;activeProviderBookingToken=token;activeProviderRequestKind='direct';
   $('#splash').classList.add('hidden');$('#mainShell').classList.add('hidden');
   $('#providerRequestView').hidden=false;providerAppHideAll();$('#prAppLoading').hidden=false;
   const {data,error}=await db.rpc('booking_response_context',{p_token:token});
   if(error||!data||!data.ok){providerAppRenderState('invalid');return}
   providerAppRenderState(data.state,data);
 }
+async function openServiceMatchInApp(token){
+  if(!token)return;activeProviderBookingToken=token;activeProviderRequestKind='matching';
+  $('#splash').classList.add('hidden');$('#mainShell').classList.add('hidden');
+  $('#providerRequestView').hidden=false;providerAppHideAll();$('#prAppLoading').hidden=false;
+  const {data,error}=await db.rpc('service_request_match_context',{p_token:token});
+  if(error||!data||!data.ok){providerAppRenderState('invalid');return}
+  const mapped={...data,service_date:data.requested_date||'',service_time:'',notes:data.description||'',requires_quote:data.pricing_type==='quote'};
+  providerAppRenderState(data.state,mapped);
+}
 async function providerAppRespond(action){
   if(!activeProviderBookingToken)return;
   $('#prAppAccept').disabled=true;$('#prAppDecline').disabled=true;
   let response;
-  if(action==='accept'&&!$('#prAppQuoteBox').hidden){
+  if(activeProviderRequestKind==='matching'){
+    let amount=null;
+    if(action==='accept'&&!$('#prAppQuoteBox').hidden){
+      amount=Number($('#prAppQuoteAmount').value);
+      if(!amount||amount<=0){$('#prAppAccept').disabled=false;$('#prAppDecline').disabled=false;toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
+    }
+    response=await db.rpc('respond_service_request_match',{p_token:activeProviderBookingToken,p_action:action,p_amount:amount});
+  }else if(action==='accept'&&!$('#prAppQuoteBox').hidden){
     const amount=Number($('#prAppQuoteAmount').value);
     if(!amount||amount<=0){$('#prAppAccept').disabled=false;$('#prAppDecline').disabled=false;toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
     response=await db.rpc('submit_booking_quote',{p_token:activeProviderBookingToken,p_amount:amount});
@@ -1546,14 +1565,25 @@ $('#prAppDecline').onclick=()=>providerAppRespond('decline');
 async function init(){
  await loadAppConfig();
  const qs=new URLSearchParams(location.search);
- const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim();
+ const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim(),queryGroup=qs.get('group');
  if(['Pico','Faial','São Jorge'].includes(queryIsland)){island=queryIsland;store.set('tri_island',island)}
- updateIsland();applyLang();renderBookings();loadProviders();
+ activeSearchQuery=querySearch;activeServiceGroup=['home','garden','repairs','personal'].includes(queryGroup)?queryGroup:null;
+ updateIsland();applyLang();renderBookings();loadProviders(activeSearchQuery,activeServiceGroup);
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const bookingToken=qs.get('booking_token'),clientBookingToken=qs.get('client_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ const bookingToken=qs.get('booking_token'),matchToken=qs.get('match_token'),clientBookingToken=qs.get('client_token'),requestToken=qs.get('request_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
  if(providerPasswordToken){openProviderPasswordSetup(providerPasswordToken);return}
+ if(requestToken){
+   try{
+     const {data,error}=await db.rpc('service_request_client_context',{p_token:requestToken});
+     if(!error&&data&&data.ok){
+       saveBookingLocal({kind:'matching',token:requestToken,island:data.island||'',description:data.description||'',date:data.requested_date||'',status:data.state||'matching',offers:data.offers||[],provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,createdAt:new Date().toISOString()});
+       history.replaceState({},'',location.pathname+'#app');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+       await openClientBookings();return;
+     }
+   }catch(e){console.error('request_token deep link',e)}
+ }
  if(clientBookingToken){
    try{
      const {data,error}=await db.rpc('booking_client_context',{p_token:clientBookingToken});
@@ -1587,6 +1617,7 @@ async function init(){
      }
    }catch(e){console.error('client_token deep link',e)}
  }
+ if(matchToken){openServiceMatchInApp(matchToken);return}
  if(bookingToken){openProviderBookingInApp(bookingToken);return}
  if(stripeReturn){
    history.replaceState({},'',location.pathname+'?prestador=1');
@@ -1608,7 +1639,10 @@ async function init(){
    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
    $('#searchInput').value=homeSearch;
    $('#resultsInput').value=homeSearch;
-   setTimeout(()=>runSearch(homeSearch),60);
+   setTimeout(()=>runSearch(homeSearch,activeServiceGroup),60);
+ }else if(activeServiceGroup){
+   $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+   setTimeout(()=>runSearch('',activeServiceGroup),60);
  }
 
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
