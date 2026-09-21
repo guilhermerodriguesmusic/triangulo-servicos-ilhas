@@ -479,6 +479,20 @@
 .result-filter.active{background:#0a3157;color:#fff;border-color:#0a3157}
 .results-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px}
 .results-island{border:0;background:#edf5e8;color:#2f6548;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:850;white-space:nowrap}
+#islandSheet .island-card.is-current{outline:3px solid #79b58f;outline-offset:-3px}
+#islandSheet .island-card.is-current .island-arrow{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.92);color:#2f6548;font-size:18px;font-weight:950;text-shadow:none}
+@media(min-width:760px){
+ body.results-mode #islandSheet{
+  top:50%;bottom:auto;width:min(430px,calc(100% - 40px));max-height:min(620px,calc(100vh - 80px));
+  border-radius:24px;padding:20px 18px 22px;
+  transform:translate(-50%,calc(-50% + 18px)) scale(.985);opacity:0;pointer-events:none;
+  transition:transform .2s ease,opacity .2s ease
+ }
+ body.results-mode #islandSheet.open{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}
+ body.results-mode #islandSheet .handle{display:none}
+ body.results-mode #islandSheet h2{margin-top:2px}
+ body.results-mode #islandSheet .island-card{height:104px}
+}
 .results-sort{border:1px solid #dde7e6;background:#fff;border-radius:11px;padding:8px 9px;font-size:10.5px;font-weight:750;color:#506778}
 .result-title{margin:0;align-items:flex-end}
 .result-title h2{font-size:22px;line-height:1.12;letter-spacing:-.025em}
@@ -911,7 +925,7 @@ body.sheet-open{overflow:hidden}
 </section>
 </div>
 <div id="backdrop" class="backdrop"></div>
-<aside id="islandSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-t="chooseIslandSimple">Escolher ilha</h2><div class="island-cards"><button class="island-card" type="button" data-set-island="Pico" aria-label="Pico"><img src="/assets/pico-real.jpg" alt=""></button><button class="island-card" type="button" data-set-island="Faial" aria-label="Faial"><img src="/assets/faial-real.jpg" alt=""></button><button class="island-card" type="button" data-set-island="São Jorge" aria-label="São Jorge"><img src="/assets/sao-jorge-real.jpg" alt=""></button></div></aside>
+<aside id="islandSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="islandSheetTitle"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 id="islandSheetTitle" data-t="chooseIslandSimple">Escolher ilha</h2><div class="island-cards"><button class="island-card" type="button" data-set-island="Pico" aria-label="Pico"><img src="/assets/pico-real.jpg" alt=""><span class="island-label">Pico</span><span class="island-arrow" aria-hidden="true">›</span></button><button class="island-card" type="button" data-set-island="Faial" aria-label="Faial"><img src="/assets/faial-real.jpg" alt=""><span class="island-label">Faial</span><span class="island-arrow" aria-hidden="true">›</span></button><button class="island-card" type="button" data-set-island="São Jorge" aria-label="São Jorge"><img src="/assets/sao-jorge-real.jpg" alt=""><span class="island-label">São Jorge</span><span class="island-arrow" aria-hidden="true">›</span></button></div></aside>
 <aside id="catsSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-t="allCategories">Todas as categorias</h2><div id="allCats" class="category-grid all-cats">
 <button class="category c0" data-cat="0"><small>Casa &amp; Limpeza</small></button>
 <button class="category c1" data-cat="1"><small>Jardim &amp; Terrenos</small></button>
@@ -1338,6 +1352,12 @@ function enterIsland(next){island=next;store.set('tri_island',island);store.set(
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){
  $('#islandPill span').textContent=island;
  const p2=$('#profileIsland2');if(p2)p2.textContent=island;
+ $('[data-set-island]').forEach(b=>{
+  const current=b.dataset.setIsland===island;
+  b.classList.toggle('is-current',current);
+  b.setAttribute('aria-pressed',current?'true':'false');
+  const arrow=b.querySelector('.island-arrow');if(arrow)arrow.textContent=current?'✓':'›';
+ });
  const sub=$('.home-title p');
  if(sub){
   if(lang==='pt'){
@@ -1359,7 +1379,7 @@ function closeSheets(){
  if(sheetReturnFocus&&typeof sheetReturnFocus.focus==='function')sheetReturnFocus.focus({preventScroll:true});sheetReturnFocus=null;
 }
 $('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.sheet.open'))closeSheets()});
-$('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
+$('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();if(document.body.classList.contains('results-mode'))syncResultsUrl();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
 $('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};
 $$('[data-results-group]').forEach(b=>b.onclick=()=>runSearch(activeSearchQuery,b.dataset.resultsGroup||null));
 const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandBtn.onclick=()=>openSheet('islandSheet');
