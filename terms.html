@@ -12,7 +12,20 @@ header{display:flex;align-items:center;justify-content:space-between;gap:14px;ma
 .lang{display:flex;gap:4px;background:#eef3f7;padding:3px;border-radius:999px}.lang button{border:0;background:transparent;padding:6px 9px;border-radius:999px;font-weight:800}.lang button.on{background:#fff;box-shadow:0 2px 7px #0001}
 h1{font-size:30px;margin:8px 0 6px}h2{font-size:20px;margin:28px 0 8px}p,li{font-size:14px;line-height:1.65;color:#4e667f}strong{color:var(--ink)}.note{background:#eef9f5;border:1px solid #d8eee6;border-radius:14px;padding:12px 14px;margin:14px 0}.draft{background:#fff5cf;border:1px solid #f4df8a;border-radius:14px;padding:10px 12px;font-size:12px;font-weight:800;color:#765700}.back{display:inline-block;margin-top:24px;color:#1269b0;font-weight:800;text-decoration:none}.page-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}.page-links a{padding:8px 10px;border-radius:999px;background:#f3f7f9;color:#35566d;text-decoration:none;font-size:11px;font-weight:850}.page-links a.primary{background:#e9f8f3;color:#08725b}
 main>section[data-en]{display:none}body.en main>section[data-pt]{display:none}body.en main>section[data-en]{display:block}
-</style></head><body><main>
+</style>
+<style id="mobile-header-audit-v1">
+
+@media(max-width:420px){
+  .top,.wrap>header,main>header{gap:8px}
+  .brand img{width:168px}
+  .lang button{padding-left:6px;padding-right:6px;min-width:34px}
+}
+@media(max-width:340px){
+  .brand img{width:150px}
+}
+
+</style>
+</head><body><main>
 <header><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div></header>
 <section data-pt><h1>Termos de Utilização</h1><p>Estes termos regulam a utilização do TRIÂNGULO, uma plataforma local que aproxima pessoas que procuram serviços e prestadores que os oferecem no Pico, Faial e São Jorge. <strong>TRIÂNGULO Açores</strong> é a marca/nome comercial da plataforma e <strong>Guilherme Águas</strong> é o responsável legal pela sua operação. Versão em vigor: 21/09/2026.</p>
 <h2>1. Estado atual do serviço</h2><p>O TRIÂNGULO encontra-se numa fase inicial de operação e crescimento. Algumas funcionalidades podem evoluir à medida que a plataforma é desenvolvida. Neste momento <strong>não são efetuados pagamentos automáticos através da plataforma</strong>.</p>
