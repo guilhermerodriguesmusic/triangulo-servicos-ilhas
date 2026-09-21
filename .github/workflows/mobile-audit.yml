@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p mobile-audit
-          cat > /tmp/mobile-audit.mjs <<'JS'
+          cat > mobile-audit-run.mjs <<'JS'
           import { chromium } from 'playwright';
           import fs from 'node:fs';
 
@@ -176,7 +176,7 @@ jobs:
           console.log('SUMMARY',JSON.stringify(summary));
           if(hardFailures)process.exit(1);
           JS
-          node /tmp/mobile-audit.mjs
+          node mobile-audit-run.mjs
 
       - name: Upload mobile audit
         if: always()
