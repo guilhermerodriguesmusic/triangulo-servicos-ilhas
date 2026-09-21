@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260921-v1-0-rc28';
+const CACHE='triangulo-pwa-20260921-v1-0-rc29';
 const CORE=[
   '/',
   '/index.html',
@@ -124,7 +124,8 @@ self.addEventListener('fetch',event=>{
       event.respondWith(networkFirst(request,'/servicos/','/servicos/'));
       return;
     }
-    event.respondWith(networkFirst(request,'/servicos/'));
+    // Keep public pages on the same route when offline (including ?lang=pt/en).
+    event.respondWith(networkFirst(request,url.pathname,url.pathname));
     return;
   }
 
