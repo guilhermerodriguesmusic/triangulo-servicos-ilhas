@@ -30,7 +30,7 @@
   <section id="formCard" class="formcard">
     <h2 data-pt="Cria o teu perfil" data-en="Create your profile">Cria o teu perfil</h2>
     <p class="intro" data-pt="Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO." data-en="Fields marked * are required. You can request changes to your details later through TRIÂNGULO.">Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO.</p>
-    <div class="steps" aria-label="Etapas da candidatura"><div class="step"><b>1</b><span data-pt="Dados" data-en="Details">Dados</span></div><div class="step"><b>2</b><span data-pt="Serviços" data-en="Services">Serviços</span></div><div class="step"><b>3</b><span data-pt="Preço" data-en="Pricing">Preço</span></div><div class="step"><b>4</b><span data-pt="Verificação" data-en="Verification">Verificação</span></div></div>
+    <div class="steps" aria-label="Etapas da candidatura" data-aria-pt="Etapas da candidatura" data-aria-en="Application steps"><div class="step"><b>1</b><span data-pt="Dados" data-en="Details">Dados</span></div><div class="step"><b>2</b><span data-pt="Serviços" data-en="Services">Serviços</span></div><div class="step"><b>3</b><span data-pt="Preço" data-en="Pricing">Preço</span></div><div class="step"><b>4</b><span data-pt="Verificação" data-en="Verification">Verificação</span></div></div>
 
     <form id="providerForm">
       <input class="honeypot" name="company_fax" autocomplete="off" tabindex="-1" aria-hidden="true">
@@ -133,7 +133,8 @@ let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lan
 function setLang(next){
   lang=next; localStorage.setItem('tri_lang',lang); document.documentElement.lang=lang;
   $$('[data-pt][data-en]').forEach(el=>{el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en});
-  $$('[data-ph-pt]').forEach(el=>{el.placeholder=el.dataset['ph'+lang.charAt(0).toUpperCase()+lang.slice(1)]||el.dataset['ph-'+lang]||el.dataset[lang==='pt'?'phPt':'phEn']||''});
+  $('[data-ph-pt]').forEach(el=>{el.placeholder=el.dataset['ph'+lang.charAt(0).toUpperCase()+lang.slice(1)]||el.dataset['ph-'+lang]||el.dataset[lang==='pt'?'phPt':'phEn']||''});
+  $('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
   $('#pt').classList.toggle('active',lang==='pt'); $('#en').classList.toggle('active',lang==='en');
   document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
   document.title=lang==='pt'?'Candidatura de Prestador de Serviços — TRIÂNGULO':'Service Provider Application — TRIÂNGULO';
