@@ -921,7 +921,7 @@
       <h2 data-pt="Entrar como prestador" data-en="Provider sign in">Entrar como prestador</h2>
       <p data-pt="Usa o mesmo email da tua candidatura aprovada e a tua password." data-en="Use the same email as your approved application and your password.">Usa o mesmo email da tua candidatura aprovada e a tua password.</p>
       <label class="pa-field"><span>Email</span><input id="providerLoginEmail" type="email" autocomplete="email" placeholder="email@exemplo.pt"></label>
-      <label class="pa-field"><span data-pt="Password" data-en="Password">Password</span><input id="providerLoginPassword" type="password" autocomplete="current-password" minlength="10" maxlength="128"></label>
+      <label class="pa-field"><span data-pt="Password" data-en="Password">Password</span><input id="providerLoginPassword" type="password" autocomplete="current-password" minlength="12" maxlength="128"></label>
       <button id="providerLoginBtn" class="pa-primary" type="button" data-pt="Entrar →" data-en="Sign in →">Entrar →</button>
       <button id="providerForgotBtn" class="pa-link-btn" type="button" data-pt="Primeiro acesso ou esqueceste a password?" data-en="First time or forgot your password?">Primeiro acesso ou esqueceste a password?</button>
       <div id="providerLoginStatus" class="pa-feedback"></div>
@@ -932,9 +932,9 @@
 
     <div id="paPasswordSet" class="pa-card" hidden>
       <h2 data-pt="Criar nova password" data-en="Create a new password">Criar nova password</h2>
-      <p data-pt="Escolhe uma password com pelo menos 10 caracteres." data-en="Choose a password with at least 10 characters.">Escolhe uma password com pelo menos 10 caracteres.</p>
-      <label class="pa-field"><span data-pt="Nova password" data-en="New password">Nova password</span><input id="providerNewPassword" type="password" autocomplete="new-password" minlength="10" maxlength="128"></label>
-      <label class="pa-field"><span data-pt="Repetir password" data-en="Repeat password">Repetir password</span><input id="providerNewPassword2" type="password" autocomplete="new-password" minlength="10" maxlength="128"></label>
+      <p data-pt="Escolhe uma password com pelo menos 12 caracteres." data-en="Choose a password with at least 12 characters.">Escolhe uma password com pelo menos 12 caracteres.</p>
+      <label class="pa-field"><span data-pt="Nova password" data-en="New password">Nova password</span><input id="providerNewPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128"></label>
+      <label class="pa-field"><span data-pt="Repetir password" data-en="Repeat password">Repetir password</span><input id="providerNewPassword2" type="password" autocomplete="new-password" minlength="12" maxlength="128"></label>
       <button id="providerSetPasswordBtn" class="pa-primary" type="button" data-pt="Guardar password →" data-en="Save password →">Guardar password →</button>
       <div id="providerPasswordStatus" class="pa-feedback"></div>
     </div>
@@ -1828,7 +1828,7 @@ async function openProviderPasswordSetup(token){
 $('#providerSetPasswordBtn').onclick=async()=>{
   const p1=$('#providerNewPassword').value,p2=$('#providerNewPassword2').value,status=$('#providerPasswordStatus');
   if(!activeProviderPasswordToken){status.textContent=lang==='pt'?'Ligação inválida ou expirada.':'Invalid or expired link.';return}
-  if(p1.length<10){status.textContent=lang==='pt'?'A password deve ter pelo menos 10 caracteres.':'Password must be at least 10 characters.';return}
+  if(p1.length<12){status.textContent=lang==='pt'?'A password deve ter pelo menos 12 caracteres.':'Password must be at least 12 characters.';return}
   if(p1!==p2){status.textContent=lang==='pt'?'As passwords não coincidem.':'Passwords do not match.';return}
   status.textContent=lang==='pt'?'A guardar…':'Saving…';
   const {data,error}=await db.rpc('set_provider_password',{p_token:activeProviderPasswordToken,p_password:p1});
