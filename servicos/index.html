@@ -969,7 +969,7 @@ function runSearch(q,group=null){
 }
 function syncResultsControls(){
  const ib=$('#resultsIslandBtn');if(ib)ib.textContent='📍 '+island+' ▾';
- $('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
+ $$('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
  const sort=$('#resultsSort');if(sort)sort.value=activeResultsSort;
 }
 function syncResultsUrl(){
