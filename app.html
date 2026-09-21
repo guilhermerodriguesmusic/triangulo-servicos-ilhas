@@ -551,14 +551,14 @@
 <label><span data-pt="Tenho este orçamento (opcional)" data-en="My budget (optional)">Tenho este orçamento (opcional)</span><input name="budget" type="number" min="0" step="0.01" placeholder="€"></label>
 <div class="two"><label><span data-pt="Nome" data-en="Name">Nome</span><input name="client_name" autocomplete="name"></label><label><span>Email</span><input required type="email" name="client_email" autocomplete="email" inputmode="email"></label></div>
 <label><span data-pt="Telefone (opcional)" data-en="Phone (optional)">Telefone (opcional)</span><input name="client_phone" inputmode="tel" autocomplete="tel"></label>
-<div id="requestSubmitStatus" class="submit-status"></div>
-<button class="primary" type="submit" data-pt="Publicar pedido" data-en="Post request">Publicar pedido</button></form></aside>
+<div id="requestSubmitStatus" class="submit-status" role="status" aria-live="polite"></div>
+<button class="primary" type="submit" data-pt="Publicar pedido" data-en="Post request">Publicar pedido</button><p class="form-note" data-pt="Receberás uma confirmação por email. Este pedido não é uma reserva até um prestador aceitar." data-en="You will receive an email confirmation. This request is not a booking until a provider accepts it.">Receberás uma confirmação por email. Este pedido não é uma reserva até um prestador aceitar.</p></form></aside>
 <aside id="contactSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar">×</button><h2 data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</h2><form id="contactForm" class="form">
 <label><span data-pt="Nome (opcional)" data-en="Name (optional)">Nome (opcional)</span><input name="name" maxlength="120"></label>
 <label><span>Email</span><input required type="email" name="email"></label>
 <label><span data-pt="Assunto (opcional)" data-en="Subject (optional)">Assunto (opcional)</span><input name="subject" maxlength="160"></label>
 <label><span data-pt="Mensagem" data-en="Message">Mensagem</span><textarea required name="message" maxlength="3000" data-ph-pt="Escreve aqui a tua mensagem…" data-ph-en="Write your message here…"></textarea></label>
-<div id="contactSubmitStatus" class="submit-status"></div>
+<div id="contactSubmitStatus" class="submit-status" role="status" aria-live="polite"></div>
 <button class="primary" type="submit" data-pt="Enviar mensagem" data-en="Send message">Enviar mensagem</button>
 <p class="form-note" data-pt="O teu email é usado apenas para responder ao teu contacto." data-en="Your email is used only to reply to your enquiry.">O teu email é usado apenas para responder ao teu contacto.</p>
 </form></aside>
@@ -673,7 +673,7 @@
 
         <div class="pa-grid2">
           <label class="pa-field"><span data-pt="Como cobras?" data-en="Pricing">Como cobras?</span><select name="pricing_type" id="paPricingType"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote">Sob orçamento</option></select></label>
-          <label class="pa-field"><span data-pt="Quanto queres receber (€)" data-en="Amount you want to earn (€)">Quanto queres receber (€)</span><input name="price" id="paPrice" type="number" min="0" step="0.01"></label>
+          <label class="pa-field"><span data-pt="Quanto queres receber (€)" data-en="Amount you want to earn (€)">Quanto queres receber (€)</span><input name="price" id="paPrice" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="40"><small id="paPricePreview" class="pa-note" style="display:none;text-align:left;margin-top:6px!important" aria-live="polite"></small></label>
         </div>
 
         <label class="pa-field"><span data-pt="Disponibilidade habitual" data-en="Usual availability">Disponibilidade habitual</span><input name="availability" maxlength="500" data-ph-pt="Ex.: Seg–Sex, 09:00–18:00" data-ph-en="E.g. Mon–Fri, 09:00–18:00"></label>
@@ -786,6 +786,7 @@ function applyLang(){
  renderBookings();
  const suffix=lang==='en'?'?lang=en':'';$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
  updateIsland();
+ if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 function renderCats(){const make=(c,i,full=false)=>{const label=full?c[lang]:(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en));return `<button class="category c${i}" data-cat="${i}">${icons[c.icon]}<small>${label}</small></button>`};$('#homeCats').innerHTML=categories.slice(0,4).map((c,i)=>make(c,i,false)).join('');$('#allCats').innerHTML=categories.map((c,i)=>make(c,i,true)).join('');$$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang])})}
@@ -1132,11 +1133,22 @@ function syncProviderOther(){
   $('#paOtherService').required=!!on;
   if(!on)$('#paOtherService').value='';
 }
+function updateProviderPricePreview(){
+  const box=$('#paPricePreview'),price=Number($('#paPrice').value),quote=$('#paPricingType').value==='quote';
+  if(!box)return;
+  if(quote||!Number.isFinite(price)||price<=0){box.style.display='none';box.textContent='';return}
+  const fee=Math.round(price*TRIANGULO_SERVICE_FEE_RATE*100)/100,total=price+fee;
+  box.textContent=lang==='pt'
+    ?'Tu recebes '+price.toFixed(2).replace('.',',')+' € · cliente vê '+total.toFixed(2).replace('.',',')+' €'
+    :'You receive €'+price.toFixed(2)+' · customer sees €'+total.toFixed(2);
+  box.style.display='block';
+}
 function syncProviderPrice(){
   const quote=$('#paPricingType').value==='quote';
   $('#paPrice').disabled=quote;
   $('#paPrice').required=!quote;
   if(quote)$('#paPrice').value='';
+  updateProviderPricePreview();
 }
 async function providerSignOut(){
   const token=store.get('tri_provider_session','');
@@ -1167,6 +1179,7 @@ $('#providerLogoutBtn').onclick=providerSignOut;
 $('#providerLogoutFromMissing').onclick=providerSignOut;
 $('#paOtherCat').onchange=syncProviderOther;
 $('#paPricingType').onchange=syncProviderPrice;
+$('#paPrice').addEventListener('input',updateProviderPricePreview);
 $('#providerLoginBtn').onclick=async()=>{
   const email=$('#providerLoginEmail').value.trim(),password=$('#providerLoginPassword').value,status=$('#providerLoginStatus');
   if(!email||!email.includes('@')){status.textContent=lang==='pt'?'Indica um email válido.':'Enter a valid email.';return}
