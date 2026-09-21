@@ -48,8 +48,8 @@ body{min-height:100svh;overflow-x:hidden}
   z-index:-3;
   background-image:url('/assets/pico-home-hq.webp');
   background-repeat:no-repeat;
-  background-position:center 53%;
-  background-size:112% auto;
+  background-position:center 52%;
+  background-size:107% auto;
 }
 .hero::after{
   content:"";
@@ -64,18 +64,18 @@ body{min-height:100svh;overflow-x:hidden}
   width:min(1510px,calc(100% - 72px));
   margin:0 auto;
   display:grid;
-  grid-template-columns:360px 1fr auto;
+  grid-template-columns:345px 1fr auto;
   align-items:center;
   gap:24px;
   padding:21px 0 10px;
 }
 .brand{display:flex;align-items:center;text-decoration:none}
-.brand img{display:block;width:312px;height:auto;max-width:100%;filter:drop-shadow(0 2px 10px rgba(255,255,255,.16))}
+.brand img{display:block;width:298px;height:auto;max-width:100%;filter:drop-shadow(0 2px 10px rgba(255,255,255,.16))}
 .nav{
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:50px;
+  gap:46px;
   white-space:nowrap;
 }
 .nav a,.nav button{
@@ -83,6 +83,9 @@ body{min-height:100svh;overflow-x:hidden}
 }
 .nav .with-chevron::after{content:"⌄";font-size:15px;margin-left:8px;position:relative;top:-1px}
 .nav a:hover,.nav button:hover{opacity:.82}
+.nav a:focus-visible,.nav button:focus-visible,.login:focus-visible,.island-pill:focus-visible,.searchbar button:focus-visible,.category:focus-visible{outline:3px solid rgba(255,255,255,.92);outline-offset:3px}
+.island-pill:hover{transform:translateY(-1px)}
+.searchbar:focus-within{box-shadow:0 18px 44px rgba(0,0,0,.25),0 0 0 2px rgba(255,255,255,.75)}
 .actions{display:flex;align-items:center;gap:17px}
 .search-icon{
   width:38px;height:38px;border:0;background:transparent;color:#fff;display:grid;place-items:center;padding:0;cursor:pointer
@@ -114,10 +117,10 @@ body{min-height:100svh;overflow-x:hidden}
   flex:1;
   display:flex;
   align-items:flex-start;
-  padding:50px 0 225px;
+  padding:47px 0 236px;
   position:relative;
 }
-.copy{width:min(850px,61%);padding-left:45px}
+.copy{width:min(860px,62%);padding-left:76px}
 .kicker{
   font-size:12px;
   font-weight:700;
@@ -128,23 +131,23 @@ body{min-height:100svh;overflow-x:hidden}
 }
 h1{
   margin:0;
-  max-width:720px;
+  max-width:705px;
   font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(67px,6.5vw,103px);
+  font-size:clamp(68px,6.35vw,101px);
   line-height:.82;
   font-weight:500;
   letter-spacing:-.047em;
   text-shadow:0 3px 18px rgba(0,0,0,.15)
 }
 .promise{
-  margin:16px 0 0 2px;
+  margin:15px 0 0 2px;
   font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(30px,2.55vw,45px);
+  font-size:clamp(30px,2.45vw,43px);
   line-height:1.02;
   text-shadow:0 2px 13px rgba(0,0,0,.18)
 }
 
-.island-pills{display:flex;gap:13px;margin-top:25px}
+.island-pills{display:flex;gap:13px;margin-top:23px}
 .island-pill{
   border:1px solid rgba(255,255,255,.78);
   background:rgba(250,250,247,.94);
@@ -171,7 +174,7 @@ h1{
 .island-pill.active .mini-mountain:before{border-bottom-color:#fff}
 
 .searchbar{
-  margin-top:20px;
+  margin-top:18px;
   width:min(860px,100%);
   min-height:74px;
   background:#fff;
@@ -228,7 +231,7 @@ h1{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  bottom:115px;
+  bottom:126px;
   width:min(1478px,calc(100% - 72px));
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -260,12 +263,12 @@ h1{
 .trustbar{
   position:absolute;
   left:0;right:0;bottom:0;
-  height:95px;
+  height:108px;
   background:rgba(255,255,255,.97);
   color:#183a55;
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  padding:0 max(42px,calc((100vw - 1450px)/2));
+  padding:0 max(54px,calc((100vw - 1450px)/2));
   align-items:center;
   box-shadow:0 -2px 14px rgba(0,0,0,.06)
 }
@@ -319,7 +322,7 @@ h1{
       <a href="/app.html#app" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
       <button type="button" class="with-chevron" id="navIslands" data-pt="Ilhas" data-en="Islands">Ilhas</button>
       <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
-      <a href="/how-it-works.html#sobre-nos" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
+      <a href="/how-it-works.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
     </nav>
     <div class="actions">
       <button class="search-icon" type="button" id="topSearch" aria-label="Pesquisar">
