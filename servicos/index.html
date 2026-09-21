@@ -834,8 +834,23 @@ body.sheet-open{overflow:hidden}
   .request-secondary-row{grid-template-columns:1fr!important}
 }
 </style>
+<style id="route-boot-style">
+/* Prevent the legacy home screen from flashing before a public results route initializes. */
+body.route-public-results #home{display:none!important}
+body.route-public-results #explore{display:block!important}
+</style>
 </head>
 <body>
+<script>
+(function(){
+  const qs=new URLSearchParams(location.search);
+  const privateKeys=['prestador','booking_token','client_token','request_token','match_token','provider_password_token','stripe','payment'];
+  const privateRoute=privateKeys.some(k=>qs.has(k))||location.hash==='#prestador'||location.hash==='#provider'||location.hash.startsWith('#provider-password=');
+  if(!privateRoute){
+    document.body.classList.add('route-public-results','results-mode');
+  }
+})();
+</script>
 <div class="app">
 <section id="splash" class="hidden">
   <div class="client-welcome">
@@ -2096,12 +2111,13 @@ async function init(){
    store.set('tri_home_search','');
    $('#searchInput').value=homeSearch;
    $('#resultsInput').value=homeSearch;
-   setTimeout(()=>runSearch(homeSearch,activeServiceGroup),60);
+   runSearch(homeSearch,activeServiceGroup);
  }else if(activeServiceGroup){
-   setTimeout(()=>runSearch('',activeServiceGroup),60);
+   runSearch('',activeServiceGroup);
  }else{
-   setTimeout(()=>runSearch('',null),60);
+   runSearch('',null);
  }
+ document.body.classList.remove('route-public-results');
 
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
 }
