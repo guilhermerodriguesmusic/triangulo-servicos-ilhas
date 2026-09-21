@@ -448,7 +448,15 @@
 .pa-status-line{display:flex;align-items:center;justify-content:space-between;gap:12px}.pa-status{display:inline-flex;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900;background:#e2f7f0;color:#087459}.pa-status.paused{background:#eef2f5;color:#627887}.pa-status-line p{margin-top:5px!important}.pa-outline{border:1px solid #cbdce5;background:#fff;color:#153f68;border-radius:11px;padding:9px 11px;font-size:10px;font-weight:900}
 .pa-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.pa-card-head h2{margin:0 0 4px}.pa-count{min-width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#e4f8f1;color:#08765d;font-size:10px;font-weight:950}
 .pa-bookings{display:grid;gap:8px;margin-top:12px}.pa-booking{border:1px solid #dce8ee;border-radius:13px;padding:11px;background:#fbfdfe}.pa-booking-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.pa-booking b{font-size:11px}.pa-booking-status{font-size:8px;font-weight:900;border-radius:999px;padding:5px 7px;background:#eef3f6;color:#567083}.pa-booking-status.requested{background:#fff3cd;color:#806200}.pa-booking-status.confirmed{background:#e2f7f0;color:#087459}.pa-booking small{display:block;margin-top:5px;color:#657d90;font-size:9px;line-height:1.45}.pa-booking-actions{display:flex;gap:7px;margin-top:9px}.pa-booking-actions button{flex:1;border:0;border-radius:10px;padding:9px;font-size:9px;font-weight:900}.pa-booking-actions .accept{background:#108b6e;color:#fff}.pa-booking-actions .decline{background:#edf2f5;color:#415f75}.pa-client{background:#edf8f4;border-radius:9px;padding:8px;margin-top:8px;font-size:9px;line-height:1.45;color:#355d50}
-@media(max-width:390px){.pa-grid2{grid-template-columns:1fr}.pa-checks{grid-template-columns:1fr 1fr}}
+.pa-quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px}
+.pa-quick{background:#fff;border:1px solid #dce8ef;border-radius:16px;padding:13px;min-height:116px;display:flex;flex-direction:column;box-shadow:0 7px 20px rgba(21,52,88,.045)}
+.pa-quick>small{font-size:8px;text-transform:uppercase;letter-spacing:.09em;font-weight:900;color:#7a8e9d}
+.pa-quick>strong{font-size:16px;line-height:1.15;color:#153458;margin:7px 0 4px;word-break:break-word}
+.pa-quick>span{font-size:9px;line-height:1.35;color:#6a8092;min-height:25px}
+.pa-quick button{margin-top:auto;border:0;background:none;padding:7px 0 0;text-align:left;color:#0a8068;font-size:9px;font-weight:900;cursor:pointer}
+.pa-quick .pa-outline{border:1px solid #cbdce5;background:#fff;color:#153f68;border-radius:9px;padding:7px 9px;width:max-content}
+.pa-profile-close{border:0;background:none;color:#60798c;font-size:9px;font-weight:850;padding:2px 0 8px;cursor:pointer}
+@media(max-width:390px){.pa-grid2{grid-template-columns:1fr}.pa-checks{grid-template-columns:1fr 1fr}.pa-quick-grid{grid-template-columns:1fr 1fr}.pa-quick{min-height:108px;padding:11px}}
 </style>
 </head>
 <body>
@@ -617,26 +625,47 @@
         <button id="providerLogoutBtn" type="button" data-pt="Sair" data-en="Sign out">Sair</button>
       </div>
 
-      <div class="pa-card">
-        <div class="pa-status-line">
-          <div><span id="paStatusBadge" class="pa-status active" data-pt="Perfil ativo" data-en="Profile active">Perfil ativo</span><span id="paFounderCredit" class="pa-status active" style="margin-left:6px;display:none"></span><p id="paStatusHelp" data-pt="O teu perfil aparece aos clientes." data-en="Your profile is visible to customers.">O teu perfil aparece aos clientes.</p></div>
+      <div class="pa-quick-grid">
+        <div class="pa-quick">
+          <small data-pt="Perfil" data-en="Profile">Perfil</small>
+          <strong id="paQuickStatus">Ativo</strong>
+          <span id="paStatusHelp" data-pt="Visível aos clientes." data-en="Visible to customers.">Visível aos clientes.</span>
           <button id="paPauseBtn" class="pa-outline" type="button">Pausar</button>
+        </div>
+        <div class="pa-quick">
+          <small data-pt="Pedidos" data-en="Requests">Pedidos</small>
+          <strong id="paQuickRequests">0 por responder</strong>
+          <span id="paQuickNextRequest" data-pt="Sem pedidos pendentes." data-en="No pending requests.">Sem pedidos pendentes.</span>
+          <button id="paQuickRequestsBtn" type="button" data-pt="Ver pedidos ↓" data-en="View requests ↓">Ver pedidos ↓</button>
+        </div>
+        <div class="pa-quick">
+          <small data-pt="Tu recebes" data-en="You receive">Tu recebes</small>
+          <strong id="paQuickPrice">—</strong>
+          <span id="paQuickClientPrice">—</span>
+          <button id="paQuickPriceBtn" type="button" data-pt="Alterar preço →" data-en="Change price →">Alterar preço →</button>
+        </div>
+        <div class="pa-quick">
+          <small data-pt="Disponibilidade" data-en="Availability">Disponibilidade</small>
+          <strong id="paQuickAvailability">—</strong>
+          <span id="paFounderCredit"></span>
+          <button id="paQuickAvailabilityBtn" type="button" data-pt="Alterar disponibilidade →" data-en="Change availability →">Alterar disponibilidade →</button>
         </div>
       </div>
 
-      <div class="pa-card">
+      <div id="paPaymentsCard" class="pa-card" hidden>
         <div class="pa-card-head"><div><h2 data-pt="Pagamentos" data-en="Payments">Pagamentos</h2><p id="paPaymentsHelp" data-pt="Os pagamentos através do TRIÂNGULO estão em preparação." data-en="Payments through TRIÂNGULO are being prepared.">Os pagamentos através do TRIÂNGULO estão em preparação.</p></div><span id="paPaymentsBadge" class="pa-status paused" data-pt="Em preparação" data-en="Coming soon">Em preparação</span></div>
         <button id="paPaymentsBtn" class="pa-primary" type="button" disabled data-pt="Pagamentos em breve" data-en="Payments coming soon">Pagamentos em breve</button>
         <p class="pa-note" data-pt="A verificação é feita de forma segura pela Stripe. O TRIÂNGULO não guarda os teus dados bancários." data-en="Verification is securely handled by Stripe. TRIÂNGULO does not store your bank details.">A verificação é feita de forma segura pela Stripe. O TRIÂNGULO não guarda os teus dados bancários.</p>
       </div>
 
-      <div class="pa-card">
+      <div id="paRequestsCard" class="pa-card">
         <div class="pa-card-head"><div><h2 data-pt="Pedidos" data-en="Requests">Pedidos</h2><p data-pt="Os pedidos mais recentes feitos diretamente ao teu perfil." data-en="Recent requests sent directly to your profile.">Os pedidos mais recentes feitos diretamente ao teu perfil.</p></div><span id="paRequestCount" class="pa-count">0</span></div>
         <div id="paBookings" class="pa-bookings"></div>
       </div>
 
-      <form id="providerProfileForm" class="pa-card">
-        <div class="pa-card-head"><div><h2 data-pt="Perfil público" data-en="Public profile">Perfil público</h2><p data-pt="Estas informações são vistas pelos clientes." data-en="Customers can see this information.">Estas informações são vistas pelos clientes.</p></div></div>
+      <form id="providerProfileForm" class="pa-card" hidden>
+        <button id="paCloseProfileBtn" class="pa-profile-close" type="button" data-pt="← Voltar ao resumo" data-en="← Back to overview">← Voltar ao resumo</button>
+        <div class="pa-card-head"><div><h2 data-pt="Editar perfil" data-en="Edit profile">Editar perfil</h2><p data-pt="Altera apenas o que precisares e guarda no fim." data-en="Change only what you need and save at the end.">Altera apenas o que precisares e guarda no fim.</p></div></div>
 
         <div class="pa-grid2">
           <label class="pa-field"><span data-pt="Nome / nome profissional" data-en="Name / professional name">Nome / nome profissional</span><input name="name" required maxlength="120"></label>
@@ -1054,13 +1083,25 @@ function renderProviderDashboard(data){
   const p=data.profile||{},bookings=data.bookings||[];
   $('#paDisplayName').textContent=p.business_name||p.name||'Prestador';
   $('#paAccountEmail').textContent=data.email||'';
-  $('#paStatusBadge').textContent=providerStatusLabel(p.status);
-  $('#paStatusBadge').classList.toggle('paused',p.status!=='active');
-  const fc=Number(data.founder_credit_cents||0),fcEl=$('#paFounderCredit');fcEl.style.display=fc>0?'inline-flex':'none';fcEl.textContent=fc>0?(lang==='pt'?'Crédito Fundador · €'+(fc/100).toFixed(2):'Founding Credit · €'+(fc/100).toFixed(2)):'';
-  $('#paStatusHelp').textContent=p.status==='active'?(lang==='pt'?'O teu perfil aparece aos clientes.':'Your profile is visible to customers.'):(lang==='pt'?'O teu perfil está escondido dos clientes.':'Your profile is hidden from customers.');
-  $('#paPauseBtn').textContent=p.status==='active'?(lang==='pt'?'Pausar perfil':'Pause profile'):(lang==='pt'?'Reativar perfil':'Reactivate profile');
+  const pending=bookings.filter(x=>x.status==='requested');
+  $('#paQuickStatus').textContent=p.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused');
+  $('#paStatusHelp').textContent=p.status==='active'?(lang==='pt'?'Visível aos clientes.':'Visible to customers.'):(lang==='pt'?'Escondido dos clientes.':'Hidden from customers.');
+  $('#paPauseBtn').textContent=p.status==='active'?(lang==='pt'?'Pausar':'Pause'):(lang==='pt'?'Reativar':'Reactivate');
+  $('#paQuickRequests').textContent=pending.length?(lang==='pt'?pending.length+' por responder':pending.length+' to answer'):(lang==='pt'?'Tudo em dia':'All caught up');
+  const nextPending=pending.slice().sort((a,b)=>String(a.service_date||'').localeCompare(String(b.service_date||'')))[0];
+  $('#paQuickNextRequest').textContent=nextPending
+    ?((nextPending.service_date||'')+(nextPending.service_time?' · '+nextPending.service_time:''))
+    :(lang==='pt'?'Sem pedidos pendentes.':'No pending requests.');
+  $('#paQuickPrice').textContent=p.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(p);
+  $('#paQuickClientPrice').textContent=p.pricing_type==='quote'
+    ?(lang==='pt'?'Defines o valor em cada pedido.':'You set the amount for each request.')
+    :((lang==='pt'?'Cliente vê ':'Customer sees ')+providerPrice(p));
+  $('#paQuickAvailability').textContent=p.availability|| (lang==='pt'?'Não indicada':'Not set');
+  const fc=Number(data.founder_credit_cents||0),fcEl=$('#paFounderCredit');
+  fcEl.textContent=fc>0?(lang==='pt'?'Crédito Fundador disponível · €'+(fc/100).toFixed(2):'Founding Credit available · €'+(fc/100).toFixed(2)):(lang==='pt'?'Podes alterar quando quiseres.':'You can change this anytime.');
 
   const pay=data.payment_account||{},payBadge=$('#paPaymentsBadge'),payHelp=$('#paPaymentsHelp'),payBtn=$('#paPaymentsBtn');
+  $('#paPaymentsCard').hidden=!paymentsLive;
   const paymentsReady=!!pay.payouts_enabled&&pay.transfers_capability==='active';
   if(!paymentsLive){
     payBadge.classList.remove('active');
@@ -1101,11 +1142,17 @@ function renderProviderDashboard(data){
   $$('[data-pa-cat]').forEach(x=>x.checked=(p.categories||[]).includes(x.value));
   syncProviderOther();syncProviderPrice();
 
-  $('#paRequestCount').textContent=bookings.filter(x=>x.status==='requested').length;
+  $('#paRequestCount').textContent=pending.length;
   if(!bookings.length){
     $('#paBookings').innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens pedidos. Quando um cliente te escolher, aparecem aqui.':'No requests yet. When a customer chooses you, they will appear here.')+'</div>';
   }else{
-    $('#paBookings').innerHTML=bookings.map(x=>{
+    const orderedBookings=[...bookings].sort((a,b)=>{
+      const ar=a.status==='requested'?0:a.status==='confirmed'?1:2;
+      const br=b.status==='requested'?0:b.status==='confirmed'?1:2;
+      if(ar!==br)return ar-br;
+      return String(a.service_date||'').localeCompare(String(b.service_date||''));
+    });
+    $('#paBookings').innerHTML=orderedBookings.map(x=>{
       const when=escapeHtml((x.service_date||'')+(x.service_time?' · '+x.service_time:''));
       const note=escapeHtml(x.notes|| (lang==='pt'?'Sem nota adicional':'No additional note'));
       const actions=x.status==='requested'&&x.response_token?(x.requires_quote?'<div class="pa-booking-actions" style="grid-template-columns:1fr"><input data-pa-quote-amount="'+x.response_token+'" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="'+(lang==='pt'?'Valor que queres receber (€)':'Amount you want to receive (€)')+'" style="width:100%;border:1px solid #d5e3ea;border-radius:10px;padding:10px"><button class="accept" data-pa-quote="'+x.response_token+'">'+(lang==='pt'?'Enviar orçamento':'Send quote')+'</button><button class="decline" data-pa-respond="decline" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>':'<div class="pa-booking-actions"><button class="accept" data-pa-respond="accept" data-token="'+x.response_token+'">'+(lang==='pt'?'Aceitar':'Accept')+'</button><button class="decline" data-pa-respond="decline" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>'):'';
@@ -1155,6 +1202,12 @@ function syncProviderPrice(){
   if(quote)$('#paPrice').value='';
   updateProviderPricePreview();
 }
+function openProviderProfileEditor(focusSelector){
+  const form=$('#providerProfileForm');
+  form.hidden=false;
+  form.scrollIntoView({behavior:'smooth',block:'start'});
+  if(focusSelector)setTimeout(()=>{const el=$(focusSelector);if(el)el.focus()},250);
+}
 async function providerSignOut(){
   const token=store.get('tri_provider_session','');
   if(token){try{await db.rpc('provider_logout',{p_session_token:token})}catch{}}
@@ -1179,6 +1232,10 @@ async function openProviderPayments(){
 $('#providerEntryBtn').onclick=openProviderArea;
 $('#providerAreaBtn').onclick=openProviderArea;
 $('#paPaymentsBtn').onclick=openProviderPayments;
+$('#paQuickRequestsBtn').onclick=()=>$('#paRequestsCard').scrollIntoView({behavior:'smooth',block:'start'});
+$('#paQuickPriceBtn').onclick=()=>openProviderProfileEditor('#paPrice');
+$('#paQuickAvailabilityBtn').onclick=()=>openProviderProfileEditor('#providerProfileForm [name="availability"]');
+$('#paCloseProfileBtn').onclick=()=>{const f=$('#providerProfileForm');f.hidden=true;$('#paDashboard').scrollIntoView({behavior:'smooth',block:'start'})};
 $('#providerAreaBack').onclick=closeProviderArea;
 $('#providerLogoutBtn').onclick=providerSignOut;
 $('#providerLogoutFromMissing').onclick=providerSignOut;
