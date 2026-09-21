@@ -1461,6 +1461,15 @@ async function init(){
    history.replaceState({},'',location.pathname+'#app');
    setTimeout(async()=>{await openClientBookings();toast(paymentResult==='success'?(lang==='pt'?'Pagamento recebido/ a confirmar ✓':'Payment received / confirming ✓'):(lang==='pt'?'Pagamento cancelado.':'Payment cancelled.'))},50);
  }else if(location.hash==='#app'||store.get('tri_client_welcome_v4','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
+
+ const homeSearch=store.get('tri_home_search','');
+ if(homeSearch){
+   store.set('tri_home_search','');
+   $('#searchInput').value=homeSearch;
+   $('#resultsInput').value=homeSearch;
+   setTimeout(()=>runSearch(homeSearch),60);
+ }
+
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
 }
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
