@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0b3157">
 <meta name="color-scheme" content="light only">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-v2.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-v3.png">
 <link rel="icon" href="/logo.svg">
 <link rel="preload" href="/assets/pico-home-hq.webp" as="image" type="image/webp" fetchpriority="high">
 <title>Para prestadores — TRIÂNGULO Açores</title>
@@ -135,9 +135,13 @@ footer{border-top:1px solid #dbe5e2;padding:20px 0 26px;color:#718695;font-size:
   }
   .persistent-choice-nav a{font-size:10px;padding:7px 8px;background:#f5f8fa}
 }
+
+.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
+<main id="main-content">
 <section class="provider-hero">
   <header class="top">
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
@@ -179,7 +183,7 @@ footer{border-top:1px solid #dbe5e2;padding:20px 0 26px;color:#718695;font-size:
   </div>
 </section>
 
-<main class="info">
+<section class="info">
   <div class="info-grid">
     <section class="panel">
       <div class="eyebrow" data-pt="COMO FUNCIONA" data-en="HOW IT WORKS">COMO FUNCIONA</div>
@@ -198,6 +202,7 @@ footer{border-top:1px solid #dbe5e2;padding:20px 0 26px;color:#718695;font-size:
       <a class="price-link" href="/terms.html" data-pt="Ver condições completas →" data-en="See full terms →">Ver condições completas →</a>
     </section>
   </div>
+</section>
 </main>
 
 <footer>
