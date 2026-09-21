@@ -1741,7 +1741,23 @@ async function loadProviderAccount(){
   paShow('paLoading');
   providerSessionToken=store.get('tri_provider_session','');
   if(!providerSessionToken){providerAccountData=null;paShow('paSignedOut');return}
-  const {data,error}=await db.rpc('provider_session_context',{p_session_token:providerSessionToken});
+  let response;
+  try{
+    response=await Promise.race([
+      db.rpc('provider_session_context',{p_session_token:providerSessionToken}),
+      new Promise(resolve=>setTimeout(()=>resolve({data:null,error:{message:'timeout'},timedOut:true}),7000))
+    ]);
+  }catch(e){
+    response={data:null,error:e};
+  }
+  const {data,error}=response||{};
+  if(response&&response.timedOut){
+    providerAccountData=null;
+    paShow('paSignedOut');
+    const status=$('#providerLoginStatus');
+    if(status)status.textContent=lang==='pt'?'A verificação demorou demasiado. Entra novamente.':'The session check took too long. Please sign in again.';
+    return;
+  }
   if(error||!data||!data.ok){
     if(error)console.error('provider_session_context',error);
     providerAccountData=null;providerSessionToken='';store.set('tri_provider_session','');paShow('paSignedOut');return
@@ -2153,7 +2169,12 @@ async function init(){
    $('#mainShell').classList.add('hidden');
    $('#providerRequestView').hidden=true;
    $('#providerAreaView').hidden=false;
-   paShow('paLoading');
+   updateIsland();applyLang();renderBookings();
+   // The provider login must not wait for the public app configuration request.
+   // Show the sign-in/dashboard immediately and refresh payment-related state once config arrives.
+   openProviderSignup();
+   loadAppConfig().then(()=>{if(providerAccountData)renderProviderDashboard(providerAccountData)}).catch(()=>{});
+   return;
  }
  await loadAppConfig();
  const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim(),queryGroup=qs.get('group');
