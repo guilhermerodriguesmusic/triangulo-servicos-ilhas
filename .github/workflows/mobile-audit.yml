@@ -1,0 +1,187 @@
+name: Mobile visual audit
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/mobile-audit.yml"
+      - "index.html"
+      - "servicos/index.html"
+      - "prestadores.html"
+      - "candidatura-prestador.html"
+      - "instalar/index.html"
+      - "sw.js"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start local site
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/triangulo-http.log 2>&1 &
+          echo $! > /tmp/triangulo-http.pid
+          for i in {1..30}; do
+            curl --silent --fail http://127.0.0.1:4173/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/triangulo-http.log
+          exit 1
+
+      - name: Audit mobile layouts
+        shell: bash
+        run: |
+          mkdir -p mobile-audit
+          cat > /tmp/mobile-audit.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+
+          const base='http://127.0.0.1:4173';
+          const androidUA='Mozilla/5.0 (Linux; Android 15; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36';
+          const iphoneUA='Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1';
+
+          const routes=[
+            {name:'home',path:'/'},
+            {name:'services',path:'/servicos/'},
+            {name:'providers',path:'/prestadores.html'},
+            {name:'application',path:'/candidatura-prestador.html'},
+            {name:'provider-login',path:'/servicos/?prestador=1&entry=mobile-audit'},
+            {name:'install-android',path:'/instalar/',ua:androidUA},
+            {name:'install-iphone',path:'/instalar/',ua:iphoneUA}
+          ];
+          const languages=['pt','en'];
+          const viewports=[
+            {name:'small',width:360,height:800},
+            {name:'iphone',width:390,height:844},
+            {name:'large',width:412,height:915}
+          ];
+
+          const browser=await chromium.launch({headless:true});
+          const results=[];
+          let hardFailures=0;
+
+          for(const route of routes){
+            for(const lang of languages){
+              for(const vp of viewports){
+                const context=await browser.newContext({
+                  viewport:{width:vp.width,height:vp.height},
+                  userAgent:route.ua||androidUA,
+                  locale:lang==='pt'?'pt-PT':'en-GB',
+                  deviceScaleFactor:1
+                });
+                const page=await context.newPage();
+                const pageErrors=[];
+                page.on('pageerror',e=>pageErrors.push(String(e.message||e)));
+                page.on('console',msg=>{
+                  if(msg.type()==='error'){
+                    const t=msg.text();
+                    if(!/favicon|Failed to load resource.*404/i.test(t)) pageErrors.push('console: '+t);
+                  }
+                });
+
+                const sep=route.path.includes('?')?'&':'?';
+                const url=base+route.path+sep+'lang='+lang+'&audit=1';
+                let navError='';
+                try{
+                  await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+                  if(route.name==='provider-login'){
+                    await page.waitForTimeout(1400);
+                  }else{
+                    await page.waitForTimeout(800);
+                  }
+                }catch(e){navError=String(e.message||e)}
+
+                const metrics=await page.evaluate(()=>{
+                  const vw=window.innerWidth;
+                  const root=document.documentElement;
+                  const body=document.body;
+                  const visible=el=>{
+                    const cs=getComputedStyle(el);
+                    if(cs.display==='none'||cs.visibility==='hidden'||Number(cs.opacity)===0)return false;
+                    const r=el.getBoundingClientRect();
+                    return r.width>0&&r.height>0;
+                  };
+                  const offenders=[...document.querySelectorAll('body *')].filter(visible).map(el=>{
+                    const r=el.getBoundingClientRect();
+                    return {
+                      tag:el.tagName.toLowerCase(),
+                      id:el.id||'',
+                      cls:(typeof el.className==='string'?el.className:'').slice(0,100),
+                      text:(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,80),
+                      left:Math.round(r.left*10)/10,
+                      right:Math.round(r.right*10)/10,
+                      width:Math.round(r.width*10)/10
+                    };
+                  }).filter(x=>x.left < -2 || x.right > vw+2).slice(0,15);
+
+                  const selectors='button,.cta,a.primary,a.secondary,.platform-btn,.pa-primary,input:not([type="hidden"]),select';
+                  const tiny=[...document.querySelectorAll(selectors)].filter(visible).map(el=>{
+                    const r=el.getBoundingClientRect();
+                    return {
+                      tag:el.tagName.toLowerCase(),id:el.id||'',text:(el.textContent||el.getAttribute('aria-label')||'').trim().replace(/\s+/g,' ').slice(0,70),
+                      width:Math.round(r.width),height:Math.round(r.height)
+                    };
+                  }).filter(x=>x.width<30||x.height<30).slice(0,20);
+
+                  return {
+                    title:document.title,
+                    htmlLang:document.documentElement.lang,
+                    viewport:vw,
+                    scrollWidth:Math.max(root.scrollWidth,body?.scrollWidth||0),
+                    horizontalOverflow:Math.max(root.scrollWidth,body?.scrollWidth||0)>vw+2,
+                    offenders,
+                    tiny
+                  };
+                });
+
+                const name=[route.name,lang,vp.name].join('-');
+                await page.screenshot({path:'mobile-audit/'+name+'.png',fullPage:true});
+                const uniqueErrors=[...new Set(pageErrors)].filter(Boolean);
+                const record={name,url,navError,errors:uniqueErrors,...metrics};
+                results.push(record);
+
+                if(navError||metrics.horizontalOverflow||uniqueErrors.length){
+                  hardFailures++;
+                  console.log('FAIL',name,JSON.stringify(record));
+                }else{
+                  console.log('OK',name,'scrollWidth='+metrics.scrollWidth,'tiny='+metrics.tiny.length);
+                }
+                await context.close();
+              }
+            }
+          }
+
+          await browser.close();
+          fs.writeFileSync('mobile-audit/audit.json',JSON.stringify(results,null,2));
+          const summary={
+            total:results.length,
+            hardFailures,
+            overflow:results.filter(x=>x.horizontalOverflow).map(x=>x.name),
+            pageErrors:results.filter(x=>x.navError||x.errors.length).map(x=>({name:x.name,navError:x.navError,errors:x.errors})),
+            tinyWarnings:results.filter(x=>x.tiny.length).map(x=>({name:x.name,tiny:x.tiny}))
+          };
+          fs.writeFileSync('mobile-audit/summary.json',JSON.stringify(summary,null,2));
+          console.log('SUMMARY',JSON.stringify(summary));
+          if(hardFailures)process.exit(1);
+          JS
+          node /tmp/mobile-audit.mjs
+
+      - name: Upload mobile audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triangulo-mobile-audit
+          path: mobile-audit/
+          retention-days: 7
