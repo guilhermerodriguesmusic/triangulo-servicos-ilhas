@@ -134,7 +134,7 @@ jobs:
           grep -q "PARA PRESTADORES" <<<"$providers"
           grep -q "Mais clientes para o teu trabalho" <<<"$providers"
           grep -q "Criar perfil gratuito" <<<"$providers"
-          grep -q "Quanto queres receber" <<<"$application"
+          grep -q "Valor do serviço" <<<"$application"
           grep -q "Telefone / WhatsApp" <<<"$application"
           grep -q "Etapas da candidatura" <<<"$application"
           grep -q "booking_client_context" <<<"$app"
