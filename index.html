@@ -48,8 +48,8 @@ body{min-height:100svh;overflow-x:hidden}
   z-index:-3;
   background-image:url('/assets/pico-home-hq.webp');
   background-repeat:no-repeat;
-  background-position:left 10.5%;
-  background-size:104.2% auto;
+  background-position:80px 70%;
+  background-size:118% auto;
 }
 .hero::after{
   content:"";
@@ -57,7 +57,7 @@ body{min-height:100svh;overflow-x:hidden}
   inset:0;
   z-index:-2;
   background:
-    linear-gradient(90deg,rgba(5,39,67,.22) 0%,rgba(5,39,67,.08) 42%,rgba(5,39,67,.03) 68%,rgba(5,39,67,.10) 100%),
+    linear-gradient(90deg,rgba(5,39,67,.18) 0%,rgba(5,39,67,.06) 42%,rgba(5,39,67,.02) 68%,rgba(5,39,67,.08) 100%),
     linear-gradient(180deg,rgba(6,43,73,.03) 0%,rgba(6,43,73,.02) 52%,rgba(4,27,44,.22) 74%,rgba(4,27,44,.50) 100%);
 }
 .top{
@@ -67,15 +67,15 @@ body{min-height:100svh;overflow-x:hidden}
   grid-template-columns:370px 1fr auto;
   align-items:center;
   gap:24px;
-  padding:21px 0 10px;
+  padding:17px 0 8px;
 }
 .brand{display:flex;align-items:center;text-decoration:none}
-.brand img{display:block;width:332px;height:auto;max-width:100%;filter:drop-shadow(0 2px 10px rgba(255,255,255,.16))}
+.brand img{display:block;width:318px;height:auto;max-width:100%;filter:drop-shadow(0 2px 10px rgba(255,255,255,.16))}
 .nav{
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:46px;
+  gap:43px;
   white-space:nowrap;
 }
 .nav a,.nav button{
@@ -117,24 +117,24 @@ body{min-height:100svh;overflow-x:hidden}
   flex:1;
   display:flex;
   align-items:flex-start;
-  padding:47px 0 236px;
+  padding:39px 0 236px;
   position:relative;
 }
-.copy{width:min(860px,62%);padding-left:76px}
+.copy{width:min(820px,60%);padding-left:74px}
 .kicker{
-  font-size:12px;
+  font-size:11px;
   font-weight:700;
-  letter-spacing:.40em;
+  letter-spacing:.37em;
   text-transform:uppercase;
   margin:0 0 12px 3px;
   text-shadow:0 2px 12px rgba(0,0,0,.28)
 }
 h1{
   margin:0;
-  max-width:705px;
+  max-width:650px;
   font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(68px,6.35vw,101px);
-  line-height:.82;
+  font-size:clamp(64px,5.85vw,94px);
+  line-height:.84;
   font-weight:500;
   letter-spacing:-.047em;
   text-shadow:0 3px 18px rgba(0,0,0,.15)
@@ -142,7 +142,7 @@ h1{
 .promise{
   margin:15px 0 0 2px;
   font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(30px,2.45vw,43px);
+  font-size:clamp(28px,2.25vw,39px);
   line-height:1.02;
   text-shadow:0 2px 13px rgba(0,0,0,.18)
 }
@@ -175,8 +175,8 @@ h1{
 
 .searchbar{
   margin-top:18px;
-  width:min(860px,100%);
-  min-height:74px;
+  width:min(842px,100%);
+  min-height:70px;
   background:#fff;
   border-radius:33px;
   display:grid;
@@ -205,18 +205,18 @@ h1{
   cursor:pointer
 }
 .searchbar button[type=submit]{
-  height:61px;border:0;border-radius:999px;background:linear-gradient(135deg,#5f8d50,#759e5b);
+  height:57px;border:0;border-radius:999px;background:linear-gradient(135deg,#5f8d50,#759e5b);
   color:#fff;font-weight:850;font-size:16px;cursor:pointer;box-shadow:0 7px 18px rgba(69,111,64,.25)
 }
 .searchbar button[type=submit] span{font-size:23px;margin-left:10px;vertical-align:-1px}
 
 .handnote{
   position:absolute;
-  top:57px;
-  right:30px;
+  top:58px;
+  right:43px;
   transform:rotate(-7deg);
   font-family:"Brush Script MT","Segoe Script","Bradley Hand",cursive;
-  font-size:34px;
+  font-size:32px;
   line-height:.98;
   color:rgba(255,255,255,.95);
   text-align:left;
@@ -231,22 +231,22 @@ h1{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  bottom:126px;
+  bottom:119px;
   width:min(1478px,calc(100% - 72px));
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:17px
 }
 .category{
-  min-height:124px;
+  min-height:116px;
   background:rgba(255,255,255,.95);
   border:1px solid rgba(255,255,255,.8);
   color:#18374a;
   text-decoration:none;
   border-radius:18px;
-  padding:18px 20px;
+  padding:16px 19px;
   display:grid;
-  grid-template-columns:56px minmax(0,1fr) 24px;
+  grid-template-columns:50px minmax(0,1fr) 22px;
   align-items:center;
   gap:12px;
   box-shadow:0 13px 29px rgba(0,0,0,.16);
@@ -256,14 +256,14 @@ h1{
 .category:hover{transform:translateY(-3px);box-shadow:0 17px 34px rgba(0,0,0,.20)}
 .category-icon{width:48px;height:48px;display:grid;place-items:center;color:#5e8a4d}
 .category-icon svg{width:41px;height:41px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
-.category b{display:block;font-size:14px;margin-bottom:6px;color:#17394b}
-.category small{display:block;font-size:11px;line-height:1.45;color:#4e6b73}
+.category b{display:block;font-size:13px;margin-bottom:5px;color:#17394b}
+.category small{display:block;font-size:10.5px;line-height:1.43;color:#4e6b73}
 .category .arr{font-size:26px;color:#214d52}
 
 .trustbar{
   position:absolute;
   left:0;right:0;bottom:0;
-  height:108px;
+  height:103px;
   background:rgba(255,255,255,.97);
   color:#183a55;
   display:grid;
@@ -287,8 +287,9 @@ h1{
 .trust small{display:block;font-size:10px;color:#6d767d;margin-top:3px}
 
 @media(max-width:1120px){
+  .hero::before{background-size:125% auto;background-position:36px 68%}
   .top{width:calc(100% - 34px);grid-template-columns:240px 1fr auto}.brand img{width:225px}.nav{gap:24px}.nav a,.nav button{font-size:12px}
-  .stage{width:calc(100% - 34px);padding-top:66px}.copy{padding-left:12px;width:70%}
+  .stage{width:calc(100% - 34px);padding-top:56px}.copy{padding-left:12px;width:70%}
   .handnote{right:10px;font-size:27px}
   .category-row{width:calc(100% - 34px);gap:10px}.category{padding:14px;grid-template-columns:42px 1fr 18px}.category-icon{width:38px}.category-icon svg{width:34px;height:34px}.category small{font-size:9px}
   .trust{padding:0 12px}
