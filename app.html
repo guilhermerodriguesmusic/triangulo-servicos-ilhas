@@ -897,7 +897,7 @@ $('#requestForm').onsubmit=async e=>{
   const {data,error}=await db.rpc('submit_service_request',{p_payload:payload});
   if(error)throw error;
   if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível publicar.':'Could not post.');return}
-  form.reset();status.textContent='';closeSheets();toast(lang==='pt'?'Pedido publicado ✓':'Request posted ✓')
+  form.reset();status.textContent='';closeSheets();toast(lang==='pt'?'Pedido recebido ✓ Confirmação enviada por email.':'Request received ✓ Confirmation sent by email.')
  }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.'}
 };
 $('#contactForm').onsubmit=async e=>{
@@ -931,7 +931,7 @@ function openBooking(id){
    if(error)throw error;
    if(!data||!data.ok){toast((data&&data.message)?data.message:(lang==='pt'?'Não foi possível enviar.':'Could not submit.'));return}
    saveBookingLocal({token:data.client_token,provider:p.business_name||p.name,island,date:payload.service_date,time:payload.service_time,quote,status:'requested',createdAt:new Date().toISOString()});
-   closeSheets();toast(lang==='pt'?'Pedido enviado — a aguardar confirmação ✓':'Request sent — awaiting confirmation ✓');
+   closeSheets();toast(lang==='pt'?'Pedido enviado ✓ Podes acompanhar pelo email de confirmação.':'Request sent ✓ You can track it from the confirmation email.');
   }catch(err){console.error(err);toast(lang==='pt'?'Não foi possível enviar.':'Could not submit.')}
  };
 }
