@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260921-servicos-v5';
+const CACHE='triangulo-pwa-20260921-prelaunch-v6';
 const CORE=[
   '/',
   '/index.html',
