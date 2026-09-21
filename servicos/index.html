@@ -979,6 +979,29 @@ body.route-public-results #explore{display:block!important}
   }
 }
 </style>
+
+<style id="mobile-visual-audit-v1">
+
+@media(max-width:759px){
+  .topbar{
+    height:calc(60px + env(safe-area-inset-top))!important;
+    padding-top:calc(10px + env(safe-area-inset-top))!important;
+  }
+}
+@media(max-width:360px){
+  .brand-full{width:140px!important}
+  .topbar-actions{gap:4px!important}
+  .lang-switch button{padding:5px 7px!important;min-width:32px}
+  #providerAreaView .pa-brand img{width:132px}
+  #providerAreaView .pa-back{width:36px;height:36px}
+  #providerAreaView .pa-lang-switch button{min-width:34px;min-height:32px;padding:5px 7px}
+  #providerAreaView .pa-hero h1{font-size:30px}
+  #providerAreaView.pa-state-signedout #paSignedOut,
+  #providerAreaView.pa-state-password #paPasswordSet,
+  #providerAreaView.pa-state-missing #paNotProvider{padding:16px}
+}
+
+</style>
 </head>
 <body>
 <script>
