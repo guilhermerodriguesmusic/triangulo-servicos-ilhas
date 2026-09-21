@@ -7,7 +7,7 @@
 <meta http-equiv="refresh" content="0; url=/">
 <link rel="canonical" href="https://trianguloacores.pt/">
 <title>TRIÂNGULO</title>
-<script>location.replace('/')</script>
+<script>location.replace('/'+location.search+location.hash)</script>
 </head>
-<body><p><a href="/">Ir para o TRIÂNGULO</a></p></body>
+<body><p><a id="fallback" href="/">Ir para o TRIÂNGULO</a></p><script>(function(){var q=new URLSearchParams(location.search),lang=(q.get('lang')==='en'||localStorage.getItem('tri_lang')==='en')?'en':'pt';document.documentElement.lang=lang;var a=document.getElementById('fallback');a.textContent=lang==='en'?'Go to TRIÂNGULO':'Ir para o TRIÂNGULO';a.href='/'+location.search+location.hash})()</script></body>
 </html>
