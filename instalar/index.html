@@ -56,7 +56,7 @@ window.addEventListener('beforeinstallprompt',function(e){
   <h2>iPhone</h2>
   <div class="steps">
     <div class="step"><div class="num">1</div><div><b data-pt="Abre esta página no Safari" data-en="Open this page in Safari">Abre esta página no Safari</b><span data-pt="No iPhone, a instalação é feita através do Safari." data-en="On iPhone, installation is done through Safari.">No iPhone, a instalação é feita através do Safari.</span></div></div>
-    <div class="step"><div class="num">2</div><div><b data-pt="Toca em Partilhar" data-en="Tap Share">Toca em <span class="ios-share">Partilhar</span></b><span data-pt="É o ícone do quadrado com uma seta para cima." data-en="It is the square icon with an upward arrow.">É o ícone do quadrado com uma seta para cima.</span></div></div>
+    <div class="step"><div class="num">2</div><div><b><span data-pt="Toca em" data-en="Tap">Toca em</span> <span class="ios-share" data-pt="Partilhar" data-en="Share">Partilhar</span></b><span data-pt="É o ícone do quadrado com uma seta para cima." data-en="It is the square icon with an upward arrow.">É o ícone do quadrado com uma seta para cima.</span></div></div>
     <div class="step"><div class="num">3</div><div><b data-pt="Escolhe “Adicionar ao ecrã principal”" data-en="Choose “Add to Home Screen”">Escolhe “Adicionar ao ecrã principal”</b><span data-pt="Ativa “Abrir como app web” e confirma em “Adicionar”. O TRIÂNGULO fica instalado como uma app no teu iPhone." data-en="Enable “Open as Web App” and confirm “Add”. TRIÂNGULO will be installed like an app on your iPhone.">Ativa “Abrir como app web” e confirma em “Adicionar”. O TRIÂNGULO fica instalado como uma app no teu iPhone.</span></div></div>
   </div>
   <a class="secondary" href="/servicos/" data-pt="Já instalaste? Abrir TRIÂNGULO →" data-en="Already installed? Open TRIÂNGULO →">Já instalaste? Abrir TRIÂNGULO →</a>
@@ -77,13 +77,14 @@ const urlLang=new URLSearchParams(location.search).get('lang');
 let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt');
 function tr(pt,en){return lang==='pt'?pt:en}
 function applyLang(){
+  localStorage.setItem('tri_lang',lang);
   document.documentElement.lang=lang;
   document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en);
   document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
   document.querySelector('#pt').classList.toggle('active',lang==='pt');
   document.querySelector('#en').classList.toggle('active',lang==='en');
   document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
-  document.title='TRIÂNGULO';
+  document.title=lang==='pt'?'Instalar TRIÂNGULO':'Install TRIÂNGULO';
 }
 document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang();show();if(isAndroid&&!standalone)setInstallReady(!!deferredPrompt)};
 document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang();show();if(isAndroid&&!standalone)setInstallReady(!!deferredPrompt)};
