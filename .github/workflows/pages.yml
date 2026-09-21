@@ -193,6 +193,11 @@ jobs:
             exit 1
           fi
 
+          if grep -q ".wrap>section[data-en]" <<<"$privacy$terms"; then
+            echo "Privacy/terms language-section selector regression"
+            exit 1
+          fi
+
           if grep -q "#app" <<<"$index$app"; then
             echo "Legacy #app navigation returned"
             exit 1
@@ -207,7 +212,7 @@ jobs:
           for page in \
             "admin.html" "app.html" "candidatura-prestador.html" "candidatura-rever.html" \
             "how-it-works.html" "index.html" "inicio.html" "instalar/" "prestadores.html" \
-            "privacy.html" "reserva-responder.html" "servicos/" "terms.html"; do
+            "privacy.html" "reserva-responder.html" "servicos/" "sobre-nos.html" "terms.html"; do
             fetch "$base/$page?lang=pt&verify=$GITHUB_SHA" >/dev/null
             fetch "$base/$page?lang=en&verify=$GITHUB_SHA" >/dev/null
           done
