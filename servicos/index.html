@@ -1367,7 +1367,7 @@ function enterIsland(next){island=next;store.set('tri_island',island);store.set(
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){
  $('#islandPill span').textContent=island;
  const p2=$('#profileIsland2');if(p2)p2.textContent=island;
- $('[data-set-island]').forEach(b=>{
+ document.querySelectorAll('[data-set-island]').forEach(b=>{
   const current=b.dataset.setIsland===island;
   b.classList.toggle('is-current',current);
   b.setAttribute('aria-pressed',current?'true':'false');
