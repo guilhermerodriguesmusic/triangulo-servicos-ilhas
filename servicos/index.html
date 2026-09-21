@@ -330,7 +330,7 @@
 .pa-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .pa-back{width:38px;height:38px;border:1px solid #dbe7ee;background:#fff;border-radius:50%;font-size:24px;line-height:1;color:#153458;box-shadow:0 5px 16px rgba(21,52,88,.06)}
 .pa-brand{display:flex;align-items:center;color:#153458}.pa-brand img{width:168px;height:auto;object-fit:contain;display:block}
-.pa-spacer{width:38px}
+.pa-spacer{width:38px}.pa-lang-switch{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.9);border:1px solid #dbe7ee;border-radius:999px;padding:3px;box-shadow:0 5px 16px rgba(21,52,88,.05)}.pa-lang-switch button{border:0;background:transparent;color:#6b8095;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:900;cursor:pointer}.pa-lang-switch button.active{background:#e7f4ef;color:#087459}
 .pa-hero{padding:7px 3px 17px}.pa-kicker{font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.14em;color:#0a8b6c}.pa-hero h1{font-size:34px;line-height:1.02;letter-spacing:-.035em;margin:7px 0 9px}.pa-hero p{margin:0;color:#637b8e;font-size:13px;line-height:1.5}
 .pa-card{background:#fff;border:1px solid #dce8ef;border-radius:21px;padding:17px;margin-bottom:11px;box-shadow:0 10px 28px rgba(21,52,88,.06)}
 .pa-card h2{font-size:17px;margin:0 0 7px}.pa-card p{font-size:11px;color:#687f91;line-height:1.5;margin:0}
@@ -1069,9 +1069,9 @@ body.route-public-results #explore{display:block!important}
 <section id="providerAreaView" hidden>
   <div class="pa-shell">
     <div class="pa-top">
-      <button id="providerAreaBack" class="pa-back" type="button" aria-label="Voltar">‹</button>
+      <button id="providerAreaBack" class="pa-back" type="button" aria-label="Voltar" data-aria-pt="Voltar" data-aria-en="Back">‹</button>
       <div class="pa-brand"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></div>
-      <div class="pa-spacer"></div>
+      <div class="pa-lang-switch" aria-label="Language"><button type="button" data-lang="pt" class="active">PT</button><button type="button" data-lang="en">EN</button></div>
     </div>
 
     <div class="pa-hero">
@@ -1157,7 +1157,7 @@ body.route-public-results #explore{display:block!important}
         <div id="paServicesList" class="pa-bookings"></div>
         <form id="paServiceForm" class="pa-card" style="display:none;margin-top:10px;background:#f8fbf9">
           <input type="hidden" name="service_id">
-          <div class="pa-grid2"><label class="pa-field"><span data-pt="Nome do serviço" data-en="Service name">Nome do serviço</span><input name="title" required maxlength="120" placeholder="Ex.: Limpeza de casas"></label><label class="pa-field"><span data-pt="Categoria" data-en="Category">Categoria</span><select name="category_code" required><option value="home">Casa & Limpeza</option><option value="garden">Jardim & Terrenos</option><option value="repairs">Reparações & Manutenção</option><option value="moving">Mudanças & Entregas</option><option value="lessons">Aulas & Explicações</option><option value="wellness">Bem-estar</option><option value="tech">Tecnologia</option><option value="creative">Fotografia & Criativos</option><option value="pets">Animais</option><option value="other">Outro</option></select></label></div>
+          <div class="pa-grid2"><label class="pa-field"><span data-pt="Nome do serviço" data-en="Service name">Nome do serviço</span><input name="title" required maxlength="120" placeholder="Ex.: Limpeza de casas"></label><label class="pa-field"><span data-pt="Categoria" data-en="Category">Categoria</span><select name="category_code" required><option value="home" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</option><option value="garden" data-pt="Jardim & Terrenos" data-en="Garden & Outdoor">Jardim & Terrenos</option><option value="repairs" data-pt="Reparações & Manutenção" data-en="Repairs & Maintenance">Reparações & Manutenção</option><option value="moving" data-pt="Mudanças & Entregas" data-en="Moves & Deliveries">Mudanças & Entregas</option><option value="lessons" data-pt="Aulas & Explicações" data-en="Lessons & Tutoring">Aulas & Explicações</option><option value="wellness" data-pt="Bem-estar" data-en="Wellness">Bem-estar</option><option value="tech" data-pt="Tecnologia" data-en="Technology">Tecnologia</option><option value="creative" data-pt="Fotografia & Criativos" data-en="Photography & Creative">Fotografia & Criativos</option><option value="pets" data-pt="Animais" data-en="Pets">Animais</option><option value="other" data-pt="Outro" data-en="Other">Outro</option></select></label></div>
           <label class="pa-field"><span data-pt="Descrição" data-en="Description">Descrição</span><textarea name="description" maxlength="1200"></textarea></label>
           <div class="pa-grid2"><label class="pa-field"><span data-pt="Como cobras?" data-en="Pricing">Como cobras?</span><select name="pricing_type"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote">Sob orçamento</option></select></label><label class="pa-field"><span data-pt="Quanto queres receber (€)" data-en="Amount you want to earn (€)">Quanto queres receber (€)</span><input name="price" type="number" min="0.01" step="0.01" inputmode="decimal"></label></div>
           <label class="pa-field"><span data-pt="Disponibilidade deste serviço" data-en="Availability for this service">Disponibilidade deste serviço</span><input name="availability" maxlength="500" placeholder="Ex.: Seg–Sex, 09:00–18:00"></label>
@@ -1318,7 +1318,8 @@ function applyLang(){
  document.title=lang==='pt'?'TRIÂNGULO — Serviços locais nas ilhas':'TRIÂNGULO — Local services across the islands';
  $$('[data-t]').forEach(el=>{let v=tr(el.dataset.t);if(v.includes('<br>'))el.innerHTML=v;else el.textContent=v});
  $$('[data-pt][data-en]').forEach(el=>{el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en});
- $$('[data-ph-pt][data-ph-en]').forEach(el=>{el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn});
+ $('[data-ph-pt][data-ph-en]').forEach(el=>{el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn});
+ $('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
  $$('[data-lang]').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
  $('#searchInput').placeholder=lang==='pt'?'Limpeza, jardim, mudanças...':'Cleaning, garden, moving...';
  let rq=$('#resultsInput').value||'';
@@ -1722,6 +1723,7 @@ function providerBookingStatus(status,paymentStatus){
   return (lang==='pt'?pt:en)[status]||status;
 }
 async function openProviderArea(){
+  document.title=lang==='pt'?'Área do prestador — TRIÂNGULO':'Provider area — TRIÂNGULO';
   $('#splash').classList.add('hidden');
   $('#mainShell').classList.add('hidden');
   $('#providerRequestView').hidden=true;
@@ -1730,6 +1732,7 @@ async function openProviderArea(){
 }
 function closeProviderArea(){
   $('#providerAreaView').hidden=true;
+  document.title=lang==='pt'?'TRIÂNGULO — Serviços locais nas ilhas':'TRIÂNGULO — Local services across the islands';
   history.replaceState({},'',location.pathname);
   $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
   runSearch(activeSearchQuery,activeServiceGroup);
