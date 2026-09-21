@@ -2031,8 +2031,16 @@ $('#prAppAccept').onclick=()=>providerAppRespond('accept');
 $('#prAppDecline').onclick=()=>providerAppRespond('decline');
 
 async function init(){
- await loadAppConfig();
  const qs=new URLSearchParams(location.search);
+ const earlyProviderEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1'||String(qs.get('entry')||'').startsWith('provider-');
+ if(earlyProviderEntry){
+   $('#splash').classList.add('hidden');
+   $('#mainShell').classList.add('hidden');
+   $('#providerRequestView').hidden=true;
+   $('#providerAreaView').hidden=false;
+   paShow('paLoading');
+ }
+ await loadAppConfig();
  const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim(),queryGroup=qs.get('group');
  if(['Pico','Faial','São Jorge'].includes(queryIsland)){island=queryIsland;store.set('tri_island',island)}
  activeSearchQuery=querySearch;activeServiceGroup=['home','garden','repairs','personal'].includes(queryGroup)?queryGroup:null;
@@ -2040,7 +2048,7 @@ async function init(){
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const bookingToken=qs.get('booking_token'),matchToken=qs.get('match_token'),clientBookingToken=qs.get('client_token'),requestToken=qs.get('request_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1';
+ const bookingToken=qs.get('booking_token'),matchToken=qs.get('match_token'),clientBookingToken=qs.get('client_token'),requestToken=qs.get('request_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=earlyProviderEntry;
  if(providerPasswordToken){openProviderPasswordSetup(providerPasswordToken);return}
  if(requestToken){
    try{
