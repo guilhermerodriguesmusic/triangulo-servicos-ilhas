@@ -818,8 +818,20 @@ function applyLang(){
  if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
-function renderCats(){const make=(c,i,full=false)=>{const label=full?c[lang]:(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en));return `<button class="category c${i}" data-cat="${i}">${icons[c.icon]}<small>${label}</small></button>`};$('#homeCats').innerHTML=categories.slice(0,4).map((c,i)=>make(c,i,false)).join('');$('#allCats').innerHTML=categories.map((c,i)=>make(c,i,true)).join('');$$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang])})}
-function providerMatchesIsland(p){return Array.isArray(p.service_islands)?p.service_islands.includes(island):p.base_island===island}
+const serviceGroups=[
+ {code:'repairs',pt:'Obras & Reparações',en:'Repairs & Maintenance',icon:'wrench'},
+ {code:'garden',pt:'Jardim & Exterior',en:'Garden & Outdoor',icon:'leaf'},
+ {code:'home',pt:'Casa & Alojamento',en:'Home & Accommodation',icon:'house'},
+ {code:'personal',pt:'Serviços Pessoais',en:'Personal Services',icon:'grad'}
+];
+let activeSearchQuery='',activeServiceGroup=null,searchSerial=0;
+function renderCats(){
+ const groupHtml=serviceGroups.map((g,i)=>`<button class="category c${i}" data-group="${g.code}">${icons[g.icon]}<small>${lang==='pt'?g.pt:g.en}</small></button>`).join('');
+ const allHtml=categories.map((cat,i)=>`<button class="category c${i}" data-cat="${i}">${icons[cat.icon]}<small>${cat[lang]}</small></button>`).join('');
+ $('#homeCats').innerHTML=groupHtml;$('#allCats').innerHTML=allHtml;
+ $('[data-group]').forEach(b=>b.onclick=()=>{closeSheets();runSearch('',b.dataset.group)});
+ $('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang],null)});
+}
 let TRIANGULO_SERVICE_FEE_RATE=.12;
 async function loadAppConfig(){
  try{
@@ -843,63 +855,63 @@ function providerFeePrice(p){if(p.pricing_type==='quote'||p.price==null)return '
 function providerPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang==='pt'?'Sob orçamento':'Quote';return formatProviderMoney(p,Number(p.price)*(1+TRIANGULO_SERVICE_FEE_RATE))}
 function providerCategoryLabels(p){return (p.categories||[]).map(code=>{if(code==='other'&&p.other_service)return p.other_service;const i=CATEGORY_CODES.indexOf(code),c=categories[i];return c?(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en)):code}).slice(0,3)}
 function renderProviders(){}
-async function loadProviders(){
- providersLoading=true;providersLoadError=false;updateResults($('#resultsInput')?.value||'');
+async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
+ const serial=++searchSerial;providersLoading=true;providersLoadError=false;activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;updateResults(activeSearchQuery);
  try{
-  const res=await db.from('providers').select('id,name,business_name,base_island,service_islands,categories,other_service,description,pricing_type,price,availability,photo_data,approved_at').order('approved_at',{ascending:false});
-  if(res.error)throw res.error;
-  realProviders=res.data||[];
+  const {data,error}=await db.rpc('search_services',{p_island:island,p_query:activeSearchQuery,p_group:activeServiceGroup});
+  if(error)throw error;if(serial!==searchSerial)return;
+  realProviders=(data||[]).map(s=>({
+    id:s.service_id,service_id:s.service_id,provider_id:s.provider_id,
+    title:s.service_title,description:s.service_description,category_code:s.category_code,
+    pricing_type:s.pricing_type,price:s.price,availability:s.availability,
+    name:s.provider_name,business_name:s.business_name,service_islands:s.service_islands||[],
+    photo_data:s.photo_data,completed_jobs:Number(s.completed_jobs||0),response_rate:Number(s.response_rate||0),
+    rank_score:Number(s.rank_score||0)
+  }));
  }catch(e){
-  console.error('loadProviders',e);realProviders=[];providersLoadError=true;
+  console.error('loadServices',e);if(serial!==searchSerial)return;realProviders=[];providersLoadError=true;
  }finally{
-  providersLoading=false;updateResults($('#resultsInput')?.value||'');
+  if(serial!==searchSerial)return;providersLoading=false;updateResults(activeSearchQuery);
  }
 }
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function containsDirectContactText(v){const s=String(v||'');return /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/i.test(s)||/(https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/)/i.test(s)||/(\+?\d[ .()\/-]*){9,}/.test(s)}
-function safeProviderPhoto(v){const s=String(v||'');return /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(s)?s:'/logo.svg'}
-function categoryFor(q){q=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');return categories.findIndex(c=>c.keys.some(k=>q.includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,''))))}
-function runSearch(q){q=(q||'').trim();$('#resultsInput').value=q;showScreen('explore');updateResults(q)}
-function updateResults(q){
+function safeProviderPhoto(v){const s=String(v||'');return /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(s)?s:'/logo.svg'}
+function groupLabel(code){const g=serviceGroups.find(x=>x.code===code);return g?(lang==='pt'?g.pt:g.en):''}
+function runSearch(q,group=null){
+ activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;$('#resultsInput').value=activeSearchQuery;
+ showScreen('explore');loadProviders(activeSearchQuery,activeServiceGroup);
+}
+function updateResults(q=activeSearchQuery){
  q=(q||'').trim();
+ const heading=q?(lang==='pt'?'Serviços para “'+q+'”':'Services for “'+q+'”'):(activeServiceGroup?groupLabel(activeServiceGroup):(lang==='pt'?'Serviços em '+island:'Services on '+island));
+ $('#resultsTitle').textContent=heading;
  if(providersLoading){
-  $('#resultsTitle').textContent=q?(lang==='pt'?'Resultados para “'+q+'”':'Results for “'+q+'”'):(lang==='pt'?'Profissionais em '+island:'Providers in '+island);
-  $('#resultsCount').textContent=lang==='pt'?'A carregar profissionais…':'Loading providers…';
-  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'A procurar profissionais…':'Finding providers…')+'</b><span>'+(lang==='pt'?'Só demora um instante.':'This should only take a moment.')+'</span></div>';
-  return;
+  $('#resultsCount').textContent=lang==='pt'?'A procurar serviços…':'Finding services…';
+  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'A procurar serviços locais…':'Finding local services…')+'</b><span>'+(lang==='pt'?'Só demora um instante.':'This should only take a moment.')+'</span></div>';return;
  }
  if(providersLoadError){
-  $('#resultsTitle').textContent=lang==='pt'?'Profissionais em '+island:'Providers in '+island;
   $('#resultsCount').textContent='';
-  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Não foi possível carregar os profissionais.':'Could not load providers.')+'</b><span>'+(lang==='pt'?'Verifica a ligação e tenta novamente.':'Check your connection and try again.')+'</span><br><button class="primary" type="button" id="retryProviders">'+(lang==='pt'?'Tentar novamente':'Try again')+'</button></div>';
-  const retry=$('#retryProviders');if(retry)retry.onclick=loadProviders;
-  return;
+  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Não foi possível carregar os serviços.':'Could not load services.')+'</b><span>'+(lang==='pt'?'Verifica a ligação e tenta novamente.':'Check your connection and try again.')+'</span><br><button class="primary" type="button" id="retryProviders">'+(lang==='pt'?'Tentar novamente':'Try again')+'</button></div>';
+  const retry=$('#retryProviders');if(retry)retry.onclick=()=>loadProviders(activeSearchQuery,activeServiceGroup);return;
  }
- const ci=categoryFor(q),code=ci>=0?CATEGORY_CODES[ci]:null;
- let list=realProviders.filter(providerMatchesIsland);
- if(code)list=list.filter(p=>(p.categories||[]).includes(code));
- else{
-  const nq=q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  if(nq)list=list.filter(p=>[p.name,p.business_name,p.description,p.other_service,p.availability].some(v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(nq)));
- }
- list=list.sort((a,b)=>new Date(b.approved_at||0)-new Date(a.approved_at||0));
- const qLabel=q;
- $('#resultsTitle').textContent=qLabel?(lang==='pt'?'Resultados para “'+qLabel+'”':'Results for “'+qLabel+'”'):(lang==='pt'?'Profissionais em '+island:'Providers in '+island);
- $('#resultsCount').textContent=lang==='pt'?(list.length+' profissional'+(list.length===1?' encontrado':' encontrados')):(list.length+' provider'+(list.length===1?' found':'s found'));
+ const list=realProviders;
+ $('#resultsCount').textContent=lang==='pt'?(list.length+' serviço'+(list.length===1?' encontrado':'s encontrados')):(list.length+' service'+(list.length===1?' found':'s found'));
  if(!list.length){
-  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há prestadores nesta pesquisa.':'No providers for this search yet.')+'</b><span>'+(lang==='pt'?'Publica o que precisas e procuramos alguém para ti.':'Post what you need and we’ll try to find someone for you.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Publicar pedido':'Post request')+'</button></div>';
-  const ep=$('#emptyPost');if(ep)ep.onclick=openRequest;return;
+  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há um serviço direto para esta pesquisa.':'No direct service matches this search yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente prestadores compatíveis.':'Tell us what you need and we’ll automatically look for matching providers.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
+  const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
- $('#resultsList').innerHTML=list.map(p=>{
-  const tags=providerCategoryLabels(p),photo=safeProviderPhoto(p.photo_data),displayName=escapeHtml(p.business_name||p.name);
-  return '<div class="result-card" role="button" tabindex="0" data-provider="'+p.id+'"><img src="'+photo+'" alt="'+displayName+'"><div><b>'+displayName+'</b><div class="desc">'+escapeHtml(p.description||'')+'</div><div class="loc">📍 '+escapeHtml((p.service_islands&&p.service_islands.length?p.service_islands:[p.base_island]).filter(Boolean).join(' · '))+'</div><div class="provider-price">'+providerPrice(p)+'</div><div class="provider-price-note">'+(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee')+'</div><div class="provider-tags">'+tags.map(t=>'<span class="provider-tag">'+escapeHtml(t)+'</span>').join('')+'</div>' +'</div></div>';
+ $('#resultsList').innerHTML=list.map(s=>{
+  const photo=safeProviderPhoto(s.photo_data),provider=escapeHtml(s.business_name||s.name),title=escapeHtml(s.title||'Serviço');
+  const proof=s.completed_jobs>0?'<span class="provider-tag">'+s.completed_jobs+' '+(lang==='pt'?'concluído'+(s.completed_jobs===1?'':'s'):'completed')+'</span>':'<span class="provider-tag">'+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
+  return '<div class="result-card" role="button" tabindex="0" data-service="'+s.service_id+'"><img src="'+photo+'" alt="'+provider+'"><div><b>'+title+'</b><div class="loc">'+(lang==='pt'?'por ':'by ')+provider+' · 📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee')+'</div><div class="provider-tags">'+proof+'</div></div></div>';
  }).join('');
  bindProvider();
 }
-function bindProvider(){$$('[data-provider]').forEach(b=>{b.onclick=()=>openBooking(b.dataset.provider);b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(b.dataset.provider)}}})}
+function bindProvider(){$('[data-service]').forEach(b=>{b.onclick=()=>openBooking(b.dataset.service);b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(b.dataset.service)}}})}
 function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));window.scrollTo({top:0,behavior:'auto'})}
 $$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));
-function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v4','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();updateResults($('#resultsInput').value||'')}
+function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v4','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();loadProviders(activeSearchQuery,activeServiceGroup)}
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){
  $('#islandPill span').textContent=island;
  const p2=$('#profileIsland2');if(p2)p2.textContent=island;
@@ -914,9 +926,9 @@ $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));func
  }
 }
 function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
-$('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
-$('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};$('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')updateResults(e.target.value)};
-$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const helpNav=$('#helpNav');if(helpNav)helpNav.onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';updateResults('');$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
+$('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
+$('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};$('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
+$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const helpNav=$('#helpNav');if(helpNav)helpNav.onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
 function openRequest(){const f=$('#requestForm'),today=localDateISO();f.date.value=today;f.date.min=today;openSheet('requestSheet')}
 $('#requestForm').onsubmit=async e=>{
  e.preventDefault();
