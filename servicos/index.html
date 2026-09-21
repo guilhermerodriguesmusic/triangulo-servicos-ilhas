@@ -721,6 +721,15 @@
   font-size:11px;
   line-height:1.4;
 }
+.real-empty-no-results .empty-provider-cta{
+  display:inline-block;
+  margin-top:7px;
+  color:#0a6f59;
+  font-size:10.5px;
+  font-weight:850;
+  text-decoration:none;
+}
+.real-empty-no-results .empty-provider-cta:hover{text-decoration:underline;text-underline-offset:3px}
 .real-empty-no-results .primary{
   margin:0;
   white-space:nowrap;
@@ -965,7 +974,7 @@
         <div class="pa-quick">
           <small data-pt="Disponibilidade" data-en="Availability">Disponibilidade</small>
           <strong id="paQuickAvailability">—</strong>
-          <span id="paFounderCredit"></span>
+          <span id="paAvailabilityHint"></span>
           <button id="paQuickAvailabilityBtn" type="button" data-pt="Alterar disponibilidade →" data-en="Change availability →">Alterar disponibilidade →</button>
         </div>
       </div>
@@ -1258,7 +1267,7 @@ function updateResults(q=activeSearchQuery){
  }
  $('#resultsCount').textContent=list.length?(lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' disponível'+(list.length===1?'':'is')):(list.length+' provider'+(list.length===1?'':'s')+' available')):(lang==='pt'?('Nenhum prestador encontrado '+(island==='Pico'?'no Pico':island==='Faial'?'no Faial':'em São Jorge')):('No providers found on '+island));
  if(!list.length){
-  $('#resultsList').innerHTML='<div class="real-empty real-empty-no-results"><div class="empty-state-icon" aria-hidden="true">⌕</div><div class="empty-state-copy"><b>'+(lang==='pt'?'Ainda não encontrámos um prestador direto.':'We haven’t found a direct provider yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente alguém compatível.':'Tell us what you need and we’ll automatically look for someone suitable.')+'</span></div><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
+  $('#resultsList').innerHTML='<div class="real-empty real-empty-no-results"><div class="empty-state-icon" aria-hidden="true">⌕</div><div class="empty-state-copy"><b>'+(lang==='pt'?'Ainda não encontrámos um prestador direto.':'We haven’t found a direct provider yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente alguém compatível.':'Tell us what you need and we’ll automatically look for someone suitable.')+'</span><a class="empty-provider-cta" href="/prestadores.html">'+(lang==='pt'?'Prestas este serviço? Junta-te ao TRIÂNGULO →':'Do you offer this service? Join TRIÂNGULO →')+'</a></div><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
   const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
  $('#resultsList').innerHTML=list.map(s=>{
@@ -1546,8 +1555,8 @@ function renderProviderDashboard(data){
   const priced=activeServices.filter(x=>x.pricing_type!=='quote'&&x.price!=null).sort((a,b)=>Number(a.price)-Number(b.price))[0];
   $('#paQuickClientPrice').textContent=priced?((lang==='pt'?'Desde ':'From ')+providerPrice(priced)):(lang==='pt'?'Preços por serviço':'Prices per service');
   $('#paQuickAvailability').textContent=p.availability|| (lang==='pt'?'Não indicada':'Not set');
-  const fc=Number(data.founder_credit_cents||0),fcEl=$('#paFounderCredit');
-  fcEl.textContent=fc>0?(lang==='pt'?'Crédito Fundador disponível · €'+(fc/100).toFixed(2):'Founding Credit available · €'+(fc/100).toFixed(2)):(lang==='pt'?'Podes alterar quando quiseres.':'You can change this anytime.');
+  const availabilityHint=$('#paAvailabilityHint');
+  availabilityHint.textContent=lang==='pt'?'Podes alterar quando quiseres.':'You can change this anytime.';
 
   const pay=data.payment_account||{},payBadge=$('#paPaymentsBadge'),payHelp=$('#paPaymentsHelp'),payBtn=$('#paPaymentsBtn');
   $('#paPaymentsCard').hidden=!paymentsLive;
