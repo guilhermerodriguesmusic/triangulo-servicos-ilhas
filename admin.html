@@ -43,7 +43,7 @@ async function approve(id,needsWhatsApp=false){
   let accessWin=null;
   if(needsWhatsApp){
     accessWin=window.open('about:blank','triangulo_provider_access');
-    if(accessWin){accessWin.document.title='TRIÂNGULO';accessWin.document.body.innerHTML='<p style="font-family:system-ui;padding:24px;color:#153458">A preparar acesso por WhatsApp…</p>'}
+    if(accessWin){accessWin.document.title='TRIÂNGULO';accessWin.document.body.innerHTML='<p style="font-family:system-ui;padding:24px;color:#153458">'+tr('A preparar acesso por WhatsApp…','Preparing WhatsApp access…')+'</p>'}
   }
   const r=await db.rpc('approve_provider_with_access',{application_id:id});
   if(r.error||!r.data||!r.data.ok){
