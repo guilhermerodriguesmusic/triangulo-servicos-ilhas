@@ -686,6 +686,86 @@
 }
 </style>
 
+
+<style id="results-empty-polish-v4">
+/* Compact, intentional no-results state. */
+.real-empty-no-results{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px;
+  text-align:left;
+  padding:16px 18px;
+  border-style:solid;
+  border-color:#dce8e3;
+  background:linear-gradient(135deg,#f8fbfa,#f3f8f5);
+}
+.real-empty-no-results .empty-state-icon{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#e5f2ea;
+  color:#39705a;
+  font-size:24px;
+  font-weight:800;
+}
+.real-empty-no-results .empty-state-copy{min-width:0}
+.real-empty-no-results .empty-state-copy b{
+  margin:0 0 3px;
+  font-size:13px;
+}
+.real-empty-no-results .empty-state-copy span{
+  display:block;
+  font-size:11px;
+  line-height:1.4;
+}
+.real-empty-no-results .primary{
+  margin:0;
+  white-space:nowrap;
+  padding:10px 14px;
+}
+
+@media(min-width:760px){
+  /* Keep island + sort visually tied to the heading instead of the full canvas edges. */
+  body.results-mode .results-tools,
+  body.results-mode .result-title{
+    max-width:960px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  body.results-mode .results-tools{margin-bottom:12px}
+  body.results-mode .result-title{margin-top:0;margin-bottom:14px}
+
+  /* Empty searches should end naturally rather than leaving a tall blank panel. */
+  body.results-mode #explore:has(.real-empty-no-results){
+    padding-bottom:24px;
+  }
+  body.results-mode .real-empty-no-results{
+    max-width:960px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:18px 20px;
+  }
+}
+
+@media(max-width:620px){
+  .real-empty-no-results{
+    grid-template-columns:38px minmax(0,1fr);
+    gap:11px;
+  }
+  .real-empty-no-results .empty-state-icon{
+    width:38px;
+    height:38px;
+    font-size:22px;
+  }
+  .real-empty-no-results .primary{
+    grid-column:1/-1;
+    width:100%;
+  }
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -762,7 +842,7 @@
     <button class="result-filter active" type="button" data-results-group="" data-pt="Todos" data-en="All">Todos</button>
     <button class="result-filter" type="button" data-results-group="repairs" data-pt="Obras & Reparações" data-en="Repairs">Obras & Reparações</button>
     <button class="result-filter" type="button" data-results-group="garden" data-pt="Jardim & Exterior" data-en="Garden">Jardim & Exterior</button>
-    <button class="result-filter" type="button" data-results-group="home" data-pt="Casa & Alojamento" data-en="Home">Casa & Alojamento</button>
+    <button class="result-filter" type="button" data-results-group="home" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</button>
     <button class="result-filter" type="button" data-results-group="personal" data-pt="Serviços Pessoais" data-en="Personal">Serviços Pessoais</button>
    </div>
    <div class="results-tools"><button id="resultsIslandBtn" class="results-island" type="button">📍 Pico ▾</button><select id="resultsSort" class="results-sort" aria-label="Ordenar"><option value="relevance" data-pt="Mais relevantes" data-en="Most relevant">Mais relevantes</option><option value="price" data-pt="Preço mais baixo" data-en="Lowest price">Preço mais baixo</option><option value="completed" data-pt="Mais serviços concluídos" data-en="Most completed">Mais serviços concluídos</option></select></div>
@@ -1074,7 +1154,7 @@ $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_l
 const serviceGroups=[
  {code:'repairs',pt:'Obras & Reparações',en:'Repairs & Maintenance',icon:'wrench'},
  {code:'garden',pt:'Jardim & Exterior',en:'Garden & Outdoor',icon:'leaf'},
- {code:'home',pt:'Casa & Alojamento',en:'Home & Accommodation',icon:'house'},
+ {code:'home',pt:'Casa & Limpeza',en:'Home & Cleaning',icon:'house'},
  {code:'personal',pt:'Serviços Pessoais',en:'Personal Services',icon:'grad'}
 ];
 let activeSearchQuery='',activeServiceGroup=null,activeResultsSort='relevance',searchSerial=0;
@@ -1176,9 +1256,9 @@ function updateResults(q=activeSearchQuery){
  }else if(activeResultsSort==='completed'){
    list=[...list].sort((a,b)=>Number(b.completed_jobs||0)-Number(a.completed_jobs||0)||Number(b.rank_score||0)-Number(a.rank_score||0));
  }
- $('#resultsCount').textContent=lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' disponível'+(list.length===1?'':'is')):(list.length+' provider'+(list.length===1?'':'s')+' available');
+ $('#resultsCount').textContent=list.length?(lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' disponível'+(list.length===1?'':'is')):(list.length+' provider'+(list.length===1?'':'s')+' available')):(lang==='pt'?('Nenhum prestador encontrado '+(island==='Pico'?'no Pico':island==='Faial'?'no Faial':'em São Jorge')):('No providers found on '+island));
  if(!list.length){
-  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há um prestador direto para esta pesquisa.':'No direct provider matches this search yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente alguém compatível.':'Tell us what you need and we’ll automatically look for someone suitable.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
+  $('#resultsList').innerHTML='<div class="real-empty real-empty-no-results"><div class="empty-state-icon" aria-hidden="true">⌕</div><div class="empty-state-copy"><b>'+(lang==='pt'?'Ainda não encontrámos um prestador direto.':'We haven’t found a direct provider yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente alguém compatível.':'Tell us what you need and we’ll automatically look for someone suitable.')+'</span></div><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
   const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
  $('#resultsList').innerHTML=list.map(s=>{
