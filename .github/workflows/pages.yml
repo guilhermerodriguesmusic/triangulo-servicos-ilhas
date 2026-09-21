@@ -216,8 +216,8 @@ jobs:
           fetch "$base/assets/pico-hero-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/faial-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/sao-jorge-real.jpg?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icons/triangulo-blue-192.png?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icons/triangulo-blue-512.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icons/icon-192.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icons/icon-512.png?verify=$GITHUB_SHA" >/dev/null
 
           if curl --fail --silent --location "$base/checkout-teste-20260920.html?verify=$GITHUB_SHA" >/dev/null 2>&1; then
             echo "Temporary checkout test page is still publicly reachable"
