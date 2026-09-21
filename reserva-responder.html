@@ -7,12 +7,13 @@
 <meta name="theme-color" content="#123a68">
 <title>Responder ao pedido — TRIÂNGULO</title>
 <link rel="canonical" href="https://trianguloacores.pt/servicos/">
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/logo-v2.svg">
 <script>
 (function(){
   const qs=new URLSearchParams(location.search);
   const token=qs.get('token')||qs.get('booking_token');
-  const lang=(qs.get('lang')==='en'||localStorage.getItem('tri_lang')==='en')?'en':'pt';
+  let savedLang='';try{savedLang=localStorage.getItem('tri_lang')||''}catch(e){}
+  const lang=(qs.get('lang')==='en'||savedLang==='en')?'en':'pt';
   const p=new URLSearchParams();if(token)p.set('booking_token',token);if(lang==='en')p.set('lang','en');
   const target='/servicos/'+(p.toString()?'?'+p.toString():'');
   location.replace(target);
@@ -23,13 +24,13 @@
 </style>
 </head>
 <body>
-<div class="card">
+<main class="card" id="main-content">
 <img src="/logo-v2.svg" alt="TRIÂNGULO Açores">
 <p id="opening">A abrir o teu pedido no TRIÂNGULO…</p>
 <a id="fallback" href="/servicos/">Continuar</a>
-</div>
+</main>
 <script>
-const q=new URLSearchParams(location.search),t=q.get('token')||q.get('booking_token'),lang=(q.get('lang')==='en'||localStorage.getItem('tri_lang')==='en')?'en':'pt';
+const q=new URLSearchParams(location.search),t=q.get('token')||q.get('booking_token');let savedLang2='';try{savedLang2=localStorage.getItem('tri_lang')||''}catch(e){}const lang=(q.get('lang')==='en'||savedLang2==='en')?'en':'pt';
 document.documentElement.lang=lang;document.title=lang==='en'?'Open request — TRIÂNGULO':'Responder ao pedido — TRIÂNGULO';
 document.getElementById('opening').textContent=lang==='en'?'Opening your TRIÂNGULO request…':'A abrir o teu pedido no TRIÂNGULO…';
 document.getElementById('fallback').textContent=lang==='en'?'Continue':'Continuar';
