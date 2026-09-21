@@ -639,10 +639,10 @@
           <button id="paQuickRequestsBtn" type="button" data-pt="Ver pedidos ↓" data-en="View requests ↓">Ver pedidos ↓</button>
         </div>
         <div class="pa-quick">
-          <small data-pt="Tu recebes" data-en="You receive">Tu recebes</small>
+          <small data-pt="Serviços" data-en="Services">Serviços</small>
           <strong id="paQuickPrice">—</strong>
           <span id="paQuickClientPrice">—</span>
-          <button id="paQuickPriceBtn" type="button" data-pt="Alterar preço →" data-en="Change price →">Alterar preço →</button>
+          <button id="paQuickPriceBtn" type="button" data-pt="Gerir serviços →" data-en="Manage services →">Gerir serviços →</button>
         </div>
         <div class="pa-quick">
           <small data-pt="Disponibilidade" data-en="Availability">Disponibilidade</small>
@@ -650,6 +650,20 @@
           <span id="paFounderCredit"></span>
           <button id="paQuickAvailabilityBtn" type="button" data-pt="Alterar disponibilidade →" data-en="Change availability →">Alterar disponibilidade →</button>
         </div>
+      </div>
+
+      <div id="paServicesCard" class="pa-card">
+        <div class="pa-card-head"><div><h2 data-pt="Os teus serviços" data-en="Your services">Os teus serviços</h2><p data-pt="Cada serviço pode ter preço e disponibilidade próprios." data-en="Each service can have its own price and availability.">Cada serviço pode ter preço e disponibilidade próprios.</p></div><button id="paAddServiceBtn" class="pa-outline" type="button" data-pt="+ Adicionar" data-en="+ Add">+ Adicionar</button></div>
+        <div id="paServicesList" class="pa-bookings"></div>
+        <form id="paServiceForm" class="pa-card" style="display:none;margin-top:10px;background:#f8fbf9">
+          <input type="hidden" name="service_id">
+          <div class="pa-grid2"><label class="pa-field"><span data-pt="Nome do serviço" data-en="Service name">Nome do serviço</span><input name="title" required maxlength="120" placeholder="Ex.: Limpeza de casas"></label><label class="pa-field"><span data-pt="Categoria" data-en="Category">Categoria</span><select name="category_code" required><option value="home">Casa & Limpeza</option><option value="garden">Jardim & Terrenos</option><option value="repairs">Reparações & Manutenção</option><option value="moving">Mudanças & Entregas</option><option value="lessons">Aulas & Explicações</option><option value="wellness">Bem-estar</option><option value="tech">Tecnologia</option><option value="creative">Fotografia & Criativos</option><option value="pets">Animais</option><option value="other">Outro</option></select></label></div>
+          <label class="pa-field"><span data-pt="Descrição" data-en="Description">Descrição</span><textarea name="description" maxlength="1200"></textarea></label>
+          <div class="pa-grid2"><label class="pa-field"><span data-pt="Como cobras?" data-en="Pricing">Como cobras?</span><select name="pricing_type"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote">Sob orçamento</option></select></label><label class="pa-field"><span data-pt="Quanto queres receber (€)" data-en="Amount you want to earn (€)">Quanto queres receber (€)</span><input name="price" type="number" min="0.01" step="0.01" inputmode="decimal"></label></div>
+          <label class="pa-field"><span data-pt="Disponibilidade deste serviço" data-en="Availability for this service">Disponibilidade deste serviço</span><input name="availability" maxlength="500" placeholder="Ex.: Seg–Sex, 09:00–18:00"></label>
+          <div class="pa-grid2"><button class="pa-primary" type="submit" data-pt="Guardar serviço" data-en="Save service">Guardar serviço</button><button id="paCancelServiceBtn" class="pa-outline" type="button" data-pt="Cancelar" data-en="Cancel">Cancelar</button></div>
+          <div id="paServiceStatus" class="pa-feedback"></div>
+        </form>
       </div>
 
       <div id="paPaymentsCard" class="pa-card" hidden>
@@ -1154,10 +1168,10 @@ async function loadProviderAccount(){
   paShow('paDashboard');
 }
 function renderProviderDashboard(data){
-  const p=data.profile||{},bookings=data.bookings||[];
+  const p=data.profile||{},bookings=data.bookings||[],matches=data.matches||[],services=data.services||[],requests=[...bookings,...matches];
   $('#paDisplayName').textContent=p.business_name||p.name||'Prestador';
   $('#paAccountEmail').textContent=data.email||'';
-  const pending=bookings.filter(x=>x.status==='requested');
+  const pending=requests.filter(x=>x.status==='requested'||x.status==='sent');
   $('#paQuickStatus').textContent=p.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused');
   $('#paStatusHelp').textContent=p.status==='active'?(lang==='pt'?'Visível aos clientes.':'Visible to customers.'):(lang==='pt'?'Escondido dos clientes.':'Hidden from customers.');
   $('#paPauseBtn').textContent=p.status==='active'?(lang==='pt'?'Pausar':'Pause'):(lang==='pt'?'Reativar':'Reactivate');
@@ -1166,10 +1180,10 @@ function renderProviderDashboard(data){
   $('#paQuickNextRequest').textContent=nextPending
     ?((nextPending.service_date||'')+(nextPending.service_time?' · '+nextPending.service_time:''))
     :(lang==='pt'?'Sem pedidos pendentes.':'No pending requests.');
-  $('#paQuickPrice').textContent=p.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(p);
-  $('#paQuickClientPrice').textContent=p.pricing_type==='quote'
-    ?(lang==='pt'?'Defines o valor em cada pedido.':'You set the amount for each request.')
-    :((lang==='pt'?'Cliente vê ':'Customer sees ')+providerPrice(p));
+  const activeServices=services.filter(x=>x.status==='active');
+  $('#paQuickPrice').textContent=activeServices.length+' '+(lang==='pt'?(activeServices.length===1?'ativo':'ativos'):(activeServices.length===1?'active':'active'));
+  const priced=activeServices.filter(x=>x.pricing_type!=='quote'&&x.price!=null).sort((a,b)=>Number(a.price)-Number(b.price))[0];
+  $('#paQuickClientPrice').textContent=priced?((lang==='pt'?'Desde ':'From ')+providerPrice(priced)):(lang==='pt'?'Preços por serviço':'Prices per service');
   $('#paQuickAvailability').textContent=p.availability|| (lang==='pt'?'Não indicada':'Not set');
   const fc=Number(data.founder_credit_cents||0),fcEl=$('#paFounderCredit');
   fcEl.textContent=fc>0?(lang==='pt'?'Crédito Fundador disponível · €'+(fc/100).toFixed(2):'Founding Credit available · €'+(fc/100).toFixed(2)):(lang==='pt'?'Podes alterar quando quiseres.':'You can change this anytime.');
@@ -1216,44 +1230,60 @@ function renderProviderDashboard(data){
   $$('[data-pa-cat]').forEach(x=>x.checked=(p.categories||[]).includes(x.value));
   syncProviderOther();syncProviderPrice();
 
+  renderProviderServices(services);
   $('#paRequestCount').textContent=pending.length;
-  if(!bookings.length){
-    $('#paBookings').innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens pedidos. Quando um cliente te escolher, aparecem aqui.':'No requests yet. When a customer chooses you, they will appear here.')+'</div>';
+  if(!requests.length){
+    $('#paBookings').innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens pedidos. Quando houver um pedido compatível ou um cliente escolher um serviço teu, aparece aqui.':'No requests yet. Matching requests and direct service requests will appear here.')+'</div>';
   }else{
-    const orderedBookings=[...bookings].sort((a,b)=>{
-      const ar=a.status==='requested'?0:a.status==='confirmed'?1:2;
-      const br=b.status==='requested'?0:b.status==='confirmed'?1:2;
-      if(ar!==br)return ar-br;
-      return String(a.service_date||'').localeCompare(String(b.service_date||''));
+    const ordered=[...requests].sort((a,b)=>{
+      const ap=(a.status==='requested'||a.status==='sent')?0:(a.status==='confirmed'||a.status==='selected')?1:2;
+      const bp=(b.status==='requested'||b.status==='sent')?0:(b.status==='confirmed'||b.status==='selected')?1:2;
+      if(ap!==bp)return ap-bp;return String(a.service_date||'').localeCompare(String(b.service_date||''));
     });
-    $('#paBookings').innerHTML=orderedBookings.map(x=>{
+    $('#paBookings').innerHTML=ordered.map(x=>{
+      const generic=x.kind==='matching',isPending=generic?x.status==='sent':x.status==='requested';
       const when=escapeHtml((x.service_date||'')+(x.service_time?' · '+x.service_time:''));
-      const note=escapeHtml(x.notes|| (lang==='pt'?'Sem nota adicional':'No additional note'));
-      const actions=x.status==='requested'&&x.response_token?(x.requires_quote?'<div class="pa-booking-actions" style="grid-template-columns:1fr"><input data-pa-quote-amount="'+x.response_token+'" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="'+(lang==='pt'?'Valor que queres receber (€)':'Amount you want to receive (€)')+'" style="width:100%;border:1px solid #d5e3ea;border-radius:10px;padding:10px"><button class="accept" data-pa-quote="'+x.response_token+'">'+(lang==='pt'?'Enviar orçamento':'Send quote')+'</button><button class="decline" data-pa-respond="decline" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>':'<div class="pa-booking-actions"><button class="accept" data-pa-respond="accept" data-token="'+x.response_token+'">'+(lang==='pt'?'Aceitar':'Accept')+'</button><button class="decline" data-pa-respond="decline" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>'):'';
-      const client=x.payment_status==='paid'&&(x.client_name||x.client_email||x.client_phone)?'<div class="pa-client"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><br>'+escapeHtml(x.client_name||'')+(x.client_email?'<br>'+escapeHtml(x.client_email):'')+(x.client_phone?'<br>'+escapeHtml(x.client_phone):'')+'</div>':'';
-      const locked=x.status==='confirmed'&&x.payment_status!=='paid'?'<div class="pa-note" style="text-align:left">'+(paymentsLive?(lang==='pt'?'🔒 Contactos protegidos até o cliente concluir o pagamento integral no TRIÂNGULO.':'🔒 Contact details are protected until the customer completes full payment through TRIÂNGULO.'):(lang==='pt'?'🔒 Contactos protegidos. Os pagamentos ainda estão em preparação; avisaremos antes da ativação.':'🔒 Contact details are protected. Payments are still being prepared; we will notify you before activation.'))+'</div>':'';
-      return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.island||'TRIÂNGULO')+' · '+when+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(providerBookingStatus(x.status,x.payment_status))+'</span></div><small>'+note+'</small>'+actions+locked+client+'</div>';
+      const note=escapeHtml(x.description||x.notes||(lang==='pt'?'Sem nota adicional':'No additional note'));
+      let actions='';
+      if(isPending&&x.response_token){
+        if(x.requires_quote)actions='<div class="pa-booking-actions" style="grid-template-columns:1fr"><input data-pa-quote-amount="'+x.response_token+'" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="'+(lang==='pt'?'Valor que queres receber (€)':'Amount you want to receive (€)')+'" style="width:100%;border:1px solid #d5e3ea;border-radius:10px;padding:10px"><button class="accept" data-pa-quote="'+x.response_token+'" data-kind="'+(generic?'matching':'direct')+'">'+(lang==='pt'?'Enviar orçamento':'Send quote')+'</button><button class="decline" data-pa-respond="decline" data-kind="'+(generic?'matching':'direct')+'" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>';
+        else actions='<div class="pa-booking-actions"><button class="accept" data-pa-respond="accept" data-kind="'+(generic?'matching':'direct')+'" data-token="'+x.response_token+'">'+(lang==='pt'?'Tenho disponibilidade':'I’m available')+'</button><button class="decline" data-pa-respond="decline" data-kind="'+(generic?'matching':'direct')+'" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>';
+      }
+      const hasClient=x.client_name||x.client_email||x.client_phone;
+      const client=hasClient?'<div class="pa-client"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><br>'+escapeHtml(x.client_name||'')+(x.client_email?'<br>'+escapeHtml(x.client_email):'')+(x.client_phone?'<br>'+escapeHtml(x.client_phone):'')+'</div>':'';
+      let stateLabel;
+      if(generic){const pt={sent:'Novo pedido compatível',accepted:'Disponível · aguarda cliente',quoted:'Orçamento enviado · aguarda cliente',selected:'Serviço confirmado',declined:'Recusado'};const en={sent:'New matching request',accepted:'Available · awaiting customer',quoted:'Quote sent · awaiting customer',selected:'Service confirmed',declined:'Declined'};stateLabel=(lang==='pt'?pt:en)[x.status]||x.status}
+      else stateLabel=providerBookingStatus(x.status,x.payment_status);
+      const locked=!hasClient&&(x.status==='confirmed'||x.status==='accepted'||x.status==='quoted')?'<div class="pa-note" style="text-align:left">'+(lang==='pt'?'🔒 O contacto é libertado quando o serviço fica confirmado.':'🔒 Contact is released when the service is confirmed.')+'</div>':'';
+      return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.service_title||'Serviço')+(when?' · '+when:'')+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(stateLabel)+'</span></div><small>📍 '+escapeHtml(x.island||'')+(x.location_text?' · '+escapeHtml(x.location_text):'')+'</small><small>'+note+'</small>'+actions+locked+client+'</div>';
     }).join('');
-    $('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
-      const token=btn.dataset.paQuote,input=$('[data-pa-quote-amount="'+token+'"]'),amount=Number(input&&input.value);
+
+    $$('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
+      const token=btn.dataset.paQuote,input=$('[data-pa-quote-amount="'+token+'"]'),amount=Number(input&&input.value),generic=btn.dataset.kind==='matching';
       if(!amount||amount<=0){toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
       btn.disabled=true;
-      const {data:r,error}=await db.rpc('submit_booking_quote',{p_token:token,p_amount:amount});
-      btn.disabled=false;
+      const response=generic?await db.rpc('respond_service_request_match',{p_token:token,p_action:'accept',p_amount:amount}):await db.rpc('submit_booking_quote',{p_token:token,p_amount:amount});
+      btn.disabled=false;const r=response.data,error=response.error;
       if(error||!r||!r.ok){toast((r&&r.message)||(lang==='pt'?'Não foi possível enviar o orçamento.':'Could not send the quote.'));return}
-      toast(lang==='pt'?'Orçamento enviado ✓':'Quote sent ✓');
-      await loadProviderAccount();
+      toast(lang==='pt'?'Orçamento enviado ✓':'Quote sent ✓');await loadProviderAccount();
     });
-    $('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
-      btn.disabled=true;
-      const {data:r,error}=await db.rpc('respond_to_booking',{p_token:btn.dataset.token,p_action:btn.dataset.paRespond});
-      if(error||!r||!r.ok){toast(lang==='pt'?'Não foi possível responder.':'Could not respond.');btn.disabled=false;return}
-      toast(lang==='pt'?'Resposta registada ✓':'Response saved ✓');
-      await loadProviderAccount();
+    $$('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
+      btn.disabled=true;const generic=btn.dataset.kind==='matching';
+      const response=generic?await db.rpc('respond_service_request_match',{p_token:btn.dataset.token,p_action:btn.dataset.paRespond,p_amount:null}):await db.rpc('respond_to_booking',{p_token:btn.dataset.token,p_action:btn.dataset.paRespond});
+      const r=response.data,error=response.error;btn.disabled=false;
+      if(error||!r||!r.ok){toast((r&&r.message)||(lang==='pt'?'Não foi possível responder.':'Could not respond.'));return}
+      toast(lang==='pt'?'Resposta registada ✓':'Response saved ✓');await loadProviderAccount();
     });
   }
 }
-function syncProviderOther(){
+function renderProviderServices(services){
+ const box=$('#paServicesList');if(!box)return;
+ if(!services.length){box.innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens serviços individuais. Adiciona o primeiro.':'You do not have individual services yet. Add the first one.')+'</div>';return}
+ box.innerHTML=services.map(s=>'<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(s.title)+'</b><span class="pa-booking-status '+escapeHtml(s.status)+'">'+(s.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused'))+'</span></div><small>'+escapeHtml(s.category_code)+' · '+escapeHtml(s.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(s))+'</small><div class="pa-booking-actions"><button class="accept" data-edit-service="'+s.id+'">'+(lang==='pt'?'Editar':'Edit')+'</button><button class="decline" data-pause-service="'+s.id+'">'+(lang==='pt'?'Pausar':'Pause')+'</button></div></div>').join('');
+ $$('[data-edit-service]').forEach(btn=>btn.onclick=()=>openServiceEditor(btn.dataset.editService));
+ $$('[data-pause-service]').forEach(btn=>btn.onclick=()=>pauseProviderService(btn.dataset.pauseService));
+}
+function syncProviderOther(){function syncProviderOther(){
   const on=$('#paOtherCat')&&$('#paOtherCat').checked;
   $('#paOtherService').hidden=!on;
   $('#paOtherService').required=!!on;
