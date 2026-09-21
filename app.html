@@ -1314,7 +1314,7 @@ async function pauseProviderService(id){
  if(error||!data||!data.ok){toast((data&&data.message)||(lang==='pt'?'Não foi possível pausar.':'Could not pause.'));return}
  toast(lang==='pt'?'Serviço pausado ✓':'Service paused ✓');await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
 }
-function syncProviderOther(){function syncProviderOther(){
+function syncProviderOther(){
   const on=$('#paOtherCat')&&$('#paOtherCat').checked;
   $('#paOtherService').hidden=!on;
   $('#paOtherService').required=!!on;
