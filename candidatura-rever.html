@@ -29,7 +29,7 @@
   <h1 id="title" data-pt="Rever candidatura" data-en="Review application">Rever candidatura</h1>
   <div class="details">
     <div class="row"><b data-pt="Nome" data-en="Name">Nome</b><span id="name"></span></div>
-    <div class="row"><b data-pt="Negócio" data-en="Business">Negócio</b><span id="business"></span></div><div class="row"><b data-pt="NIF / NIPC" data-en="Tax ID (NIF/NIPC)">NIF / NIPC</b><span id="taxId"></span></div><div class="row"><b>Email</b><span><span id="emailValue"></span><span class="verify-inline" style="margin-top:5px"><span id="emailVerifyStatus"></span><button id="emailVerifyBtn" type="button"></button></span></span></div><div class="row"><b data-pt="Telefone / WhatsApp" data-en="Phone / WhatsApp">Telefone / WhatsApp</b><span><span id="phoneValue"></span><span class="verify-inline" style="margin-top:5px"><span id="phoneVerifyStatus"></span><button id="phoneVerifyBtn" type="button"></button></span></span></div>
+    <div class="row"><b data-pt="Negócio" data-en="Business">Negócio</b><span id="business"></span></div><div class="row"><b data-pt="NIF / NIPC" data-en="Tax ID (NIF/NIPC)">NIF / NIPC</b><span id="taxId"></span></div><div class="row" id="emailReviewRow"><b>Email</b><span><span id="emailValue"></span><span class="verify-inline" id="emailVerifyWrap" style="margin-top:5px"><span id="emailVerifyStatus"></span><button id="emailVerifyBtn" type="button"></button></span></span></div><div class="row"><b data-pt="Telefone / WhatsApp" data-en="Phone / WhatsApp">Telefone / WhatsApp</b><span><span id="phoneValue"></span><span class="verify-inline" style="margin-top:5px"><span id="phoneVerifyStatus"></span><button id="phoneVerifyBtn" type="button"></button></span></span></div>
     <div class="row"><b data-pt="Trabalha em" data-en="Works in">Trabalha em</b><span id="islands"></span></div>
     <div class="row"><b data-pt="Categoria principal" data-en="Main category">Categoria principal</b><span id="primaryCategory"></span></div><div class="row"><b data-pt="Categorias" data-en="Categories">Categorias</b><span id="categories"></span></div>
     <div class="row" id="otherRow" hidden><b data-pt="Outro serviço" data-en="Other service">Outro serviço</b><span id="otherService"></span></div>
@@ -92,7 +92,7 @@ async function load(){
     const m=map[data.state]||[tr('Candidatura processada','Application processed'),tr('Esta candidatura já não está pendente.','This application is no longer pending.')];showMessage(m[0],m[1]);return
   }
   $('#loading').hidden=true;$('#review').hidden=false;
-  currentApplicationId=data.application_id||null;$('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#taxId').textContent=data.tax_id||'—';$('#emailValue').textContent=data.email||'—';$('#phoneValue').textContent=data.phone||'—';renderVerify('email',data.email_verification_status);renderVerify('phone',data.phone_verification_status);
+  currentApplicationId=data.application_id||null;$('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#taxId').textContent=data.tax_id||'—';$('#emailValue').textContent=data.email||tr('Não indicado','Not provided');$('#phoneValue').textContent=data.phone||'—';$('#emailVerifyWrap').style.display=data.email?'':'none';if(data.email)renderVerify('email',data.email_verification_status);renderVerify('phone',data.phone_verification_status);
   $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#primaryCategory').textContent=CAT[data.primary_category]?.[lang]||data.primary_category||'—';$('#categories').textContent=(data.categories||[]).map(x=>CAT[x]?.[lang]||x).join(', ')||'—';if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
   $('#price').textContent=fmtPrice(data);$('#availability').textContent=data.availability||'—';$('#website').textContent=data.website||'—';
   $('#referred').textContent=data.referred_by||'—';$('#description').textContent=data.description||'—';
@@ -107,7 +107,13 @@ async function act(action){
   $('#approve').disabled=true;$('#reject').disabled=true;
   const {data,error}=await db.rpc('respond_to_provider_application',{p_token:token,p_action:action,p_note:$('#note').value.trim()||null});
   if(error||!data||!data.ok){showMessage(tr('Não foi possível','Could not complete'),tr('Tenta novamente.','Please try again.'));return}
-  if(data.state==='approved')showMessage(tr('Candidatura aprovada','Application approved'),tr('O prestador já ficou ativo no TRIÂNGULO.','The provider is now active on TRIÂNGULO.'));
+  if(data.state==='approved'){
+    showMessage(tr('Candidatura aprovada','Application approved'),data.setup_channel==='whatsapp'?tr('O prestador já ficou ativo. Falta enviar a ligação de acesso por WhatsApp.','The provider is now active. Send the access link by WhatsApp.'):tr('O prestador já ficou ativo no TRIÂNGULO e recebeu a ligação de acesso por email.','The provider is now active on TRIÂNGULO and received the access link by email.'));
+    if(data.setup_channel==='whatsapp'&&data.setup_phone&&data.setup_message){
+      const digits=String(data.setup_phone).replace(/\D/g,'').replace(/^00/,'');
+      const a=document.createElement('a');a.className='btn yes';a.style.display='inline-block';a.style.marginTop='14px';a.target='_blank';a.rel='noopener';a.href='https://wa.me/'+digits+'?text='+encodeURIComponent(data.setup_message);a.textContent=tr('Enviar acesso por WhatsApp →','Send access by WhatsApp →');$('#message').appendChild(a);
+    }
+  }
   else if(data.state==='rejected')showMessage(tr('Candidatura recusada','Application rejected'),tr('A candidatura ficou marcada como recusada.','The application has been marked as rejected.'));
   else if(data.state==='expired')showMessage(tr('Link expirado','Link expired'),tr('Este link de revisão expirou.','This review link has expired.'));
   else showMessage(tr('Candidatura processada','Application processed'),tr('Esta candidatura já tinha sido processada.','This application had already been processed.'));
