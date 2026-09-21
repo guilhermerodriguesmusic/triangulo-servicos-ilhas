@@ -97,7 +97,7 @@ footer{border-top:1px solid #dbe5e2;padding:20px 0 26px;color:#718695;font-size:
 <section class="provider-hero">
   <header class="top">
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
-    <nav class="nav" aria-label="Principal">
+    <nav class="nav" aria-label="Principal" data-aria-pt="Principal" data-aria-en="Main navigation">
       <a href="/" data-pt="Início" data-en="Home">Início</a>
       <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
       <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
@@ -155,6 +155,7 @@ let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lan
 function setLang(v){
   lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;
   document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=v==='pt'?el.dataset.pt:el.dataset.en);
+  document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',v==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
   document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en');
   document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(v==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
   document.title=v==='pt'?'Para prestadores — TRIÂNGULO Açores':'For providers — TRIÂNGULO Azores';
