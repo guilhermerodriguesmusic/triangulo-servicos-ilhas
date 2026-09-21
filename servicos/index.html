@@ -1355,10 +1355,10 @@ function openSheet(id){
  requestAnimationFrame(()=>{const target=sheet.querySelector('textarea,input:not([type="hidden"]),select,button:not(.close)');if(target)target.focus({preventScroll:true})});
 }
 function closeSheets(){
- $('#backdrop').classList.remove('open');$('.sheet').forEach(s=>s.classList.remove('open'));document.body.classList.remove('sheet-open');
+ $('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'));document.body.classList.remove('sheet-open');
  if(sheetReturnFocus&&typeof sheetReturnFocus.focus==='function')sheetReturnFocus.focus({preventScroll:true});sheetReturnFocus=null;
 }
-$('#backdrop').onclick=closeSheets;$('.close').forEach(b=>b.onclick=closeSheets);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.sheet.open'))closeSheets()});
+$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.sheet.open'))closeSheets()});
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
 $('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};
 $$('[data-results-group]').forEach(b=>b.onclick=()=>runSearch(activeSearchQuery,b.dataset.resultsGroup||null));
