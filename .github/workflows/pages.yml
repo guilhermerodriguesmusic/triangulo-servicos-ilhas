@@ -117,6 +117,7 @@ jobs:
           application="$(fetch "$base/candidatura-prestador.html?verify=$GITHUB_SHA")"
           terms="$(fetch "$base/terms.html?verify=$GITHUB_SHA")"
           privacy="$(fetch "$base/privacy.html?verify=$GITHUB_SHA")"
+          how="$(fetch "$base/how-it-works.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/servicos/?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
@@ -124,9 +125,13 @@ jobs:
           sitemap="$(fetch "$base/sitemap.xml?verify=$GITHUB_SHA")"
 
           grep -q "TRIÂNGULO" <<<"$index"
-          grep -q "Prestador de Serviços Fundador" <<<"$providers"
+          grep -q "Casa & Limpeza" <<<"$index"
+          grep -q "Perfis revistos" <<<"$index"
+          grep -q "Prestar serviços no TRIÂNGULO" <<<"$providers"
+          grep -q "Quero prestar serviços" <<<"$providers"
           grep -q "Quanto queres receber" <<<"$application"
           grep -q "Telefone / WhatsApp" <<<"$application"
+          grep -q "Etapas da candidatura" <<<"$application"
           grep -q "booking_client_context" <<<"$app"
           grep -q "stripe-create-checkout" <<<"$app"
           grep -q "Ativar pagamentos" <<<"$app"
@@ -135,11 +140,18 @@ jobs:
           grep -q "Pagamentos em breve" <<<"$app"
           grep -q "Termos de Utilização" <<<"$terms"
           grep -q "Política de Privacidade" <<<"$privacy"
+          grep -q "pagamentos automáticos ainda não estão ativos" <<<"$how"
+          grep -q "Prestas este serviço? Junta-te ao TRIÂNGULO" <<<"$app"
           grep -q '"start_url": "/servicos/"' <<<"$manifest"
           grep -q '"display": "standalone"' <<<"$manifest"
           grep -q "triangulo-pwa-" <<<"$sw"
           grep -q "Sitemap: https://trianguloacores.pt/sitemap.xml" <<<"$robots"
           grep -q "https://trianguloacores.pt/prestadores.html" <<<"$sitemap"
+
+          if grep -Eqi "Fundador|Founding Service Provider|Founding Credit" <<<"$providers$application$terms$app"; then
+            echo "Obsolete founding-provider copy is still public"
+            exit 1
+          fi
 
           fetch "$base/assets/pico-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/pico-hero-real.jpg?verify=$GITHUB_SHA" >/dev/null
