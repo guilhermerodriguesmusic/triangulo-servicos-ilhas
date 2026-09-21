@@ -1,0 +1,32 @@
+name: Upload Pico HQ hero
+on:
+  push:
+    paths:
+      - '.github/workflows/upload-pico-hq.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download HQ Pico photo
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl --fail --location --retry 3 'https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-9c34-822f-a04a-016ddb397244/raw?se=2026-09-21T10%3A18%3A51Z&sp=r&sv=2026-02-06&sr=b&scid=398775c9-7f44-5e46-af14-4945eba0c1f5&skoid=1d6acb5b-b3f4-43ec-a5ec-b05c4a7708c8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-21T08%3A35%3A56Z&ske=2026-09-22T08%3A35%3A56Z&sks=b&skv=2026-02-06&sig=4u/ZOU5cvf/4o10ZrDMTDlmFjf9W3Jg%2BvQm2DRLQE3Q%3D' -o assets/pico-home-hq.webp
+          test "$(wc -c < assets/pico-home-hq.webp)" -gt 150000
+      - name: Commit HQ photo
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/pico-home-hq.webp
+          git commit -m "Add high quality Pico homepage photo"
+          git push
