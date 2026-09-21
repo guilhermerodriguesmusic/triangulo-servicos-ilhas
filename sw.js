@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260921-v1-0-rc15';
+const CACHE='triangulo-pwa-20260921-v1-0-rc16';
 const CORE=[
   '/',
   '/index.html',
@@ -42,39 +42,31 @@ function hasPrivateEntryParams(url){
   return PRIVATE_ENTRY_PARAMS.some(key=>url.searchParams.has(key));
 }
 
-function isPublicServicesClient(clientUrl){
-  try{
-    const url=new URL(clientUrl);
-    if(!isServicesPath(url)||hasPrivateEntryParams(url))return false;
-    if(url.hash==='#prestador'||url.hash==='#provider'||url.hash.startsWith('#provider-password='))return false;
-    return true;
-  }catch{
-    return false;
-  }
-}
-
 self.addEventListener('install',event=>{
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE).then(cache=>
-      cache.addAll(CORE.map(url=>new Request(url,{cache:'reload'})))
-    )
-  );
+  event.waitUntil((async()=>{
+    const cache=await caches.open(CACHE);
+    // Precache independently so one optional asset cannot break the whole PWA install.
+    await Promise.all(CORE.map(async url=>{
+      try{
+        const request=new Request(url,{cache:'reload'});
+        const response=await fetch(request);
+        if(response&&response.ok)await cache.put(url,response);
+      }catch(err){
+        console.warn('TRIANGULO precache skipped',url,err);
+      }
+    }));
+  })());
 });
 
 self.addEventListener('activate',event=>{
   event.waitUntil((async()=>{
-    await self.clients.claim();
     const keys=await caches.keys();
     await Promise.all(
       keys.filter(key=>key.startsWith('triangulo-')&&key!==CACHE).map(key=>caches.delete(key))
     );
-
-    const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});
-    await Promise.all(windows.map(client=>{
-      if(!isPublicServicesClient(client.url))return Promise.resolve();
-      return client.navigate(client.url).catch(()=>{});
-    }));
+    // Claim open tabs without forcing a visible reload/navigation.
+    await self.clients.claim();
   })());
 });
 
@@ -99,6 +91,21 @@ async function privateNavigation(request,fallback){
   }
 }
 
+async function cacheFirst(request){
+  const cached=await caches.match(request);
+  if(cached)return cached;
+  try{
+    const response=await fetch(request);
+    if(response&&response.ok){
+      const cache=await caches.open(CACHE);
+      cache.put(request,response.clone()).catch(()=>{});
+    }
+    return response;
+  }catch{
+    return Response.error();
+  }
+}
+
 self.addEventListener('fetch',event=>{
   const request=event.request;
   if(request.method!=='GET')return;
@@ -117,6 +124,12 @@ self.addEventListener('fetch',event=>{
       return;
     }
     event.respondWith(networkFirst(request,'/servicos/'));
+    return;
+  }
+
+  // Installed Android app: serve static assets from local cache whenever possible.
+  if(['image','style','script','font','manifest'].includes(request.destination)||url.pathname==='/manifest.json'){
+    event.respondWith(cacheFirst(request));
     return;
   }
 
