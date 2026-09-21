@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260921-v1-0-rc36';
+const CACHE='triangulo-pwa-20260921-v1-0-rc37';
 const CORE=[
   '/',
   '/index.html',
@@ -18,10 +18,11 @@ const CORE=[
   '/assets/pico-real.jpg',
   '/assets/faial-real.jpg',
   '/assets/sao-jorge-real.jpg',
-  '/icon-192-v2.png',
-  '/icon-512-v2.png',
-  '/icons/icon-512-maskable-v2.png',
-  '/apple-touch-icon-v2.png'
+  '/icon-192-v3.png',
+  '/icon-512-v3.png',
+  '/icon-512-maskable-v3.png',
+  '/apple-touch-icon-v3.png',
+  '/apple-touch-icon-precomposed-v3.png'
 ];
 
 const PRIVATE_ENTRY_PARAMS=[
