@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://trianguloacores.pt/how-it-works.html">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/logo.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-v2.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-v3.png">
 <style>
 :root{--ink:#153458;--muted:#60778a;--green:#108b6e;--green2:#eaf8f3;--line:#dce8ef}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#f3f8fb}
@@ -60,11 +60,14 @@
   }
   .persistent-choice-nav a{font-size:10px;padding:7px 8px;background:#f5f8fa}
 }
+
+.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
 <div class="wrap">
-<header class="top"><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div></header>
+<header class="top"><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt" type="button">PT</button><button data-lang="en" type="button">EN</button></div></header>
 <nav class="persistent-choice-nav" aria-label="Navegação principal" data-aria-pt="Navegação principal" data-aria-en="Main navigation">
   <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
   <a href="/servicos/?island=Pico">Pico</a>
@@ -75,6 +78,7 @@
   <a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a>
   <a href="/prestadores.html" data-pt="Para prestadores" data-en="For providers">Para prestadores</a>
 </nav>
+<main id="main-content">
 <section data-pt>
 <div class="hero"><div class="eyebrow">Simples do início ao fim</div><h1>Como funciona</h1><p>O TRIÂNGULO ajuda-te a encontrar serviços locais no Pico, Faial e São Jorge sem complicar o processo.</p></div>
 <div class="steps">
@@ -109,6 +113,7 @@
 <div class="status"><strong>Payments:</strong> automatic payments are not active yet. For now, confirmation and contact sharing follow the platform's current flow. This page will be updated when checkout goes live.</div>
 <div class="cta"><a class="primary" href="/servicos/">Find a service →</a><a class="secondary" href="/prestadores.html">For providers</a></div>
 </section>
+</main>
 <footer class="footer"><span>TRIÂNGULO · Pico · Faial · São Jorge</span><span><a href="/" data-pt="Início" data-en="Home">Início</a> · <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a> · <a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a> · <a href="/terms.html" data-pt="Termos" data-en="Terms">Termos</a></span></footer>
 </div>
 <script>
