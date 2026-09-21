@@ -115,6 +115,8 @@ jobs:
           index="$(fetch "$base/?verify=$GITHUB_SHA")"
           providers="$(fetch "$base/prestadores.html?verify=$GITHUB_SHA")"
           application="$(fetch "$base/candidatura-prestador.html?verify=$GITHUB_SHA")"
+          review="$(fetch "$base/candidatura-rever.html?verify=$GITHUB_SHA")"
+          admin="$(fetch "$base/admin.html?verify=$GITHUB_SHA")"
           terms="$(fetch "$base/terms.html?verify=$GITHUB_SHA")"
           privacy="$(fetch "$base/privacy.html?verify=$GITHUB_SHA")"
           how="$(fetch "$base/how-it-works.html?verify=$GITHUB_SHA")"
@@ -141,6 +143,10 @@ jobs:
           grep -q "Email (opcional)" <<<"$application"
           grep -q "Email não é obrigatório" <<<"$application"
           grep -q "Etapas da candidatura" <<<"$application"
+          grep -q "Application steps" <<<"$application"
+          grep -q "Review Application" <<<"$review"
+          grep -q "TRIÂNGULO Admin" <<<"$admin"
+          grep -q "Provider applications" <<<"$admin"
           grep -q "booking_client_context" <<<"$app"
           grep -q "stripe-create-checkout" <<<"$app"
           grep -q "Ativar pagamentos" <<<"$app"
@@ -151,8 +157,11 @@ jobs:
           grep -q "request_provider_password_reset" <<<"$app"
           grep -q "Pagamentos em breve" <<<"$app"
           grep -q "Termos de Utilização" <<<"$terms"
+          grep -q "Terms of Use" <<<"$terms"
           grep -q "Política de Privacidade" <<<"$privacy"
+          grep -q "Privacy Policy" <<<"$privacy"
           grep -q "pagamentos automáticos ainda não estão ativos" <<<"$how"
+          grep -q "How it works" <<<"$how"
           grep -q "Três ilhas. Uma rede local." <<<"$about"
           grep -q "/sobre-nos.html" <<<"$index"
           grep -q "Prestas este serviço? Junta-te ao TRIÂNGULO" <<<"$app"
@@ -163,6 +172,10 @@ jobs:
           grep -q "Instalar TRIÂNGULO" <<<"$install_page"
           grep -q "beforeinstallprompt" <<<"$install_page"
           grep -q "package=com.android.chrome" <<<"$install_page"
+          grep -q "Install TRIÂNGULO" <<<"$install_page"
+          grep -q "Already have a profile? Sign in" <<<"$providers"
+          grep -q "Local services across the islands" <<<"$index"
+          grep -q "Provider sign in" <<<"$app"
           grep -q '"sizes": "192x192"' <<<"$manifest"
           grep -q '"sizes": "512x512"' <<<"$manifest"
           grep -q "/servicos/" <<<"$app_redirect"
@@ -189,6 +202,15 @@ jobs:
             echo "querySelector helper used as a collection"
             exit 1
           fi
+
+          # Smoke-test every public HTML entry in both supported languages.
+          for page in \
+            "admin.html" "app.html" "candidatura-prestador.html" "candidatura-rever.html" \
+            "how-it-works.html" "index.html" "inicio.html" "instalar/" "prestadores.html" \
+            "privacy.html" "reserva-responder.html" "servicos/" "terms.html"; do
+            fetch "$base/$page?lang=pt&verify=$GITHUB_SHA" >/dev/null
+            fetch "$base/$page?lang=en&verify=$GITHUB_SHA" >/dev/null
+          done
 
           fetch "$base/assets/pico-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/pico-hero-real.jpg?verify=$GITHUB_SHA" >/dev/null
