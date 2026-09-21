@@ -61,7 +61,7 @@
         <label class="check"><input type="checkbox" data-provider-cat value="lessons"><span data-pt="Aulas" data-en="Lessons">Aulas</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="wellness"><span data-pt="Bem-estar" data-en="Wellness">Bem-estar</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="tech"><span data-pt="Tecnologia" data-en="Technology">Tecnologia</span></label>
-        <label class="check"><input type="checkbox" data-provider-cat value="creative"><span data-pt="Fotografia / Criativos" data-en="Photo / Creative">Fotografia / Criativos</span></label>
+        <label class="check"><input type="checkbox" data-provider-cat value="creative"><span data-pt="Fotografia / Criativos" data-en="Photography & Creative">Fotografia / Criativos</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="pets"><span data-pt="Animais" data-en="Pets">Animais</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="other" id="otherCategory"><span data-pt="Outro" data-en="Other">Outro</span></label>
       </div>
@@ -192,10 +192,10 @@ function syncOtherService(){
 if($('#otherCategory'))$('#otherCategory').onchange=syncOtherService;syncOtherService();
 
 const CAT_LABELS={
- home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Land'},
+ home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Outdoor'},
  repairs:{pt:'Reparações',en:'Repairs'},moving:{pt:'Mudanças & Entregas',en:'Moves & Deliveries'},
  lessons:{pt:'Aulas',en:'Lessons'},wellness:{pt:'Bem-estar',en:'Wellness'},tech:{pt:'Tecnologia',en:'Technology'},
- creative:{pt:'Fotografia / Criativos',en:'Photo / Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
+ creative:{pt:'Fotografia / Criativos',en:'Photography & Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
 };
 function syncPrimaryCategory(){
   const sel=$('#primaryCategory'),chosen=sel.value,cats=$$('[data-provider-cat]:checked').map(x=>x.value);
