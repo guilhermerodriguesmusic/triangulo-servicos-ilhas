@@ -1,8 +1,13 @@
-const CACHE='triangulo-pwa-20260920-payments-return-v1';
+const CACHE='triangulo-pwa-20260921-prelaunch-v1';
 const CORE=[
   '/',
   '/index.html',
   '/prestadores.html',
+  '/candidatura-prestador.html',
+  '/how-it-works.html',
+  '/privacy.html',
+  '/terms.html',
+  '/instalar/',
   '/app.html',
   '/manifest.json',
   '/logo.svg',
