@@ -457,6 +457,66 @@
 .pa-profile-close{border:0;background:none;color:#60798c;font-size:9px;font-weight:850;padding:2px 0 8px;cursor:pointer}
 @media(max-width:390px){.pa-grid2{grid-template-columns:1fr}.pa-checks{grid-template-columns:1fr 1fr}.pa-quick-grid{grid-template-columns:1fr 1fr}.pa-quick{min-height:108px;padding:11px}}
 </style>
+<style id="results-page-v2">
+.topbar-actions{display:flex;align-items:center;gap:14px}
+.topbar-link{font-size:11px;font-weight:850;color:var(--navy);text-decoration:none;white-space:nowrap}
+.topbar-link.primary-link{background:var(--navy);color:#fff;padding:9px 13px;border-radius:999px}
+#explore{padding-top:12px}
+.results-head{align-items:center}
+.results-search{height:50px;background:#f5f8f7;border:1px solid #dfe8e5;box-shadow:0 4px 12px rgba(18,50,74,.04)}
+.results-search input{font-size:15px}
+.results-filters{display:flex;align-items:center;gap:8px;margin:12px 0 14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.results-filters::-webkit-scrollbar{display:none}
+.result-filter{border:1px solid #dbe5e2;background:#fff;border-radius:999px;padding:8px 11px;font-size:10.5px;font-weight:800;color:#466174;white-space:nowrap}
+.result-filter.active{background:#0a3157;color:#fff;border-color:#0a3157}
+.results-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px}
+.results-island{border:0;background:#edf5e8;color:#2f6548;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:850;white-space:nowrap}
+.results-sort{border:1px solid #dde7e6;background:#fff;border-radius:11px;padding:8px 9px;font-size:10.5px;font-weight:750;color:#506778}
+.result-title{margin:0;align-items:flex-end}
+.result-title h2{font-size:22px;line-height:1.12;letter-spacing:-.025em}
+.result-title small{font-size:11px;margin-top:5px}
+.result-card{padding:12px;grid-template-columns:94px minmax(0,1fr);gap:13px;border-radius:18px;box-shadow:0 8px 22px rgba(18,50,74,.065);transition:transform .15s ease,box-shadow .15s ease}
+.result-card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(18,50,74,.10)}
+.result-card img{width:94px;height:118px;border-radius:14px}
+.result-card b{font-size:16px;margin:0 0 3px;color:#102f49}
+.result-card .loc{font-size:10.5px;margin:0 0 7px}
+.result-card .desc{font-size:11px;line-height:1.45;margin-top:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.provider-tags{margin-top:4px}
+.provider-tag{font-size:9px;padding:4px 7px;background:#eef5f1;color:#456756}
+.provider-price{font-size:15px!important;color:#2f6d4c!important;margin-top:9px!important}
+.provider-price-note{font-size:8.5px!important}
+.result-card-action{margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.result-card-action button{border:0;background:#0a3157;color:#fff;border-radius:10px;padding:9px 11px;font-size:10.5px;font-weight:850}
+.result-card-action span{font-size:9px;color:#69808a}
+.not-found{margin-top:18px;background:#edf5e8;color:#2d6746;border:1px solid #dcebd6;padding:14px 15px}
+.not-found b{font-size:12px}.not-found small{font-size:10.5px}
+@media(min-width:760px){
+ body.results-mode{background:#edf3f1}
+ body.results-mode .app{width:min(1180px,calc(100% - 44px));min-height:calc(100vh - 36px)}
+ body.results-mode #mainShell{padding-bottom:24px}
+ body.results-mode #explore{padding:16px 34px 52px}
+ body.results-mode .bottom-nav{display:none}
+ body.results-mode .topbar{padding-left:34px;padding-right:34px}
+ body.results-mode .results-head{max-width:780px;margin:5px auto 0}
+ body.results-mode .results-filters,
+ body.results-mode .results-tools,
+ body.results-mode .result-title,
+ body.results-mode .results-list,
+ body.results-mode #postFromResults{max-width:1040px;margin-left:auto;margin-right:auto}
+ body.results-mode .results-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ body.results-mode .result-card{min-height:174px}
+ body.results-mode .result-card img{height:148px}
+ body.results-mode .result-title{margin-top:4px;margin-bottom:12px}
+}
+@media(max-width:620px){
+ .topbar-link{display:none}
+ .topbar-link.primary-link{display:inline-flex;font-size:9.5px;padding:7px 9px}
+ .topbar-actions{gap:7px}
+ .brand-full{width:154px}
+ .results-tools{align-items:stretch}
+ .results-sort{max-width:48%}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -514,7 +574,7 @@
   </div>
 </section>
 <section id="mainShell" class="hidden">
- <header class="topbar"><a class="logo-row" href="/" aria-label="TRIÂNGULO Açores"><img class="brand-full" src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div></header>
+ <header class="topbar"><a class="logo-row" href="/" aria-label="TRIÂNGULO Açores"><img class="brand-full" src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="topbar-actions"><a class="topbar-link" href="/prestadores.html" data-pt="Prestar serviços" data-en="Offer services">Prestar serviços</a><a class="topbar-link primary-link" href="/servicos/?prestador=1" data-pt="Login prestador" data-en="Provider login">Login prestador</a><div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div></div></header>
  <main>
   <section id="home" class="screen active">
    <div class="home-hero"><div class="island-select"><button id="islandPill"><svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Pico</span><span aria-hidden="true">⌄</span></button></div><div class="home-title"><h1 data-t="whatNeed">O que precisas?</h1><p data-t="homeSub">Serviços locais para o teu dia a dia.</p></div><form id="searchForm" class="searchbar" role="search" aria-label="Pesquisar serviços"><span>⌕</span><input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" placeholder="Limpeza, jardim, aulas..."><button type="submit" aria-label="Pesquisar">→</button></form></div>
@@ -528,10 +588,18 @@
   </section>
 
   <section id="explore" class="screen">
-   <div class="results-head"><button class="back" data-home aria-label="Voltar">‹</button><div class="results-search">⌕<input id="resultsInput" value="" autocomplete="off"><button id="clearResultsSearch" type="button" class="clear-search" aria-label="Limpar pesquisa">×</button></div></div>
-   <div class="result-title"><div><h2 id="resultsTitle">Profissionais</h2><small id="resultsCount">A carregar…</small></div></div>
+   <div class="results-head"><button class="back" id="resultsBack" aria-label="Voltar">‹</button><div class="results-search">⌕<input id="resultsInput" value="" autocomplete="off" enterkeyhint="search" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?"><button id="clearResultsSearch" type="button" class="clear-search" aria-label="Limpar pesquisa">×</button></div></div>
+   <div class="results-filters" aria-label="Categorias">
+    <button class="result-filter active" type="button" data-results-group="" data-pt="Todos" data-en="All">Todos</button>
+    <button class="result-filter" type="button" data-results-group="repairs" data-pt="Obras & Reparações" data-en="Repairs">Obras & Reparações</button>
+    <button class="result-filter" type="button" data-results-group="garden" data-pt="Jardim & Exterior" data-en="Garden">Jardim & Exterior</button>
+    <button class="result-filter" type="button" data-results-group="home" data-pt="Casa & Alojamento" data-en="Home">Casa & Alojamento</button>
+    <button class="result-filter" type="button" data-results-group="personal" data-pt="Serviços Pessoais" data-en="Personal">Serviços Pessoais</button>
+   </div>
+   <div class="results-tools"><button id="resultsIslandBtn" class="results-island" type="button">📍 Pico ▾</button><select id="resultsSort" class="results-sort" aria-label="Ordenar"><option value="relevance" data-pt="Mais relevantes" data-en="Most relevant">Mais relevantes</option><option value="price" data-pt="Preço mais baixo" data-en="Lowest price">Preço mais baixo</option><option value="completed" data-pt="Mais serviços concluídos" data-en="Most completed">Mais serviços concluídos</option></select></div>
+   <div class="result-title"><div><h2 id="resultsTitle">Prestadores</h2><small id="resultsCount">A carregar…</small></div></div>
    <div id="resultsList" class="results-list"></div>
-   <button id="postFromResults" class="not-found"><span class="people">👥</span><div><b data-t="notFound">Não encontraste o que precisas?</b><small data-t="publishRequest">Publica um pedido</small></div><span>›</span></button>
+   <button id="postFromResults" class="not-found"><span class="people">👥</span><div><b data-pt="Não encontraste a pessoa certa?" data-en="Didn't find the right person?">Não encontraste a pessoa certa?</b><small data-pt="Diz-nos o que precisas e procuramos alguém por ti." data-en="Tell us what you need and we'll find someone for you.">Diz-nos o que precisas e procuramos alguém por ti.</small></div><span>›</span></button>
   </section>
   <section id="profile" class="screen"><div class="page-title"><h1 data-t="profile">Mais</h1></div><div class="card settings"><button id="bookingsBtn">📅<div><b data-t="myBookings">Os meus pedidos</b><small data-t="myBookingsSub">Acompanha pedidos sem criar conta</small></div>›</button><button id="changeIslandBtn">📍<div><b data-t="island">Ilha</b><small id="profileIsland2">Pico</small></div>›</button><button id="providerAreaBtn" class="profile-row provider-area-row"><span>🧰</span><div><b data-pt="Área do prestador" data-en="Provider area">Área do prestador</b><small data-pt="Pedidos e acesso para prestadores" data-en="Requests and provider access">Pedidos e acesso para prestadores</small></div><span>›</span></button><button id="contactTrianguloBtn" class="profile-row"><span>✉️</span><div><b data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</b><small data-pt="Envia-nos uma mensagem" data-en="Send us a message">Envia-nos uma mensagem</small></div><span>›</span></button><button id="installBtn">⬇️<div><b data-t="install">Instalar TRIÂNGULO</b><small data-t="installSub">Adicionar ao ecrã principal</small></div>›</button></div></section>
  <section id="bookings" class="screen"><div class="page-title"><button class="back" type="button" data-profile aria-label="Voltar">‹</button><h1 data-t="myBookings">Os meus pedidos</h1><span></span></div><div id="bookingList" class="stack"></div></section>
@@ -831,6 +899,7 @@ function applyLang(){
  const suffix=lang==='en'?'?lang=en':'';$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
  updateIsland();
  if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
+ if(document.body.classList.contains('results-mode'))updateResults(activeSearchQuery);
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 const serviceGroups=[
@@ -839,7 +908,7 @@ const serviceGroups=[
  {code:'home',pt:'Casa & Alojamento',en:'Home & Accommodation',icon:'house'},
  {code:'personal',pt:'Serviços Pessoais',en:'Personal Services',icon:'grad'}
 ];
-let activeSearchQuery='',activeServiceGroup=null,searchSerial=0;
+let activeSearchQuery='',activeServiceGroup=null,activeResultsSort='relevance',searchSerial=0;
 function renderCats(){
  const groupHtml=serviceGroups.map((g,i)=>`<button class="category c${i}" data-group="${g.code}">${icons[g.icon]}<small>${lang==='pt'?g.pt:g.en}</small></button>`).join('');
  const allHtml=categories.map((cat,i)=>`<button class="category c${i}" data-cat="${i}">${icons[cat.icon]}<small>${cat[lang]}</small></button>`).join('');
@@ -895,10 +964,22 @@ function safeProviderPhoto(v){const s=String(v||'');return /^data:image\/(?:jpeg
 function groupLabel(code){const g=serviceGroups.find(x=>x.code===code);return g?(lang==='pt'?g.pt:g.en):''}
 function runSearch(q,group=null){
  activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;$('#resultsInput').value=activeSearchQuery;
- showScreen('explore');loadProviders(activeSearchQuery,activeServiceGroup);
+ showScreen('explore');syncResultsUrl();loadProviders(activeSearchQuery,activeServiceGroup);
+}
+function syncResultsControls(){
+ const ib=$('#resultsIslandBtn');if(ib)ib.textContent='📍 '+island+' ▾';
+ $$('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
+ const sort=$('#resultsSort');if(sort)sort.value=activeResultsSort;
+}
+function syncResultsUrl(){
+ const params=new URLSearchParams();
+ params.set('island',island);
+ if(activeSearchQuery)params.set('q',activeSearchQuery);
+ if(activeServiceGroup)params.set('group',activeServiceGroup);
+ history.replaceState({},'',location.pathname+'?'+params.toString()+'#app');
 }
 function updateResults(q=activeSearchQuery){
- q=(q||'').trim();
+ q=(q||'').trim();syncResultsControls();
  const group=activeServiceGroup?groupLabel(activeServiceGroup):'';
  const heading=q
    ?(lang==='pt'?'Prestadores para “'+q+'”':'Providers for “'+q+'”')
@@ -915,24 +996,43 @@ function updateResults(q=activeSearchQuery){
   $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Não foi possível carregar os prestadores.':'Could not load providers.')+'</b><span>'+(lang==='pt'?'Verifica a ligação e tenta novamente.':'Check your connection and try again.')+'</span><br><button class="primary" type="button" id="retryProviders">'+(lang==='pt'?'Tentar novamente':'Try again')+'</button></div>';
   const retry=$('#retryProviders');if(retry)retry.onclick=()=>loadProviders(activeSearchQuery,activeServiceGroup);return;
  }
- const seen=new Set(),list=realProviders.filter(s=>{if(seen.has(s.provider_id))return false;seen.add(s.provider_id);return true});
- $('#resultsCount').textContent=lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')):(list.length+' provider'+(list.length===1?'':'s'));
+ const seen=new Set();
+ let list=realProviders.filter(s=>{if(seen.has(s.provider_id))return false;seen.add(s.provider_id);return true});
+ if(activeResultsSort==='price'){
+   list=[...list].sort((a,b)=>{
+     const ap=(a.pricing_type==='quote'||a.price==null)?Infinity:Number(a.price);
+     const bp=(b.pricing_type==='quote'||b.price==null)?Infinity:Number(b.price);
+     return ap-bp || Number(b.rank_score||0)-Number(a.rank_score||0);
+   });
+ }else if(activeResultsSort==='completed'){
+   list=[...list].sort((a,b)=>Number(b.completed_jobs||0)-Number(a.completed_jobs||0)||Number(b.rank_score||0)-Number(a.rank_score||0));
+ }
+ $('#resultsCount').textContent=lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' disponível'+(list.length===1?'':'is')):(list.length+' provider'+(list.length===1?'':'s')+' available');
  if(!list.length){
   $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há um prestador direto para esta pesquisa.':'No direct provider matches this search yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente alguém compatível.':'Tell us what you need and we’ll automatically look for someone suitable.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
   const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
  $('#resultsList').innerHTML=list.map(s=>{
   const photo=safeProviderPhoto(s.photo_data),provider=escapeHtml(s.business_name||s.name),title=escapeHtml(s.title||'Serviço');
-  const proof=s.completed_jobs>0?'<span class="provider-tag">'+s.completed_jobs+' '+(lang==='pt'?'serviço'+(s.completed_jobs===1?'':'s')+' concluído'+(s.completed_jobs===1?'':'s'):'completed job'+(s.completed_jobs===1?'':'s'))+'</span>':'<span class="provider-tag">'+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
+  const proof=s.completed_jobs>0
+    ?'<span class="provider-tag">✓ '+s.completed_jobs+' '+(lang==='pt'?'serviço'+(s.completed_jobs===1?'':'s')+' concluído'+(s.completed_jobs===1?'':'s'):'completed job'+(s.completed_jobs===1?'':'s'))+'</span>'
+    :'<span class="provider-tag">✓ '+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
   const availability=s.availability?'<span class="provider-tag">🕒 '+escapeHtml(s.availability)+'</span>':'';
-  return '<div class="result-card" role="button" tabindex="0" data-service="'+s.service_id+'"><img src="'+photo+'" alt="'+provider+'"><div><b>'+provider+'</b><div class="loc">📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</div><div class="provider-tags"><span class="provider-tag">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee')+'</div></div></div>';
+  return '<article class="result-card" data-service="'+s.service_id+'"><img src="'+photo+'" alt="'+provider+'"><div><b>'+provider+'</b><div class="loc">📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</div><div class="provider-tags"><span class="provider-tag">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee')+'</div><div class="result-card-action"><span>'+(s.pricing_type==='quote'?(lang==='pt'?'O prestador envia o valor':'Provider sends the price'):(lang==='pt'?'Pedido sem criação de conta':'Request without an account'))+'</span><button type="button" data-open-service="'+s.service_id+'">'+(s.pricing_type==='quote'?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Pedir serviço':'Request service'))+'</button></div></div></article>';
  }).join('');
  bindProvider();
 }
-function bindProvider(){$('[data-service]').forEach(b=>{b.onclick=()=>openBooking(b.dataset.service);b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(b.dataset.service)}}})}
-function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));window.scrollTo({top:0,behavior:'auto'})}
-$$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));
-function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v4','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();loadProviders(activeSearchQuery,activeServiceGroup)}
+function bindProvider(){
+ $$('[data-open-service]').forEach(b=>b.onclick=e=>{e.stopPropagation();openBooking(b.dataset.openService)});
+ $$('.result-card[data-service]').forEach(card=>{
+   card.tabIndex=0;card.role='button';
+   card.onclick=e=>{if(e.target.closest('button'))return;openBooking(card.dataset.service)};
+   card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(card.dataset.service)}};
+ });
+}
+function showScreen(id){$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
+$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));const resultsBack=$('#resultsBack');if(resultsBack)resultsBack.onclick=()=>{location.href='/'};
+function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v4','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();if(document.body.classList.contains('results-mode'))syncResultsUrl();loadProviders(activeSearchQuery,activeServiceGroup)}
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){
  $('#islandPill span').textContent=island;
  const p2=$('#profileIsland2');if(p2)p2.textContent=island;
@@ -948,7 +1048,11 @@ $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));func
 }
 function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
-$('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};$('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
+$('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};
+$('[data-results-group]').forEach(b=>b.onclick=()=>runSearch(activeSearchQuery,b.dataset.resultsGroup||null));
+const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandBtn.onclick=()=>openSheet('islandSheet');
+const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{activeResultsSort=e.target.value;updateResults(activeSearchQuery)};
+$('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
 $('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const helpNav=$('#helpNav');if(helpNav)helpNav.onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
 function openRequest(prefill=''){
  const f=$('#requestForm'),today=localDateISO();f.date.min=today;
