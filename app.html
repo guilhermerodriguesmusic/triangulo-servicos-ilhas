@@ -14,7 +14,7 @@
 </script>
 </head>
 <body>
-<p>A abrir o TRIÂNGULO… <a id="fallback" href="/servicos/">Continuar</a></p>
-<script>document.getElementById('fallback').href='/servicos/'+location.search+location.hash;</script>
+<p><span id="opening">A abrir o TRIÂNGULO…</span> <a id="fallback" href="/servicos/">Continuar</a></p>
+<script>(function(){var q=new URLSearchParams(location.search),lang=(q.get('lang')==='en'||localStorage.getItem('tri_lang')==='en')?'en':'pt';document.documentElement.lang=lang;document.title=lang==='en'?'TRIÂNGULO — Services':'TRIÂNGULO — Serviços';document.getElementById('opening').textContent=lang==='en'?'Opening TRIÂNGULO…':'A abrir o TRIÂNGULO…';document.getElementById('fallback').textContent=lang==='en'?'Continue':'Continuar';document.getElementById('fallback').href='/servicos/'+location.search+location.hash})()</script>
 </body>
 </html>
