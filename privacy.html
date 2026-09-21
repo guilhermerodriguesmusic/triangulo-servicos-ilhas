@@ -4,7 +4,7 @@
 <link rel="canonical" href="https://trianguloacores.pt/privacy.html">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/logo.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-v2.png"><style>
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-v3.png"><style>
 :root{--ink:#153458;--blue:#1d89ed;--green:#14aa7d;--bg:#f5fbff;--line:#dce7ef}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:linear-gradient(180deg,#dff3ff,#f8fcff)}
 main{max-width:760px;margin:0 auto;min-height:100vh;background:#fff;padding:22px 22px 60px}
@@ -50,9 +50,12 @@ main>section[data-en]{display:none}body.en main>section[data-pt]{display:none}bo
   }
   .persistent-choice-nav a{font-size:10px;padding:7px 8px;background:#f5f8fa}
 }
+
+.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
 </style>
-</head><body><main>
-<header><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div></header>
+</head><body><a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
+<main id="main-content">
+<header><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt" type="button">PT</button><button data-lang="en" type="button">EN</button></div></header>
 <nav class="persistent-choice-nav" aria-label="Navegação principal" data-aria-pt="Navegação principal" data-aria-en="Main navigation">
   <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
   <a href="/servicos/?island=Pico">Pico</a>
