@@ -94,10 +94,10 @@ function applyOperationalCopy(){
     :'The customer will see this amount + TRIÂNGULO\'s '+fee+'% fee. Your amount is not reduced.';
   if(note)note.textContent=paymentsLive
     ?(lang==='pt'?'Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.':'When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.')
-    :(lang==='pt'?'Os pagamentos através do TRIÂNGULO estão em preparação. Podes aceitar o pedido normalmente; o TRIÂNGULO acompanhará o passo seguinte.':'Payments through TRIÂNGULO are being prepared. You can accept the request normally; TRIÂNGULO will guide the next step.');
+    :(lang==='pt'?'Ao aceitares, o serviço fica confirmado e os contactos do cliente são disponibilizados para combinarem os detalhes.':'When you accept, the service is confirmed and the customer contact details are released so you can coordinate.');
   if(accepted)accepted.textContent=paymentsLive
     ?(lang==='pt'?'O pedido foi aceite. O pagamento integral será concluído no TRIÂNGULO antes de os contactos serem desbloqueados.':'The request was accepted. Full payment will be completed through TRIÂNGULO before contact details are unlocked.')
-    :(lang==='pt'?'O pedido foi aceite. Os pagamentos através do TRIÂNGULO estão em preparação; o TRIÂNGULO acompanhará o pedido antes da ativação do checkout.':'The request was accepted. Payments through TRIÂNGULO are being prepared; TRIÂNGULO will guide the request before checkout is activated.');
+    :(lang==='pt'?'O pedido foi aceite. Os contactos do cliente estão disponíveis abaixo para combinarem os detalhes.':'The request was accepted. The customer contact details are available below so you can coordinate.');
 }
 async function loadConfig(){
   try{
@@ -142,6 +142,14 @@ function showState(state,data={}){
       box.innerHTML='<b>'+(lang==='pt'?'Resumo do valor':'Price summary')+'</b><div>'+(lang==='pt'?'Tu recebes':'You receive')+': €'+Number(data.provider_amount).toFixed(2)+'</div><div>'+(lang==='pt'?'Cliente paga':'Customer pays')+': €'+Number(data.total_amount).toFixed(2)+'</div>';
       if(!$('#priceSummary'))p.insertAdjacentElement('afterend',box);
     }
+    if(data.client_name||data.client_email||data.client_phone){
+      $('#clientContact').hidden=false;
+      $('#clientName').textContent=data.client_name||'';
+      $('#clientEmail').textContent=data.client_email||'';
+      $('#clientPhone').textContent=data.client_phone||'';
+    }else{
+      $('#clientContact').hidden=true;
+    }
   }
   else if(state==='declined'){$('#declined').classList.add('show')}
   else if(state==='expired'){$('#expired').classList.add('show')}
@@ -167,7 +175,7 @@ async function respond(action){
   const {data,error}=response;
   if(error||!data||!data.ok){$('#accept').disabled=false;$('#decline').disabled=false;alert((data&&data.message)||(lang==='pt'?'Não foi possível responder.':'Could not respond.'));return}
   showState(data.state,data);
-  if(data.state==='confirmed'&&data.payment_status==='paid'&&(data.client_name||data.client_email||data.client_phone)){
+  if(data.state==='confirmed'&&(data.client_name||data.client_email||data.client_phone)){
     $('#clientContact').hidden=false;
     $('#clientName').textContent=data.client_name||'';
     $('#clientEmail').textContent=data.client_email||'';
