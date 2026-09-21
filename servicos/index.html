@@ -1024,10 +1024,10 @@ body.route-public-results #explore{display:block!important}
    <div class="results-head"><button class="back" id="resultsBack" aria-label="Voltar">‹</button><div class="results-search">⌕<input id="resultsInput" value="" autocomplete="off" enterkeyhint="search" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?"><button id="clearResultsSearch" type="button" class="clear-search" aria-label="Limpar pesquisa">×</button></div></div>
    <div class="results-filters" aria-label="Categorias">
     <button class="result-filter active" type="button" data-results-group="" data-pt="Todos" data-en="All">Todos</button>
-    <button class="result-filter" type="button" data-results-group="repairs" data-pt="Obras & Reparações" data-en="Repairs">Obras & Reparações</button>
-    <button class="result-filter" type="button" data-results-group="garden" data-pt="Jardim & Exterior" data-en="Garden">Jardim & Exterior</button>
     <button class="result-filter" type="button" data-results-group="home" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</button>
-    <button class="result-filter" type="button" data-results-group="personal" data-pt="Serviços Pessoais" data-en="Personal">Serviços Pessoais</button>
+    <button class="result-filter" type="button" data-results-group="garden" data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</button>
+    <button class="result-filter" type="button" data-results-group="repairs" data-pt="Reparações, Tech & Mudanças" data-en="Repairs, Tech & Moving">Reparações, Tech & Mudanças</button>
+    <button class="result-filter" type="button" data-results-group="personal" data-pt="Aulas, Bem-estar & Mais" data-en="Lessons, Wellness & More">Aulas, Bem-estar & Mais</button>
    </div>
    <div class="results-tools"><button id="resultsIslandBtn" class="results-island" type="button">📍 Pico ▾</button><select id="resultsSort" class="results-sort" aria-label="Ordenar"><option value="relevance" data-pt="Mais relevantes" data-en="Most relevant">Mais relevantes</option><option value="price" data-pt="Preço mais baixo" data-en="Lowest price">Preço mais baixo</option><option value="completed" data-pt="Mais serviços concluídos" data-en="Most completed">Mais serviços concluídos</option></select></div>
    <div class="result-title"><div><h2 id="resultsTitle">Prestadores</h2><small id="resultsCount">A carregar…</small></div></div>
@@ -1334,18 +1334,18 @@ function applyLang(){
  renderCats();
  updateResults(rq);
  renderBookings();
- const suffix=lang==='en'?'?lang=en':'';$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
- $('.desktop-client-nav a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
+ const suffix=lang==='en'?'?lang=en':'';$$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
+ $$('.desktop-client-nav a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
  updateIsland();
  if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
  if(document.body.classList.contains('results-mode'))updateResults(activeSearchQuery);
 }
 $$('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;store.set('tri_lang',lang);applyLang()});
 const serviceGroups=[
- {code:'repairs',pt:'Obras & Reparações',en:'Repairs & Maintenance',icon:'wrench'},
- {code:'garden',pt:'Jardim & Exterior',en:'Garden & Outdoor',icon:'leaf'},
  {code:'home',pt:'Casa & Limpeza',en:'Home & Cleaning',icon:'house'},
- {code:'personal',pt:'Serviços Pessoais',en:'Personal Services',icon:'grad'}
+ {code:'garden',pt:'Jardim & Terrenos',en:'Garden & Land',icon:'leaf'},
+ {code:'repairs',pt:'Reparações, Tech & Mudanças',en:'Repairs, Tech & Moving',icon:'wrench'},
+ {code:'personal',pt:'Aulas, Bem-estar & Mais',en:'Lessons, Wellness & More',icon:'grad'}
 ];
 let activeSearchQuery='',activeServiceGroup=null,activeResultsSort='relevance',searchSerial=0;
 function renderCats(){
