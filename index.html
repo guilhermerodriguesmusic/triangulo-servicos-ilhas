@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
 <meta name="theme-color" content="#0b3157">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v2.png">
-<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-precomposed-v2.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v3.png">
+<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-precomposed-v3.png">
 <title>TRIÂNGULO Açores — Serviços locais nas ilhas</title>
 <meta name="description" content="Encontra e reserva serviços locais no Pico, Faial e São Jorge. Pessoas da tua ilha, perfis revistos e pedidos simples.">
 <link rel="canonical" href="https://trianguloacores.pt/">
@@ -19,8 +19,8 @@
 <meta property="og:url" content="https://trianguloacores.pt/">
 <meta property="og:image" content="https://trianguloacores.pt/assets/pico-home-hq.webp">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-v2.png">
-<link rel="shortcut icon" type="image/png" href="/icon-192-v2.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192-v3.png">
+<link rel="shortcut icon" type="image/png" href="/icon-192-v3.png">
 <link rel="preload" href="/assets/pico-home-hq.webp" as="image" type="image/webp" fetchpriority="high">
 <meta name="color-scheme" content="light only">
 <style>
@@ -386,10 +386,13 @@ h1{
   .searchbar button[type=submit]{padding-left:7px;padding-right:7px}
 }
 
+
+.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
 </style>
 </head>
 <body>
-<main class="hero">
+<a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
+<main id="main-content" class="hero">
   <header class="top">
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
     <nav class="nav" aria-label="Principal" data-aria-pt="Principal" data-aria-en="Main navigation">
@@ -450,7 +453,7 @@ h1{
   <section class="category-row" aria-label="Categorias" data-aria-pt="Categorias" data-aria-en="Categories">
     <a class="category" href="/servicos/?group=repairs" data-group="repairs">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
-      <span><b data-pt="Reparações & Mudanças" data-en="Repairs & Moving">Reparações & Mudanças</b><small data-pt="Reparações, tecnologia, mudanças e mais." data-en="Repairs, technology, moving and more.">Reparações, tecnologia, mudanças e mais.</small></span><span class="arr">›</span>
+      <span><b data-pt="Reparações, Tech & Mudanças" data-en="Repairs, Tech & Moving">Reparações, Tech & Mudanças</b><small data-pt="Reparações, tecnologia, mudanças e mais." data-en="Repairs, technology, moving and more.">Reparações, tecnologia, mudanças e mais.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=garden" data-group="garden">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M39 9C23 9 11 18 10 36c10-1 23-7 29-27Z"/><path d="M11 36c7-8 14-13 24-19"/></svg></span>
