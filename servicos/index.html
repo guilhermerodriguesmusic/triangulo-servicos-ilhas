@@ -1002,6 +1002,12 @@ body.route-public-results #explore{display:block!important}
 }
 
 </style>
+<style id="mobile-hit-target-audit-v1">
+@media(max-width:620px){
+  .results-search input{min-height:32px}
+  .clear-search{width:32px;height:32px;min-width:32px;padding:0;display:grid;place-items:center}
+}
+</style>
 </head>
 <body>
 <script>
@@ -1397,7 +1403,7 @@ function applyLang(){
  renderCats();
  updateResults(rq);
  renderBookings();
- $('.legal-links a[href^="/"],.desktop-client-nav a[href^="/"],.topbar-actions a[href^="/"],#providerAreaView a[href^="/"],#explore a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
+ document.querySelectorAll('.legal-links a[href^="/"],.desktop-client-nav a[href^="/"],.topbar-actions a[href^="/"],#providerAreaView a[href^="/"],#explore a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
  updateIsland();
  if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
  if(providerAccountData)renderProviderDashboard(providerAccountData);
@@ -1559,16 +1565,16 @@ let sheetReturnFocus=null;
 function openSheet(id){
  sheetReturnFocus=document.activeElement;
  const backdrop=$('#backdrop');backdrop.classList.add('open');backdrop.setAttribute('aria-hidden','false');
- $('.sheet').forEach(s=>{s.classList.remove('open');s.setAttribute('aria-hidden','true');s.inert=true});
+ document.querySelectorAll('.sheet').forEach(s=>{s.classList.remove('open');s.setAttribute('aria-hidden','true');s.inert=true});
  const sheet=$('#'+id);sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');sheet.inert=false;document.body.classList.add('sheet-open');
  requestAnimationFrame(()=>{const target=sheet.querySelector('textarea,input:not([type="hidden"]),select,button:not(.close)');if(target)target.focus({preventScroll:true})});
 }
 function closeSheets(){
  const backdrop=$('#backdrop');backdrop.classList.remove('open');backdrop.setAttribute('aria-hidden','true');
- $('.sheet').forEach(s=>{s.classList.remove('open');s.setAttribute('aria-hidden','true');s.inert=true});document.body.classList.remove('sheet-open');
+ document.querySelectorAll('.sheet').forEach(s=>{s.classList.remove('open');s.setAttribute('aria-hidden','true');s.inert=true});document.body.classList.remove('sheet-open');
  if(sheetReturnFocus&&typeof sheetReturnFocus.focus==='function')sheetReturnFocus.focus({preventScroll:true});sheetReturnFocus=null;
 }
-$('#backdrop').setAttribute('aria-hidden','true');$('.sheet').forEach(s=>{s.setAttribute('aria-hidden','true');s.inert=true});
+$('#backdrop').setAttribute('aria-hidden','true');document.querySelectorAll('.sheet').forEach(s=>{s.setAttribute('aria-hidden','true');s.inert=true});
 $('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('.sheet.open'))closeSheets()});
 $('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();if(document.body.classList.contains('results-mode'))syncResultsUrl();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
 $('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};
