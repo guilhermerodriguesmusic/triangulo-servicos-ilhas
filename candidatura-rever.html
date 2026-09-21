@@ -58,7 +58,7 @@ const db=window.supabase.createClient('https://cozamrvrhmwgxbuubjub.supabase.co'
 const qs=new URLSearchParams(location.search),token=qs.get('token'),mode=qs.get('mode');let currentApplicationId=null;
 let lang=(qs.get('lang')==='en'||qs.get('lang')==='pt')?qs.get('lang'):(localStorage.getItem('tri_lang')||'pt');
 const CAT={
- home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Outdoor'},
+ home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Land'},
  repairs:{pt:'Reparações',en:'Repairs'},moving:{pt:'Mudanças & Entregas',en:'Moves & Deliveries'},
  lessons:{pt:'Aulas',en:'Lessons'},wellness:{pt:'Bem-estar',en:'Wellness'},tech:{pt:'Tecnologia',en:'Technology'},
  creative:{pt:'Fotografia / Criativos',en:'Photography & Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
