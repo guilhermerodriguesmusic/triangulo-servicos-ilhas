@@ -327,7 +327,7 @@ h1{
   <header class="top">
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
     <nav class="nav" aria-label="Principal">
-      <a href="/app.html#app" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
+      <a href="/servicos/#app" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
       <button type="button" class="with-chevron" id="navIslands" data-pt="Ilhas" data-en="Islands">Ilhas</button>
       <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
       <a href="/how-it-works.html#sobre-nos" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
@@ -338,7 +338,7 @@ h1{
       </button>
       <div class="vrule"></div>
       <div class="lang"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div>
-      <a class="login" href="/app.html?prestador=1" data-pt="Entrar" data-en="Sign in">Entrar</a>
+      <a class="login" href="/servicos/?prestador=1" data-pt="Entrar" data-en="Sign in">Entrar</a>
     </div>
   </header>
 
@@ -374,19 +374,19 @@ h1{
   </section>
 
   <section class="category-row" aria-label="Categorias">
-    <a class="category" href="/app.html?q=repara%C3%A7%C3%B5es#app" data-search="reparações">
+    <a class="category" href="/servicos/?group=repairs#app" data-group="repairs">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
       <span><b data-pt="Obras e Reparações" data-en="Repairs & Maintenance">Obras e Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrical and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
     </a>
-    <a class="category" href="/app.html?q=jardim#app" data-search="jardim">
+    <a class="category" href="/servicos/?group=garden#app" data-group="garden">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M39 9C23 9 11 18 10 36c10-1 23-7 29-27Z"/><path d="M11 36c7-8 14-13 24-19"/></svg></span>
       <span><b data-pt="Jardim e Espaços Exteriores" data-en="Garden & Outdoor Spaces">Jardim e Espaços Exteriores</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening and maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
     </a>
-    <a class="category" href="/app.html?q=casa#app" data-search="casa">
+    <a class="category" href="/servicos/?group=home#app" data-group="home">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M7 23 24 9l17 14"/><path d="M11 21v20h26V21"/><path d="M20 41V29h8v12"/></svg></span>
       <span><b data-pt="Casa e Alojamento" data-en="Home & Accommodation">Casa e Alojamento</b><small data-pt="Limpezas, gestão, pequenas obras, apoio ao alojamento." data-en="Cleaning, management, small jobs and accommodation support.">Limpezas, gestão, pequenas obras, apoio ao alojamento.</small></span><span class="arr">›</span>
     </a>
-    <a class="category" href="/app.html?q=servi%C3%A7os%20pessoais#app" data-search="serviços pessoais">
+    <a class="category" href="/servicos/?group=personal#app" data-group="personal">
       <span class="category-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><circle cx="11" cy="18" r="4"/><circle cx="37" cy="18" r="4"/><path d="M14 39v-5c0-6 4-10 10-10s10 4 10 10v5"/><path d="M4 38v-4c0-5 3-8 8-8 2 0 4 .5 5 1.5"/><path d="M44 38v-4c0-5-3-8-8-8-2 0-4 .5-5 1.5"/></svg></span>
       <span><b data-pt="Serviços Pessoais" data-en="Personal Services">Serviços Pessoais</b><small data-pt="Bem-estar, aulas, eventos e serviços do dia a dia." data-en="Wellness, lessons, events and everyday services.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
     </a>
@@ -435,7 +435,7 @@ function setIsland(v){
   document.querySelectorAll('[data-island]').forEach(b=>b.classList.toggle('active',b.dataset.island===v));
   document.querySelector('#islandSelect').value=v;
 }
-function openSearch(q){
+function openSearch(q,group=null){
   const query=(q||'').trim();
   localStorage.setItem('tri_island',island);
   localStorage.setItem('tri_home_search',query);
@@ -443,14 +443,15 @@ function openSearch(q){
   const params=new URLSearchParams();
   params.set('island',island);
   if(query)params.set('q',query);
-  location.href='/app.html?'+params.toString()+'#app';
+  if(group)params.set('group',group);
+  location.href='/servicos/?'+params.toString()+'#app';
 }
 document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
 document.querySelector('#islandSelect').onchange=e=>setIsland(e.target.value);
 document.querySelector('#navIslands').onclick=()=>document.querySelector('.island-pills').scrollIntoView({behavior:'smooth',block:'center'});
 document.querySelector('#topSearch').onclick=()=>document.querySelector('#searchInput').focus();
 document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch(document.querySelector('#searchInput').value)};
-document.querySelectorAll('[data-search]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch(a.dataset.search)});
+document.querySelectorAll('[data-group]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch('',a.dataset.group)});
 document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()};
 document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()};
 setIsland(['Pico','Faial','São Jorge'].includes(island)?island:'Pico');
