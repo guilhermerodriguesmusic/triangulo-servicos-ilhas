@@ -55,7 +55,7 @@ jobs:
           mark_svg = Path("app-icon.svg").read_bytes()
           mark_data = base64.b64encode(mark_svg).decode("ascii")
 
-          def make_icon(size, mark_ratio, output, background="#f8faf8"):
+          def make_icon(size, mark_ratio, output, background="#08111b"):
               mark = round(size * mark_ratio)
               pos = (size - mark) // 2
               svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 {size} {size}">
