@@ -897,7 +897,7 @@ function applyLang(){
  renderCats();
  updateResults(rq);
  renderBookings();
- const suffix=lang==='en'?'?lang=en':'';$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
+ const suffix=lang==='en'?'?lang=en':'';$$('.legal-links a').forEach(a=>{const base=a.getAttribute('href').split('?')[0];a.setAttribute('href',base+suffix)});
  updateIsland();
  if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
  if(document.body.classList.contains('results-mode'))updateResults(activeSearchQuery);
@@ -914,8 +914,8 @@ function renderCats(){
  const groupHtml=serviceGroups.map((g,i)=>`<button class="category c${i}" data-group="${g.code}">${icons[g.icon]}<small>${lang==='pt'?g.pt:g.en}</small></button>`).join('');
  const allHtml=categories.map((cat,i)=>`<button class="category c${i}" data-cat="${i}">${icons[cat.icon]}<small>${cat[lang]}</small></button>`).join('');
  $('#homeCats').innerHTML=groupHtml;$('#allCats').innerHTML=allHtml;
- $('[data-group]').forEach(b=>b.onclick=()=>{closeSheets();runSearch('',b.dataset.group)});
- $('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang],null)});
+ $$('[data-group]').forEach(b=>b.onclick=()=>{closeSheets();runSearch('',b.dataset.group)});
+ $$('[data-cat]').forEach(b=>b.onclick=()=>{closeSheets();runSearch(categories[+b.dataset.cat][lang],null)});
 }
 let TRIANGULO_SERVICE_FEE_RATE=.12;
 async function loadAppConfig(){
@@ -969,7 +969,7 @@ function runSearch(q,group=null){
 }
 function syncResultsControls(){
  const ib=$('#resultsIslandBtn');if(ib)ib.textContent='📍 '+island+' ▾';
- $$('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
+ $$$('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
  const sort=$('#resultsSort');if(sort)sort.value=activeResultsSort;
 }
 function syncResultsUrl(){
@@ -1031,8 +1031,8 @@ function bindProvider(){
    card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(card.dataset.service)}};
  });
 }
-function showScreen(id){$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
-$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));const resultsBack=$('#resultsBack');if(resultsBack)resultsBack.onclick=()=>{location.href='/'};
+function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
+$$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));const resultsBack=$('#resultsBack');if(resultsBack)resultsBack.onclick=()=>{location.href='/'};
 function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v4','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();if(document.body.classList.contains('results-mode'))syncResultsUrl();loadProviders(activeSearchQuery,activeServiceGroup)}
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){
  $('#islandPill span').textContent=island;
@@ -1048,9 +1048,9 @@ $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));func
  }
 }
 function openSheet(id){$('#backdrop').classList.add('open');$('#'+id).classList.add('open')}function closeSheets(){$('#backdrop').classList.remove('open');$$('.sheet').forEach(s=>s.classList.remove('open'))}$('#backdrop').onclick=closeSheets;$$('.close').forEach(b=>b.onclick=closeSheets);
-$('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
+$('#islandPill').onclick=()=>openSheet('islandSheet');$('#changeIslandBtn').onclick=()=>openSheet('islandSheet');$$('[data-set-island]').forEach(b=>b.onclick=()=>{island=b.dataset.setIsland;store.set('tri_island',island);updateIsland();closeSheets();loadProviders(activeSearchQuery,activeServiceGroup);toast(lang==='pt'?`Ilha: ${island}`:`Island: ${island}`)});$('#allCatsBtn').onclick=()=>{renderCats();requestAnimationFrame(()=>openSheet('catsSheet'))};
 $('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').value)};
-$('[data-results-group]').forEach(b=>b.onclick=()=>runSearch(activeSearchQuery,b.dataset.resultsGroup||null));
+$$('[data-results-group]').forEach(b=>b.onclick=()=>runSearch(activeSearchQuery,b.dataset.resultsGroup||null));
 const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandBtn.onclick=()=>openSheet('islandSheet');
 const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{activeResultsSort=e.target.value;updateResults(activeSearchQuery)};
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
