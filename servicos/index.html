@@ -899,27 +899,33 @@ function runSearch(q,group=null){
 }
 function updateResults(q=activeSearchQuery){
  q=(q||'').trim();
- const heading=q?(lang==='pt'?'Serviços para “'+q+'”':'Services for “'+q+'”'):(activeServiceGroup?groupLabel(activeServiceGroup):(lang==='pt'?'Serviços em '+island:'Services on '+island));
+ const group=activeServiceGroup?groupLabel(activeServiceGroup):'';
+ const heading=q
+   ?(lang==='pt'?'Prestadores para “'+q+'”':'Providers for “'+q+'”')
+   :(group
+      ?(lang==='pt'?'Prestadores de '+group+' em '+island:group+' providers on '+island)
+      :(lang==='pt'?'Prestadores no '+island:'Providers on '+island));
  $('#resultsTitle').textContent=heading;
  if(providersLoading){
-  $('#resultsCount').textContent=lang==='pt'?'A procurar serviços…':'Finding services…';
-  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'A procurar serviços locais…':'Finding local services…')+'</b><span>'+(lang==='pt'?'Só demora um instante.':'This should only take a moment.')+'</span></div>';return;
+  $('#resultsCount').textContent=lang==='pt'?'A procurar prestadores…':'Finding providers…';
+  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'A procurar prestadores adequados…':'Finding suitable providers…')+'</b><span>'+(lang==='pt'?'Só demora um instante.':'This should only take a moment.')+'</span></div>';return;
  }
  if(providersLoadError){
   $('#resultsCount').textContent='';
-  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Não foi possível carregar os serviços.':'Could not load services.')+'</b><span>'+(lang==='pt'?'Verifica a ligação e tenta novamente.':'Check your connection and try again.')+'</span><br><button class="primary" type="button" id="retryProviders">'+(lang==='pt'?'Tentar novamente':'Try again')+'</button></div>';
+  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Não foi possível carregar os prestadores.':'Could not load providers.')+'</b><span>'+(lang==='pt'?'Verifica a ligação e tenta novamente.':'Check your connection and try again.')+'</span><br><button class="primary" type="button" id="retryProviders">'+(lang==='pt'?'Tentar novamente':'Try again')+'</button></div>';
   const retry=$('#retryProviders');if(retry)retry.onclick=()=>loadProviders(activeSearchQuery,activeServiceGroup);return;
  }
- const list=realProviders;
- $('#resultsCount').textContent=lang==='pt'?(list.length+' serviço'+(list.length===1?' encontrado':'s encontrados')):(list.length+' service'+(list.length===1?' found':'s found'));
+ const seen=new Set(),list=realProviders.filter(s=>{if(seen.has(s.provider_id))return false;seen.add(s.provider_id);return true});
+ $('#resultsCount').textContent=lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')):(list.length+' provider'+(list.length===1?'':'s'));
  if(!list.length){
-  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há um serviço direto para esta pesquisa.':'No direct service matches this search yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente prestadores compatíveis.':'Tell us what you need and we’ll automatically look for matching providers.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
+  $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Ainda não há um prestador direto para esta pesquisa.':'No direct provider matches this search yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente alguém compatível.':'Tell us what you need and we’ll automatically look for someone suitable.')+'</span><br><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
   const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
  $('#resultsList').innerHTML=list.map(s=>{
   const photo=safeProviderPhoto(s.photo_data),provider=escapeHtml(s.business_name||s.name),title=escapeHtml(s.title||'Serviço');
-  const proof=s.completed_jobs>0?'<span class="provider-tag">'+s.completed_jobs+' '+(lang==='pt'?'concluído'+(s.completed_jobs===1?'':'s'):'completed')+'</span>':'<span class="provider-tag">'+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
-  return '<div class="result-card" role="button" tabindex="0" data-service="'+s.service_id+'"><img src="'+photo+'" alt="'+provider+'"><div><b>'+title+'</b><div class="loc">'+(lang==='pt'?'por ':'by ')+provider+' · 📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee')+'</div><div class="provider-tags">'+proof+'</div></div></div>';
+  const proof=s.completed_jobs>0?'<span class="provider-tag">'+s.completed_jobs+' '+(lang==='pt'?'serviço'+(s.completed_jobs===1?'':'s')+' concluído'+(s.completed_jobs===1?'':'s'):'completed job'+(s.completed_jobs===1?'':'s'))+'</span>':'<span class="provider-tag">'+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
+  const availability=s.availability?'<span class="provider-tag">🕒 '+escapeHtml(s.availability)+'</span>':'';
+  return '<div class="result-card" role="button" tabindex="0" data-service="'+s.service_id+'"><img src="'+photo+'" alt="'+provider+'"><div><b>'+provider+'</b><div class="loc">📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</div><div class="provider-tags"><span class="provider-tag">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee')+'</div></div></div>';
  }).join('');
  bindProvider();
 }
