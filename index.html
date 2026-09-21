@@ -454,7 +454,7 @@ function openSearch(q,group=null){
   params.set('island',island);
   if(query)params.set('q',query);
   if(group)params.set('group',group);
-  location.href='/servicos/?'+params.toString()+'#app';
+  location.href='/servicos/?'+params.toString();
 }
 document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
 document.querySelector('#islandSelect').onchange=e=>setIsland(e.target.value);
