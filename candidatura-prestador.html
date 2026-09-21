@@ -54,7 +54,7 @@
 
       <div style="margin-top:14px"><div class="field-title" data-pt="Que serviços ofereces? *" data-en="What services do you offer? *">Que serviços ofereces? *</div><div class="checks">
         <label class="check"><input type="checkbox" data-provider-cat value="home"><span data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</span></label>
-        <label class="check"><input type="checkbox" data-provider-cat value="garden"><span data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</span></label>
+        <label class="check"><input type="checkbox" data-provider-cat value="garden"><span data-pt="Jardim & Terrenos" data-en="Garden & Outdoor">Jardim & Terrenos</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="repairs"><span data-pt="Reparações" data-en="Repairs">Reparações</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="moving"><span data-pt="Mudanças & Entregas" data-en="Moves & Deliveries">Mudanças & Entregas</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="lessons"><span data-pt="Aulas" data-en="Lessons">Aulas</span></label>
@@ -78,7 +78,7 @@
 
       <div class="section-title" data-pt="3 · Preço e disponibilidade" data-en="3 · Pricing and availability">3 · Preço e disponibilidade</div>
       <div class="grid2">
-        <label><span data-pt="Como cobras? *" data-en="How do you charge? *">Como cobras? *</span><select required name="pricing_type" id="pricingType"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote">Sob orçamento</option></select></label>
+        <label><span data-pt="Como cobras? *" data-en="How do you charge? *">Como cobras? *</span><select required name="pricing_type" id="pricingType"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote only">Sob orçamento</option></select></label>
         <label><span data-pt="Valor do serviço (€)" data-en="Service price (€)">Valor do serviço (€)</span><input id="price" name="price" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="40"><small class="note" data-pt="Este é o valor base do serviço. O TRIÂNGULO acrescenta 12% ao preço apresentado ao cliente; essa taxa não é descontada do valor que definiste." data-en="This is the base service price. TRIÂNGULO adds 12% to the price shown to the customer; that fee is not deducted from the price you set.">Este é o valor base do serviço. O TRIÂNGULO acrescenta 12% ao preço apresentado ao cliente; essa taxa não é descontada do valor que definiste.</small></label>
         <label><span data-pt="Disponibilidade (opcional)" data-en="Availability (optional)">Disponibilidade (opcional)</span><input name="availability" maxlength="500" data-ph-pt="Ex.: Seg–Sex, 09:00–18:00" data-ph-en="E.g. Mon–Fri, 09:00–18:00"></label>
         <label><span data-pt="Foto ou logótipo (opcional)" data-en="Photo or logo (optional)">Foto ou logótipo (opcional)</span><input id="providerPhoto" type="file" accept="image/jpeg,image/png,image/webp"><small class="note" data-pt="JPG, PNG ou WebP. A imagem é comprimida antes do envio." data-en="JPG, PNG or WebP. The image is compressed before upload.">JPG, PNG ou WebP. A imagem é comprimida antes do envio.</small><img id="providerPhotoPreview" class="photo-preview" alt=""></label>
@@ -125,14 +125,16 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const SUPABASE_URL='https://cozamrvrhmwgxbuubjub.supabase.co';
 const SUPABASE_KEY='sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let lang=localStorage.getItem('tri_lang')||'pt', photoData=null, started=Date.now();
+const urlLang=new URLSearchParams(location.search).get('lang');
+let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt'), photoData=null, started=Date.now();
 
 function setLang(next){
   lang=next; localStorage.setItem('tri_lang',lang); document.documentElement.lang=lang;
   $$('[data-pt][data-en]').forEach(el=>{el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en});
   $$('[data-ph-pt]').forEach(el=>{el.placeholder=el.dataset['ph'+lang.charAt(0).toUpperCase()+lang.slice(1)]||el.dataset['ph-'+lang]||el.dataset[lang==='pt'?'phPt':'phEn']||''});
   $('#pt').classList.toggle('active',lang==='pt'); $('#en').classList.toggle('active',lang==='en');
-  document.title=lang==='pt'?'Candidatura de Prestador de Serviços — TRIÂNGULO':'Service Provider application — TRIÂNGULO';
+  document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
+  document.title=lang==='pt'?'Candidatura de Prestador de Serviços — TRIÂNGULO':'Service Provider Application — TRIÂNGULO';
 }
 $('#pt').onclick=()=>{setLang('pt');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()}; $('#en').onclick=()=>{setLang('en');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()};
 
