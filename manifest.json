@@ -7,7 +7,8 @@
   "scope": "/",
   "display": "standalone",
   "display_override": [
-    "standalone"
+    "standalone",
+    "minimal-ui"
   ],
   "background_color": "#123a68",
   "theme_color": "#123a68",
@@ -62,7 +63,7 @@
     {
       "name": "Login prestador",
       "short_name": "Login prestador",
-      "url": "/servicos/?prestador=1",
+      "url": "/servicos/?prestador=1&entry=provider-pwa",
       "icons": [
         {
           "src": "/icons/triangulo-blue-192.png",
@@ -77,5 +78,9 @@
     "business",
     "productivity",
     "utilities"
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred"
 }
