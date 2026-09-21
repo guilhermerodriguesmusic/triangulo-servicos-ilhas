@@ -1738,31 +1738,44 @@ function closeProviderArea(){
   runSearch(activeSearchQuery,activeServiceGroup);
 }
 async function loadProviderAccount(){
-  paShow('paLoading');
   providerSessionToken=store.get('tri_provider_session','');
-  if(!providerSessionToken){providerAccountData=null;paShow('paSignedOut');return}
+  const status=$('#providerLoginStatus');
+  providerAccountData=null;
+
+  // Never block the provider entry screen behind a spinner.
+  // Show the sign-in form immediately; if a valid saved session exists,
+  // replace it with the dashboard as soon as the session check returns.
+  paShow('paSignedOut');
+  if(status)status.textContent='';
+  if(!providerSessionToken)return;
+
+  if(status)status.textContent=lang==='pt'?'A recuperar a tua sessão…':'Restoring your session…';
+
   let response;
   try{
     response=await Promise.race([
-      db.rpc('provider_session_context',{p_session_token:providerSessionToken}),
-      new Promise(resolve=>setTimeout(()=>resolve({data:null,error:{message:'timeout'},timedOut:true}),7000))
+      Promise.resolve(db.rpc('provider_session_context',{p_session_token:providerSessionToken})),
+      new Promise(resolve=>setTimeout(()=>resolve({data:null,error:{message:'timeout'},timedOut:true}),5000))
     ]);
   }catch(e){
     response={data:null,error:e};
   }
+
   const {data,error}=response||{};
   if(response&&response.timedOut){
-    providerAccountData=null;
-    paShow('paSignedOut');
-    const status=$('#providerLoginStatus');
-    if(status)status.textContent=lang==='pt'?'A verificação demorou demasiado. Entra novamente.':'The session check took too long. Please sign in again.';
+    providerSessionToken='';store.set('tri_provider_session','');
+    if(status)status.textContent='';
     return;
   }
   if(error||!data||!data.ok){
     if(error)console.error('provider_session_context',error);
-    providerAccountData=null;providerSessionToken='';store.set('tri_provider_session','');paShow('paSignedOut');return
+    providerSessionToken='';store.set('tri_provider_session','');
+    if(status)status.textContent='';
+    return;
   }
+
   providerAccountData=data;
+  if(status)status.textContent='';
   renderProviderDashboard(data);
   paShow('paDashboard');
 }
