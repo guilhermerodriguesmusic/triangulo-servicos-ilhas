@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260921-prelaunch-v6';
+const CACHE='triangulo-pwa-20260921-v1-0-rc1';
 const CORE=[
   '/',
   '/index.html',
@@ -14,6 +14,9 @@ const CORE=[
   '/logo.svg',
   '/logo-v2.svg',
   '/assets/pico-home-hq.webp',
+  '/assets/pico-real.jpg',
+  '/assets/faial-real.jpg',
+  '/assets/sao-jorge-real.jpg',
   '/icons/triangulo-blue-192.png',
   '/icons/triangulo-blue-512.png',
   '/icons/triangulo-blue-maskable-512.png',
@@ -31,11 +34,18 @@ const PRIVATE_ENTRY_PARAMS=[
   'payment'
 ];
 
+function isServicesPath(url){
+  return url.origin===self.location.origin && url.pathname==='/servicos/';
+}
+
+function hasPrivateEntryParams(url){
+  return PRIVATE_ENTRY_PARAMS.some(key=>url.searchParams.has(key));
+}
+
 function isPublicServicesClient(clientUrl){
   try{
     const url=new URL(clientUrl);
-    if(url.origin!==self.location.origin||url.pathname!=='/servicos/')return false;
-    if(PRIVATE_ENTRY_PARAMS.some(key=>url.searchParams.has(key)))return false;
+    if(!isServicesPath(url)||hasPrivateEntryParams(url))return false;
     if(url.hash==='#prestador'||url.hash==='#provider'||url.hash.startsWith('#provider-password='))return false;
     return true;
   }catch{
@@ -60,8 +70,6 @@ self.addEventListener('activate',event=>{
       keys.filter(key=>key.startsWith('triangulo-')&&key!==CACHE).map(key=>caches.delete(key))
     );
 
-    // If a normal /servicos/ tab is still showing a pre-fix cached onboarding,
-    // refresh it once under the new worker. Never touch private/deep-link flows.
     const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});
     await Promise.all(windows.map(client=>{
       if(!isPublicServicesClient(client.url))return Promise.resolve();
@@ -70,26 +78,44 @@ self.addEventListener('activate',event=>{
   })());
 });
 
-async function networkFirst(request,fallback){
+async function networkFirst(request,fallback,cacheKey=request){
   try{
     const response=await fetch(request,{cache:'no-store'});
     if(response&&response.ok){
       const cache=await caches.open(CACHE);
-      cache.put(request,response.clone()).catch(()=>{});
+      cache.put(cacheKey,response.clone()).catch(()=>{});
     }
     return response;
   }catch{
-    return (await caches.match(request)) || (fallback?await caches.match(fallback):undefined) || Response.error();
+    return (await caches.match(cacheKey)) || (await caches.match(request)) || (fallback?await caches.match(fallback):undefined) || Response.error();
+  }
+}
+
+async function privateNavigation(request,fallback){
+  try{
+    return await fetch(request,{cache:'no-store'});
+  }catch{
+    return (fallback?await caches.match(fallback):undefined) || Response.error();
   }
 }
 
 self.addEventListener('fetch',event=>{
   const request=event.request;
-  if(request.method!=='GET') return;
+  if(request.method!=='GET')return;
   const url=new URL(request.url);
-  if(url.origin!==self.location.origin) return;
+  if(url.origin!==self.location.origin)return;
 
   if(request.mode==='navigate'){
+    // Never persist private request/session tokens in Cache Storage.
+    if(isServicesPath(url)&&hasPrivateEntryParams(url)){
+      event.respondWith(privateNavigation(request,'/servicos/'));
+      return;
+    }
+    // /servicos/ is one static document; query strings are client-side state.
+    if(isServicesPath(url)){
+      event.respondWith(networkFirst(request,'/servicos/','/servicos/'));
+      return;
+    }
     event.respondWith(networkFirst(request,'/servicos/'));
     return;
   }
