@@ -969,7 +969,7 @@ body.route-public-results #explore{display:block!important}
   .result-title small{font-size:10.5px;margin-top:4px}
   .real-empty-no-results{padding:14px;border-radius:18px;gap:10px}
   .real-empty-no-results .empty-state-copy b{font-size:12.5px;line-height:1.25}
-  .real-empty-no-results .empty-state-copy span{font-size:10.5px}
+  .real-empty-no-results .empty-state-copy span{font-size:10.5px}.empty-state-assurance{display:inline-flex!important;width:max-content;margin-top:7px;padding:5px 8px;border-radius:999px;background:#eef8f4;color:#17745e;font-size:9.5px!important;font-weight:850}
   .real-empty-no-results .empty-provider-cta{font-size:10px}
   .real-empty-no-results .primary{min-height:45px;font-size:13px}
   .bottom-nav{
@@ -1516,9 +1516,10 @@ function updateResults(q=activeSearchQuery){
  }else if(activeResultsSort==='completed'){
    list=[...list].sort((a,b)=>Number(b.completed_jobs||0)-Number(a.completed_jobs||0)||Number(b.rank_score||0)-Number(a.rank_score||0));
  }
- $('#resultsCount').textContent=list.length?(lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' disponível'+(list.length===1?'':'is')):(list.length+' provider'+(list.length===1?'':'s')+' available')):(lang==='pt'?('Nenhum prestador encontrado '+(island==='Pico'?'no Pico':island==='Faial'?'no Faial':'em São Jorge')):('No providers found on '+island));
+ $('#resultsCount').textContent=list.length?(lang==='pt'?(list.length+' prestador'+(list.length===1?'':'es')+' disponível'+(list.length===1?'':'is')):(list.length+' provider'+(list.length===1?'':'s')+' available')):(lang==='pt'?('A rede ainda está a crescer '+(island==='Pico'?'no Pico':island==='Faial'?'no Faial':'em São Jorge')):('The network is still growing on '+island));
  if(!list.length){
-  $('#resultsList').innerHTML='<div class="real-empty real-empty-no-results"><div class="empty-state-icon" aria-hidden="true">⌕</div><div class="empty-state-copy"><b>'+(lang==='pt'?'Ainda não encontrámos um prestador direto.':'We haven’t found a direct provider yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas e procuramos automaticamente alguém compatível.':'Tell us what you need and we’ll automatically look for someone suitable.')+'</span><a class="empty-provider-cta" href="/prestadores.html">'+(lang==='pt'?'Prestas este serviço? Junta-te ao TRIÂNGULO →':'Do you offer this service? Join TRIÂNGULO →')+'</a></div><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Encontra alguém por mim':'Find someone for me')+'</button></div>';
+  const placePt=island==='Pico'?'no Pico':island==='Faial'?'no Faial':'em São Jorge';
+  $('#resultsList').innerHTML='<div class="real-empty real-empty-no-results"><div class="empty-state-icon" aria-hidden="true">⌕</div><div class="empty-state-copy"><b>'+(lang==='pt'?'Ainda não temos a pessoa certa '+placePt+'.':'We don’t have the right provider on '+island+' yet.')+'</b><span>'+(lang==='pt'?'Diz-nos o que precisas. O pedido fica registado e o TRIÂNGULO procura um prestador compatível por ti.':'Tell us what you need. Your request is recorded and TRIÂNGULO will look for a suitable provider for you.')+'</span><span class="empty-state-assurance">'+(lang==='pt'?'Sem conta · sem compromisso':'No account · no commitment')+'</span><a class="empty-provider-cta" href="/prestadores.html">'+(lang==='pt'?'Prestas este serviço? Junta-te ao TRIÂNGULO →':'Do you offer this service? Join TRIÂNGULO →')+'</a></div><button class="primary" type="button" id="emptyPost">'+(lang==='pt'?'Pedir ajuda '+placePt:'Ask for help on '+island)+'</button></div>';
   const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
  $('#resultsList').innerHTML=list.map(s=>{
@@ -1618,7 +1619,7 @@ $('#requestForm').onsubmit=async e=>{
   if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível publicar.':'Could not post.');submitBtn.disabled=false;return}
   saveBookingLocal({kind:'matching',token:data.client_token,island,description:payload.description,date:payload.requested_date||'',status:data.state||'matching',matched_count:Number(data.matched_count||0),createdAt:new Date().toISOString()});
   form.reset();syncRequestContactPreference();status.textContent='';submitBtn.disabled=false;closeSheets();
-  toast(lang==='pt'?'Pedido recebido ✓ Acompanha em “Os meus pedidos”.':'Request received ✓ Track it in “My requests”.');
+  toast(Number(data.matched_count||0)>0?(lang==='pt'?'Pedido recebido ✓ Já avisámos prestadores compatíveis.':'Request received ✓ We have already notified suitable providers.'):(lang==='pt'?'Pedido recebido ✓ O TRIÂNGULO vai procurar alguém por ti.':'Request received ✓ TRIÂNGULO will look for someone for you.'));
  }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.';submitBtn.disabled=false}
 };
 $('#contactForm').onsubmit=async e=>{
