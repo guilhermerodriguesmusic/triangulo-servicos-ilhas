@@ -518,6 +518,174 @@
  .results-sort{max-width:48%}
 }
 </style>
+
+<style id="desktop-marketplace-v3">
+.desktop-client-nav{display:none}
+
+/* Tablet/desktop: the public services area should feel like a website, not a phone mockup. */
+@media(min-width:760px){
+  body{padding:18px 0}
+  .app{
+    width:min(980px,calc(100% - 36px));
+    min-height:0;
+    border-radius:30px;
+    overflow:hidden;
+  }
+  #mainShell{min-height:0;padding-bottom:28px}
+  .topbar{
+    height:76px;
+    padding:13px 28px;
+    gap:22px;
+  }
+  .topbar .brand-full{width:170px}
+  .topbar-actions{gap:16px;margin-left:auto}
+  .topbar-link{font-size:11.5px}
+  .topbar-link.primary-link{padding:10px 15px}
+  .screen{padding-left:28px;padding-right:28px;padding-bottom:42px}
+  #home{
+    max-width:860px;
+    margin:0 auto;
+    padding-bottom:34px;
+  }
+  #home .home-hero{
+    margin:0 -28px;
+    padding:18px 28px 24px;
+  }
+  #home .home-title{margin-top:16px}
+  #home .home-title h1{font-size:36px}
+  #home .home-title p{font-size:13px}
+  #home .searchbar{height:60px}
+  #home .searchbar input{font-size:16px}
+  #home .section-head{margin-top:22px}
+  #home .category{min-height:94px}
+  #home .urgent{margin-top:16px;padding:15px 16px}
+
+  /* Existing results layout becomes a proper marketplace canvas. */
+  body.results-mode .app{
+    width:min(1180px,calc(100% - 44px));
+    min-height:0;
+  }
+  body.results-mode #mainShell{min-height:0}
+  body.results-mode #explore{padding:22px 38px 42px}
+  body.results-mode .results-head{
+    max-width:1040px;
+    margin:3px auto 0;
+  }
+  body.results-mode .results-search{height:54px}
+  body.results-mode .results-search input{font-size:16px}
+  body.results-mode .results-filters{margin-top:14px;margin-bottom:16px}
+  body.results-mode .result-filter{padding:9px 13px;font-size:11px}
+  body.results-mode .results-tools{margin-bottom:18px}
+  body.results-mode .results-island{font-size:11.5px;padding:10px 14px}
+  body.results-mode .results-sort{font-size:11px;padding:9px 11px}
+  body.results-mode .result-title{
+    align-items:flex-end;
+    margin-top:7px;
+    margin-bottom:16px;
+  }
+  body.results-mode .result-title h2{
+    font-size:30px;
+    line-height:1.05;
+    letter-spacing:-.035em;
+  }
+  body.results-mode .result-title small{
+    font-size:12px;
+    margin-top:7px;
+  }
+  body.results-mode .results-list{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+  }
+  body.results-mode .result-card{
+    min-height:192px;
+    padding:16px;
+    grid-template-columns:118px minmax(0,1fr);
+    gap:15px;
+    border-radius:20px;
+    box-shadow:0 9px 26px rgba(18,50,74,.075);
+  }
+  body.results-mode .result-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 34px rgba(18,50,74,.11);
+  }
+  body.results-mode .result-card img{
+    width:118px;
+    height:158px;
+    border-radius:15px;
+  }
+  body.results-mode .result-card b{font-size:17px}
+  body.results-mode .result-card .loc{font-size:11px}
+  body.results-mode .result-card .desc{font-size:11.5px;line-height:1.5}
+  body.results-mode .provider-tag{font-size:9.5px;padding:5px 7px}
+  body.results-mode .provider-price{font-size:16px!important}
+  body.results-mode .result-card-action button{
+    padding:10px 13px;
+    font-size:11px;
+  }
+  body.results-mode .real-empty{
+    grid-column:1/-1;
+    padding:38px 24px;
+  }
+  body.results-mode #postFromResults{
+    margin-top:22px;
+    padding:15px 18px;
+    background:#f5f8f6;
+    border:1px dashed #cddfd5;
+    box-shadow:none;
+    color:#35644c;
+  }
+  body.results-mode .results-list:has(.real-empty) + #postFromResults{display:none}
+}
+
+/* Full desktop: replace the mobile bottom bar with compact top navigation. */
+@media(min-width:960px){
+  .desktop-client-nav{
+    display:flex;
+    align-items:center;
+    gap:2px;
+    margin-left:auto;
+  }
+  .desktop-client-nav button{
+    border:0;
+    background:transparent;
+    color:#536b7c;
+    border-radius:999px;
+    padding:9px 10px;
+    font-size:10.5px;
+    font-weight:800;
+    white-space:nowrap;
+  }
+  .desktop-client-nav button:hover,
+  .desktop-client-nav button.active{
+    background:#f0f5f3;
+    color:var(--navy);
+  }
+  .desktop-client-nav .desktop-nav-primary{
+    color:#256447;
+    background:#edf5e8;
+  }
+  .topbar{padding-left:30px;padding-right:30px}
+  .topbar-actions{gap:12px;margin-left:8px}
+  .bottom-nav{display:none!important}
+  #mainShell{padding-bottom:26px!important}
+  .screen{padding-bottom:32px}
+  #home{padding-bottom:28px}
+}
+
+/* Medium screens keep the familiar bottom navigation until there is room for top navigation. */
+@media(min-width:760px) and (max-width:959px){
+  body.results-mode .bottom-nav{display:grid}
+  body.results-mode #mainShell{padding-bottom:86px}
+  body.results-mode #explore{padding-bottom:104px}
+}
+
+/* Avoid an overly wide two-column card squeeze. */
+@media(min-width:760px) and (max-width:880px){
+  body.results-mode .results-list{grid-template-columns:1fr}
+  body.results-mode .result-card{grid-template-columns:112px minmax(0,1fr)}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -575,7 +743,7 @@
   </div>
 </section>
 <section id="mainShell">
- <header class="topbar"><a class="logo-row" href="/" aria-label="TRIÂNGULO Açores"><img class="brand-full" src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="topbar-actions"><a class="topbar-link" href="/prestadores.html" data-pt="Prestar serviços" data-en="Offer services">Prestar serviços</a><a class="topbar-link primary-link" href="/servicos/?prestador=1" data-pt="Login prestador" data-en="Provider login">Login prestador</a><div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div></div></header>
+ <header class="topbar"><a class="logo-row" href="/" aria-label="TRIÂNGULO Açores"><img class="brand-full" src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><nav class="desktop-client-nav" aria-label="Navegação de cliente"><button type="button" data-nav="home" data-pt="Início" data-en="Home">Início</button><button type="button" data-nav="explore" data-pt="Serviços" data-en="Services">Serviços</button><button type="button" id="desktopPublishNav" class="desktop-nav-primary" data-pt="Pedir ajuda" data-en="Get help">Pedir ajuda</button><button type="button" id="desktopHelpNav" data-pt="Ajuda" data-en="Help">Ajuda</button><button type="button" data-nav="profile" data-pt="Mais" data-en="More">Mais</button></nav><div class="topbar-actions"><a class="topbar-link" href="/prestadores.html" data-pt="Prestar serviços" data-en="Offer services">Prestar serviços</a><a class="topbar-link primary-link" href="/servicos/?prestador=1" data-pt="Login prestador" data-en="Provider login">Login prestador</a><div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div></div></header>
  <main>
   <section id="home" class="screen active">
    <div class="home-hero"><div class="island-select"><button id="islandPill"><svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Pico</span><span aria-hidden="true">⌄</span></button></div><div class="home-title"><h1 data-t="whatNeed">O que precisas?</h1><p data-t="homeSub">Serviços locais para o teu dia a dia.</p></div><form id="searchForm" class="searchbar" role="search" aria-label="Pesquisar serviços"><span>⌕</span><input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" placeholder="Limpeza, jardim, aulas..."><button type="submit" aria-label="Pesquisar">→</button></form></div>
@@ -1053,6 +1221,7 @@ $('#searchForm').onsubmit=e=>{e.preventDefault();runSearch($('#searchInput').val
 $$('[data-results-group]').forEach(b=>b.onclick=()=>runSearch(activeSearchQuery,b.dataset.resultsGroup||null));
 const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandBtn.onclick=()=>openSheet('islandSheet');
 const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{activeResultsSort=e.target.value;updateResults(activeSearchQuery)};
+const desktopPublishNav=$('#desktopPublishNav');if(desktopPublishNav)desktopPublishNav.onclick=()=>openRequest();const desktopHelpNav=$('#desktopHelpNav');if(desktopHelpNav)desktopHelpNav.onclick=()=>openSheet('contactSheet');
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
 $('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const helpNav=$('#helpNav');if(helpNav)helpNav.onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
 function openRequest(prefill=''){
