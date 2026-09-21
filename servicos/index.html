@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="application-name" content="TRIÂNGULO">
 <meta name="theme-color" content="#123a68">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/logo.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="/icons/triangulo-blue-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 <style>
 :root{
  --navy:#0a3157;--blue:#2f7894;--sky:#eef7f7;--green:#5f8d50;--green2:#edf5e8;
@@ -945,6 +946,37 @@ body.sheet-open{overflow:hidden}
 body.route-public-results #home{display:none!important}
 body.route-public-results #explore{display:block!important}
 </style>
+<style id="mobile-marketplace-polish-v10">
+.results-list:has(.real-empty) + #postFromResults{display:none!important}
+@media(max-width:620px){
+  #explore{padding-left:14px;padding-right:14px;padding-top:10px;padding-bottom:98px}
+  .results-head{gap:5px}
+  .results-head .back{padding-left:0;padding-right:3px}
+  .results-search{height:48px}
+  .results-search input{font-size:14px}
+  .results-filters{
+    margin:10px -14px 12px;padding:0 30px 3px 14px;gap:6px;
+    scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+  }
+  .result-filter{padding:7px 10px;font-size:10px;scroll-snap-align:start}
+  .results-tools{margin-bottom:11px;gap:8px}
+  .results-island{padding:8px 10px;font-size:10.5px}
+  .results-sort{padding:8px;font-size:10px;max-width:52%}
+  .result-title{margin-bottom:9px}
+  .result-title h2{font-size:20px;line-height:1.12}
+  .result-title small{font-size:10.5px;margin-top:4px}
+  .real-empty-no-results{padding:14px;border-radius:18px;gap:10px}
+  .real-empty-no-results .empty-state-copy b{font-size:12.5px;line-height:1.25}
+  .real-empty-no-results .empty-state-copy span{font-size:10.5px}
+  .real-empty-no-results .empty-provider-cta{font-size:10px}
+  .real-empty-no-results .primary{min-height:45px;font-size:13px}
+  .bottom-nav{
+    height:calc(68px + env(safe-area-inset-bottom));
+    box-shadow:0 -8px 24px rgba(18,50,74,.06);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  }
+}
+</style>
 </head>
 <body>
 <script>
@@ -1042,7 +1074,7 @@ body.route-public-results #explore{display:block!important}
   <section id="profile" class="screen"><div class="page-title"><h1 data-t="profile">Mais</h1></div><div class="card settings"><button id="bookingsBtn">📅<div><b data-t="myBookings">Os meus pedidos</b><small data-t="myBookingsSub">Acompanha pedidos sem criar conta</small></div>›</button><button id="changeIslandBtn">📍<div><b data-t="island">Ilha</b><small id="profileIsland2">Pico</small></div>›</button><button id="providerPortalBtn" class="profile-row"><span>🧰</span><div><b data-pt="Para prestadores" data-en="For providers">Para prestadores</b><small data-pt="Criar perfil ou entrar na área do prestador" data-en="Create a profile or sign in to the provider area">Criar perfil ou entrar na área do prestador</small></div><span>›</span></button><button id="contactTrianguloBtn" class="profile-row"><span>✉️</span><div><b data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</b><small data-pt="Envia-nos uma mensagem" data-en="Send us a message">Envia-nos uma mensagem</small></div><span>›</span></button><button id="installBtn">⬇️<div><b data-t="install">Instalar TRIÂNGULO</b><small data-t="installSub">Adicionar ao ecrã principal</small></div>›</button></div><div class="card settings" style="margin-top:10px"><button id="howItWorksBtn">ℹ️<div><b data-pt="Como funciona" data-en="How it works">Como funciona</b><small data-pt="Pedidos, preços e contactos" data-en="Requests, prices and contact details">Pedidos, preços e contactos</small></div>›</button><button id="privacyBtn">🔒<div><b data-pt="Privacidade" data-en="Privacy">Privacidade</b><small data-pt="Como tratamos os teus dados" data-en="How we handle your data">Como tratamos os teus dados</small></div>›</button><button id="termsBtn">📄<div><b data-pt="Termos" data-en="Terms">Termos</b><small data-pt="Regras de utilização do TRIÂNGULO" data-en="TRIÂNGULO terms of use">Regras de utilização do TRIÂNGULO</small></div>›</button></div></section>
  <section id="bookings" class="screen"><div class="page-title"><button class="back" type="button" data-profile aria-label="Voltar" data-aria-pt="Voltar" data-aria-en="Back">‹</button><h1 data-t="myBookings">Os meus pedidos</h1><span></span></div><div id="bookingList" class="stack"></div></section>
  </main>
- <nav class="bottom-nav"><button data-nav="home" class="active"><span id="icoHome"></span><small data-t="home">Início</small></button><button data-nav="explore"><span id="icoSearch"></span><small data-t="explore">Explorar</small></button><button id="publishNav" class="publish"><span id="icoPlus"></span><small data-t="publish">Publicar</small></button><button id="helpNav"><span id="icoChat"></span><small data-t="help">Ajuda</small></button><button data-nav="profile"><span id="icoUser"></span><small data-t="profile">Mais</small></button></nav>
+ <nav class="bottom-nav"><button data-nav="home" class="active"><span id="icoHome"></span><small data-t="home">Início</small></button><button data-nav="explore"><span id="icoSearch"></span><small data-t="explore">Serviços</small></button><button id="publishNav" class="publish"><span id="icoPlus"></span><small data-t="publish">Pedir ajuda</small></button><button id="bookingsNav" data-nav="bookings"><span id="icoBookings"></span><small data-pt="Pedidos" data-en="Requests">Pedidos</small></button><button data-nav="profile"><span id="icoUser"></span><small data-t="profile">Mais</small></button></nav>
 </section>
 </div>
 <div id="backdrop" class="backdrop"></div>
@@ -1292,6 +1324,7 @@ home:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><p
 search:`<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>`,
 plus:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>`,
 chat:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>`,
+calendar:`<svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/><path d="M8 14h3M13 14h3M8 17h3"/></svg>`,
 user:`<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21c1-4 3.5-6 7-6s6 2 7 6"/></svg>`,
 house:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10.5V20h14v-9.5"/></svg>`,
 leaf:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 4C10 4 5 9 5 16c7 1 13-4 15-12Z"/><path d="M5 20c2-5 6-8 11-11"/></svg>`,
@@ -1302,7 +1335,7 @@ lotus:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 19c-5 0-8-3-8-7 4 
 camera:`<svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="4"/><path d="m8 7 1-3h6l1 3"/></svg>`,
 laptop:`<svg class="svg-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="1"/><path d="M2 20h20"/></svg>`,
 truck:`<svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>`};
-$('#icoHome').innerHTML=icons.home;$('#icoSearch').innerHTML=icons.search;$('#icoPlus').innerHTML=icons.plus;$('#icoChat').innerHTML=icons.chat;$('#icoUser').innerHTML=icons.user;
+$('#icoHome').innerHTML=icons.home;$('#icoSearch').innerHTML=icons.search;$('#icoPlus').innerHTML=icons.plus;$('#icoBookings').innerHTML=icons.calendar;$('#icoUser').innerHTML=icons.user;
 const categories=[
  {pt:'Casa & Limpeza',en:'Home & Cleaning',shortPt:'Casa',shortEn:'Home',icon:'house',keys:['casa','limpeza','limpar','faxina','lavandaria','janelas','house','cleaning','cleaner','laundry']},
  {pt:'Jardim & Terrenos',en:'Garden & Land',shortPt:'Jardim',shortEn:'Garden',icon:'leaf',keys:['jardim','jardinagem','erva','relva','roçar','rocar','terreno','poda','podar','garden','gardening','mowing','grass','yard','land']},
@@ -1516,7 +1549,7 @@ const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandB
 const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{activeResultsSort=e.target.value;updateResults(activeSearchQuery)};
 const desktopPublishNav=$('#desktopPublishNav');if(desktopPublishNav)desktopPublishNav.onclick=()=>openRequest();
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
-$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const helpNav=$('#helpNav');if(helpNav)helpNav.onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
+$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
 function syncRequestContactPreference(){
  const f=$('#requestForm'),email=f.client_email.value.trim(),phone=f.client_phone.value.trim(),row=$('#requestPreferenceRow');
  if(email&&phone){row.hidden=false;if(!f.contact_preference.value)f.contact_preference.value='both'}
@@ -1696,7 +1729,7 @@ async function startBookingCheckout(token,btn){
 async function openClientBookings(){showScreen('bookings');renderBookings();await syncLocalBookings();renderBookings();}
 
 function openProviderSignup(){openProviderArea()}
-$('#bookingsBtn').onclick=openClientBookings;
+$('#bookingsBtn').onclick=openClientBookings;const bookingsNav=$('#bookingsNav');if(bookingsNav)bookingsNav.onclick=openClientBookings;
 $('#providerPortalBtn').onclick=()=>{location.href='/prestadores.html'};
 $('#howItWorksBtn').onclick=()=>{location.href='/how-it-works.html'};
 $('#privacyBtn').onclick=()=>{location.href='/privacy.html'};
