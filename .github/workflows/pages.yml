@@ -119,6 +119,9 @@ jobs:
           privacy="$(fetch "$base/privacy.html?verify=$GITHUB_SHA")"
           how="$(fetch "$base/how-it-works.html?verify=$GITHUB_SHA")"
           legacy_reply="$(fetch "$base/reserva-responder.html?verify=$GITHUB_SHA")"
+          install_page="$(fetch "$base/instalar/?verify=$GITHUB_SHA")"
+          app_redirect="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
+          home_redirect="$(fetch "$base/inicio.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/servicos/?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
@@ -147,6 +150,9 @@ jobs:
           grep -q "Privacidade" <<<"$app"
           grep -q "Termos" <<<"$app"
           grep -q "booking_token" <<<"$legacy_reply"
+          grep -q "Instalar TRIÂNGULO" <<<"$install_page"
+          grep -q "/servicos/" <<<"$app_redirect"
+          grep -q "location.replace('/')" <<<"$home_redirect"
           grep -q '"start_url": "/servicos/"' <<<"$manifest"
           grep -q '"display": "standalone"' <<<"$manifest"
           grep -q '"shortcuts"' <<<"$manifest"
@@ -161,6 +167,11 @@ jobs:
 
           if grep -q "#app" <<<"$index$app"; then
             echo "Legacy #app navigation returned"
+            exit 1
+          fi
+
+          if grep -Eq '(^|[^$])\$\([^)]*\)\.(forEach|map|filter|some|every|reduce)\(' <<<"$application$app"; then
+            echo "querySelector helper used as a collection"
             exit 1
           fi
 
