@@ -86,6 +86,9 @@ body{min-height:100svh;overflow-x:hidden}
   border:0;background:none;color:#fff;text-decoration:none;font-size:14px;font-weight:650;padding:8px 0;cursor:pointer;text-shadow:0 2px 11px rgba(0,0,0,.24)
 }
 .nav .with-chevron::after{content:"⌄";font-size:15px;margin-left:8px;position:relative;top:-1px}
+.nav>a{position:relative}
+.nav>a::before{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;border-radius:2px;background:#a5c75f;transform:scaleX(0);transform-origin:center;transition:transform .16s ease}
+.nav>a:hover::before{transform:scaleX(1)}
 .nav a:hover,.nav button:hover{opacity:.82}
 .nav-islands{position:relative;display:flex;align-items:center}
 .islands-menu{
@@ -327,7 +330,7 @@ h1{
   .hero{min-height:100svh}.hero::before{background-size:auto 100%;background-position:53% center}
   .top{display:flex;justify-content:space-between;padding-top:14px}.brand img{width:205px}.nav{display:none}.search-icon,.vrule{display:none}.login,.provider-join{display:none}
   .provider-mobile-cta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 2px 0;font-size:10px;font-weight:750;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.22)}
-  .provider-mobile-cta a{color:#fff;text-underline-offset:3px;font-weight:900}
+  .provider-mobile-cta a{display:inline-flex;align-items:center;color:#fff;text-decoration:none;font-weight:900;background:rgba(4,43,72,.58);border:1px solid rgba(255,255,255,.42);border-radius:999px;padding:8px 11px;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
   .stage{padding:72px 0 294px;align-items:flex-start}.copy{width:100%;padding:0 2px}.handnote{display:none}
   .kicker{font-size:9px;letter-spacing:.28em}.promise{font-size:28px}
   h1{font-size:clamp(52px,14vw,76px)}
@@ -351,7 +354,7 @@ h1{
   <header class="top">
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
     <nav class="nav" aria-label="Principal">
-      <a href="/servicos/" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
+      <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
       <div class="nav-islands" id="navIslandsWrap">
         <button type="button" class="with-chevron" id="navIslands" aria-haspopup="true" aria-expanded="false" data-pt="Ilhas" data-en="Islands">Ilhas</button>
         <div class="islands-menu" id="islandsMenu" aria-label="Ilhas">
@@ -408,11 +411,11 @@ h1{
   <section class="category-row" aria-label="Categorias">
     <a class="category" href="/servicos/?group=repairs" data-group="repairs">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
-      <span><b data-pt="Obras & Reparações" data-en="Repairs & Maintenance">Obras & Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrical and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
+      <span><b data-pt="Reparações & Mudanças" data-en="Repairs & Moving">Reparações & Mudanças</b><small data-pt="Reparações, tecnologia, mudanças e mais." data-en="Repairs, technology, moving and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=garden" data-group="garden">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M39 9C23 9 11 18 10 36c10-1 23-7 29-27Z"/><path d="M11 36c7-8 14-13 24-19"/></svg></span>
-      <span><b data-pt="Jardim & Exterior" data-en="Garden & Outdoor">Jardim & Exterior</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening and maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
+      <span><b data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</b><small data-pt="Limpeza de terrenos, jardinagem e manutenção." data-en="Land clearing, gardening and maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=home" data-group="home">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M7 23 24 9l17 14"/><path d="M11 21v20h26V21"/><path d="M20 41V29h8v12"/></svg></span>
@@ -420,7 +423,7 @@ h1{
     </a>
     <a class="category" href="/servicos/?group=personal" data-group="personal">
       <span class="category-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><circle cx="11" cy="18" r="4"/><circle cx="37" cy="18" r="4"/><path d="M14 39v-5c0-6 4-10 10-10s10 4 10 10v5"/><path d="M4 38v-4c0-5 3-8 8-8 2 0 4 .5 5 1.5"/><path d="M44 38v-4c0-5-3-8-8-8-2 0-4 .5-5 1.5"/></svg></span>
-      <span><b data-pt="Serviços Pessoais" data-en="Personal Services">Serviços Pessoais</b><small data-pt="Bem-estar, aulas, eventos e serviços do dia a dia." data-en="Wellness, lessons, events and everyday services.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
+      <span><b data-pt="Aulas, Bem-estar & Mais" data-en="Lessons, Wellness & More">Aulas, Bem-estar & Mais</b><small data-pt="Aulas, bem-estar, criativos, animais e mais." data-en="Lessons, wellness, creative services, pets and more.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
     </a>
   </section>
 
