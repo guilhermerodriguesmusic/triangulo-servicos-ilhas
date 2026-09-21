@@ -1690,13 +1690,15 @@ $('#termsBtn').onclick=()=>{location.href='/terms.html'};
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
 $('#installBtn').onclick=async()=>{
  if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){toast(lang==='pt'?'O TRIÂNGULO já está instalado ✓':'TRIÂNGULO is already installed ✓');return}
- if(deferredInstallPrompt){deferredInstallPrompt.prompt();try{await deferredInstallPrompt.userChoice}catch{};deferredInstallPrompt=null;return}
- const isiOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
- if(isiOS){
-  toast(lang==='pt'?'Safari: Partilhar → Adicionar ao ecrã principal → Adicionar':'Safari: Share → Add to Home Screen → Add');
-  return;
+ if(deferredInstallPrompt){
+  try{
+   await deferredInstallPrompt.prompt();
+   await deferredInstallPrompt.userChoice;
+   deferredInstallPrompt=null;
+   return;
+  }catch{}
  }
- $('#bookContent').innerHTML='<h2>'+(lang==='pt'?'Instalar TRIÂNGULO':'Install TRIÂNGULO')+'</h2><p class="demo">'+(lang==='pt'?'Abre o menu do navegador e escolhe “Instalar app” ou “Adicionar ao ecrã principal”.':'Open the browser menu and choose “Install app” or “Add to Home Screen”.')+'</p>'; openSheet('bookSheet');
+ location.href='/instalar/';
 };
 let providerAccountData=null,providerSessionToken=store.get('tri_provider_session','');
 
