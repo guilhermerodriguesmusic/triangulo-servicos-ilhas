@@ -108,10 +108,10 @@ footer{border-top:1px solid #dbe5e2;padding:20px 0 26px;color:#718695;font-size:
   <div class="stage">
     <div class="copy">
       <p class="kicker" data-pt="PARA PRESTADORES" data-en="FOR PROVIDERS">PARA PRESTADORES</p>
-      <h1 data-pt="Mais clientes para o teu trabalho." data-en="More customers for your work.">Mais clientes para o teu trabalho.</h1>
+      <h1 data-pt="Mais clientes para o teu trabalho." data-en="More customers for your services.">Mais clientes para o teu trabalho.</h1>
       <p class="lead" data-pt="Cria gratuitamente o teu perfil no TRIÂNGULO e torna os teus serviços mais fáceis de encontrar no Pico, Faial e São Jorge. Escolhes onde trabalhas, os preços dos teus serviços e que pedidos queres aceitar." data-en="Create your TRIÂNGULO profile for free and make your services easier to find across Pico, Faial and São Jorge. You choose where you work, your service prices and which requests you want to accept.">Cria gratuitamente o teu perfil no TRIÂNGULO e torna os teus serviços mais fáceis de encontrar no Pico, Faial e São Jorge. Escolhes onde trabalhas, os preços dos teus serviços e que pedidos queres aceitar.</p>
       <div class="hero-actions">
-        <a class="cta" href="/candidatura-prestador.html" data-pt="Criar perfil gratuito →" data-en="Create free profile →">Criar perfil gratuito →</a>
+        <a class="cta" href="/candidatura-prestador.html" data-pt="Criar perfil gratuito →" data-en="Create a free profile →">Criar perfil gratuito →</a>
         <a class="login-link" href="/servicos/?prestador=1&entry=provider-20260921" data-pt="Já tens perfil? Entrar" data-en="Already have a profile? Sign in">Já tens perfil? Entrar</a>
       </div>
     </div>
@@ -128,7 +128,7 @@ footer{border-top:1px solid #dbe5e2;padding:20px 0 26px;color:#718695;font-size:
   <div class="info-grid">
     <section class="panel">
       <div class="eyebrow" data-pt="COMO FUNCIONA" data-en="HOW IT WORKS">COMO FUNCIONA</div>
-      <h2 data-pt="Simples para começares." data-en="Simple to get started.">Simples para começares.</h2>
+      <h2 data-pt="Simples para começares." data-en="Easy to get started.">Simples para começares.</h2>
       <div class="steps">
         <div class="step"><div class="num">1</div><div><b data-pt="Cria o teu perfil" data-en="Create your profile">Cria o teu perfil</b><span data-pt="Indica os serviços, as ilhas onde trabalhas e a tua disponibilidade." data-en="Add your services, the islands where you work and your availability.">Indica os serviços, as ilhas onde trabalhas e a tua disponibilidade.</span></div></div>
         <div class="step"><div class="num">2</div><div><b data-pt="Recebe pedidos compatíveis" data-en="Receive matching requests">Recebe pedidos compatíveis</b><span data-pt="O TRIÂNGULO aproxima clientes que procuram o tipo de trabalho que ofereces." data-en="TRIÂNGULO connects you with customers looking for the type of work you offer.">O TRIÂNGULO aproxima clientes que procuram o tipo de trabalho que ofereces.</span></div></div>
@@ -149,11 +149,13 @@ footer{border-top:1px solid #dbe5e2;padding:20px 0 26px;color:#718695;font-size:
   <div class="foot"><span>TRIÂNGULO Açores</span><div class="foot-links"><a href="/" data-pt="Início" data-en="Home">Início</a><a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a><a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a><a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a><a href="/terms.html" data-pt="Termos" data-en="Terms">Termos</a></div></div>
 </footer>
 <script>
-let lang=localStorage.getItem('tri_lang')||'pt';
+const urlLang=new URLSearchParams(location.search).get('lang');
+let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt');
 function setLang(v){
   lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;
   document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=v==='pt'?el.dataset.pt:el.dataset.en);
   document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en');
+  document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(v==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
   document.title=v==='pt'?'Para prestadores — TRIÂNGULO Açores':'For providers — TRIÂNGULO Azores';
 }
 document.querySelector('#pt').onclick=()=>setLang('pt');
