@@ -1283,6 +1283,37 @@ function renderProviderServices(services){
  $$('[data-edit-service]').forEach(btn=>btn.onclick=()=>openServiceEditor(btn.dataset.editService));
  $$('[data-pause-service]').forEach(btn=>btn.onclick=()=>pauseProviderService(btn.dataset.pauseService));
 }
+function openServiceEditor(id=null){
+ const form=$('#paServiceForm'),s=id&&providerAccountData?(providerAccountData.services||[]).find(x=>x.id===id):null;
+ form.reset();form.service_id.value=s?s.id:'';
+ form.title.value=s?s.title:'';
+ form.category_code.value=s?s.category_code:'home';
+ form.description.value=s&&s.description?s.description:'';
+ form.pricing_type.value=s?s.pricing_type:'hour';
+ form.price.value=s&&s.price!=null?s.price:'';
+ form.availability.value=s&&s.availability?s.availability:'';
+ form.dataset.status=s&&s.status?s.status:'active';
+ form.style.display='block';syncServicePriceField();form.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function syncServicePriceField(){
+ const form=$('#paServiceForm'),quote=form.pricing_type.value==='quote';
+ form.price.disabled=quote;form.price.required=!quote;if(quote)form.price.value='';
+}
+$('#paServiceForm [name="pricing_type"]').onchange=syncServicePriceField;
+$('#paServiceForm').onsubmit=async e=>{
+ e.preventDefault();const form=e.target,status=$('#paServiceStatus'),d=Object.fromEntries(new FormData(form));
+ const payload={category_code:d.category_code,title:(d.title||'').trim(),description:(d.description||'').trim()||null,pricing_type:d.pricing_type,price:d.pricing_type==='quote'?null:Number(d.price),availability:(d.availability||'').trim()||null,status:form.dataset.status||'active'};
+ status.textContent=lang==='pt'?'A guardar…':'Saving…';
+ const {data,error}=await db.rpc('provider_session_save_service',{p_session_token:providerSessionToken,p_service_id:d.service_id||null,p_payload:payload});
+ if(error||!data||!data.ok){status.textContent=(data&&data.message)||(lang==='pt'?'Não foi possível guardar.':'Could not save.');return}
+ status.textContent=lang==='pt'?'Serviço guardado ✓':'Service saved ✓';form.style.display='none';await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
+};
+async function pauseProviderService(id){
+ if(!id)return;
+ const {data,error}=await db.rpc('provider_session_remove_service',{p_session_token:providerSessionToken,p_service_id:id});
+ if(error||!data||!data.ok){toast((data&&data.message)||(lang==='pt'?'Não foi possível pausar.':'Could not pause.'));return}
+ toast(lang==='pt'?'Serviço pausado ✓':'Service paused ✓');await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
+}
 function syncProviderOther(){function syncProviderOther(){
   const on=$('#paOtherCat')&&$('#paOtherCat').checked;
   $('#paOtherService').hidden=!on;
@@ -1337,9 +1368,11 @@ $('#providerEntryBtn').onclick=openProviderArea;
 $('#providerAreaBtn').onclick=openProviderArea;
 $('#paPaymentsBtn').onclick=openProviderPayments;
 $('#paQuickRequestsBtn').onclick=()=>$('#paRequestsCard').scrollIntoView({behavior:'smooth',block:'start'});
-$('#paQuickPriceBtn').onclick=()=>openProviderProfileEditor('#paPrice');
+$('#paQuickPriceBtn').onclick=()=>$('#paServicesCard').scrollIntoView({behavior:'smooth',block:'start'});
 $('#paQuickAvailabilityBtn').onclick=()=>openProviderProfileEditor('#providerProfileForm [name="availability"]');
 $('#paCloseProfileBtn').onclick=()=>{const f=$('#providerProfileForm');f.hidden=true;$('#paDashboard').scrollIntoView({behavior:'smooth',block:'start'})};
+$('#paAddServiceBtn').onclick=()=>openServiceEditor();
+$('#paCancelServiceBtn').onclick=()=>{$('#paServiceForm').style.display='none';$('#paServiceStatus').textContent=''};
 $('#providerAreaBack').onclick=closeProviderArea;
 $('#providerLogoutBtn').onclick=providerSignOut;
 $('#providerLogoutFromMissing').onclick=providerSignOut;
