@@ -521,7 +521,7 @@
 </head>
 <body>
 <div class="app">
-<section id="splash">
+<section id="splash" class="hidden">
   <div class="client-welcome">
     <div class="welcome-lang-wrap">
       <div class="lang-switch welcome-lang"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div>
@@ -574,7 +574,7 @@
     </button>
   </div>
 </section>
-<section id="mainShell" class="hidden">
+<section id="mainShell">
  <header class="topbar"><a class="logo-row" href="/" aria-label="TRIÂNGULO Açores"><img class="brand-full" src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="topbar-actions"><a class="topbar-link" href="/prestadores.html" data-pt="Prestar serviços" data-en="Offer services">Prestar serviços</a><a class="topbar-link primary-link" href="/servicos/?prestador=1" data-pt="Login prestador" data-en="Provider login">Login prestador</a><div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div></div></header>
  <main>
   <section id="home" class="screen active">
@@ -1743,18 +1743,23 @@ async function init(){
    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
    history.replaceState({},'',location.pathname+'#app');
    setTimeout(async()=>{await openClientBookings();toast(paymentResult==='success'?(lang==='pt'?'Pagamento recebido/ a confirmar ✓':'Payment received / confirming ✓'):(lang==='pt'?'Pagamento cancelado.':'Payment cancelled.'))},50);
- }else if(location.hash==='#app'||store.get('tri_client_welcome_v4','')==='1'){ $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden') }
+   return;
+ }
+
+ // Public /servicos/ is a results page, not the old app onboarding.
+ $('#splash').classList.add('hidden');
+ $('#mainShell').classList.remove('hidden');
 
  const homeSearch=querySearch||store.get('tri_home_search','');
  if(homeSearch){
    store.set('tri_home_search','');
-   $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
    $('#searchInput').value=homeSearch;
    $('#resultsInput').value=homeSearch;
    setTimeout(()=>runSearch(homeSearch,activeServiceGroup),60);
  }else if(activeServiceGroup){
-   $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
    setTimeout(()=>runSearch('',activeServiceGroup),60);
+ }else{
+   setTimeout(()=>runSearch('',null),60);
  }
 
  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})
