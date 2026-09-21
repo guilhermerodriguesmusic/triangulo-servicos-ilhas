@@ -48,8 +48,8 @@
       ]
     },
     {
-      "name": "Prestar serviços",
-      "short_name": "Prestar serviços",
+      "name": "Para prestadores",
+      "short_name": "Prestadores",
       "url": "/prestadores.html",
       "icons": [
         {
@@ -71,5 +71,11 @@
         }
       ]
     }
+  ],
+  "orientation": "any",
+  "categories": [
+    "business",
+    "productivity",
+    "utilities"
   ]
 }
