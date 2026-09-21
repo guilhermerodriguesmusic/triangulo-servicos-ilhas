@@ -3,7 +3,7 @@
   "name": "TRIÂNGULO — Serviços locais nas ilhas",
   "short_name": "TRIÂNGULO",
   "description": "Serviços locais no Pico, Faial e São Jorge. Encontra. Reserva. Resolve.",
-  "start_url": "/app.html",
+  "start_url": "/servicos/",
   "scope": "/",
   "display": "standalone",
   "display_override": [
