@@ -146,7 +146,7 @@ jobs:
           grep -q "Application steps" <<<"$application"
           grep -q "Review Application" <<<"$review"
           grep -q "TRIÂNGULO Admin" <<<"$admin"
-          grep -q "Provider applications" <<<"$admin"
+          grep -q "Pending applications" <<<"$admin"
           grep -q "booking_client_context" <<<"$app"
           grep -q "stripe-create-checkout" <<<"$app"
           grep -q "Ativar pagamentos" <<<"$app"
