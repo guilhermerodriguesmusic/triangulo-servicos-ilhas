@@ -138,7 +138,7 @@ function setLang(next){
 $('#pt').onclick=()=>{setLang('pt');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()}; $('#en').onclick=()=>{setLang('en');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()};
 
 function applyPlaceholders(){
-  $('[data-ph-pt]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
+  document.querySelectorAll('[data-ph-pt]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
 }
 function applyInviteSource(){
   const invite=(new URLSearchParams(location.search).get('invite')||'').trim().toLowerCase();
