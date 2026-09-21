@@ -3,78 +3,172 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f3158">
-<title>TRIÂNGULO Açores</title>
-<meta name="description" content="TRIÂNGULO Açores — uma plataforma local que liga prestadores de serviços a clientes no Pico, Faial e São Jorge.">
+<meta name="theme-color" content="#0b3157">
+<title>TRIÂNGULO Açores — Serviços locais nas ilhas</title>
+<meta name="description" content="Encontra e reserva serviços locais no Pico, Faial e São Jorge. Pessoas da tua ilha, perfis revistos e pedidos simples.">
 <link rel="canonical" href="https://trianguloacores.pt/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TRIÂNGULO Açores">
-<meta property="og:title" content="TRIÂNGULO Açores">
-<meta property="og:description" content="Serviços locais no Pico, Faial e São Jorge. Encontra. Reserva. Resolve.">
+<meta property="og:title" content="TRIÂNGULO Açores — Serviços locais nas ilhas">
+<meta property="og:description" content="Encontra. Reserva. Resolve. Serviços locais no Pico, Faial e São Jorge.">
 <meta property="og:url" content="https://trianguloacores.pt/">
-<meta property="og:image" content="https://trianguloacores.pt/assets/pico-hero-real.jpg">
+<meta property="og:image" content="https://trianguloacores.pt/assets/pico-home-2026.webp">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/logo.svg">
+<link rel="preload" href="/assets/pico-home-2026.webp" as="image" type="image/webp">
 <style>
-:root{--navy:#0f3158;--green:#79e5c4}
+:root{--navy:#0b3157;--navy2:#062945;--green:#628f50;--mint:#e7f4eb;--white:#fff;--ink:#0d2941}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f3158;color:#fff}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b3157;color:#fff}
 body{min-height:100svh}
-.welcome{position:relative;min-height:100svh;display:grid;place-items:center;isolation:isolate;overflow:hidden;background:#0f3158;padding:calc(env(safe-area-inset-top) + 82px) 18px calc(env(safe-area-inset-bottom) + 36px)}
-.welcome:before{content:"";position:absolute;inset:0;z-index:-3;background:url('/assets/pico-hero-real.jpg') center 45%/cover no-repeat;transform:scale(1.02)}
-.welcome:after{content:"";position:absolute;inset:0;z-index:-2;background:
- linear-gradient(180deg,rgba(5,27,47,.22) 0%,rgba(6,34,57,.20) 38%,rgba(6,31,53,.60) 68%,rgba(5,26,45,.96) 100%),
- radial-gradient(circle at 72% 12%,rgba(121,229,196,.17),transparent 30%)}
-.top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 16px) 18px 0}
-.brand{display:flex;align-items:center;gap:9px;font-weight:950;letter-spacing:.08em;font-size:15px}
-.brand img{width:45px;height:48px;object-fit:contain;background:rgba(255,255,255,.92);border-radius:14px;padding:5px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
-.lang{display:flex;padding:3px;border-radius:999px;border:1px solid rgba(255,255,255,.20);background:rgba(4,31,53,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.lang button{border:0;background:transparent;color:rgba(255,255,255,.70);font-size:11px;font-weight:900;padding:7px 10px;border-radius:999px}
-.lang button.active{background:#fff;color:var(--navy)}
-.content{width:min(100%,760px);padding:0;text-align:center;display:flex;flex-direction:column;align-items:center}
-.kicker{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#9aedd4;margin-bottom:10px}
-h1{font-size:clamp(44px,11vw,72px);line-height:.94;letter-spacing:-.05em;margin:0;text-shadow:0 3px 24px rgba(0,0,0,.28)}
-p{font-size:14px;line-height:1.5;color:rgba(255,255,255,.82);margin:15px auto 0;max-width:590px}
-.cta{margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(100%,520px);padding:17px 18px 17px 20px;background:#fff;color:var(--navy);border-radius:20px;text-decoration:none;box-shadow:0 18px 42px rgba(0,0,0,.24)}
-.cta-copy{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}.cta-copy small,.cta-copy b{display:block;margin:0;padding:0}.cta-copy small{font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:#688096}.cta-copy b{font-size:17px}
-.arrow{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#def7ef;color:#087459;font-size:24px}
-.client{display:inline-block;margin-top:14px;color:rgba(255,255,255,.76);font-size:10px;text-decoration:none}
-@media(min-width:760px){
- .top{padding-left:34px;padding-right:34px}
+button,input{font:inherit}
+a{color:inherit}
+.hero{position:relative;min-height:100svh;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;background:#3279b8}
+.hero:before{content:"";position:absolute;inset:0;z-index:-3;background:url('/assets/pico-home-2026.webp') center 54%/cover no-repeat;transform:scale(1.01)}
+.hero:after{content:"";position:absolute;inset:0;z-index:-2;background:
+ linear-gradient(90deg,rgba(4,30,50,.34) 0%,rgba(4,30,50,.12) 48%,rgba(4,30,50,.08) 72%,rgba(4,30,50,.17) 100%),
+ linear-gradient(180deg,rgba(2,25,45,.04) 0%,rgba(2,25,45,.03) 45%,rgba(2,25,45,.48) 78%,rgba(2,25,45,.78) 100%)}
+.nav{width:min(100% - 48px,1440px);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:22px 0 8px}
+.logo{display:block;flex:0 0 auto}.logo img{display:block;width:285px;max-width:31vw;height:auto;filter:drop-shadow(0 2px 8px rgba(255,255,255,.25))}
+.navlinks{display:flex;align-items:center;gap:30px;margin-left:auto}
+.navlinks a{font-size:13px;font-weight:750;text-decoration:none;text-shadow:0 1px 10px rgba(0,0,0,.35)}
+.navlinks a:hover{text-decoration:underline;text-underline-offset:5px}
+.navright{display:flex;align-items:center;gap:13px}
+.lang{display:flex;gap:3px;border-left:1px solid rgba(255,255,255,.55);padding-left:14px}
+.lang button{border:0;background:transparent;color:rgba(255,255,255,.82);padding:7px 7px;font-size:12px;font-weight:900;cursor:pointer}
+.lang button.active{color:#fff;border-bottom:2px solid #8eac56}
+.login{border:1px solid rgba(255,255,255,.6);background:rgba(5,43,72,.82);backdrop-filter:blur(8px);color:#fff;border-radius:999px;padding:11px 18px;text-decoration:none;font-size:12px;font-weight:900}
+
+.hero-main{width:min(100% - 48px,1440px);margin:auto;display:flex;align-items:center;flex:1;padding:54px 0 88px}
+.copy{width:min(720px,62%);padding-left:30px}
+.eyebrow{font-size:11px;font-weight:850;letter-spacing:.28em;text-transform:uppercase;margin-bottom:15px;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:clamp(58px,7.4vw,112px);line-height:.79;letter-spacing:-.045em;margin:0;max-width:780px;text-shadow:0 3px 22px rgba(0,0,0,.22)}
+.promise{font-family:Georgia,"Times New Roman",serif;font-size:clamp(26px,2.8vw,42px);line-height:1;margin:24px 0 0;text-shadow:0 2px 16px rgba(0,0,0,.28)}
+.sub{font-size:14px;line-height:1.55;max-width:650px;margin:14px 0 0;color:rgba(255,255,255,.9);text-shadow:0 2px 12px rgba(0,0,0,.35)}
+
+.islands{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
+.island{border:1px solid rgba(255,255,255,.78);background:rgba(255,255,255,.89);color:var(--ink);border-radius:999px;padding:10px 18px;min-width:120px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:850;cursor:pointer;box-shadow:0 7px 22px rgba(0,0,0,.12)}
+.island:before{content:"";width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:11px solid #456b57}
+.island.active{background:rgba(6,46,76,.88);color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.65),0 7px 20px rgba(0,0,0,.22)}
+.island.active:before{border-bottom-color:#fff}
+
+.search{display:grid;grid-template-columns:1fr 165px;align-items:center;width:min(830px,100%);min-height:68px;margin-top:18px;background:#fff;border-radius:25px;padding:6px 6px 6px 20px;box-shadow:0 18px 45px rgba(0,0,0,.22);overflow:hidden}
+.search-field{display:flex;align-items:center;gap:13px;min-width:0}
+.search-field svg{width:21px;height:21px;fill:none;stroke:#244e50;stroke-width:2;flex:none}
+.search input{border:0;outline:0;width:100%;font-size:14px;color:#263b4d;background:transparent;padding:12px 4px}
+.search input::placeholder{color:#8a949c}
+.search button{height:56px;border:0;border-radius:999px;background:linear-gradient(135deg,#567c46,#739b59);color:#fff;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 7px 18px rgba(67,106,62,.25)}
+.search button:hover{filter:brightness(1.03)}
+
+.categories{position:absolute;left:0;right:0;bottom:70px;width:min(100% - 48px,1440px);margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cat{border:1px solid rgba(255,255,255,.58);background:rgba(255,255,255,.93);color:var(--ink);border-radius:18px;padding:16px 18px;text-decoration:none;display:flex;align-items:center;gap:13px;min-height:96px;box-shadow:0 10px 30px rgba(0,0,0,.16);backdrop-filter:blur(6px)}
+.cat:hover{transform:translateY(-2px)}
+.caticon{font-size:27px;width:38px;text-align:center}
+.cat b{display:block;font-size:12px;margin-bottom:4px}.cat small{display:block;font-size:10px;line-height:1.35;color:#577080}.cat .arrow{margin-left:auto;font-size:23px;color:#274a51}
+
+.trust{position:absolute;left:0;right:0;bottom:0;height:58px;background:rgba(255,255,255,.96);color:#173858;display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 max(24px,calc((100vw - 1320px)/2));gap:24px}
+.trust div{display:flex;align-items:center;gap:10px;font-size:11px}.trust span{font-size:21px;color:#2b6b50}.trust b{display:block}.trust small{display:block;color:#6d7d89;font-size:9px;margin-top:2px}
+
+@media(max-width:980px){
+ .nav{width:min(100% - 30px,900px);padding-top:15px}.logo img{width:210px;max-width:50vw}.navlinks{display:none}.login{padding:9px 13px}
+ .hero-main{width:min(100% - 30px,900px);padding:70px 0 260px}.copy{width:100%;padding-left:0}
+ h1{font-size:clamp(54px,13vw,86px);line-height:.84}.promise{font-size:clamp(25px,6vw,34px)}
+ .categories{width:min(100% - 30px,900px);bottom:68px;grid-template-columns:1fr 1fr;gap:9px}.cat{min-height:72px;padding:11px 13px}.cat small{display:none}
+ .trust{display:none}
 }
-@media(max-height:700px){
- h1{font-size:42px}.content p{margin-top:10px}.cta{margin-top:16px}
+@media(max-width:600px){
+ .hero{min-height:100svh}.hero:before{background-position:54% 47%}
+ .nav{width:calc(100% - 24px);padding-top:12px}.logo img{width:185px;max-width:56vw}.lang{border-left:0;padding-left:0}.login{display:none}
+ .hero-main{width:calc(100% - 24px);align-items:flex-start;padding:82px 0 260px}
+ .copy{padding:0 3px}.eyebrow{font-size:8px;letter-spacing:.2em;margin-bottom:10px}
+ h1{font-size:clamp(47px,15vw,67px);max-width:390px}.promise{font-size:25px;margin-top:17px}.sub{font-size:11px;max-width:390px;margin-top:10px}
+ .islands{gap:7px;margin-top:18px}.island{min-width:0;padding:8px 13px;font-size:10px}.island:before{border-left-width:7px;border-right-width:7px;border-bottom-width:8px}
+ .search{grid-template-columns:1fr 94px;min-height:56px;border-radius:18px;padding:5px 5px 5px 13px;margin-top:12px}.search input{font-size:12px}.search button{height:46px;font-size:11px}.search-field svg{width:18px}
+ .categories{width:calc(100% - 24px);bottom:15px;grid-template-columns:1fr 1fr}.cat{min-height:66px;border-radius:14px;padding:10px}.caticon{font-size:21px;width:29px}.cat b{font-size:10px}.cat .arrow{font-size:18px}
 }
+@media(max-height:720px) and (min-width:601px){.hero-main{padding-top:35px}.categories{bottom:10px}.trust{display:none}}
 </style>
 </head>
 <body>
-<main class="welcome">
-  <header class="top">
-    <div class="brand"><img src="/logo.svg" alt="">TRIÂNGULO AÇORES</div>
-    <div class="lang" aria-label="Idioma"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div>
+<main class="hero">
+  <header class="nav">
+    <a class="logo" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
+    <nav class="navlinks" aria-label="Principal">
+      <a href="/app.html#app" data-pt="Serviços" data-en="Services">Serviços</a>
+      <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
+      <a href="/prestadores.html" data-pt="Prestar serviços" data-en="Offer services">Prestar serviços</a>
+      <a href="/instalar/" data-pt="Instalar app" data-en="Install app">Instalar app</a>
+    </nav>
+    <div class="navright">
+      <div class="lang" aria-label="Idioma"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div>
+      <a class="login" href="/app.html?prestador=1" data-pt="Entrar" data-en="Sign in">Entrar</a>
+    </div>
   </header>
 
+  <section class="hero-main">
+    <div class="copy">
+      <div class="eyebrow" data-pt="PESSOAS LOCAIS · ILHAS MAIS FORTES." data-en="LOCAL PEOPLE · STRONGER ISLANDS.">PESSOAS LOCAIS · ILHAS MAIS FORTES.</div>
+      <h1 data-pt="Serviços locais nas ilhas" data-en="Local services across the islands">Serviços locais nas ilhas</h1>
+      <div class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</div>
+      <p class="sub" data-pt="Pico, Faial e São Jorge. Encontra pessoas da tua ilha para resolver o que precisas." data-en="Pico, Faial and São Jorge. Find people from your island to get things done.">Pico, Faial e São Jorge. Encontra pessoas da tua ilha para resolver o que precisas.</p>
 
-  <section class="content">
-    <div class="kicker" data-pt="Pico · Faial · São Jorge" data-en="Pico · Faial · São Jorge">Pico · Faial · São Jorge</div>
-    <h1 data-pt="Bem-vindo ao TRIÂNGULO Açores." data-en="Welcome to TRIÂNGULO Açores.">Bem-vindo ao TRIÂNGULO Açores.</h1>
-    <p data-pt="A plataforma local que aproxima quem presta serviços de quem precisa deles nas ilhas." data-en="The local platform connecting service providers with people who need them across the islands.">A plataforma local que aproxima quem presta serviços de quem precisa deles nas ilhas.</p>
+      <div class="islands" aria-label="Escolher ilha">
+        <button class="island active" type="button" data-island="Pico">Pico</button>
+        <button class="island" type="button" data-island="Faial">Faial</button>
+        <button class="island" type="button" data-island="São Jorge">São Jorge</button>
+      </div>
 
-    <a class="cta" href="/prestadores.html">
-      <span class="cta-copy">
-        <small data-pt="Descobre a plataforma" data-en="Discover the platform">Descobre a plataforma</small>
-        <b data-pt="Entrar no TRIÂNGULO →" data-en="Enter TRIÂNGULO →">Entrar no TRIÂNGULO →</b>
-      </span>
-      <span class="arrow" aria-hidden="true">→</span>
-    </a>
-
-    <a class="client" href="/app.html" data-pt="Procuras um serviço? Abrir app para clientes →" data-en="Looking for a service? Open the client app →">Procuras um serviço? Abrir app para clientes →</a>
+      <form id="homeSearch" class="search">
+        <label class="search-field" aria-label="Serviço">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+          <input id="searchInput" autocomplete="off" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
+        </label>
+        <button type="submit" data-pt="Pesquisar →" data-en="Search →">Pesquisar →</button>
+      </form>
+    </div>
   </section>
+
+  <div class="categories" aria-label="Categorias">
+    <a class="cat" href="#" data-search="reparações"><span class="caticon">🛠</span><span><b data-pt="Obras & Reparações" data-en="Repairs & Maintenance">Obras & Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrical and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arrow">›</span></a>
+    <a class="cat" href="#" data-search="jardim"><span class="caticon">🌿</span><span><b data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</b><small data-pt="Jardinagem, terrenos e manutenção." data-en="Gardening, land and maintenance.">Jardinagem, terrenos e manutenção.</small></span><span class="arrow">›</span></a>
+    <a class="cat" href="#" data-search="limpeza"><span class="caticon">⌂</span><span><b data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</b><small data-pt="Limpezas, apoio à casa e alojamento." data-en="Cleaning, home and accommodation help.">Limpezas, apoio à casa e alojamento.</small></span><span class="arrow">›</span></a>
+    <a class="cat" href="#" data-search="aulas"><span class="caticon">✦</span><span><b data-pt="Aulas & Bem-estar" data-en="Lessons & Wellness">Aulas & Bem-estar</b><small data-pt="Aulas, bem-estar e serviços pessoais." data-en="Lessons, wellness and personal services.">Aulas, bem-estar e serviços pessoais.</small></span><span class="arrow">›</span></a>
+  </div>
+
+  <div class="trust" aria-label="Vantagens">
+    <div><span>✓</span><p><b data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</b><small data-pt="Pessoas da tua ilha" data-en="People from your island">Pessoas da tua ilha</small></p></div>
+    <div><span>☆</span><p><b data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</b><small data-pt="Mais confiança" data-en="More confidence">Mais confiança</small></p></div>
+    <div><span>⌖</span><p><b data-pt="Três ilhas" data-en="Three islands">Três ilhas</b><small>Pico · Faial · São Jorge</small></p></div>
+    <div><span>♧</span><p><b data-pt="Economia local" data-en="Local economy">Economia local</b><small data-pt="Apoia quem está perto" data-en="Support people nearby">Apoia quem está perto</small></p></div>
+  </div>
 </main>
 <script>
 let lang=localStorage.getItem('tri_lang')||'pt';
-function setLang(v){lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=v==='pt'?el.dataset.pt:el.dataset.en);document.querySelector('#pt').classList.toggle('active',v==='pt');document.querySelector('#en').classList.toggle('active',v==='en');document.title=v==='pt'?'TRIÂNGULO Açores':'TRIÂNGULO Azores';const m=document.querySelector('meta[name="description"]');if(m)m.content=v==='pt'?'TRIÂNGULO Açores — uma plataforma local que liga prestadores de serviços a clientes no Pico, Faial e São Jorge.':'TRIÂNGULO Azores — a local platform connecting service providers and customers across Pico, Faial and São Jorge.'}
-document.querySelector('#pt').onclick=()=>setLang('pt');document.querySelector('#en').onclick=()=>setLang('en');setLang(lang);
+let island=localStorage.getItem('tri_island')||'Pico';
+function applyLang(){
+ document.documentElement.lang=lang;
+ document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en);
+ document.querySelectorAll('[data-ph-pt][data-ph-en]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
+ document.querySelector('#pt').classList.toggle('active',lang==='pt');
+ document.querySelector('#en').classList.toggle('active',lang==='en');
+ document.title=lang==='pt'?'TRIÂNGULO Açores — Serviços locais nas ilhas':'TRIÂNGULO Azores — Local services across the islands';
+}
+function setIsland(v){
+ island=v;localStorage.setItem('tri_island',v);
+ document.querySelectorAll('[data-island]').forEach(b=>b.classList.toggle('active',b.dataset.island===v));
+}
+function openSearch(q){
+ localStorage.setItem('tri_island',island);
+ localStorage.setItem('tri_home_search',(q||'').trim());
+ localStorage.setItem('tri_client_welcome_v4','1');
+ location.href='/app.html#app';
+}
+document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
+document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch(document.querySelector('#searchInput').value)};
+document.querySelectorAll('[data-search]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch(a.dataset.search)});
+document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()};
+document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()};
+setIsland(['Pico','Faial','São Jorge'].includes(island)?island:'Pico');applyLang();
 </script>
 </body>
 </html>
