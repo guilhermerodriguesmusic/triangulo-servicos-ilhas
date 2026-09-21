@@ -353,11 +353,11 @@ h1{
 <main class="hero">
   <header class="top">
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
-    <nav class="nav" aria-label="Principal">
+    <nav class="nav" aria-label="Principal" data-aria-pt="Principal" data-aria-en="Main navigation">
       <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
       <div class="nav-islands" id="navIslandsWrap">
         <button type="button" class="with-chevron" id="navIslands" aria-haspopup="true" aria-expanded="false" data-pt="Ilhas" data-en="Islands">Ilhas</button>
-        <div class="islands-menu" id="islandsMenu" aria-label="Ilhas">
+        <div class="islands-menu" id="islandsMenu" aria-label="Ilhas" data-aria-pt="Ilhas" data-aria-en="Islands">
           <a href="/servicos/?island=Pico" data-nav-island="Pico">Pico <span>›</span></a>
           <a href="/servicos/?island=Faial" data-nav-island="Faial">Faial <span>›</span></a>
           <a href="/servicos/?island=S%C3%A3o+Jorge" data-nav-island="São Jorge">São Jorge <span>›</span></a>
@@ -367,7 +367,7 @@ h1{
       <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a><a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a>
     </nav>
     <div class="actions">
-      <button class="search-icon" type="button" id="topSearch" aria-label="Pesquisar">
+      <button class="search-icon" type="button" id="topSearch" aria-label="Pesquisar" data-aria-pt="Pesquisar" data-aria-en="Search">
         <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg>
       </button>
       <div class="vrule"></div>
@@ -382,21 +382,21 @@ h1{
       <h1 data-pt="Serviços locais nas ilhas" data-en="Local services across the islands">Serviços locais nas ilhas</h1>
       <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</p>
 
-      <div class="island-pills" aria-label="Escolher ilha">
+      <div class="island-pills" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
         <button class="island-pill active" type="button" data-island="Pico"><span class="mini-mountain"></span>Pico</button>
         <button class="island-pill" type="button" data-island="Faial"><span class="mini-mountain"></span>Faial</button>
         <button class="island-pill" type="button" data-island="São Jorge"><span class="mini-mountain"></span>São Jorge</button>
       </div>
 
-      <form id="homeSearch" class="searchbar" role="search" aria-label="Pesquisar serviços">
-        <label class="searchmain" aria-label="Serviço">
+      <form id="homeSearch" class="searchbar" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
+        <label class="searchmain" aria-label="Serviço" data-aria-pt="Serviço" data-aria-en="Service">
           <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.3 4.3"/></svg>
-          <input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
+          <input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-aria-pt="Que serviço precisas?" data-aria-en="What service do you need?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
         </label>
         <div class="search-divider"></div>
         <label class="island-select-wrap">
           <svg class="pin" viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-13A7 7 0 1 0 5 9c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.4" fill="#fff"/></svg>
-          <select id="islandSelect" aria-label="Ilha">
+          <select id="islandSelect" aria-label="Ilha" data-aria-pt="Ilha" data-aria-en="Island">
             <option>Pico</option><option>Faial</option><option>São Jorge</option>
           </select>
         </label>
@@ -408,7 +408,7 @@ h1{
     <div class="handnote" data-pt="Três ilhas&#10;mais ligadas" data-en="Three islands&#10;better connected">Três ilhas<br>mais ligadas</div>
   </section>
 
-  <section class="category-row" aria-label="Categorias">
+  <section class="category-row" aria-label="Categorias" data-aria-pt="Categorias" data-aria-en="Categories">
     <a class="category" href="/servicos/?group=repairs" data-group="repairs">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
       <span><b data-pt="Reparações & Mudanças" data-en="Repairs & Moving">Reparações & Mudanças</b><small data-pt="Reparações, tecnologia, mudanças e mais." data-en="Repairs, technology, moving and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
@@ -459,6 +459,7 @@ function applyLang(){
     else el.textContent=value;
   });
   document.querySelectorAll('[data-ph-pt][data-ph-en]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
+  document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
   const si=document.querySelector('#searchInput'); if(si)si.setAttribute('aria-label',lang==='pt'?'Que serviço precisas?':'What service do you need?');
   const form=document.querySelector('#homeSearch'); if(form)form.setAttribute('aria-label',lang==='pt'?'Pesquisar serviços':'Search services');
   document.querySelector('#pt').classList.toggle('active',lang==='pt');
