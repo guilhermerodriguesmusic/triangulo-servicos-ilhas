@@ -32,20 +32,20 @@
     <div id="quoteBox" class="quote-box">
       <label><span data-pt="Quanto queres receber por este trabalho?" data-en="How much do you want to receive for this job?">Quanto queres receber por este trabalho?</span>
         <input id="quoteAmount" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="€">
-        <small data-pt="O cliente verá este valor + 15% de taxa TRIÂNGULO. O teu valor não é reduzido." data-en="The customer will see this amount + TRIÂNGULO's 15% fee. Your amount is not reduced.">O cliente verá este valor + 15% de taxa TRIÂNGULO. O teu valor não é reduzido.</small>
+        <small id="quoteFeeNote">O cliente verá este valor + 12% de taxa TRIÂNGULO. O teu valor não é reduzido.</small>
       </label>
     </div>
     <div class="actions">
       <button id="accept" class="btn yes" data-pt="✓ Aceitar serviço" data-en="✓ Accept job">✓ Aceitar serviço</button>
       <button id="decline" class="btn no" data-pt="Não posso aceitar" data-en="I can't accept">Não posso aceitar</button>
     </div>
-    <p class="note" data-pt="Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral." data-en="When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.">Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.</p>
+    <p id="responsePaymentNote" class="note">Os pagamentos através do TRIÂNGULO estão em preparação. Podes aceitar o pedido normalmente.</p>
   </div>
 
   <div id="accepted" class="message">
     <div class="icon">✓</div>
     <h2 data-pt="Serviço aceite" data-en="Job accepted">Serviço aceite</h2>
-    <p data-pt="O pedido foi aceite. O pagamento integral será concluído no TRIÂNGULO antes de os contactos serem desbloqueados." data-en="The request was accepted. Full payment will be completed through TRIÂNGULO before contact details are unlocked.">O pedido foi aceite. O pagamento integral será concluído no TRIÂNGULO antes de os contactos serem desbloqueados.</p>
+    <p id="acceptedPaymentText">O pedido foi aceite. Os pagamentos através do TRIÂNGULO estão em preparação.</p>
     <div id="clientContact" class="contact" hidden>
       <b data-pt="Contacto do cliente" data-en="Customer contact">Contacto do cliente</b>
       <div id="clientName"></div>
@@ -79,12 +79,42 @@ const db=window.supabase.createClient(
   'sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9'
 );
 let lang=localStorage.getItem('tri_lang')||'pt';
+let paymentsLive=false,feePercent=12;
 const token=new URLSearchParams(location.search).get('token');
+
+function feeLabel(){
+  const n=Number(feePercent);
+  return Number.isInteger(n)?String(n):String(n).replace('.',',');
+}
+function applyOperationalCopy(){
+  const fee=feeLabel();
+  const q=$('#quoteFeeNote'),note=$('#responsePaymentNote'),accepted=$('#acceptedPaymentText');
+  if(q)q.textContent=lang==='pt'
+    ?'O cliente verá este valor + '+fee+'% de taxa TRIÂNGULO. O teu valor não é reduzido.'
+    :'The customer will see this amount + TRIÂNGULO\'s '+fee+'% fee. Your amount is not reduced.';
+  if(note)note.textContent=paymentsLive
+    ?(lang==='pt'?'Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.':'When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.')
+    :(lang==='pt'?'Os pagamentos através do TRIÂNGULO estão em preparação. Podes aceitar o pedido normalmente; o TRIÂNGULO acompanhará o passo seguinte.':'Payments through TRIÂNGULO are being prepared. You can accept the request normally; TRIÂNGULO will guide the next step.');
+  if(accepted)accepted.textContent=paymentsLive
+    ?(lang==='pt'?'O pedido foi aceite. O pagamento integral será concluído no TRIÂNGULO antes de os contactos serem desbloqueados.':'The request was accepted. Full payment will be completed through TRIÂNGULO before contact details are unlocked.')
+    :(lang==='pt'?'O pedido foi aceite. Os pagamentos através do TRIÂNGULO estão em preparação; o TRIÂNGULO acompanhará o pedido antes da ativação do checkout.':'The request was accepted. Payments through TRIÂNGULO are being prepared; TRIÂNGULO will guide the request before checkout is activated.');
+}
+async function loadConfig(){
+  try{
+    const {data}=await db.from('app_config').select('value').eq('key','public').maybeSingle();
+    const v=data&&data.value&&typeof data.value==='object'?data.value:{};
+    paymentsLive=v.payments_live===true;
+    const pct=Number(v.commission_percent);
+    if(Number.isFinite(pct)&&pct>=0&&pct<=100)feePercent=pct;
+  }catch{}
+  applyOperationalCopy();
+}
 
 function setLang(v){
   lang=v;localStorage.setItem('tri_lang',v);document.documentElement.lang=v;
   $$('[data-pt]').forEach(x=>x.textContent=x.dataset[v]||x.textContent);
   $('#pt').classList.toggle('active',v==='pt');$('#en').classList.toggle('active',v==='en');document.title=v==='pt'?'Responder ao pedido — TRIÂNGULO':'Reply to request — TRIÂNGULO';
+  applyOperationalCopy();
 }
 $('#pt').onclick=()=>setLang('pt');$('#en').onclick=()=>setLang('en');
 
@@ -118,6 +148,7 @@ function showState(state,data={}){
   else $('#invalid').hidden=false;
 }
 async function load(){
+  await loadConfig();
   if(!token){showState('invalid');return}
   const {data,error}=await db.rpc('booking_response_context',{p_token:token});
   if(error||!data||!data.ok){showState('invalid');return}
