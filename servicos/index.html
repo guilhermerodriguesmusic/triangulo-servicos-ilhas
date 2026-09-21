@@ -544,9 +544,9 @@
 </style>
 <style id="provider-account-v2">
 .pa-center{text-align:center}.pa-spinner{width:26px;height:26px;border:3px solid #dce9ef;border-top-color:#0d9673;border-radius:50%;margin:6px auto 10px;animation:paSpin .8s linear infinite}@keyframes paSpin{to{transform:rotate(360deg)}}
-.pa-field{display:block;margin-top:13px}.pa-field>span{display:block;font-size:11px;font-weight:850;margin-bottom:6px;color:#35536a}.pa-field input,.pa-field textarea,.pa-field select{width:100%;border:1px solid #d2e1e9;background:#fbfdfe;border-radius:12px;padding:11px 12px;font-size:12px;outline:none}.pa-field textarea{min-height:92px;resize:vertical}.pa-field input:focus,.pa-field textarea:focus,.pa-field select:focus{border-color:#159e78;box-shadow:0 0 0 3px rgba(21,158,120,.09)}
+.pa-field{display:block;margin-top:13px}.pa-field>span{display:block;font-size:11px;font-weight:850;margin-bottom:6px;color:#35536a}.pa-field input,.pa-field textarea,.pa-field select{width:100%;border:1px solid #d2e1e9;background:#fbfdfe;border-radius:12px;padding:11px 12px;font-size:12px;outline:none}.pa-field textarea{min-height:92px;resize:vertical}.pa-field input:focus,.pa-field textarea:focus,.pa-field select:focus{border-color:#159e78;box-shadow:0 0 0 3px rgba(21,158,120,.09)}.pa-password-wrap{position:relative;display:block}.pa-password-wrap input{padding-right:74px}.pa-password-toggle{position:absolute;right:7px;top:50%;transform:translateY(-50%);border:0;background:#edf5f7;color:#49677c;border-radius:9px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}.pa-password-toggle:hover{background:#e4f0f3}.pa-password-toggle:focus-visible{outline:2px solid #159e78;outline-offset:2px}
 .pa-grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.pa-checks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.pa-checks-services{grid-template-columns:1fr 1fr}.pa-checks label{display:flex;align-items:center;gap:6px;border:1px solid #dce8ee;border-radius:10px;padding:8px;background:#f8fbfc;font-size:10px;font-weight:750}.pa-checks input{width:auto;margin:0}
-.pa-feedback{font-size:10px;font-weight:750;line-height:1.4;color:#557286;min-height:14px;margin-top:9px}.pa-divider{height:1px;background:#e7eef2;margin:17px 0}.pa-secondary-link{display:inline-block;margin-top:8px;color:#0a8068;font-weight:900;font-size:11px;text-decoration:none}.pa-link-btn{display:block;width:100%;border:0;background:none;color:#60798c;font-size:10px;font-weight:800;margin-top:12px}
+.pa-feedback{font-size:10px;font-weight:750;line-height:1.45;color:#557286;min-height:14px;margin-top:9px}.pa-feedback:not(:empty){padding:9px 10px;border-radius:10px;background:#f2f7f9}.pa-divider{height:1px;background:#e7eef2;margin:17px 0}.pa-secondary-link{display:inline-block;margin-top:8px;color:#0a8068;font-weight:900;font-size:11px;text-decoration:none}.pa-link-btn{display:block;width:100%;border:0;background:none;color:#60798c;font-size:10px;font-weight:800;margin-top:12px}
 .pa-accountbar{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#123a68;color:#fff;border-radius:18px;padding:14px 15px;margin-bottom:11px}.pa-accountbar div{display:grid;gap:1px}.pa-accountbar small{font-size:8px;text-transform:uppercase;letter-spacing:.09em;color:#a9c4dd}.pa-accountbar b{font-size:15px}.pa-accountbar span{font-size:9px;color:#c8d8e7}.pa-accountbar button{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:850}
 .pa-status-line{display:flex;align-items:center;justify-content:space-between;gap:12px}.pa-status{display:inline-flex;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900;background:#e2f7f0;color:#087459}.pa-status.paused{background:#eef2f5;color:#627887}.pa-status-line p{margin-top:5px!important}.pa-outline{border:1px solid #cbdce5;background:#fff;color:#153f68;border-radius:11px;padding:9px 11px;font-size:10px;font-weight:900}
 .pa-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.pa-card-head h2{margin:0 0 4px}.pa-count{min-width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#e4f8f1;color:#08765d;font-size:10px;font-weight:950}
@@ -1087,7 +1087,7 @@ body.route-public-results #explore{display:block!important}
     <div class="pa-hero">
       <div class="pa-kicker" data-pt="Para prestadores" data-en="For providers">Para prestadores</div>
       <h1 data-pt="A tua área" data-en="Your provider area">A tua área</h1>
-      <p data-pt="Gere o teu perfil e responde aos pedidos do TRIÂNGULO num só lugar. Os pedidos podem chegar por email ou WhatsApp, conforme os contactos que tens disponíveis." data-en="Manage your profile and respond to TRIÂNGULO requests in one place. Requests can arrive by email or WhatsApp, depending on the contact details you have available.">Gere o teu perfil e responde aos pedidos do TRIÂNGULO num só lugar. Os pedidos chegam por email; quando necessário, o TRIÂNGULO pode também contactar-te por WhatsApp.</p>
+      <p data-pt="Gere o teu perfil e responde aos pedidos do TRIÂNGULO num só lugar. Os pedidos podem chegar por email ou WhatsApp, conforme os contactos que tens disponíveis." data-en="Manage your profile and respond to TRIÂNGULO requests in one place. Requests can arrive by email or WhatsApp, depending on the contact details you have available.">Gere o teu perfil e responde aos pedidos do TRIÂNGULO num só lugar. Os pedidos podem chegar por email ou WhatsApp, conforme os contactos que tens disponíveis.</p>
       <div class="pa-login-points" aria-label="Vantagens da área de prestador">
         <span><b>✓</b><i data-pt="Pedidos num só lugar" data-en="Requests in one place">Pedidos num só lugar</i></span>
         <span><b>✓</b><i data-pt="Perfil e serviços editáveis" data-en="Editable profile and services">Perfil e serviços editáveis</i></span>
@@ -1104,10 +1104,10 @@ body.route-public-results #explore{display:block!important}
       <h2 data-pt="Entrar como prestador" data-en="Provider sign in">Entrar como prestador</h2>
       <p data-pt="Entra com o email ou telefone/WhatsApp da tua candidatura aprovada e a tua password." data-en="Sign in with the email or phone/WhatsApp number from your approved application and your password.">Entra com o email ou telefone/WhatsApp da tua candidatura aprovada e a tua password.</p>
       <label class="pa-field"><span data-pt="Email ou telefone" data-en="Email or phone">Email ou telefone</span><input id="providerLoginEmail" type="text" autocomplete="username" data-ph-pt="email@exemplo.pt ou 9xx xxx xxx" data-ph-en="email@example.com or phone number" placeholder="email@exemplo.pt ou 9xx xxx xxx"></label>
-      <label class="pa-field"><span data-pt="Password" data-en="Password">Password</span><input id="providerLoginPassword" type="password" autocomplete="current-password" minlength="12" maxlength="128"></label>
+      <label class="pa-field"><span data-pt="Password" data-en="Password">Password</span><span class="pa-password-wrap"><input id="providerLoginPassword" type="password" autocomplete="current-password" minlength="12" maxlength="128"><button type="button" class="pa-password-toggle" data-toggle-password="providerLoginPassword" data-pt="Mostrar" data-en="Show" aria-label="Mostrar password">Mostrar</button></span></label>
       <button id="providerLoginBtn" class="pa-primary" type="button" data-pt="Entrar →" data-en="Sign in →">Entrar →</button>
       <button id="providerForgotBtn" class="pa-link-btn" type="button" data-pt="Primeiro acesso ou esqueceste a password?" data-en="First time or forgot your password?">Primeiro acesso ou esqueceste a password?</button>
-      <div id="providerLoginStatus" class="pa-feedback"></div>
+      <div id="providerLoginStatus" class="pa-feedback" role="status" aria-live="polite"></div>
       <div class="pa-divider"></div>
       <p data-pt="Ainda não tens perfil?" data-en="Don't have a profile yet?">Ainda não tens perfil?</p>
       <a class="pa-secondary-link" href="/candidatura-prestador.html" data-pt="Criar perfil gratuitamente →" data-en="Create a free profile →">Criar perfil gratuitamente →</a>
@@ -1116,17 +1116,17 @@ body.route-public-results #explore{display:block!important}
     <div id="paPasswordSet" class="pa-card" hidden>
       <h2 data-pt="Criar nova password" data-en="Create a new password">Criar nova password</h2>
       <p data-pt="Escolhe uma password com pelo menos 12 caracteres." data-en="Choose a password with at least 12 characters.">Escolhe uma password com pelo menos 12 caracteres.</p>
-      <label class="pa-field"><span data-pt="Nova password" data-en="New password">Nova password</span><input id="providerNewPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128"></label>
-      <label class="pa-field"><span data-pt="Repetir password" data-en="Repeat password">Repetir password</span><input id="providerNewPassword2" type="password" autocomplete="new-password" minlength="12" maxlength="128"></label>
+      <label class="pa-field"><span data-pt="Nova password" data-en="New password">Nova password</span><span class="pa-password-wrap"><input id="providerNewPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128"><button type="button" class="pa-password-toggle" data-toggle-password="providerNewPassword" data-pt="Mostrar" data-en="Show" aria-label="Mostrar password">Mostrar</button></span></label>
+      <label class="pa-field"><span data-pt="Repetir password" data-en="Repeat password">Repetir password</span><span class="pa-password-wrap"><input id="providerNewPassword2" type="password" autocomplete="new-password" minlength="12" maxlength="128"><button type="button" class="pa-password-toggle" data-toggle-password="providerNewPassword2" data-pt="Mostrar" data-en="Show" aria-label="Mostrar password">Mostrar</button></span></label>
       <button id="providerSetPasswordBtn" class="pa-primary" type="button" data-pt="Guardar password →" data-en="Save password →">Guardar password →</button>
-      <div id="providerPasswordStatus" class="pa-feedback"></div>
+      <div id="providerPasswordStatus" class="pa-feedback" role="status" aria-live="polite"></div>
     </div>
 
     <div id="paNotProvider" class="pa-card" hidden>
       <h2 data-pt="Perfil ainda não disponível" data-en="Provider profile not available yet">Perfil ainda não disponível</h2>
-      <p id="paNotProviderText" data-pt="Este email ainda não está associado a um perfil de prestador aprovado." data-en="This email is not yet linked to an approved provider profile.">Este email ainda não está associado a um perfil de prestador aprovado.</p>
+      <p id="paNotProviderText" data-pt="Estes dados ainda não estão associados a um perfil de prestador aprovado." data-en="These details are not yet linked to an approved provider profile.">Estes dados ainda não estão associados a um perfil de prestador aprovado.</p>
       <a class="pa-primary" href="/candidatura-prestador.html" data-pt="Fazer candidatura →" data-en="Apply as a provider →">Fazer candidatura →</a>
-      <button id="providerLogoutFromMissing" class="pa-link-btn" type="button" data-pt="Entrar com outro email" data-en="Use another email">Entrar com outro email</button>
+      <button id="providerLogoutFromMissing" class="pa-link-btn" type="button" data-pt="Entrar com outros dados" data-en="Use different details">Entrar com outros dados</button>
     </div>
 
     <div id="paDashboard" hidden>
@@ -1987,6 +1987,11 @@ async function openProviderPayments(){
   }catch(e){console.error(e);toast(lang==='pt'?'Não foi possível abrir a Stripe.':'Could not open Stripe.')}
   finally{if(document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
+$('[data-toggle-password]').forEach(btn=>btn.onclick=()=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;const show=input.type==='password';input.type=show?'text':'password';btn.textContent=show?(lang==='pt'?'Ocultar':'Hide'):(lang==='pt'?'Mostrar':'Show');btn.setAttribute('aria-label',btn.textContent+' password')});
+$('#providerLoginEmail').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#providerLoginPassword').focus()}});
+$('#providerLoginPassword').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#providerLoginBtn').click()}});
+$('#providerNewPassword').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#providerNewPassword2').focus()}});
+$('#providerNewPassword2').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#providerSetPasswordBtn').click()}});
 $('#providerEntryBtn').onclick=openProviderArea;
 
 $('#paPaymentsBtn').onclick=openProviderPayments;
@@ -2009,7 +2014,7 @@ $('#providerLoginBtn').onclick=async()=>{
   status.textContent=lang==='pt'?'A entrar…':'Signing in…';
   const {data,error}=await db.rpc('provider_password_login',{p_email:email,p_password:password});
   if(error||!data||!data.ok){
-    console.error(error);status.textContent=lang==='pt'?'Email ou password incorretos. Se é o primeiro acesso, cria a tua password.':'Incorrect email or password. If this is your first sign-in, create your password.';return
+    console.error(error);status.textContent=lang==='pt'?'Email/telefone ou password incorretos. Se é o primeiro acesso, cria a tua password.':'Incorrect email/phone or password. If this is your first sign-in, create your password.';return
   }
   providerSessionToken=data.session_token;store.set('tri_provider_session',providerSessionToken);
   $('#providerLoginPassword').value='';status.textContent='';
@@ -2021,9 +2026,9 @@ $('#providerLoginBtn').onclick=async()=>{
 $('#providerForgotBtn').onclick=async()=>{
   const email=$('#providerLoginEmail').value.trim(),status=$('#providerLoginStatus');
   if(!email){status.textContent=lang==='pt'?'Escreve primeiro o email ou telefone da tua candidatura.':'Enter the email or phone number from your application first.';return}
-  status.textContent=lang==='pt'?'A enviar email…':'Sending email…';
+  status.textContent=lang==='pt'?'A preparar recuperação…':'Preparing recovery…';
   const {data,error}=await db.rpc('request_provider_password_reset',{p_email:email});
-  if(error||!data||!data.ok){console.error(error);status.textContent=lang==='pt'?'Não foi possível enviar. Tenta novamente.':'Could not send. Please try again.';return}
+  if(error||!data||!data.ok){console.error(error);status.textContent=lang==='pt'?'Não foi possível preparar a recuperação. Tenta novamente.':'Could not prepare recovery. Please try again.';return}
   status.textContent=lang==='pt'?'Se estes dados estiverem associados a um perfil aprovado, vais receber instruções para criar ou repor a password. Se usares WhatsApp, a ligação pode ser enviada manualmente pelo TRIÂNGULO.':'If these details are linked to an approved profile, you will receive instructions to create or reset your password. If you use WhatsApp, TRIÂNGULO may send the link manually.';
 };
 $('#paPauseBtn').onclick=async()=>{
