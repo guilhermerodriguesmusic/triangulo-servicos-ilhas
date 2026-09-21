@@ -23,7 +23,7 @@ window.addEventListener('beforeinstallprompt',function(e){
 <link rel="icon" href="/logo.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/icons/triangulo-blue-180.png">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:760px;margin:auto;padding:18px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;text-decoration:none;color:#153458}.brand img{width:205px;height:auto;display:block}.lang{display:flex;background:#fff;border:1px solid #d9e7ef;border-radius:999px;padding:3px}.lang button{border:0;background:transparent;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;color:#728697;cursor:pointer}.lang button.active{background:#e9f8f3;color:#08725b}.hero{background:linear-gradient(135deg,#def4ff,#ecfbf6);border:1px solid #d2e8ef;border-radius:24px;padding:30px}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0a8168}.hero h1{font-size:clamp(34px,7vw,50px);line-height:1.04;margin:9px 0 12px}.hero p{margin:0;color:#567187;line-height:1.55}.platform-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.platform-btn{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:14px 16px;font-size:14px;font-weight:900;text-decoration:none;cursor:pointer}.platform-btn.android{background:#108b6e;color:#fff}.platform-btn.ios{background:#153458;color:#fff}.platform-btn small{font-size:11px;font-weight:700;opacity:.8}.store-note{margin-top:12px;font-size:11px;color:#6b8193;line-height:1.45}.card{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:20px;padding:22px}.card h2{margin:0 0 14px;font-size:22px}.steps{display:grid;gap:10px}.step{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:10px 0}.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#e9f8f3;color:#08725b;font-size:12px;font-weight:900}.step b{display:block;font-size:13px}.step span{display:block;color:#657e91;font-size:12px;line-height:1.45;margin-top:2px}.install{width:100%;border:0;background:#108b6e;color:#fff;border-radius:13px;padding:14px 18px;font-size:14px;font-weight:900;cursor:pointer;margin-top:16px}.install:disabled{opacity:.58;cursor:wait}.platform-btn:disabled{opacity:.68;cursor:wait}.install[hidden]{display:none}.secondary{display:block;text-align:center;color:#0b8068;text-decoration:none;font-weight:900;font-size:12px;margin-top:14px}.status{margin-top:12px;color:#62798b;font-size:12px;line-height:1.5}.ios-share{font-weight:900;color:#153458}.note{margin-top:14px;padding:12px 14px;background:#f6fafb;border-radius:12px;color:#657e91;font-size:11px;line-height:1.5}.footer{text-align:center;padding:20px 0;color:#7c90a0;font-size:10px}.footer-links{display:inline-block;margin-top:7px}.footer-links a{color:#557487;text-decoration:none;font-weight:800}@media(max-width:600px){.wrap{padding:12px}.hero{padding:24px 19px}.platform-choice{grid-template-columns:1fr}}
+*{box-sizing:border-box}body{margin:0;background:#f3f9fc;color:#153458;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:760px;margin:auto;padding:18px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;text-decoration:none;color:#153458}.brand img{width:205px;height:auto;display:block}.lang{display:flex;background:#fff;border:1px solid #d9e7ef;border-radius:999px;padding:3px}.lang button{border:0;background:transparent;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;color:#728697;cursor:pointer}.lang button.active{background:#e9f8f3;color:#08725b}.hero{background:linear-gradient(135deg,#def4ff,#ecfbf6);border:1px solid #d2e8ef;border-radius:24px;padding:30px}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0a8168}.hero h1{font-size:clamp(34px,7vw,50px);line-height:1.04;margin:9px 0 12px}.hero p{margin:0;color:#567187;line-height:1.55}.platform-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.platform-btn{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:14px 16px;font-size:14px;font-weight:900;text-decoration:none;cursor:pointer}.platform-btn.android{background:#108b6e;color:#fff}.platform-btn.ios{background:#153458;color:#fff}.platform-btn small{font-size:11px;font-weight:700;opacity:.8}.store-note{margin-top:12px;font-size:11px;color:#6b8193;line-height:1.45}.card{margin-top:14px;background:#fff;border:1px solid #dce9ef;border-radius:20px;padding:22px}.card h2{margin:0 0 14px;font-size:22px}.steps{display:grid;gap:10px}.step{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:10px 0}.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#e9f8f3;color:#08725b;font-size:12px;font-weight:900}.step b{display:block;font-size:13px}.step span{display:block;color:#657e91;font-size:12px;line-height:1.45;margin-top:2px}.install{width:100%;border:0;background:#108b6e;color:#fff;border-radius:13px;padding:14px 18px;font-size:14px;font-weight:900;cursor:pointer;margin-top:16px}.install:disabled{opacity:.58;cursor:wait}.platform-btn:disabled{opacity:.68;cursor:wait}.install[hidden]{display:none}.secondary{display:block;text-align:center;color:#0b8068;text-decoration:none;font-weight:900;font-size:12px;margin-top:14px}.status{margin-top:12px;color:#62798b;font-size:12px;line-height:1.5}.android-install-note{margin-top:9px;padding:10px 12px;border-radius:11px;background:#f0faf6;color:#557568;font-size:10.5px;line-height:1.45}.install.is-ready,.platform-btn.android.is-ready{box-shadow:0 10px 24px rgba(16,139,110,.22)}.install.is-installing,.platform-btn.android.is-installing{opacity:.82;cursor:progress}.ios-share{font-weight:900;color:#153458}.note{margin-top:14px;padding:12px 14px;background:#f6fafb;border-radius:12px;color:#657e91;font-size:11px;line-height:1.5}.footer{text-align:center;padding:20px 0;color:#7c90a0;font-size:10px}.footer-links{display:inline-block;margin-top:7px}.footer-links a{color:#557487;text-decoration:none;font-weight:800}@media(max-width:600px){.wrap{padding:12px}.hero{padding:24px 19px}.platform-choice{grid-template-columns:1fr}.on-android #androidCard{border-color:#bfe7d9;box-shadow:0 12px 30px rgba(16,139,110,.08)}.on-ios #iosCard{border-color:#cbd8e7;box-shadow:0 12px 30px rgba(21,52,88,.08)}}
 </style>
 </head>
 <body>
@@ -34,7 +34,7 @@ window.addEventListener('beforeinstallprompt',function(e){
   <h1 data-pt="Instala o TRIÂNGULO no teu telemóvel." data-en="Install TRIÂNGULO on your phone.">Instala o TRIÂNGULO no teu telemóvel.</h1>
   <p data-pt="Podes instalar o TRIÂNGULO diretamente a partir do navegador. Fica no ecrã principal e abre como uma aplicação independente." data-en="You can install TRIÂNGULO directly from your browser. It stays on your home screen and opens as a standalone web app.">Podes instalar o TRIÂNGULO diretamente a partir do navegador. Fica no ecrã principal e abre como uma aplicação independente.</p>
   <div class="platform-choice" aria-label="Escolher dispositivo">
-    <button class="platform-btn android" id="androidHeroBtn" type="button" data-pt="Instalar no Android" data-en="Install on Android">Instalar no Android</button>
+    <button class="platform-btn android" id="androidHeroBtn" type="button" data-pt="Instalar agora no Android" data-en="Install now on Android">Instalar agora no Android</button>
     <button class="platform-btn ios" id="iosHeroBtn" type="button" data-pt="Instalar no iPhone ↓" data-en="Install on iPhone ↓">Instalar no iPhone ↓</button>
   </div>
   <div class="store-note" data-pt="Não precisas da Google Play nem da App Store: o TRIÂNGULO instala-se diretamente a partir deste site." data-en="You do not need Google Play or the App Store: TRIÂNGULO installs directly from this website.">Não precisas da Google Play nem da App Store: o TRIÂNGULO instala-se diretamente a partir deste site.</div>
@@ -46,8 +46,9 @@ window.addEventListener('beforeinstallprompt',function(e){
     <div class="step"><div class="num">1</div><div><b data-pt="Abre esta página num navegador compatível" data-en="Open this page in a compatible browser">Abre esta página num navegador compatível</b><span data-pt="No Android, Chrome e outros navegadores compatíveis podem instalar o TRIÂNGULO." data-en="On Android, you can install TRIÂNGULO using Chrome or another compatible browser.">No Android, Chrome e outros navegadores compatíveis podem instalar o TRIÂNGULO.</span></div></div>
     <div class="step"><div class="num">2</div><div><b data-pt="Carrega em “Instalar TRIÂNGULO”" data-en="Tap “Install TRIÂNGULO”">Carrega em “Instalar TRIÂNGULO”</b><span data-pt="O Android adiciona o TRIÂNGULO ao ecrã principal." data-en="Android adds TRIÂNGULO to your home screen.">O Android adiciona o TRIÂNGULO ao ecrã principal.</span></div></div>
   </div>
-  <button class="install" id="installBtn" type="button" data-pt="Instalar TRIÂNGULO" data-en="Install TRIÂNGULO">Instalar TRIÂNGULO</button>
+  <button class="install" id="installBtn" type="button" data-pt="Instalar TRIÂNGULO agora" data-en="Install TRIÂNGULO now">Instalar TRIÂNGULO agora</button>
   <div class="status" id="androidStatus"></div>
+  <div class="android-install-note" data-pt="No Android compatível, este botão abre imediatamente a instalação do TRIÂNGULO." data-en="On a compatible Android device, this button opens the TRIÂNGULO installation immediately.">No Android compatível, este botão abre imediatamente a instalação do TRIÂNGULO.</div>
 </section>
 
 <section class="card" id="iosCard">
@@ -90,6 +91,8 @@ const isAndroid=/android/.test(ua);
 const standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 
 function show(){
+  document.body.classList.toggle('on-android',isAndroid);
+  document.body.classList.toggle('on-ios',isIOS);
   if(standalone){
     document.querySelector('#desktopCard h2').textContent=tr('TRIÂNGULO já está instalado','TRIÂNGULO is already installed');
     document.querySelector('#desktopCard .status').textContent=tr('Podes abrir o TRIÂNGULO pelo ícone no teu ecrã principal.','You can open TRIÂNGULO from the icon on your home screen.');
@@ -104,13 +107,14 @@ const androidStatus=document.querySelector('#androidStatus');
 const isChromiumAndroid=isAndroid&&(/chrome|chromium|crios|samsungbrowser/.test(ua))&&!/firefox|fxios/.test(ua);
 
 function setInstallReady(ready){
-  if(!isAndroid)return;
-  installBtn.disabled=!ready;
-  androidHeroBtn.disabled=!ready;
-  if(ready){
-    androidStatus.textContent=tr('Pronto para instalar.','Ready to install.');
-  }else{
-    androidStatus.textContent=tr('A preparar a instalação…','Preparing installation…');
+  installBtn.disabled=false;
+  androidHeroBtn.disabled=false;
+  installBtn.classList.toggle('is-ready',!!ready);
+  androidHeroBtn.classList.toggle('is-ready',!!ready);
+  if(isAndroid){
+    androidStatus.textContent=ready
+      ?tr('Pronto — toca no botão e a instalação abre imediatamente.','Ready — tap the button and installation opens immediately.')
+      :tr('A preparar a instalação…','Preparing installation…');
   }
 }
 function captureInstallPrompt(){
@@ -122,24 +126,6 @@ function captureInstallPrompt(){
 window.addEventListener('tri-install-ready',captureInstallPrompt);
 captureInstallPrompt();
 
-function waitForInstallPrompt(timeout=3500){
-  captureInstallPrompt();
-  if(deferredPrompt)return Promise.resolve(deferredPrompt);
-  return new Promise(resolve=>{
-    let done=false;
-    const finish=()=>{
-      if(done)return;
-      done=true;
-      window.removeEventListener('tri-install-ready',onReady);
-      clearTimeout(timer);
-      captureInstallPrompt();
-      resolve(deferredPrompt);
-    };
-    const onReady=()=>finish();
-    const timer=setTimeout(finish,timeout);
-    window.addEventListener('tri-install-ready',onReady,{once:true});
-  });
-}
 function openInChrome(){
   const target=location.host+location.pathname+location.search+location.hash;
   location.href='intent://'+target+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(location.href)+';end';
@@ -147,17 +133,22 @@ function openInChrome(){
 async function triggerAndroidInstall(){
   if(!isAndroid){
     document.querySelector('#androidCard').scrollIntoView({behavior:'smooth',block:'start'});
+    androidStatus.textContent=tr('Abre esta página num telemóvel Android para instalar a app.','Open this page on an Android phone to install the app.');
     return;
   }
   if(standalone){
     androidStatus.textContent=tr('TRIÂNGULO já está instalado ✓','TRIÂNGULO is already installed ✓');
     return;
   }
-  setInstallReady(false);
-  const promptEvent=await waitForInstallPrompt();
-  if(promptEvent){
-    installBtn.disabled=false;
-    androidHeroBtn.disabled=false;
+
+  captureInstallPrompt();
+
+  // Keep the install action inside the user's tap: do not wait before prompting.
+  if(deferredPrompt){
+    const promptEvent=deferredPrompt;
+    installBtn.classList.add('is-installing');
+    androidHeroBtn.classList.add('is-installing');
+    androidStatus.textContent=tr('A abrir a instalação…','Opening installation…');
     try{
       const result=await promptEvent.prompt();
       deferredPrompt=null;
@@ -166,18 +157,26 @@ async function triggerAndroidInstall(){
         ?tr('Instalação iniciada ✓','Installation started ✓')
         :tr('Instalação cancelada. Podes tentar novamente quando quiseres.','Installation cancelled. You can try again whenever you want.');
     }catch{
-      androidStatus.textContent=tr('Não foi possível abrir o instalador. Atualiza a página e tenta novamente.','Could not open the installer. Refresh the page and try again.');
+      androidStatus.textContent=tr('Não foi possível abrir o instalador. Vou tentar pelo Chrome.','Could not open the installer. Trying through Chrome.');
+      if(!isChromiumAndroid)openInChrome();
+    }finally{
+      installBtn.classList.remove('is-installing');
+      androidHeroBtn.classList.remove('is-installing');
     }
     return;
   }
+
+  // If this browser does not expose the native PWA prompt, move straight to Chrome.
   if(!isChromiumAndroid){
     androidStatus.textContent=tr('A abrir no Chrome para instalar…','Opening in Chrome to install…');
     openInChrome();
     return;
   }
-  installBtn.disabled=false;
-  androidHeroBtn.disabled=false;
-  androidStatus.textContent=tr('O Chrome ainda não disponibilizou o instalador. Atualiza esta página uma vez e volta a carregar em “Instalar TRIÂNGULO”.','Chrome has not made the installer available yet. Refresh this page once and tap “Install TRIÂNGULO” again.');
+
+  // Chromium may expose beforeinstallprompt moments after service-worker activation.
+  // Keep the button usable and retry immediately on the next tap instead of blocking.
+  androidStatus.textContent=tr('A instalação ainda está a ficar disponível. Toca novamente em “Instalar TRIÂNGULO agora”.','Installation is becoming available. Tap “Install TRIÂNGULO now” again.');
+  navigator.serviceWorker?.ready.then(()=>setTimeout(captureInstallPrompt,250)).catch(()=>{});
 }
 androidHeroBtn.onclick=triggerAndroidInstall;
 installBtn.onclick=triggerAndroidInstall;
