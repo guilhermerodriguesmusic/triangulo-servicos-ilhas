@@ -1097,8 +1097,8 @@ body.route-public-results #explore{display:block!important}
 
     <div id="paSignedOut" class="pa-card" hidden>
       <h2 data-pt="Entrar como prestador" data-en="Provider sign in">Entrar como prestador</h2>
-      <p data-pt="Usa o mesmo email da tua candidatura aprovada e a tua password." data-en="Use the same email as your approved application and your password.">Usa o mesmo email da tua candidatura aprovada e a tua password.</p>
-      <label class="pa-field"><span data-pt="Email da candidatura" data-en="Application email">Email da candidatura</span><input id="providerLoginEmail" type="email" autocomplete="email" placeholder="email@exemplo.pt"></label>
+      <p data-pt="Entra com o email ou telefone/WhatsApp da tua candidatura aprovada e a tua password." data-en="Sign in with the email or phone/WhatsApp number from your approved application and your password.">Entra com o email ou telefone/WhatsApp da tua candidatura aprovada e a tua password.</p>
+      <label class="pa-field"><span data-pt="Email ou telefone" data-en="Email or phone">Email ou telefone</span><input id="providerLoginEmail" type="text" autocomplete="username" data-ph-pt="email@exemplo.pt ou 9xx xxx xxx" data-ph-en="email@example.com or phone number" placeholder="email@exemplo.pt ou 9xx xxx xxx"></label>
       <label class="pa-field"><span data-pt="Password" data-en="Password">Password</span><input id="providerLoginPassword" type="password" autocomplete="current-password" minlength="12" maxlength="128"></label>
       <button id="providerLoginBtn" class="pa-primary" type="button" data-pt="Entrar →" data-en="Sign in →">Entrar →</button>
       <button id="providerForgotBtn" class="pa-link-btn" type="button" data-pt="Primeiro acesso ou esqueceste a password?" data-en="First time or forgot your password?">Primeiro acesso ou esqueceste a password?</button>
@@ -1788,7 +1788,7 @@ async function loadProviderAccount(){
 function renderProviderDashboard(data){
   const p=data.profile||{},bookings=data.bookings||[],matches=data.matches||[],services=data.services||[],requests=[...bookings,...matches];
   $('#paDisplayName').textContent=p.business_name||p.name||'Prestador';
-  $('#paAccountEmail').textContent=data.email||'';
+  $('#paAccountEmail').textContent=data.email||data.phone||'';
   const pending=requests.filter(x=>x.status==='requested'||x.status==='sent');
   $('#paQuickStatus').textContent=p.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused');
   $('#paStatusHelp').textContent=p.status==='active'?(lang==='pt'?'Visível aos clientes.':'Visible to customers.'):(lang==='pt'?'Escondido dos clientes.':'Hidden from customers.');
@@ -1999,7 +1999,7 @@ $('#paPricingType').onchange=syncProviderPrice;
 $('#paPrice').addEventListener('input',updateProviderPricePreview);
 $('#providerLoginBtn').onclick=async()=>{
   const email=$('#providerLoginEmail').value.trim(),password=$('#providerLoginPassword').value,status=$('#providerLoginStatus');
-  if(!email||!email.includes('@')){status.textContent=lang==='pt'?'Indica um email válido.':'Enter a valid email.';return}
+  if(!email){status.textContent=lang==='pt'?'Indica o teu email ou telefone.':'Enter your email or phone number.';return}
   if(!password){status.textContent=lang==='pt'?'Indica a tua password.':'Enter your password.';return}
   status.textContent=lang==='pt'?'A entrar…':'Signing in…';
   const {data,error}=await db.rpc('provider_password_login',{p_email:email,p_password:password});
@@ -2015,11 +2015,11 @@ $('#providerLoginBtn').onclick=async()=>{
 };
 $('#providerForgotBtn').onclick=async()=>{
   const email=$('#providerLoginEmail').value.trim(),status=$('#providerLoginStatus');
-  if(!email||!email.includes('@')){status.textContent=lang==='pt'?'Escreve primeiro o email da tua candidatura.':'Enter the email from your application first.';return}
+  if(!email){status.textContent=lang==='pt'?'Escreve primeiro o email ou telefone da tua candidatura.':'Enter the email or phone number from your application first.';return}
   status.textContent=lang==='pt'?'A enviar email…':'Sending email…';
   const {data,error}=await db.rpc('request_provider_password_reset',{p_email:email});
   if(error||!data||!data.ok){console.error(error);status.textContent=lang==='pt'?'Não foi possível enviar. Tenta novamente.':'Could not send. Please try again.';return}
-  status.textContent=lang==='pt'?'Se o email estiver associado a um perfil aprovado, vais receber uma ligação para criar ou repor a password.':'If the email is linked to an approved profile, you will receive a link to create or reset your password.';
+  status.textContent=lang==='pt'?'Se estes dados estiverem associados a um perfil aprovado, vais receber instruções para criar ou repor a password. Se usares WhatsApp, a ligação pode ser enviada manualmente pelo TRIÂNGULO.':'If these details are linked to an approved profile, you will receive instructions to create or reset your password. If you use WhatsApp, TRIÂNGULO may send the link manually.';
 };
 $('#paPauseBtn').onclick=async()=>{
   if(!providerAccountData)return;
