@@ -25,7 +25,7 @@
   <p id="loginMsg" class="login-note"></p>
 </div>
 <div id="review" hidden>
-  <div class="state" data-pt="Candidatura de Prestador de Serviços" data-en="Service Provider application">Candidatura de Prestador de Serviços</div>
+  <div class="state" data-pt="Candidatura de Prestador de Serviços" data-en="Service Provider Application">Candidatura de Prestador de Serviços</div>
   <h1 id="title" data-pt="Rever candidatura" data-en="Review application">Rever candidatura</h1>
   <div class="details">
     <div class="row"><b data-pt="Nome" data-en="Name">Nome</b><span id="name"></span></div>
@@ -56,7 +56,7 @@
 const $=s=>document.querySelector(s);
 const db=window.supabase.createClient('https://cozamrvrhmwgxbuubjub.supabase.co','sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9');
 const qs=new URLSearchParams(location.search),token=qs.get('token'),mode=qs.get('mode');let currentApplicationId=null;
-let lang=localStorage.getItem('tri_lang')||'pt';
+let lang=(qs.get('lang')==='en'||qs.get('lang')==='pt')?qs.get('lang'):(localStorage.getItem('tri_lang')||'pt');
 const CAT={
  home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Land'},
  repairs:{pt:'Reparações',en:'Repairs'},moving:{pt:'Mudanças & Entregas',en:'Moves & Deliveries'},
@@ -69,7 +69,7 @@ function applyLang(){
  document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en);
  document.querySelectorAll('[data-ph-pt][data-ph-en]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
  $('#pt').classList.toggle('active',lang==='pt');$('#en').classList.toggle('active',lang==='en');
- document.title=tr('Rever candidatura — TRIÂNGULO','Review application — TRIÂNGULO');
+ document.title=tr('Rever candidatura — TRIÂNGULO','Review Application — TRIÂNGULO');
 }
 $('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang();load()};
 $('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang();load()};
