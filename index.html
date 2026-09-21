@@ -423,7 +423,8 @@ h1{
   </footer>
 </main>
 <script>
-let lang=localStorage.getItem('tri_lang')||'pt';
+const urlLang=new URLSearchParams(location.search).get('lang');
+let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt');
 let island=localStorage.getItem('tri_island')||'Pico';
 
 function applyLang(){
@@ -455,6 +456,7 @@ function openSearch(q,group=null){
   params.set('island',island);
   if(query)params.set('q',query);
   if(group)params.set('group',group);
+  if(lang==='en')params.set('lang','en');
   location.href='/servicos/?'+params.toString();
 }
 document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
