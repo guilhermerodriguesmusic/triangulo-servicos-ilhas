@@ -1234,7 +1234,7 @@ function syncResultsUrl(){
  params.set('island',island);
  if(activeSearchQuery)params.set('q',activeSearchQuery);
  if(activeServiceGroup)params.set('group',activeServiceGroup);
- history.replaceState({},'',location.pathname+'?'+params.toString()+'#app');
+ history.replaceState({},'',location.pathname+'?'+params.toString());
 }
 function updateResults(q=activeSearchQuery){
  q=(q||'').trim();syncResultsControls();
@@ -1520,11 +1520,8 @@ async function openProviderArea(){
 function closeProviderArea(){
   $('#providerAreaView').hidden=true;
   history.replaceState({},'',location.pathname);
-  if(store.get('tri_client_welcome_v4','')==='1'){
-    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-  }else{
-    $('#mainShell').classList.add('hidden');$('#splash').classList.remove('hidden');
-  }
+  $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+  runSearch(activeSearchQuery,activeServiceGroup);
 }
 async function loadProviderAccount(){
   paShow('paLoading');
@@ -1850,11 +1847,8 @@ function providerAppContinue(){
   history.replaceState({},'',location.pathname);
   activeProviderBookingToken=null;activeProviderRequestKind='direct';
   $('#providerRequestView').hidden=true;
-  if(store.get('tri_client_welcome_v4','')==='1'){
-    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-  }else{
-    $('#mainShell').classList.add('hidden');$('#splash').classList.remove('hidden');
-  }
+  $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+  runSearch(activeSearchQuery,activeServiceGroup);
 }
 function providerAppRenderState(state,data={}){
   providerAppHideAll();
@@ -1951,7 +1945,7 @@ async function init(){
      const {data,error}=await db.rpc('service_request_client_context',{p_token:requestToken});
      if(!error&&data&&data.ok){
        saveBookingLocal({kind:'matching',token:requestToken,island:data.island||'',description:data.description||'',date:data.requested_date||'',status:data.state||'matching',offers:data.offers||[],provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,createdAt:new Date().toISOString()});
-       history.replaceState({},'',location.pathname+'#app');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+       history.replaceState({},'',location.pathname);$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
        await openClientBookings();return;
      }
    }catch(e){console.error('request_token deep link',e)}
@@ -1975,7 +1969,7 @@ async function init(){
          checkout_available:paymentsLive&&!!data.checkout_available,
          createdAt:new Date().toISOString()
        });
-       history.replaceState({},'',location.pathname+'#app');
+       history.replaceState({},'',location.pathname);
        $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
        await openClientBookings();
        if(paymentResult==='success'){
@@ -2001,7 +1995,7 @@ async function init(){
  if(providerEntry){openProviderSignup();return}
  if(paymentResult){
    $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-   history.replaceState({},'',location.pathname+'#app');
+   history.replaceState({},'',location.pathname);
    setTimeout(async()=>{await openClientBookings();toast(paymentResult==='success'?(lang==='pt'?'Pagamento recebido/ a confirmar ✓':'Payment received / confirming ✓'):(lang==='pt'?'Pagamento cancelado.':'Payment cancelled.'))},50);
    return;
  }
