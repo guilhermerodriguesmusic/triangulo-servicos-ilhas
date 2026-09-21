@@ -1318,8 +1318,8 @@ function applyLang(){
  document.title=lang==='pt'?'TRIÂNGULO — Serviços locais nas ilhas':'TRIÂNGULO — Local services across the islands';
  $$('[data-t]').forEach(el=>{let v=tr(el.dataset.t);if(v.includes('<br>'))el.innerHTML=v;else el.textContent=v});
  $$('[data-pt][data-en]').forEach(el=>{el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en});
- $('[data-ph-pt][data-ph-en]').forEach(el=>{el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn});
- $('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
+ document.querySelectorAll('[data-ph-pt][data-ph-en]').forEach(el=>{el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn});
+ document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
  $$('[data-lang]').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
  $('#searchInput').placeholder=lang==='pt'?'Limpeza, jardim, mudanças...':'Cleaning, garden, moving...';
  let rq=$('#resultsInput').value||'';
