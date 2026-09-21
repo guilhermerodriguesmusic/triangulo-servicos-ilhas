@@ -11,7 +11,7 @@
 </main>
 <script>
 const db=window.supabase.createClient('https://cozamrvrhmwgxbuubjub.supabase.co','sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9',{auth:{persistSession:true,autoRefreshToken:true}});
-const $=s=>document.querySelector(s);let lang=localStorage.getItem('tri_lang')||'pt';
+const $=s=>document.querySelector(s);const urlLang=new URLSearchParams(location.search).get('lang');let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt');
 function tr(pt,en){return lang==='pt'?pt:en}
 function applyLang(){
  document.documentElement.lang=lang;
@@ -22,7 +22,7 @@ function applyLang(){
 }
 $('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang();load()};
 $('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang();load()};
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));const encArg=v=>encodeURIComponent(String(v??'')).replace(/'/g,'%27');const CAT={home:['Casa & Limpeza','Home & Cleaning'],garden:['Jardim & Terrenos','Garden & Land'],repairs:['Reparações','Repairs'],moving:['Mudanças & Entregas','Moves & Deliveries'],lessons:['Aulas','Lessons'],wellness:['Bem-estar','Wellness'],tech:['Tecnologia','Technology'],creative:['Fotografia / Criativos','Photo / Creative'],pets:['Animais','Pets'],other:['Outro','Other']};const catLabel=v=>CAT[v]?.[lang==='pt'?0:1]||v||'—';
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));const encArg=v=>encodeURIComponent(String(v??'')).replace(/'/g,'%27');const CAT={home:['Casa & Limpeza','Home & Cleaning'],garden:['Jardim & Terrenos','Garden & Outdoor'],repairs:['Reparações','Repairs'],moving:['Mudanças & Entregas','Moves & Deliveries'],lessons:['Aulas','Lessons'],wellness:['Bem-estar','Wellness'],tech:['Tecnologia','Technology'],creative:['Fotografia / Criativos','Photo / Creative'],pets:['Animais','Pets'],other:['Outro','Other']};const catLabel=v=>CAT[v]?.[lang==='pt'?0:1]||v||'—';
 async function login(){const email=$('#email').value.trim(),password=$('#password').value;$('#loginMsg').textContent=tr('A processar…','Processing…');const res=await db.auth.signInWithPassword({email,password});if(res.error){$('#loginMsg').textContent=res.error.message;return}$('#loginMsg').textContent=tr('Sessão iniciada.','Signed in.');await check()}
 $('#signin').onclick=()=>login();$('#refresh').onclick=()=>load();$('#logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 async function check(){const u=await db.auth.getUser();if(!u.data.user){$('#login').hidden=false;$('#panel').hidden=true;$('#logout').hidden=true;$('#refresh').hidden=true;return}try{const r=await db.from('provider_applications').select('id').limit(1);if(r.error)throw r.error;$('#login').hidden=true;$('#panel').hidden=false;$('#logout').hidden=false;$('#refresh').hidden=false;load()}catch(e){$('#loginMsg').textContent=tr('Conta autenticada, mas este email ainda não está autorizado como administrador do TRIÂNGULO.','Signed in, but this email is not authorized as a TRIÂNGULO administrator.');$('#login').hidden=false;$('#panel').hidden=true;$('#logout').hidden=false;$('#refresh').hidden=true}}
