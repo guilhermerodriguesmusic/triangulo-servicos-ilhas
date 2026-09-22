@@ -1118,6 +1118,11 @@ body.route-public-results #explore{display:block!important}
  .booking-brief span,.pa-request-brief span{font-size:10px}
 }
 </style>
+<style id="provider-quote-safety-v1">
+.pa-inline-quote-preview{padding:8px 10px;border-radius:9px;background:#eaf5ef;color:#286047;font-size:10px;font-weight:850;text-align:center}
+.pa-inline-quote-preview[hidden]{display:none}
+.pa-quote-actions button:disabled{opacity:.65;cursor:wait}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -2181,7 +2186,7 @@ function renderProviderDashboard(data){
       const note=escapeHtml(x.description||x.notes||(lang==='pt'?'Sem nota adicional':'No additional note'));
       let actions='';
       if(isPending&&x.response_token){
-        if(x.requires_quote)actions='<div class="pa-booking-actions" style="grid-template-columns:1fr"><input data-pa-quote-amount="'+x.response_token+'" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="'+(lang==='pt'?'Valor que queres receber (€)':'Amount you want to receive (€)')+'" style="width:100%;border:1px solid #d5e3ea;border-radius:10px;padding:10px"><button class="accept" data-pa-quote="'+x.response_token+'" data-kind="'+(generic?'matching':'direct')+'">'+(lang==='pt'?'Enviar orçamento':'Send quote')+'</button><button class="decline" data-pa-respond="decline" data-kind="'+(generic?'matching':'direct')+'" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>';
+        if(x.requires_quote)actions='<div class="pa-booking-actions pa-quote-actions" style="grid-template-columns:1fr"><input data-pa-quote-amount="'+x.response_token+'" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="'+(lang==='pt'?'Valor que queres receber (€)':'Amount you want to receive (€)')+'" style="width:100%;border:1px solid #d5e3ea;border-radius:10px;padding:10px"><div class="pa-inline-quote-preview" data-pa-quote-preview="'+x.response_token+'" hidden></div><button class="accept" data-pa-quote="'+x.response_token+'" data-kind="'+(generic?'matching':'direct')+'">'+(lang==='pt'?'Enviar orçamento':'Send quote')+'</button><button class="decline" data-pa-respond="decline" data-kind="'+(generic?'matching':'direct')+'" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>';
         else actions='<div class="pa-booking-actions"><button class="accept" data-pa-respond="accept" data-kind="'+(generic?'matching':'direct')+'" data-token="'+x.response_token+'">'+(lang==='pt'?'Tenho disponibilidade':'I’m available')+'</button><button class="decline" data-pa-respond="decline" data-kind="'+(generic?'matching':'direct')+'" data-token="'+x.response_token+'">'+(lang==='pt'?'Não posso':'Decline')+'</button></div>';
       }
       const hasClient=x.client_name||x.client_email||x.client_phone;
@@ -2193,19 +2198,35 @@ function renderProviderDashboard(data){
       return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.service_title||(lang==='pt'?'Serviço':'Service'))+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(stateLabel)+'</span></div><div class="pa-request-meta"><span>📍 '+escapeHtml(x.location_text||x.island||'')+'</span><span>🗓 '+when+'</span></div><div class="pa-request-brief"><b>'+(lang==='pt'?'O que é para fazer':'Job details')+'</b><span>'+note+'</span></div>'+actions+locked+client+'</div>';
     }).join('');
 
-    $$('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
+    $('[data-pa-quote-amount]').forEach(input=>{
+      const update=()=>{
+        const amount=Number(input.value),box=$('[data-pa-quote-preview="'+input.dataset.paQuoteAmount+'"]');
+        if(!box)return;
+        if(!Number.isFinite(amount)||amount<=0){box.hidden=true;box.textContent='';return}
+        const total=amount+(Math.round(amount*TRIANGULO_SERVICE_FEE_RATE*100)/100);
+        box.hidden=false;
+        box.textContent=lang==='pt'
+          ?('Tu recebes '+formatEuro(amount)+' · cliente vê '+formatEuro(total))
+          :('You receive '+formatEuro(amount)+' · customer sees '+formatEuro(total));
+      };
+      input.addEventListener('input',update);update();
+    });
+    $('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
       const token=btn.dataset.paQuote,input=$('[data-pa-quote-amount="'+token+'"]'),amount=Number(input&&input.value),generic=btn.dataset.kind==='matching';
       if(!amount||amount<=0){toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
-      btn.disabled=true;
+      const oldLabel=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A enviar…':'Sending…';
       const response=generic?await db.rpc('respond_service_request_match',{p_token:token,p_action:'accept',p_amount:amount}):await db.rpc('submit_booking_quote',{p_token:token,p_amount:amount});
-      btn.disabled=false;const r=response.data,error=response.error;
+      btn.disabled=false;btn.textContent=oldLabel;const r=response.data,error=response.error;
       if(error||!r||!r.ok){toast((r&&r.message)||(lang==='pt'?'Não foi possível enviar o orçamento.':'Could not send the quote.'));return}
       toast(lang==='pt'?'Orçamento enviado ✓':'Quote sent ✓');await loadProviderAccount();
     });
-    $$('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
-      btn.disabled=true;const generic=btn.dataset.kind==='matching';
-      const response=generic?await db.rpc('respond_service_request_match',{p_token:btn.dataset.token,p_action:btn.dataset.paRespond,p_amount:null}):await db.rpc('respond_to_booking',{p_token:btn.dataset.token,p_action:btn.dataset.paRespond});
-      const r=response.data,error=response.error;btn.disabled=false;
+    $('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
+      const action=btn.dataset.paRespond;
+      if(action==='decline'&&!window.confirm(lang==='pt'?'Tens a certeza de que não podes aceitar este pedido? Esta resposta é definitiva.':'Are you sure you cannot accept this request? This response is final.'))return;
+      const oldLabel=btn.textContent;btn.disabled=true;if(action==='decline')btn.textContent=lang==='pt'?'A recusar…':'Declining…';
+      const generic=btn.dataset.kind==='matching';
+      const response=generic?await db.rpc('respond_service_request_match',{p_token:btn.dataset.token,p_action:action,p_amount:null}):await db.rpc('respond_to_booking',{p_token:btn.dataset.token,p_action:action});
+      const r=response.data,error=response.error;btn.disabled=false;btn.textContent=oldLabel;
       if(error||!r||!r.ok){toast((r&&r.message)||(lang==='pt'?'Não foi possível responder.':'Could not respond.'));return}
       toast(lang==='pt'?'Resposta registada ✓':'Response saved ✓');await loadProviderAccount();
     });
@@ -2546,7 +2567,7 @@ async function providerAppRespond(action){
   providerAppRenderState(data.state,data);
 }
 $('#prAppAccept').onclick=()=>providerAppRespond('accept');
-$('#prAppDecline').onclick=()=>providerAppRespond('decline');
+$('#prAppDecline').onclick=()=>{if(window.confirm(lang==='pt'?'Tens a certeza de que não podes aceitar este pedido? Esta resposta é definitiva.':'Are you sure you cannot accept this request? This response is final.'))providerAppRespond('decline')};
 $('#prAppQuoteAmount').addEventListener('input',updateProviderQuotePreview);
 
 async function init(){
