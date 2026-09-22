@@ -2315,9 +2315,9 @@ function renderProviderDashboard(data){
 function renderProviderServices(services){
  const box=$('#paServicesList');if(!box)return;
  if(!services.length){box.innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens serviços individuais. Adiciona o primeiro.':'You do not have individual services yet. Add the first one.')+'</div>';return}
- box.innerHTML=services.map(s=>'<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(s.title)+'</b><span class="pa-booking-status '+escapeHtml(s.status)+'">'+(s.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused'))+'</span></div><small>'+escapeHtml(s.category_code)+' · '+escapeHtml(s.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(s))+'</small><div class="pa-booking-actions"><button class="accept" data-edit-service="'+s.id+'">'+(lang==='pt'?'Editar':'Edit')+'</button><button class="decline" data-pause-service="'+s.id+'">'+(lang==='pt'?'Pausar':'Pause')+'</button></div></div>').join('');
+ box.innerHTML=services.map(s=>'<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(s.title)+'</b><span class="pa-booking-status '+escapeHtml(s.status)+'">'+(s.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused'))+'</span></div><small>'+escapeHtml(s.category_code)+' · '+escapeHtml(s.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(s))+'</small><div class="pa-booking-actions"><button class="accept" data-edit-service="'+s.id+'">'+(lang==='pt'?'Editar':'Edit')+'</button><button class="'+(s.status==='active'?'decline':'accept')+'" data-toggle-service="'+s.id+'">'+(s.status==='active'?(lang==='pt'?'Pausar':'Pause'):(lang==='pt'?'Reativar':'Reactivate'))+'</button></div></div>').join('');
  $$('[data-edit-service]').forEach(btn=>btn.onclick=()=>openServiceEditor(btn.dataset.editService));
- $$('[data-pause-service]').forEach(btn=>btn.onclick=()=>pauseProviderService(btn.dataset.pauseService));
+ $$('[data-toggle-service]').forEach(btn=>btn.onclick=()=>toggleProviderService(btn.dataset.toggleService));
 }
 function openServiceEditor(id=null){
  const form=$('#paServiceForm'),s=id&&providerAccountData?(providerAccountData.services||[]).find(x=>x.id===id):null;
@@ -2345,11 +2345,13 @@ $('#paServiceForm').onsubmit=async e=>{
  if(error||!data||!data.ok){status.textContent=(data&&data.message)||(lang==='pt'?'Não foi possível guardar.':'Could not save.');return}
  status.textContent=lang==='pt'?'Serviço guardado ✓':'Service saved ✓';form.style.display='none';await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
 };
-async function pauseProviderService(id){
+async function toggleProviderService(id){
  if(!id)return;
  const {data,error}=await db.rpc('provider_session_remove_service',{p_session_token:providerSessionToken,p_service_id:id});
- if(error||!data||!data.ok){toast((data&&data.message)||(lang==='pt'?'Não foi possível pausar.':'Could not pause.'));return}
- toast(lang==='pt'?'Serviço pausado ✓':'Service paused ✓');await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
+ if(error||!data||!data.ok){toast((data&&data.message)||(lang==='pt'?'Não foi possível alterar o serviço.':'Could not update the service.'));return}
+ const active=data.status==='active';
+ toast(active?(lang==='pt'?'Serviço reativado ✓':'Service reactivated ✓'):(lang==='pt'?'Serviço pausado ✓':'Service paused ✓'));
+ await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
 }
 function syncProviderOther(){
   const on=$('#paOtherCat')&&$('#paOtherCat').checked;
