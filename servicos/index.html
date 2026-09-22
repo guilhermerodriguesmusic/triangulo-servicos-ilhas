@@ -1010,6 +1010,51 @@ body.route-public-results #explore{display:block!important}
 
 .skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
 </style>
+<style id="provider-real-data-polish-v1">
+/* Real provider cards: neutral identity when no profile photo exists. */
+.provider-avatar{
+  flex:0 0 auto;display:grid;place-items:center;
+  background:linear-gradient(145deg,#123a68,#245f63);
+  color:#fff;font-weight:900;letter-spacing:-.04em;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.13);
+}
+.provider-avatar-card{width:94px;height:118px;border-radius:14px;font-size:34px}
+.provider-avatar-modal{width:55px;height:55px;border-radius:14px;font-size:21px}
+.result-card-copy{min-width:0;display:flex;flex-direction:column}
+.result-card-name{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.result-card-name b{margin:0}
+.result-card-name .loc{margin:0}
+.provider-tag-service{background:#e8f3eb;color:#31664c}
+.provider-tag-proof{background:#eef4f1;color:#526d61}
+.provider-tag-time{background:#f3f6f5;color:#64766f}
+.provider-price-block{margin-top:auto;padding-top:7px}
+.result-card-action button{transition:transform .15s ease,box-shadow .15s ease}
+.result-card-action button:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(10,49,87,.16)}
+
+.book-provider{align-items:flex-start;padding:3px 42px 12px 0;margin-bottom:10px;border-bottom:1px solid #edf1f3}
+.book-provider-copy{min-width:0;padding-top:2px}
+.book-provider-copy b{display:block;color:#123a68;font-size:14px;line-height:1.25}
+.book-provider-copy b span{font-weight:700;color:#526a7f}
+.book-provider-copy small{display:block;margin-top:4px;color:#6d8090;font-size:10.5px;line-height:1.4}
+.date-chip{display:inline-flex;align-items:baseline;justify-content:center;gap:4px;white-space:nowrap}
+.date-chip small{font-size:10px;line-height:1}
+.date-chip b{font-size:12px;line-height:1}
+.time-chip{white-space:nowrap}
+
+@media(min-width:760px){
+  body.results-mode .results-list:has(.result-card:only-child){grid-template-columns:minmax(0,620px)}
+  body.results-mode .provider-avatar-card{width:96px;height:136px;border-radius:15px;font-size:38px}
+  body.results-mode .result-card:has(.provider-avatar-card){grid-template-columns:96px minmax(0,1fr)}
+}
+@media(max-width:620px){
+  .provider-avatar-card{width:76px;height:98px;border-radius:13px;font-size:29px}
+  .result-card:has(.provider-avatar-card){grid-template-columns:76px minmax(0,1fr)}
+  .result-card-name{gap:5px}
+  .result-card-action{align-items:flex-end}
+  .result-card-action span{max-width:52%}
+  .book-provider{padding-right:38px}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -1472,7 +1517,12 @@ async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
 }
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function containsDirectContactText(v){const s=String(v||'');return /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/i.test(s)||/(https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/)/i.test(s)||/(\+?\d[ .()\/-]*){9,}/.test(s)}
-function safeProviderPhoto(v){const s=String(v||'');return /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(s)?s:'/logo.svg'}
+function safeProviderPhoto(v){const s=String(v||'');return /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(s)?s:''}
+function providerInitial(name){const s=String(name||'').trim();return escapeHtml((s&&s[0]?s[0]:'T').toUpperCase())}
+function providerAvatar(photo,name,size='card'){
+ const src=safeProviderPhoto(photo);
+ return src?'<img class="provider-photo" src="'+src+'" alt="'+escapeHtml(name)+'">':'<div class="provider-avatar provider-avatar-'+size+'" aria-hidden="true">'+providerInitial(name)+'</div>';
+}
 function groupLabel(code){const g=serviceGroups.find(x=>x.code===code);return g?(lang==='pt'?g.pt:g.en):''}
 function runSearch(q,group=null){
  activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;$('#resultsInput').value=activeSearchQuery;
@@ -1526,12 +1576,19 @@ function updateResults(q=activeSearchQuery){
   const ep=$('#emptyPost');if(ep)ep.onclick=()=>openRequest(activeSearchQuery);return;
  }
  $('#resultsList').innerHTML=list.map(s=>{
-  const photo=safeProviderPhoto(s.photo_data),provider=escapeHtml(s.name||(lang==='pt'?'Prestador verificado':'Verified provider')),title=escapeHtml(s.title||(lang==='pt'?'Serviço':'Service'));
+  const provider=escapeHtml(s.name||(lang==='pt'?'Prestador verificado':'Verified provider')),title=escapeHtml(s.title||(lang==='pt'?'Serviço':'Service'));
   const proof=s.completed_jobs>0
-    ?'<span class="provider-tag">✓ '+s.completed_jobs+' '+(lang==='pt'?'serviço'+(s.completed_jobs===1?'':'s')+' concluído'+(s.completed_jobs===1?'':'s'):'completed job'+(s.completed_jobs===1?'':'s'))+'</span>'
-    :'<span class="provider-tag">✓ '+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
-  const availability=s.availability?'<span class="provider-tag">🕒 '+escapeHtml(s.availability)+'</span>':'';
-  return '<article class="result-card" data-service="'+s.service_id+'"><img src="'+photo+'" alt="'+provider+'"><div><b>'+provider+'</b><div class="loc">📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</div><div class="provider-tags"><span class="provider-tag">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee')+'</div><div class="result-card-action"><span>'+(s.pricing_type==='quote'?(lang==='pt'?'O prestador envia o valor':'Provider sends the price'):(lang==='pt'?'Pedido sem criação de conta':'Request without an account'))+'</span><button type="button" data-open-service="'+s.service_id+'">'+(s.pricing_type==='quote'?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Pedir serviço':'Request service'))+'</button></div></div></article>';
+    ?'<span class="provider-tag provider-tag-proof">✓ '+s.completed_jobs+' '+(lang==='pt'?'serviço'+(s.completed_jobs===1?'':'s')+' concluído'+(s.completed_jobs===1?'':'s'):'completed job'+(s.completed_jobs===1?'':'s'))+'</span>'
+    :'<span class="provider-tag provider-tag-proof">✓ '+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
+  const availability=s.availability?'<span class="provider-tag provider-tag-time">🕒 '+escapeHtml(s.availability)+'</span>':'';
+  const quote=s.pricing_type==='quote'||s.price==null;
+  const priceNote=quote
+    ?(lang==='pt'?'Vês o valor final antes de confirmares':'You see the final amount before confirming')
+    :(lang==='pt'?'Preço final · inclui taxa TRIÂNGULO':'Final price · includes TRIÂNGULO fee');
+  const actionHint=quote
+    ?(lang==='pt'?'Recebes o orçamento antes de confirmar':'See the quote before confirming')
+    :(lang==='pt'?'Pedido sem criação de conta':'Request without an account');
+  return '<article class="result-card" data-service="'+s.service_id+'">'+providerAvatar(s.photo_data,provider,'card')+'<div class="result-card-copy"><div class="result-card-name"><b>'+provider+'</b><span class="loc">📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</span></div><div class="provider-tags"><span class="provider-tag provider-tag-service">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price-block"><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+priceNote+'</div></div><div class="result-card-action"><span>'+actionHint+'</span><button type="button" data-open-service="'+s.service_id+'">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Pedir serviço':'Request service'))+'</button></div></div></article>';
  }).join('');
  bindProvider();
 }
@@ -1638,7 +1695,7 @@ $('#contactForm').onsubmit=async e=>{
   form.reset();status.textContent='';closeSheets();toast(lang==='pt'?'Mensagem enviada ✓':'Message sent ✓')
  }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao enviar. Tenta novamente.':'Could not send. Please try again.'}
 };
-function dateObj(n){let d=new Date();d.setDate(d.getDate()+n);return {iso:localDateISO(d),num:d.getDate(),day:d.toLocaleDateString(lang==='pt'?'pt-PT':'en-GB',{weekday:'short'}).replace('.','')}}
+function dateObj(n){let d=new Date();d.setDate(d.getDate()+n);let day=d.toLocaleDateString(lang==='pt'?'pt-PT':'en-GB',{weekday:'short'}).replace('.','');if(lang==='pt')day=day.charAt(0).toUpperCase()+day.slice(1);return {iso:localDateISO(d),num:d.getDate(),day}}
 function openBooking(id){
  const p=realProviders.find(x=>x.service_id===id||x.id===id);if(!p)return;
  const quote=p.pricing_type==='quote'||p.price==null,dates=[0,1,2,3].map(dateObj);
@@ -1646,7 +1703,7 @@ function openBooking(id){
  const timeHtml=['09:00','11:00','14:00','17:00',''].map((x,i)=>'<button class="time-chip '+(i===0?'active':'')+'" type="button" data-time="'+x+'">'+(x||(lang==='pt'?'A combinar':'Flexible'))+'</button>').join('');
  const maxBookDate=new Date();maxBookDate.setDate(maxBookDate.getDate()+90);
  const providerName=escapeHtml(p.name||(lang==='pt'?'Prestador verificado':'Verified provider')),serviceTitle=escapeHtml(p.title||(lang==='pt'?'Serviço':'Service'));
- $('#bookContent').innerHTML='<div class="book-provider"><img src="'+safeProviderPhoto(p.photo_data)+'" alt="'+providerName+'"><div><b>'+serviceTitle+'</b><small>'+(lang==='pt'?'por ':'by ')+providerName+' · '+escapeHtml(p.description||'')+'</small></div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><label class="pa-field" style="margin-top:-4px"><span>'+(lang==='pt'?'Outra data':'Another date')+'</span><input id="bookCustomDate" type="date" min="'+localDateISO()+'" max="'+localDateISO(maxBookDate)+'"></label><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form" style="margin:12px 0"><label><span>'+(lang==='pt'?'Nome (opcional)':'Name (optional)')+'</span><input id="bookName" maxlength="120" autocomplete="name"></label><div class="two"><label><span>'+(lang==='pt'?'Email (opcional)':'Email (optional)')+'</span><input id="bookEmail" type="email" autocomplete="email" inputmode="email"></label><label><span>'+(lang==='pt'?'WhatsApp (opcional)':'WhatsApp (optional)')+'</span><input id="bookPhone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><label><span>'+(lang==='pt'?'Atualizações por':'Updates via')+'</span><select id="bookPreference"><option value="both">'+(lang==='pt'?'WhatsApp e email':'WhatsApp and email')+'</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note">'+(lang==='pt'?'Basta um contacto. Não precisas de criar conta.':'One contact method is enough. No account is required.')+'</small></label><label><span>'+(lang==='pt'?'Nota (opcional)':'Note (optional)')+'</span><textarea id="bookNote"></textarea><small class="form-note">'+(paymentsLive?(lang==='pt'?'Não incluas contactos ou links nas notas. Os contactos são protegidos até ao pagamento.':'Do not include contact details or links in the note. Contact details stay protected until payment.'):(lang==='pt'?'Não incluas contactos ou links nas notas. Quando o serviço for aceite, o TRIÂNGULO disponibiliza os contactos para combinarem os detalhes.':'Do not include contact details or links in the note. Once the service is accepted, TRIÂNGULO releases contact details so you can coordinate.'))+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO (12%)':'TRIÂNGULO fee (12%)')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Enviar pedido':'Send request'))+'</button><p class="demo">'+(quote?(lang==='pt'?'O prestador avalia o pedido e indica quanto quer receber. Depois vês o total final antes de confirmar.':'The provider assesses the request and sets the amount they want to receive. You then see the final total before confirming.'):(paymentsLive?(lang==='pt'?'O total inclui a taxa TRIÂNGULO. O serviço fica confirmado depois do pagamento.':'The total includes the TRIÂNGULO fee. The service is confirmed after payment.'):(lang==='pt'?'O preço final inclui a taxa TRIÂNGULO. Enquanto os pagamentos estão desligados, os contactos são libertados quando o prestador aceita.':'The final price includes the TRIÂNGULO fee. While payments are off, contact details are released when the provider accepts.')))+'</p>';
+ $('#bookContent').innerHTML='<div class="book-provider">'+providerAvatar(p.photo_data,providerName,'modal')+'<div class="book-provider-copy"><b>'+serviceTitle+' <span>· '+providerName+'</span></b>'+(p.description?'<small>'+escapeHtml(p.description)+'</small>':'')+'</div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><label class="pa-field" style="margin-top:-4px"><span>'+(lang==='pt'?'Outra data':'Another date')+'</span><input id="bookCustomDate" type="date" min="'+localDateISO()+'" max="'+localDateISO(maxBookDate)+'"></label><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form" style="margin:12px 0"><label><span>'+(lang==='pt'?'Nome (opcional)':'Name (optional)')+'</span><input id="bookName" maxlength="120" autocomplete="name"></label><div class="two"><label><span>'+(lang==='pt'?'Email (opcional)':'Email (optional)')+'</span><input id="bookEmail" type="email" autocomplete="email" inputmode="email"></label><label><span>'+(lang==='pt'?'WhatsApp (opcional)':'WhatsApp (optional)')+'</span><input id="bookPhone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><label><span>'+(lang==='pt'?'Atualizações por':'Updates via')+'</span><select id="bookPreference"><option value="both">'+(lang==='pt'?'WhatsApp e email':'WhatsApp and email')+'</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note">'+(lang==='pt'?'Basta um contacto. Não precisas de criar conta.':'One contact method is enough. No account is required.')+'</small></label><label><span>'+(lang==='pt'?'Nota (opcional)':'Note (optional)')+'</span><textarea id="bookNote"></textarea><small class="form-note">'+(paymentsLive?(lang==='pt'?'Não incluas contactos ou links nas notas. Os contactos são protegidos até ao pagamento.':'Do not include contact details or links in the note. Contact details stay protected until payment.'):(lang==='pt'?'Não incluas contactos ou links nas notas. Quando o serviço for aceite, o TRIÂNGULO disponibiliza os contactos para combinarem os detalhes.':'Do not include contact details or links in the note. Once the service is accepted, TRIÂNGULO releases contact details so you can coordinate.'))+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO (12%)':'TRIÂNGULO fee (12%)')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Enviar pedido':'Send request'))+'</button><p class="demo">'+(quote?(lang==='pt'?'O prestador avalia o pedido e envia-te um orçamento. Vês o valor final antes de confirmar.':'The provider reviews the request and sends you a quote. You see the final amount before confirming.'):(paymentsLive?(lang==='pt'?'O total inclui a taxa TRIÂNGULO. O serviço fica confirmado depois do pagamento.':'The total includes the TRIÂNGULO fee. The service is confirmed after payment.'):(lang==='pt'?'O preço final inclui a taxa TRIÂNGULO. Enquanto os pagamentos estão desligados, os contactos são libertados quando o prestador aceita.':'The final price includes the TRIÂNGULO fee. While payments are off, contact details are released when the provider accepts.')))+'</p>';
  openSheet('bookSheet');
  $$('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#bookCustomDate').value=''});
  $('#bookCustomDate').onchange=e=>{if(e.target.value)$$('[data-date]').forEach(x=>x.classList.remove('active'))};
