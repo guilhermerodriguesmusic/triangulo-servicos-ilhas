@@ -1106,6 +1106,18 @@ body.route-public-results #explore{display:block!important}
  .pr-app-details-row b{margin-bottom:-3px}
 }
 </style>
+<style id="request-clarity-polish-v1">
+.booking-brief{margin-top:2px;padding:9px 10px;border-radius:11px;background:#f5f8f9;display:grid;gap:2px}
+.booking-brief b,.pa-request-brief b{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#6e8493}
+.booking-brief span,.pa-request-brief span{font-size:10.5px;line-height:1.45;color:#29485e;white-space:pre-wrap}
+.pa-request-meta{display:flex;flex-wrap:wrap;gap:7px 12px;margin-top:2px;font-size:10px;color:#647b8d}
+.pa-request-brief{display:grid;gap:3px;margin-top:7px;padding:9px 10px;border-radius:10px;background:#f6f9fa}
+#confirmBook:disabled,.client-quote-confirm:disabled{opacity:.66;cursor:wait;transform:none!important}
+@media(max-width:620px){
+ .pa-request-meta{display:grid;gap:3px}
+ .booking-brief span,.pa-request-brief span{font-size:10px}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -1396,7 +1408,7 @@ body.route-public-results #explore{display:block!important}
 
         <div id="providerProfileStatus" class="pa-feedback"></div>
         <button class="pa-primary" type="submit" data-pt="Guardar alterações" data-en="Save changes">Guardar alterações</button>
-        <p class="pa-note" data-pt="Este é o teu valor. O TRIÂNGULO acrescenta 12% ao preço apresentado ao cliente; essa taxa não é descontada do que definiste." data-en="This is your amount. TRIÂNGULO adds 12% to the price shown to the customer; that fee is not deducted from the amount you set.">Este é o teu valor. O TRIÂNGULO acrescenta 12% ao preço apresentado ao cliente; essa taxa não é descontada do que definiste.</p>
+        <p id="paFeeNote" class="pa-note">Este é o teu valor. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente; essa taxa não é descontada do que definiste.</p>
       </form>
     </div>
   </div>
@@ -1506,6 +1518,7 @@ function applyLang(){
  document.querySelectorAll('.legal-links a[href^="/"],.desktop-client-nav a[href^="/"],.topbar-actions a[href^="/"],#providerAreaView a[href^="/"],#explore a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
  updateIsland();
  if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
+ updateFeeCopy();
  if(providerAccountData)renderProviderDashboard(providerAccountData);
  $$('[data-toggle-password]').forEach(btn=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;const visible=input.type==='text';btn.textContent=visible?(lang==='pt'?'Ocultar':'Hide'):(lang==='pt'?'Mostrar':'Show');btn.setAttribute('aria-label',visible?(lang==='pt'?'Ocultar password':'Hide password'):(lang==='pt'?'Mostrar password':'Show password'))});
  if(document.body.classList.contains('results-mode'))updateResults(activeSearchQuery);
@@ -1541,10 +1554,13 @@ async function loadAppConfig(){
   paymentsLive=false;
   TRIANGULO_SERVICE_FEE_RATE=.12;
  }
+ updateFeeCopy();
 }
 function formatProviderMoney(p,amount,withFrom=true){const rounded=Math.round((Number(amount)+Number.EPSILON)*100)/100,n=rounded.toFixed(rounded%1?2:0);if(p.pricing_type==='hour')return '€'+n+(lang==='pt'?'/h':'/hr');if(p.pricing_type==='from'&&withFrom)return (lang==='pt'?'Desde ':'From ')+'€'+n;return '€'+n}
 function providerOwnPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang==='pt'?'Sob orçamento':'Quote';return formatProviderMoney(p,Number(p.price))}
 function providerFeePrice(p){if(p.pricing_type==='quote'||p.price==null)return '';return formatProviderMoney(p,Number(p.price)*TRIANGULO_SERVICE_FEE_RATE,false)}
+function feePercentLabel(){const pct=Math.round(TRIANGULO_SERVICE_FEE_RATE*10000)/100;return String(pct).replace('.',lang==='pt'?',':'.')+'%'}
+function updateFeeCopy(){const n=$('#paFeeNote');if(n)n.textContent=lang==='pt'?('Este é o teu valor. O TRIÂNGULO acrescenta '+feePercentLabel()+' ao preço apresentado ao cliente; essa taxa não é descontada do que definiste.'):('This is your amount. TRIÂNGULO adds '+feePercentLabel()+' to the price shown to the customer; that fee is not deducted from the amount you set.')}
 function providerPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang==='pt'?'Sob orçamento':'Quote';return formatProviderMoney(p,Number(p.price)*(1+TRIANGULO_SERVICE_FEE_RATE))}
 function providerCategoryLabels(p){return (p.categories||[]).map(code=>{if(code==='other'&&p.other_service)return p.other_service;const i=CATEGORY_CODES.indexOf(code),c=categories[i];return c?(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en)):code}).slice(0,3)}
 function renderProviders(){}
@@ -1752,15 +1768,26 @@ function openBooking(id){
  const p=realProviders.find(x=>x.service_id===id||x.id===id);if(!p)return;
  const quote=p.pricing_type==='quote'||p.price==null,dates=[0,1,2,3].map(dateObj);
  const dateHtml=dates.map((d,i)=>'<button class="date-chip '+(i===0?'active':'')+'" type="button" data-date="'+d.iso+'"><small>'+(i===0?(lang==='pt'?'Hoje':'Today'):i===1?(lang==='pt'?'Amanhã':'Tomorrow'):d.day)+'</small><b>'+d.num+'</b></button>').join('');
- const timeHtml=['09:00','11:00','14:00','17:00',''].map((x,i)=>'<button class="time-chip '+(i===0?'active':'')+'" type="button" data-time="'+x+'">'+(x||(lang==='pt'?'A combinar':'Flexible'))+'</button>').join('');
+ const timeOptions=['09:00','11:00','14:00','17:00',''];const defaultTimeIndex=quote?timeOptions.length-1:0;const timeHtml=timeOptions.map((x,i)=>'<button class="time-chip '+(i===defaultTimeIndex?'active':'')+'" type="button" data-time="'+x+'">'+(x||(lang==='pt'?'A combinar':'Flexible'))+'</button>').join('');
  const maxBookDate=new Date();maxBookDate.setDate(maxBookDate.getDate()+90);
  const providerName=escapeHtml(p.name||(lang==='pt'?'Prestador verificado':'Verified provider')),serviceTitle=escapeHtml(p.title||(lang==='pt'?'Serviço':'Service'));
- $('#bookContent').innerHTML='<div class="book-provider">'+providerAvatar(p.photo_data,providerName,'modal')+'<div class="book-provider-copy"><b>'+serviceTitle+' <span>· '+providerName+'</span></b>'+(p.description?'<small>'+escapeHtml(p.description)+'</small>':'')+'</div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><label class="pa-field" style="margin-top:-4px"><span>'+(lang==='pt'?'Outra data':'Another date')+'</span><input id="bookCustomDate" type="date" min="'+localDateISO()+'" max="'+localDateISO(maxBookDate)+'"></label><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form book-request-form" style="margin:12px 0"><div class="book-brief"><div class="book-brief-title">'+(lang==='pt'?'Detalhes para o orçamento':'Details for the quote')+'</div><label><span>'+(lang==='pt'?'O que precisas?':'What do you need?')+'</span><textarea id="bookNote" required maxlength="1200" placeholder="'+(lang==='pt'?'Ex.: Limpeza de um terreno com cerca de 800 m², erva alta e alguns arbustos.':'E.g. Clear a plot of about 800 m² with tall grass and some shrubs.')+'"></textarea></label><label><span>'+(lang==='pt'?'Onde é o serviço?':'Where is the service?')+'</span><input id="bookLocation" required maxlength="180" autocomplete="address-level2" placeholder="'+(lang==='pt'?'Ex.: São Mateus, Madalena':'E.g. São Mateus, Madalena')+'"><small class="form-note">'+(lang==='pt'?'Indica a zona, freguesia ou localidade. Não precisas de colocar a morada completa nesta fase.':'Enter the area, parish or locality. You do not need to provide the full address at this stage.')+'</small></label><small class="book-privacy-note">'+(lang==='pt'?'Não incluas telefone, email, redes sociais ou links nestes campos.':'Do not include phone numbers, email addresses, social media or links in these fields.')+'</small></div><label><span>'+(lang==='pt'?'Nome (opcional)':'Name (optional)')+'</span><input id="bookName" maxlength="120" autocomplete="name"></label><div class="two"><label><span>'+(lang==='pt'?'Email (opcional)':'Email (optional)')+'</span><input id="bookEmail" type="email" autocomplete="email" inputmode="email"></label><label><span>'+(lang==='pt'?'WhatsApp (opcional)':'WhatsApp (optional)')+'</span><input id="bookPhone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><label><span>'+(lang==='pt'?'Atualizações por':'Updates via')+'</span><select id="bookPreference"><option value="both">'+(lang==='pt'?'WhatsApp e email':'WhatsApp and email')+'</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note">'+(lang==='pt'?'Basta um contacto. Não precisas de criar conta.':'One contact method is enough. No account is required.')+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO (12%)':'TRIÂNGULO fee (12%)')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Enviar pedido':'Send request'))+'</button><p class="demo">'+(quote?(lang==='pt'?'O prestador avalia o pedido e envia-te um orçamento. Vês o valor final antes de confirmar.':'The provider reviews the request and sends you a quote. You see the final amount before confirming.'):(paymentsLive?(lang==='pt'?'O total inclui a taxa TRIÂNGULO. O serviço fica confirmado depois do pagamento.':'The total includes the TRIÂNGULO fee. The service is confirmed after payment.'):(lang==='pt'?'O preço final inclui a taxa TRIÂNGULO. Enquanto os pagamentos estão desligados, os contactos são libertados quando o prestador aceita.':'The final price includes the TRIÂNGULO fee. While payments are off, contact details are released when the provider accepts.')))+'</p>';
+ $('#bookContent').innerHTML='<div class="book-provider">'+providerAvatar(p.photo_data,providerName,'modal')+'<div class="book-provider-copy"><b>'+serviceTitle+' <span>· '+providerName+'</span></b>'+(p.description?'<small>'+escapeHtml(p.description)+'</small>':'')+'</div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><label class="pa-field" style="margin-top:-4px"><span>'+(lang==='pt'?'Outra data':'Another date')+'</span><input id="bookCustomDate" type="date" min="'+localDateISO()+'" max="'+localDateISO(maxBookDate)+'"></label><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form book-request-form" style="margin:12px 0"><div class="book-brief"><div class="book-brief-title">'+(lang==='pt'?'Detalhes para o orçamento':'Details for the quote')+'</div><label><span>'+(lang==='pt'?'O que precisas?':'What do you need?')+'</span><textarea id="bookNote" required maxlength="1200" placeholder="'+(lang==='pt'?'Ex.: Limpeza de um terreno com cerca de 800 m², erva alta e alguns arbustos.':'E.g. Clear a plot of about 800 m² with tall grass and some shrubs.')+'"></textarea></label><label><span>'+(lang==='pt'?'Onde é o serviço?':'Where is the service?')+'</span><input id="bookLocation" required maxlength="180" autocomplete="address-level2" placeholder="'+(lang==='pt'?'Ex.: São Mateus, Madalena':'E.g. São Mateus, Madalena')+'"><small class="form-note">'+(lang==='pt'?'Indica a zona, freguesia ou localidade. Não precisas de colocar a morada completa nesta fase.':'Enter the area, parish or locality. You do not need to provide the full address at this stage.')+'</small></label><small class="book-privacy-note">'+(lang==='pt'?'Não incluas telefone, email, redes sociais ou links nestes campos.':'Do not include phone numbers, email addresses, social media or links in these fields.')+'</small></div><label><span>'+(lang==='pt'?'Nome (opcional)':'Name (optional)')+'</span><input id="bookName" maxlength="120" autocomplete="name"></label><div class="two"><label><span>'+(lang==='pt'?'Email (opcional)':'Email (optional)')+'</span><input id="bookEmail" type="email" autocomplete="email" inputmode="email"></label><label><span>'+(lang==='pt'?'WhatsApp (opcional)':'WhatsApp (optional)')+'</span><input id="bookPhone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><label><span>'+(lang==='pt'?'Atualizações por':'Updates via')+'</span><select id="bookPreference"><option value="both">'+(lang==='pt'?'WhatsApp e email':'WhatsApp and email')+'</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note">'+(lang==='pt'?'Basta um contacto. Não precisas de criar conta.':'One contact method is enough. No account is required.')+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO ('+feePercentLabel()+')':'TRIÂNGULO fee ('+feePercentLabel()+')')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Enviar pedido':'Send request'))+'</button><p class="demo">'+(quote?(lang==='pt'?'O prestador avalia o pedido e envia-te um orçamento. Vês o valor final antes de confirmar.':'The provider reviews the request and sends you a quote. You see the final amount before confirming.'):(paymentsLive?(lang==='pt'?'O total inclui a taxa TRIÂNGULO. O serviço fica confirmado depois do pagamento.':'The total includes the TRIÂNGULO fee. The service is confirmed after payment.'):(lang==='pt'?'O preço final inclui a taxa TRIÂNGULO. Enquanto os pagamentos estão desligados, os contactos são libertados quando o prestador aceita.':'The final price includes the TRIÂNGULO fee. While payments are off, contact details are released when the provider accepts.')))+'</p>';
  openSheet('bookSheet');
  $$('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#bookCustomDate').value=''});
  $('#bookCustomDate').onchange=e=>{if(e.target.value)$$('[data-date]').forEach(x=>x.classList.remove('active'))};
- $$('[data-time]').forEach(b=>b.onclick=()=>{$$('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
+ $('[data-time]').forEach(b=>b.onclick=()=>{$('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
+ function syncBookPreference(){
+   const email=$('#bookEmail').value.trim(),phone=$('#bookPhone').value.trim(),sel=$('#bookPreference');
+   if(email&&phone){sel.disabled=false;if(!['both','email','whatsapp'].includes(sel.value))sel.value='both'}
+   else if(email){sel.value='email';sel.disabled=true}
+   else if(phone){sel.value='whatsapp';sel.disabled=true}
+   else{sel.value='both';sel.disabled=false}
+ }
+ $('#bookEmail').addEventListener('input',syncBookPreference);
+ $('#bookPhone').addEventListener('input',syncBookPreference);
+ syncBookPreference();
  $('#confirmBook').onclick=async()=>{
+  const submitBtn=$('#confirmBook');if(submitBtn.disabled)return;
   const email=$('#bookEmail').value.trim(),phone=$('#bookPhone').value.trim();
   if(!email&&!phone){toast(lang==='pt'?'Indica um email ou WhatsApp.':'Enter an email or WhatsApp number.');return}
   let pref=$('#bookPreference').value||'both';if(!email)pref='whatsapp';else if(!phone)pref='email';
@@ -1772,6 +1799,7 @@ function openBooking(id){
   if(!serviceDate){toast(lang==='pt'?'Escolhe uma data.':'Choose a date.');return}
   const activeTime=$('[data-time].active');
   const payload={provider_id:p.provider_id,service_id:p.service_id,island,service_date:serviceDate,service_time:activeTime?activeTime.dataset.time:null,location_text:locationText,client_name:$('#bookName').value.trim()||null,client_email:email||null,client_phone:phone||null,contact_preference:pref,notes:note,request_version:2};
+  const originalLabel=submitBtn.textContent;submitBtn.disabled=true;submitBtn.textContent=lang==='pt'?(quote?'A pedir orçamento…':'A enviar…'):(quote?'Requesting quote…':'Sending…');
   try{
    const {data,error}=await db.rpc('create_booking_request',{p_payload:payload});
    if(error)throw error;
@@ -1779,6 +1807,7 @@ function openBooking(id){
    saveBookingLocal({kind:'direct',token:data.client_token,provider:p.name||(lang==='pt'?'Prestador verificado':'Verified provider'),service_title:p.title,island,date:payload.service_date,time:payload.service_time,location_text:locationText,details:note,quote,requires_quote:quote,status:'requested',createdAt:new Date().toISOString()});
    closeSheets();await openClientBookings();toast(lang==='pt'?'Pedido enviado ✓ Podes acompanhá-lo aqui.':'Request sent ✓ You can track it here.');
   }catch(err){console.error(err);toast(lang==='pt'?'Não foi possível enviar.':'Could not submit.')}
+  finally{if(document.body.contains(submitBtn)){submitBtn.disabled=false;submitBtn.textContent=originalLabel}}
  };
 }
 
@@ -1888,7 +1917,8 @@ function renderBookings(){
     ?'<div class="pa-client booking-contact"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>'
     :'';
 
-  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+waitingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+'</div>';
+  const brief=x.details?'<div class="booking-brief"><b>'+(lang==='pt'?'Pedido':'Request')+'</b><span>'+escapeHtml(x.details)+'</span></div>':'';
+  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+brief+waitingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+'</div>';
  }).join('')+'</div>';
 
  $$('[data-confirm-quote]').forEach(btn=>btn.onclick=()=>confirmDirectQuote(btn.dataset.confirmQuote,btn));
@@ -2160,7 +2190,7 @@ function renderProviderDashboard(data){
       if(generic){const pt={sent:'Novo pedido compatível',accepted:'Disponível · aguarda cliente',quoted:'Orçamento enviado · aguarda cliente',selected:'Serviço confirmado',declined:'Recusado',expired:'Expirado'};const en={sent:'New matching request',accepted:'Available · awaiting customer',quoted:'Quote sent · awaiting customer',selected:'Service confirmed',declined:'Declined',expired:'Expired'};stateLabel=(lang==='pt'?pt:en)[x.status]||x.status}
       else stateLabel=providerBookingStatus(x.status,x.payment_status);
       const locked=!hasClient&&(x.status==='confirmed'||x.status==='accepted'||x.status==='quoted')?'<div class="pa-note" style="text-align:left">'+(lang==='pt'?'🔒 O contacto é libertado quando o serviço fica confirmado.':'🔒 Contact is released when the service is confirmed.')+'</div>':'';
-      return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.service_title||(lang==='pt'?'Serviço':'Service'))+(when?' · '+when:'')+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(stateLabel)+'</span></div><small>📍 '+escapeHtml(x.island||'')+(x.location_text?' · '+escapeHtml(x.location_text):'')+'</small><small>'+note+'</small>'+actions+locked+client+'</div>';
+      return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.service_title||(lang==='pt'?'Serviço':'Service'))+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(stateLabel)+'</span></div><div class="pa-request-meta"><span>📍 '+escapeHtml(x.location_text||x.island||'')+'</span><span>🗓 '+when+'</span></div><div class="pa-request-brief"><b>'+(lang==='pt'?'O que é para fazer':'Job details')+'</b><span>'+note+'</span></div>'+actions+locked+client+'</div>';
     }).join('');
 
     $$('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
