@@ -67,6 +67,8 @@ jobs:
           const routes=[
             {name:'home',path:'/'},
             {name:'services',path:'/servicos/'},
+            {name:'bookings-empty',path:'/servicos/',action:'bookings'},
+            {name:'request-form',path:'/servicos/',action:'request'},
             {name:'providers',path:'/prestadores.html'},
             {name:'application',path:'/candidatura-prestador.html'},
             {name:'application-review',path:'/candidatura-rever.html'},
@@ -77,6 +79,7 @@ jobs:
             {name:'privacy',path:'/privacy.html'},
             {name:'terms',path:'/terms.html'},
             {name:'provider-login',path:'/servicos/?prestador=1&entry=mobile-audit'},
+            {name:'provider-password',path:'/servicos/?provider_password_token=0000000000000000000000000000000000000000000000000000000000000000'},
             {name:'install-android',path:'/instalar/',ua:androidUA},
             {name:'install-iphone',path:'/instalar/',ua:iphoneUA}
           ];
@@ -119,6 +122,14 @@ jobs:
                     await page.waitForTimeout(1400);
                   }else{
                     await page.waitForTimeout(800);
+                  }
+                  if(route.action==='bookings'){
+                    await page.click('#bookingsNav');
+                    await page.waitForTimeout(150);
+                  }
+                  if(route.action==='request'){
+                    await page.click('#publishNav');
+                    await page.waitForTimeout(150);
                   }
                 }catch(e){navError=String(e.message||e)}
 
