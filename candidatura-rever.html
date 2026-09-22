@@ -87,11 +87,6 @@ $('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang(
 $('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang();load()};
 function showMessage(title,text){$('#loading').hidden=true;$('#loginbox').classList.remove('show');$('#recoveryBox').classList.remove('show');$('#review').hidden=true;$('#message').hidden=false;$('#message').innerHTML='<div style="font-size:40px">✓</div><h2>'+title+'</h2><p>'+text+'</p>'}
 function fmtPrice(d){if(d.pricing_type==='quote'||d.price==null)return tr('Sob orçamento','Quote required');const labels={hour:tr('por hora','per hour'),fixed:tr('preço fixo','fixed price'),from:tr('desde','from')};return d.price+' € · '+(labels[d.pricing_type]||d.pricing_type)}
-function recoveryRedirectUrl(){
-  const u=new URL(location.href);
-  u.searchParams.set('recovery','1');
-  return u.origin+u.pathname+u.search;
-}
 function showRecovery(){
   $('#loading').hidden=true;
   $('#message').hidden=true;
@@ -103,30 +98,58 @@ async function requestAdminReset(){
   const email=$('#adminEmail').value.trim(),msg=$('#loginMsg');
   if(!email){msg.textContent=tr('Indica primeiro o teu email.','Enter your email first.');$('#adminEmail').focus();return}
   $('#adminReset').disabled=true;
-  msg.textContent=tr('A enviar ligação segura…','Sending secure link…');
-  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:recoveryRedirectUrl()});
+  msg.textContent=tr('A enviar ligação TRIÂNGULO…','Sending TRIÂNGULO link…');
+  const {data,error}=await db.rpc('request_admin_password_reset',{
+    p_email:email,
+    p_return_token:token||null,
+    p_locale:lang
+  });
   $('#adminReset').disabled=false;
-  if(error){msg.textContent=tr('Não foi possível enviar agora. Tenta novamente dentro de alguns segundos.','Could not send it right now. Please try again in a few seconds.');return}
-  msg.textContent=tr('Enviámos uma ligação para definires a password. Abre o email neste dispositivo e volta por essa ligação.','We sent you a link to set your password. Open the email on this device and return using that link.');
+  if(error||!data||data.ok!==true){
+    console.error(error);
+    msg.textContent=tr('Não foi possível enviar agora. Tenta novamente dentro de alguns segundos.','Could not send it right now. Please try again in a few seconds.');
+    return
+  }
+  msg.textContent=tr('Se este email estiver autorizado, vais receber uma ligação do TRIÂNGULO para definires a password.','If this email is authorized, you will receive a TRIÂNGULO link to set your password.');
 }
 async function saveAdminPassword(){
   const p1=$('#newAdminPassword').value,p2=$('#newAdminPassword2').value,msg=$('#recoveryMsg');
+  const resetToken=qs.get('admin_reset')||'';
+  if(!resetToken){msg.textContent=tr('A ligação de recuperação não é válida.','The recovery link is not valid.');return}
   if(p1.length<10){msg.textContent=tr('Usa pelo menos 10 caracteres.','Use at least 10 characters.');return}
   if(p1!==p2){msg.textContent=tr('As passwords não coincidem.','Passwords do not match.');return}
   $('#saveAdminPassword').disabled=true;
   msg.textContent=tr('A guardar…','Saving…');
-  const {error}=await db.auth.updateUser({password:p1});
+  let response,payload;
+  try{
+    response=await fetch('https://cozamrvrhmwgxbuubjub.supabase.co/functions/v1/admin-password-reset',{
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body:JSON.stringify({token:resetToken,password:p1})
+    });
+    payload=await response.json().catch(()=>({}));
+  }catch(err){
+    console.error(err);
+  }
   $('#saveAdminPassword').disabled=false;
-  if(error){msg.textContent=tr('Não foi possível guardar a password. Tenta novamente.','Could not save the password. Please try again.');return}
+  if(!response||!response.ok||!payload||payload.ok!==true){
+    msg.textContent=tr('Esta ligação é inválida ou expirou. Pede uma nova ligação de recuperação.','This link is invalid or expired. Request a new recovery link.');
+    return
+  }
+  $('#newAdminPassword').value='';$('#newAdminPassword2').value='';
   const u=new URL(location.href);
-  u.searchParams.delete('recovery');
-  location.replace(u.pathname+u.search);
+  u.searchParams.delete('admin_reset');
+  history.replaceState({},'',u.pathname+u.search);
+  $('#recoveryBox').classList.remove('show');
+  $('#loginbox').classList.add('show');
+  $('#loginMsg').textContent=tr('Password atualizada ✓ Entra agora com a nova password.','Password updated ✓ Sign in now with your new password.');
+  $('#adminEmail').focus();
 }
 async function load(){
+  if(qs.get('admin_reset')){showRecovery();return}
   if(!token){showMessage(tr('Link inválido','Invalid link'),tr('Esta ligação não é válida.','This link is not valid.'));return}
   $('#message').hidden=true;$('#review').hidden=true;$('#loginbox').classList.remove('show');$('#loading').hidden=false;
   const sessionRes=await db.auth.getSession();
-  if(qs.get('recovery')==='1'&&sessionRes.data&&sessionRes.data.session){showRecovery();return}
   if(!sessionRes.data||!sessionRes.data.session){
     $('#loading').hidden=true;$('#loginbox').classList.add('show');return
   }
@@ -178,9 +201,7 @@ $('#adminLogin').onclick=async()=>{
   if(error){msg.textContent=tr('Não foi possível iniciar sessão.','Could not sign in.');return}
   msg.textContent='';await load();
 };
-db.auth.onAuthStateChange((event,session)=>{
-  if(qs.get('recovery')==='1'&&session&&(event==='PASSWORD_RECOVERY'||event==='SIGNED_IN'))showRecovery();
-});
+db.auth.onAuthStateChange(()=>{});
 applyLang();load();
 </script>
 </body></html>
