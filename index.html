@@ -269,7 +269,7 @@ h1{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  bottom:111px;
+  bottom:78px;
   width:min(1460px,calc(100% - 76px));
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -294,51 +294,57 @@ h1{
 .category:hover{transform:translateY(-3px);box-shadow:0 17px 34px rgba(0,0,0,.20)}
 .category-icon{width:46px;height:46px;display:grid;place-items:center;color:#5e8a4d}
 .category-icon svg{width:39px;height:39px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
-.category>span:nth-child(2){min-width:0;display:grid;grid-template-rows:31px auto;row-gap:4px;align-items:start}
+.category>span:nth-child(2){min-width:0;height:63px;display:grid;grid-template-rows:31px 28px;row-gap:4px;align-items:start}
 .category b{display:flex;align-items:flex-end;min-height:0;font-size:12.6px;line-height:1.18;margin:0;color:#17394b}
-.category small{display:block;font-size:10px;line-height:1.42;color:#4e6b73}
+.category small{display:block;align-self:start;font-size:10px;line-height:1.42;color:#4e6b73}
 .category .arr{font-size:26px;color:#214d52}
 
 .trustbar{
   position:absolute;
   left:0;right:0;bottom:0;
-  height:98px;
-  background:rgba(255,255,255,.97);
-  color:#183a55;
+  height:62px;
+  background:transparent;
+  color:#173a55;
   display:block;
   padding:0;
-  box-shadow:0 -2px 14px rgba(0,0,0,.06)
+  pointer-events:none
 }
 .trustbar-inner{
-  width:min(1460px,calc(100% - 76px));
-  height:100%;
+  width:min(1040px,calc(100% - 76px));
+  height:62px;
   margin:0 auto;
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:15px;
-  align-items:center
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:center;
+  background:rgba(250,250,247,.84);
+  border:1px solid rgba(255,255,255,.62);
+  border-bottom:0;
+  border-radius:18px 18px 0 0;
+  box-shadow:0 -4px 18px rgba(4,35,60,.10);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px)
 }
 .trust{
   position:relative;
-  min-height:55px;
-  display:grid;
-  grid-template-columns:48px 1fr;
+  min-height:36px;
+  display:flex;
   align-items:center;
-  gap:12px;
-  padding:0 25px
+  justify-content:center;
+  gap:10px;
+  padding:0 20px
 }
 .trust:not(:last-child)::after{
   content:"";
   position:absolute;
-  right:-8px;
-  top:0;
-  bottom:0;
+  right:0;
+  top:8px;
+  bottom:8px;
   width:1px;
-  background:#d7dde0
+  background:rgba(23,58,85,.14)
 }
-.trust svg{width:39px;height:39px;fill:none;stroke:#2d6b52;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.trust b{display:block;font-size:12px;color:#173a55}
-.trust small{display:block;font-size:10px;color:#6d767d;margin-top:3px}
+.trust svg{width:27px;height:27px;flex:none;fill:none;stroke:#2d6b52;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.trust b{display:block;font-size:11.5px;white-space:nowrap;color:#173a55}
+.trust small{display:none}
 
 @media(max-width:1120px){
   .hero::before{background-size:112% auto;background-position:center 65%}
@@ -346,9 +352,9 @@ h1{
   .stage{width:calc(100% - 34px);padding-top:56px}.copy{padding-left:12px;width:70%}
   .handnote{right:10px;font-size:27px}
   .category-row{width:calc(100% - 34px);gap:10px}.category{padding:14px;grid-template-columns:42px 1fr 18px}.category-icon{width:38px}.category-icon svg{width:34px;height:34px}.category small{font-size:9px}
-  .trustbar-inner{width:calc(100% - 34px);gap:10px}
-  .trust{padding:0 12px}
-  .trust:not(:last-child)::after{right:-6px}
+  .trustbar-inner{width:min(900px,calc(100% - 34px))}
+  .trust{padding:0 10px}
+  .trust:not(:last-child)::after{right:0}
 }
 @media(max-width:820px){
   .hero{min-height:100svh}.hero::before{background-size:auto 100%;background-position:53% center}
@@ -360,7 +366,7 @@ h1{
   h1{font-size:clamp(52px,14vw,76px)}
   .island-pills{gap:7px;flex-wrap:wrap}.island-pill{height:42px;min-width:0;padding:0 14px;font-size:10px}
   .searchbar{grid-template-columns:1fr 102px;min-height:60px;border-radius:22px;padding:5px 5px 5px 15px}.search-divider,.island-select-wrap{display:none}.searchbar button[type=submit]{height:50px;font-size:12px}.searchbar button[type=submit] span{font-size:17px}
-  .category-row{bottom:18px;grid-template-columns:1fr 1fr;gap:8px}.category{min-height:77px;padding:10px;grid-template-columns:35px 1fr 15px;border-radius:14px}.category-icon{width:31px;height:31px}.category-icon svg{width:29px;height:29px}.category>span:nth-child(2){display:block}.category b{display:block;min-height:0;font-size:10px;line-height:1.2;margin-bottom:2px}.category small{display:none}.category .arr{font-size:18px}
+  .category-row{bottom:18px;grid-template-columns:1fr 1fr;gap:8px}.category{min-height:77px;padding:10px;grid-template-columns:35px 1fr 15px;border-radius:14px}.category-icon{width:31px;height:31px}.category-icon svg{width:29px;height:29px}.category>span:nth-child(2){display:block;height:auto}.category b{display:block;min-height:0;font-size:10px;line-height:1.2;margin-bottom:2px}.category small{display:none}.category .arr{font-size:18px}
   .trustbar{display:none}
 }
 @media(max-width:480px){
@@ -489,24 +495,20 @@ h1{
     </a>
   </section>
 
-  <footer class="trustbar">
+  <footer class="trustbar" aria-label="Confiança" data-aria-pt="Confiança" data-aria-en="Trust">
     <div class="trustbar-inner">
-    <div class="trust">
-      <svg viewBox="0 0 48 48"><path d="M24 5 39 10v11c0 10-6 17-15 22C15 38 9 31 9 21V10l15-5Z"/><path d="m17 24 5 5 10-11"/></svg>
-      <span><b data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</b><small data-pt="Pessoas da tua ilha" data-en="People from your island">Pessoas da tua ilha</small></span>
-    </div>
-    <div class="trust">
-      <svg viewBox="0 0 48 48"><path d="m24 5 5.5 11 12 1.7-8.7 8.5 2.1 12-10.9-5.7-10.9 5.7 2.1-12-8.7-8.5 12-1.7L24 5Z"/></svg>
-      <span><b data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</b><small data-pt="Candidaturas revistas antes de publicar" data-en="Applications reviewed before publishing">Candidaturas revistas antes de publicar</small></span>
-    </div>
-    <div class="trust">
-      <svg viewBox="0 0 48 48"><path d="M24 43s13-11.3 13-24a13 13 0 1 0-26 0c0 12.7 13 24 13 24Z"/><circle cx="24" cy="19" r="4"/></svg>
-      <span><b data-pt="Três ilhas, uma comunidade" data-en="Three islands, one community">Três ilhas, uma comunidade</b><small>Pico · Faial · São Jorge</small></span>
-    </div>
-    <div class="trust">
-      <svg viewBox="0 0 48 48"><path d="M40 8C23 9 11 18 10 36c10-1 23-7 30-28Z"/><path d="M11 36c8-8 15-13 25-19"/></svg>
-      <span><b data-pt="Um Açores mais forte" data-en="A stronger Azores">Um Açores mais forte</b><small data-pt="Apoia a economia local" data-en="Support the local economy">Apoia a economia local</small></span>
-    </div>
+      <div class="trust">
+        <svg viewBox="0 0 48 48"><path d="M24 5 39 10v11c0 10-6 17-15 22C15 38 9 31 9 21V10l15-5Z"/><path d="m17 24 5 5 10-11"/></svg>
+        <span><b data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</b></span>
+      </div>
+      <div class="trust">
+        <svg viewBox="0 0 48 48"><path d="m24 5 5.5 11 12 1.7-8.7 8.5 2.1 12-10.9-5.7-10.9 5.7 2.1-12-8.7-8.5 12-1.7L24 5Z"/></svg>
+        <span><b data-pt="Perfis revistos" data-en="Reviewed profiles">Perfis revistos</b></span>
+      </div>
+      <div class="trust">
+        <svg viewBox="0 0 48 48"><path d="M24 43s13-11.3 13-24a13 13 0 1 0-26 0c0 12.7 13 24 13 24Z"/><circle cx="24" cy="19" r="4"/></svg>
+        <span><b>Pico · Faial · São Jorge</b></span>
+      </div>
     </div>
   </footer>
 </main>
