@@ -1902,7 +1902,10 @@ function renderBookings(){
  $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>{
   if(x.kind==='matching'){
    const state=x.status||'matching',offers=Array.isArray(x.offers)?x.offers:[];
-   const offersHtml=offers.length?'<div style="display:grid;gap:7px;margin-top:10px">'+offers.map(o=>'<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+(o.total_amount!=null?'<br><strong>'+formatEuro(o.total_amount)+'</strong>':'')+(!o.selected&&state!=='confirmed'?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>').join('')+'</div>':'';
+   const offersHtml=offers.length?'<div style="display:grid;gap:7px;margin-top:10px">'+offers.map(o=>{
+    const price=o.total_amount!=null?'<div class="client-quote-row" style="margin-top:8px"><span>'+(lang==='pt'?'Serviço':'Service')+'</span><b>'+formatEuro(o.provider_amount)+'</b></div><div class="client-quote-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO '+feePercentLabel():'TRIÂNGULO fee '+feePercentLabel())+'</span><b>'+formatEuro(o.service_fee_amount)+'</b></div><div class="client-quote-total"><span>Total</span><strong>'+formatEuro(o.total_amount)+'</strong></div>':'';
+    return '<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+price+(!o.selected&&state!=='confirmed'?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>';
+   }).join('')+'</div>':'';
    const contact=(x.contact_released&&(x.provider_email||x.provider_phone))?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider?'<br>'+escapeHtml(x.provider):'')+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'';
    return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+(state==='matching'?'<small class="booking-help">'+(lang==='pt'?'Estamos a avisar automaticamente serviços compatíveis.':'We are automatically notifying matching services.')+'</small>':'')+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
   }
@@ -1950,7 +1953,7 @@ async function confirmDirectQuote(token,btn){
  try{
   const {data,error}=await db.rpc('confirm_booking_quote',{p_client_token:token});
   if(error||!data||!data.ok){
-    toast(lang==='pt'?'Não foi possível confirmar o orçamento.':'Could not confirm the quote.');
+    toast((data&&data.message)||(lang==='pt'?'Não foi possível confirmar o orçamento.':'Could not confirm the quote.'));
     return
   }
   await syncLocalBookings();renderBookings();
@@ -1962,7 +1965,15 @@ async function confirmDirectQuote(token,btn){
  }
 }
 async function selectMatchingOffer(token,matchId,btn){
- if(!token||!matchId)return;const old=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A confirmar…':'Confirming…';
+ if(!token||!matchId)return;
+ const request=getLocalBookings().find(x=>x.kind==='matching'&&x.token===token);
+ const offer=request&&Array.isArray(request.offers)?request.offers.find(o=>o.match_id===matchId):null;
+ const totalText=offer&&offer.total_amount!=null?formatEuro(offer.total_amount):'';
+ const question=lang==='pt'
+  ?'Escolher esta proposta'+(totalText?' por '+totalText:'')+'? O serviço ficará confirmado e os contactos serão disponibilizados para combinarem os detalhes.'
+  :'Choose this offer'+(totalText?' for '+totalText:'')+'? The service will be confirmed and contact details will be released so you can arrange the details.';
+ if(!window.confirm(question))return;
+ const old=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A confirmar…':'Confirming…';
  try{
   const {data,error}=await db.rpc('select_service_request_match',{p_client_token:token,p_match_id:matchId});
   if(error||!data||!data.ok){toast((data&&data.message)||(lang==='pt'?'Não foi possível confirmar.':'Could not confirm.'));return}
@@ -1971,7 +1982,9 @@ async function selectMatchingOffer(token,matchId,btn){
  finally{if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
 async function completeMatchingRequest(token,btn){
- if(!token)return;const old=btn.textContent;btn.disabled=true;
+ if(!token)return;
+ if(!window.confirm(lang==='pt'?'Marcar este serviço como concluído?':'Mark this service as completed?'))return;
+ const old=btn.textContent;btn.disabled=true;
  try{
   const {data,error}=await db.rpc('complete_service_request',{p_client_token:token});
   if(error||!data||!data.ok){
@@ -1986,6 +1999,7 @@ async function completeMatchingRequest(token,btn){
 }
 async function completeDirectBooking(token,btn){
  if(!token)return;
+ if(!window.confirm(lang==='pt'?'Marcar este serviço como concluído?':'Mark this service as completed?'))return;
  const old=btn?btn.textContent:'';
  if(btn){btn.disabled=true;btn.textContent=lang==='pt'?'A concluir…':'Completing…'}
  try{
@@ -2226,6 +2240,11 @@ function renderProviderDashboard(data){
     document.querySelectorAll('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
       const token=btn.dataset.paQuote,input=$('[data-pa-quote-amount="'+token+'"]'),amount=Number(input&&input.value),generic=btn.dataset.kind==='matching';
       if(!amount||amount<=0){toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
+      const total=amount+(Math.round(amount*TRIANGULO_SERVICE_FEE_RATE*100)/100);
+      const question=lang==='pt'
+        ?'Enviar este orçamento? Tu recebes '+formatEuro(amount)+' e o cliente verá '+formatEuro(total)+'. Depois de enviado não pode ser alterado.'
+        :'Send this quote? You receive '+formatEuro(amount)+' and the customer will see '+formatEuro(total)+'. It cannot be changed after sending.';
+      if(!window.confirm(question))return;
       const oldLabel=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A enviar…':'Sending…';
       const response=generic?await db.rpc('respond_service_request_match',{p_token:token,p_action:'accept',p_amount:amount}):await db.rpc('submit_booking_quote',{p_token:token,p_amount:amount});
       btn.disabled=false;btn.textContent=oldLabel;const r=response.data,error=response.error;
@@ -2234,9 +2253,15 @@ function renderProviderDashboard(data){
     });
     document.querySelectorAll('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
       const action=btn.dataset.paRespond;
-      if(action==='decline'&&!window.confirm(lang==='pt'?'Tens a certeza de que não podes aceitar este pedido? Esta resposta é definitiva.':'Are you sure you cannot accept this request? This response is final.'))return;
-      const oldLabel=btn.textContent;btn.disabled=true;if(action==='decline')btn.textContent=lang==='pt'?'A recusar…':'Declining…';
       const generic=btn.dataset.kind==='matching';
+      if(action==='decline'&&!window.confirm(lang==='pt'?'Tens a certeza de que não podes aceitar este pedido? Esta resposta é definitiva.':'Are you sure you cannot accept this request? This response is final.'))return;
+      if(action==='accept'){
+        const question=generic
+          ?(lang==='pt'?'Confirmar que tens disponibilidade? O cliente será avisado e poderá escolher o teu serviço.':'Confirm that you are available? The customer will be notified and can choose your service.')
+          :(lang==='pt'?'Aceitar este pedido? O serviço ficará confirmado e os contactos poderão ser disponibilizados.':'Accept this request? The service will be confirmed and contact details may be released.');
+        if(!window.confirm(question))return;
+      }
+      const oldLabel=btn.textContent;btn.disabled=true;if(action==='decline')btn.textContent=lang==='pt'?'A recusar…':'Declining…';
       const response=generic?await db.rpc('respond_service_request_match',{p_token:btn.dataset.token,p_action:action,p_amount:null}):await db.rpc('respond_to_booking',{p_token:btn.dataset.token,p_action:action});
       const r=response.data,error=response.error;btn.disabled=false;btn.textContent=oldLabel;
       if(error||!r||!r.ok){toast((r&&r.message)||(lang==='pt'?'Não foi possível responder.':'Could not respond.'));return}
@@ -2557,18 +2582,28 @@ async function openServiceMatchInApp(token){
 }
 async function providerAppRespond(action){
   if(!activeProviderBookingToken)return;
+  const quoteVisible=!$('#prAppQuoteBox').hidden;
+  let amount=null;
+  if(action==='accept'&&quoteVisible){
+    amount=Number($('#prAppQuoteAmount').value);
+    if(!amount||amount<=0){toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
+    const total=amount+(Math.round(amount*TRIANGULO_SERVICE_FEE_RATE*100)/100);
+    const question=lang==='pt'
+      ?'Enviar este orçamento? Tu recebes '+formatEuro(amount)+' e o cliente verá '+formatEuro(total)+'. Depois de enviado não pode ser alterado.'
+      :'Send this quote? You receive '+formatEuro(amount)+' and the customer will see '+formatEuro(total)+'. It cannot be changed after sending.';
+    if(!window.confirm(question))return;
+  }else if(action==='accept'){
+    const question=activeProviderRequestKind==='matching'
+      ?(lang==='pt'?'Confirmar que tens disponibilidade? O cliente será avisado e poderá escolher o teu serviço.':'Confirm that you are available? The customer will be notified and can choose your service.')
+      :(lang==='pt'?'Aceitar este pedido? O serviço ficará confirmado e os contactos poderão ser disponibilizados.':'Accept this request? The service will be confirmed and contact details may be released.');
+    if(!window.confirm(question))return;
+  }
+
   $('#prAppAccept').disabled=true;$('#prAppDecline').disabled=true;
   let response;
   if(activeProviderRequestKind==='matching'){
-    let amount=null;
-    if(action==='accept'&&!$('#prAppQuoteBox').hidden){
-      amount=Number($('#prAppQuoteAmount').value);
-      if(!amount||amount<=0){$('#prAppAccept').disabled=false;$('#prAppDecline').disabled=false;toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
-    }
     response=await db.rpc('respond_service_request_match',{p_token:activeProviderBookingToken,p_action:action,p_amount:amount});
-  }else if(action==='accept'&&!$('#prAppQuoteBox').hidden){
-    const amount=Number($('#prAppQuoteAmount').value);
-    if(!amount||amount<=0){$('#prAppAccept').disabled=false;$('#prAppDecline').disabled=false;toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
+  }else if(action==='accept'&&quoteVisible){
     response=await db.rpc('submit_booking_quote',{p_token:activeProviderBookingToken,p_amount:amount});
   }else{
     response=await db.rpc('respond_to_booking',{p_token:activeProviderBookingToken,p_action:action});
