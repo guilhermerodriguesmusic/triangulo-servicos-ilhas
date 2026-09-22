@@ -1,0 +1,14 @@
+.request-photo-picker{margin-top:2px;padding:12px;border:1px solid #dce8e3;border-radius:13px;background:#f8fbfa}
+.request-photo-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.request-photo-head>div{display:grid;gap:3px;min-width:0}.request-photo-head b{font-size:11px;color:#173d51}.request-photo-head small{font-size:9.5px;line-height:1.4;color:#6b8190}
+.request-photo-add{flex:0 0 auto;border:1px solid #bcd8cb;background:#fff;color:#08745c;border-radius:10px;padding:8px 10px;min-height:38px;font-size:10px;font-weight:900;cursor:pointer}
+.request-photo-preview{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:10px}
+.request-photo-thumb{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#eaf0ed}.request-photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.request-photo-remove{position:absolute;right:4px;top:4px;width:25px;height:25px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(10,34,47,.82);color:#fff;font-size:17px;line-height:1;cursor:pointer}
+.request-photo-note{margin-top:7px;font-size:9px;line-height:1.35;color:#718491}
+.request-photo-gallery-title{display:block;margin:9px 0 6px;font-size:10px;color:#315f49}
+.request-photo-gallery{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.request-photo-gallery a{aspect-ratio:1;border-radius:10px;overflow:hidden;background:#eaf0ed;border:1px solid #d9e6e0}.request-photo-gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.request-photo-provider-slot[hidden],#prAppPhotos[hidden]{display:none}
+.request-photo-provider-slot{margin-top:8px;padding-top:2px}
+@media(max-width:620px){.request-photo-head{align-items:flex-start}.request-photo-head small{font-size:9px}.request-photo-add{min-height:42px}.request-photo-preview,.request-photo-gallery{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:390px){.request-photo-head{display:grid}.request-photo-add{width:100%}.request-photo-preview,.request-photo-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
