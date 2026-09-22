@@ -1055,6 +1055,35 @@ body.route-public-results #explore{display:block!important}
   .book-provider{padding-right:38px}
 }
 </style>
+<style id="quote-flow-polish-v1">
+.booking-local{gap:7px;padding:16px 17px;border-radius:17px}
+.booking-local .booking-main{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.booking-local .booking-main>b{font-size:14px;color:#123a68}
+.booking-local .booking-help{display:block;margin-top:1px;color:#6b8092;font-size:10px;line-height:1.45}
+.booking-local .booking-total{display:block;margin-top:4px}
+.booking-local .booking-state.requested{background:#eef3f6;color:#526d80}
+.booking-local .booking-state.quoted{background:#fff3d7;color:#7b5a00}
+.booking-local .booking-state.confirmed{background:#e2f7f0;color:#087459}
+.client-quote-box{margin-top:8px;padding:13px 14px;border:1px solid #d9e9e2;border-radius:14px;background:#f7fbf9;display:grid;gap:7px}
+.client-quote-title{font-size:11px;font-weight:900;color:#245d48;margin-bottom:1px}
+.client-quote-row{display:flex;justify-content:space-between;gap:14px;font-size:10.5px;color:#64798a}
+.client-quote-row b{font-size:10.5px;color:#24455b}
+.client-quote-total{padding-top:7px;border-top:1px solid #dde9e4;color:#123a68;font-weight:900}
+.client-quote-total b{font-size:13px;color:#123a68}
+.client-quote-confirm{width:100%;margin-top:4px;min-height:42px}
+.client-quote-box>small{text-align:center;font-size:9px!important}
+.booking-contact{margin-top:5px!important}
+
+.pr-app-quote-preview{margin-top:8px;padding:8px 10px;border-radius:10px;background:#e9f5ef;color:#275f49;font-size:10px;font-weight:850;text-align:center}
+.pr-app-quote-preview[hidden]{display:none}
+.pr-app-quote input::-webkit-inner-spin-button,.pr-app-quote input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.pr-app-quote input[type=number]{appearance:textfield}
+.pr-app-row span{color:#26475d}
+@media(max-width:620px){
+ .booking-local{padding:14px}
+ .client-quote-box{padding:12px}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -1359,8 +1388,8 @@ body.route-public-results #explore{display:block!important}
     <div class="pr-app-card">
       <div id="prAppLoading" class="pr-app-loading" data-pt="A carregar pedido…" data-en="Loading request…">A carregar pedido…</div>
       <div id="prAppRequest" hidden>
-        <div class="pr-app-kicker" data-pt="Novo pedido para ti" data-en="New request for you">Novo pedido para ti</div>
-        <h1 data-pt="Podes aceitar este serviço?" data-en="Can you accept this job?">Podes aceitar este serviço?</h1>
+        <div id="prAppKicker" class="pr-app-kicker" data-pt="Novo pedido para ti" data-en="New request for you">Novo pedido para ti</div>
+        <h1 id="prAppTitle" data-pt="Podes aceitar este serviço?" data-en="Can you accept this job?">Podes aceitar este serviço?</h1>
         <div class="pr-app-details">
           <div class="pr-app-row"><b data-pt="Ilha" data-en="Island">Ilha</b><span id="prAppIsland"></span></div>
           <div class="pr-app-row"><b data-pt="Data" data-en="Date">Data</b><span id="prAppDate"></span></div>
@@ -1371,7 +1400,7 @@ body.route-public-results #explore{display:block!important}
         <div id="prAppQuoteBox" class="pr-app-quote" hidden>
           <label><span data-pt="Quanto queres receber por este trabalho?" data-en="How much do you want to receive for this job?">Quanto queres receber por este trabalho?</span>
             <input id="prAppQuoteAmount" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="€">
-            <small data-pt="O cliente verá este valor + 12% de taxa TRIÂNGULO. O teu valor não é reduzido." data-en="The customer will see this amount + TRIÂNGULO's 12% service fee. Your amount is not reduced.">O cliente verá este valor + 12% de taxa TRIÂNGULO. O teu valor não é reduzido.</small>
+            <small data-pt="O cliente verá este valor + 12% de taxa TRIÂNGULO. O teu valor não é reduzido." data-en="The customer will see this amount + TRIÂNGULO's 12% service fee. Your amount is not reduced.">O cliente verá este valor + 12% de taxa TRIÂNGULO. O teu valor não é reduzido.</small><div id="prAppQuotePreview" class="pr-app-quote-preview"></div>
           </label>
         </div>
         <div class="pr-app-actions">
@@ -1721,7 +1750,7 @@ function openBooking(id){
    const {data,error}=await db.rpc('create_booking_request',{p_payload:payload});
    if(error)throw error;
    if(!data||!data.ok){toast((data&&data.message)?data.message:(lang==='pt'?'Não foi possível enviar.':'Could not submit.'));return}
-   saveBookingLocal({kind:'direct',token:data.client_token,provider:p.name||(lang==='pt'?'Prestador verificado':'Verified provider'),service_title:p.title,island,date:payload.service_date,time:payload.service_time,quote,status:'requested',createdAt:new Date().toISOString()});
+   saveBookingLocal({kind:'direct',token:data.client_token,provider:p.name||(lang==='pt'?'Prestador verificado':'Verified provider'),service_title:p.title,island,date:payload.service_date,time:payload.service_time,quote,requires_quote:quote,status:'requested',createdAt:new Date().toISOString()});
    closeSheets();await openClientBookings();toast(lang==='pt'?'Pedido enviado ✓ Podes acompanhá-lo aqui.':'Request sent ✓ You can track it here.');
   }catch(err){console.error(err);toast(lang==='pt'?'Não foi possível enviar.':'Could not submit.')}
  };
@@ -1732,13 +1761,36 @@ function saveBookingLocal(entry){
  const items=getLocalBookings().filter(x=>!(entry.token&&x.token===entry.token));
  items.unshift(entry);store.set('tri_booking_history',JSON.stringify(items.slice(0,20)));renderBookings();
 }
-function directRequestStatus(status,paymentStatus){
+function formatServiceDate(value){
+ if(!value)return '';
+ const m=String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(!m)return String(value);
+ const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),12,0,0);
+ return new Intl.DateTimeFormat(lang==='pt'?'pt-PT':'en-GB',{day:'numeric',month:'short',year:'numeric'}).format(d);
+}
+function formatServiceTime(value){return value?String(value):(lang==='pt'?'A combinar':'Flexible')}
+function formatDeadline(value){
+ if(!value)return '';
+ const d=new Date(value);if(Number.isNaN(d.getTime()))return String(value);
+ const now=new Date(),tomorrow=new Date(now);tomorrow.setDate(now.getDate()+1);
+ const key=x=>x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+ const time=new Intl.DateTimeFormat(lang==='pt'?'pt-PT':'en-GB',{hour:'2-digit',minute:'2-digit'}).format(d);
+ if(key(d)===key(now))return lang==='pt'?'Hoje às '+time:'Today at '+time;
+ if(key(d)===key(tomorrow))return lang==='pt'?'Amanhã às '+time:'Tomorrow at '+time;
+ return new Intl.DateTimeFormat(lang==='pt'?'pt-PT':'en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).format(d);
+}
+function formatEuro(value){
+ const n=Number(value);
+ return Number.isFinite(n)?new Intl.NumberFormat(lang==='pt'?'pt-PT':'en-IE',{style:'currency',currency:'EUR'}).format(n):'';
+}
+function directRequestStatus(status,paymentStatus,requiresQuote=false){
+ if(status==='quoted')return lang==='pt'?'Orçamento recebido · por confirmar':'Quote received · awaiting confirmation';
  if(status==='confirmed'){
-   if(paymentsLive&&paymentStatus!=='paid')return lang==='pt'?'Serviço aceite · pagamento pendente':'Service accepted · payment pending';
+   if(paymentsLive&&paymentStatus!=='paid')return lang==='pt'?'Orçamento aceite · pagamento pendente':'Quote accepted · payment pending';
    return lang==='pt'?'Serviço confirmado':'Service confirmed';
  }
- const pt={requested:'Pedido enviado',declined:'Prestador indisponível',expired:'Sem resposta',completed:'Serviço concluído',cancelled:'Cancelado'};
- const en={requested:'Request sent',declined:'Provider unavailable',expired:'No response',completed:'Service completed',cancelled:'Cancelled'};
+ const pt={requested:requiresQuote?'A aguardar orçamento':'A aguardar prestador',declined:'Prestador indisponível',expired:'Sem resposta',completed:'Serviço concluído',cancelled:'Cancelado'};
+ const en={requested:requiresQuote?'Awaiting quote':'Awaiting provider',declined:'Provider unavailable',expired:'No response',completed:'Service completed',cancelled:'Cancelled'};
  return (lang==='pt'?pt:en)[status]||(lang==='pt'?'Pedido enviado':'Request sent');
 }
 function matchingRequestStatus(status){
@@ -1765,6 +1817,7 @@ async function syncLocalBookings(){
       service_title:data.service_title||x.service_title,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,
       island:data.island||x.island,date:data.service_date||x.date,time:data.service_time||x.time,provider_amount:data.provider_amount,
       total_amount:data.total_amount,service_fee_amount:data.service_fee_amount,payment_ready:!!data.payment_ready,
+      requires_quote:!!data.requires_quote,provider_response_deadline:data.provider_response_deadline||x.provider_response_deadline||null,
       checkout_available:paymentsLive&&!!data.checkout_available,contact_released:!!data.contact_released};
     if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
    }
@@ -1785,18 +1838,53 @@ function renderBookings(){
  $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>{
   if(x.kind==='matching'){
    const state=x.status||'matching',offers=Array.isArray(x.offers)?x.offers:[];
-   const offersHtml=offers.length?'<div style="display:grid;gap:7px;margin-top:10px">'+offers.map(o=>'<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+(o.total_amount!=null?'<br><strong>€'+Number(o.total_amount).toFixed(2)+'</strong>':'')+(!o.selected&&state!=='confirmed'?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>').join('')+'</div>':'';
+   const offersHtml=offers.length?'<div style="display:grid;gap:7px;margin-top:10px">'+offers.map(o=>'<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+(o.total_amount!=null?'<br><strong>'+formatEuro(o.total_amount)+'</strong>':'')+(!o.selected&&state!=='confirmed'?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>').join('')+'</div>':'';
    const contact=(x.contact_released&&(x.provider_email||x.provider_phone))?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider?'<br>'+escapeHtml(x.provider):'')+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'';
-   return '<div class="card booking-local"><b>'+escapeHtml(x.description|| (lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.island||'')+(x.date?' · '+escapeHtml(x.date):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+(state==='matching'?'<small style="margin-top:7px">'+(lang==='pt'?'Estamos a avisar automaticamente serviços compatíveis.':'We are automatically notifying matching services.')+'</small>':'')+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
+   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+(state==='matching'?'<small class="booking-help">'+(lang==='pt'?'Estamos a avisar automaticamente serviços compatíveis.':'We are automatically notifying matching services.')+'</small>':'')+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
   }
-  const state=x.status||'requested';
+
+  const state=x.status||'requested',requiresQuote=!!(x.requires_quote||x.quote);
   const canCompleteDirect=state==='confirmed'&&(!paymentsLive||x.payment_status==='paid')&&(!x.date||x.date<=localDateISO());
-  return '<div class="card booking-local"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+(x.provider?(lang==='pt'?'por ':'by ')+escapeHtml(x.provider)+' · ':'')+'📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+(x.time?' · '+escapeHtml(x.time):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status))+'</span>'+(x.total_amount!=null?'<small style="margin-top:7px"><b>Total: €'+Number(x.total_amount).toFixed(2)+'</b> · '+(lang==='pt'?'inclui taxa TRIÂNGULO':'includes TRIÂNGULO fee')+'</small>':'')+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+(x.contact_released&&(x.provider_email||x.provider_phone)?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'')+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+'</div>';
+  const meta=(x.provider?(lang==='pt'?'por ':'by ')+escapeHtml(x.provider)+' · ':'')+'📍 '+escapeHtml(x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+' · '+escapeHtml(formatServiceTime(x.time));
+  const waitingHelp=state==='requested'&&requiresQuote
+    ?'<small class="booking-help">'+(lang==='pt'?(escapeHtml(x.provider||'O prestador')+' está a analisar o pedido'+(x.provider_response_deadline?' · responde até '+escapeHtml(formatDeadline(x.provider_response_deadline)).toLowerCase():'')+'.'):(escapeHtml(x.provider||'The provider')+' is reviewing the request'+(x.provider_response_deadline?' · reply by '+escapeHtml(formatDeadline(x.provider_response_deadline)).toLowerCase():'')+'.'))+'</small>'
+    :'';
+  const quoteBox=state==='quoted'&&x.total_amount!=null
+    ?'<div class="client-quote-box"><div class="client-quote-title">'+(lang==='pt'?'Orçamento de '+escapeHtml(x.provider||'prestador'):'Quote from '+escapeHtml(x.provider||'provider'))+'</div><div class="client-quote-row"><span>'+(lang==='pt'?'Serviço':'Service')+'</span><b>'+formatEuro(x.provider_amount)+'</b></div><div class="client-quote-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO':'TRIÂNGULO fee')+'</span><b>'+formatEuro(x.service_fee_amount)+'</b></div><div class="client-quote-row client-quote-total"><span>Total</span><b>'+formatEuro(x.total_amount)+'</b></div><button class="primary client-quote-confirm" data-confirm-quote="'+escapeHtml(x.token||'')+'">'+(lang==='pt'?'Confirmar orçamento':'Confirm quote')+'</button><small>'+(lang==='pt'?'Só fica confirmado depois deste passo.':'The service is only confirmed after this step.')+'</small></div>'
+    :'';
+  const totalInfo=state!=='quoted'&&x.total_amount!=null
+    ?'<small class="booking-total"><b>Total: '+formatEuro(x.total_amount)+'</b> · '+(lang==='pt'?'inclui taxa TRIÂNGULO':'includes TRIÂNGULO fee')+'</small>'
+    :'';
+  const contact=(x.contact_released&&(x.provider_email||x.provider_phone))
+    ?'<div class="pa-client booking-contact"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>'
+    :'';
+
+  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+waitingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+'</div>';
  }).join('')+'</div>';
+
+ $$('[data-confirm-quote]').forEach(btn=>btn.onclick=()=>confirmDirectQuote(btn.dataset.confirmQuote,btn));
  $$('[data-pay-booking]').forEach(btn=>btn.onclick=()=>startBookingCheckout(btn.dataset.payBooking,btn));
  $$('[data-select-request]').forEach(btn=>btn.onclick=()=>selectMatchingOffer(btn.dataset.selectRequest,btn.dataset.match,btn));
  $$('[data-complete-request]').forEach(btn=>btn.onclick=()=>completeMatchingRequest(btn.dataset.completeRequest,btn));
  $$('[data-complete-booking]').forEach(btn=>btn.onclick=()=>completeDirectBooking(btn.dataset.completeBooking,btn));
+}
+async function confirmDirectQuote(token,btn){
+ if(!token)return;
+ const old=btn?btn.textContent:'';
+ if(btn){btn.disabled=true;btn.textContent=lang==='pt'?'A confirmar…':'Confirming…'}
+ try{
+  const {data,error}=await db.rpc('confirm_booking_quote',{p_client_token:token});
+  if(error||!data||!data.ok){
+    toast(lang==='pt'?'Não foi possível confirmar o orçamento.':'Could not confirm the quote.');
+    return
+  }
+  await syncLocalBookings();renderBookings();
+  toast(lang==='pt'?'Orçamento confirmado ✓':'Quote confirmed ✓');
+ }catch(e){
+  console.error(e);toast(lang==='pt'?'Não foi possível confirmar o orçamento.':'Could not confirm the quote.');
+ }finally{
+  if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}
+ }
 }
 async function selectMatchingOffer(token,matchId,btn){
  if(!token||!matchId)return;const old=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A confirmar…':'Confirming…';
@@ -1890,8 +1978,8 @@ function providerStatusLabel(status){
 }
 function providerBookingStatus(status,paymentStatus){
   if(status==='confirmed'&&paymentStatus!=='paid')return paymentsLive?(lang==='pt'?'Aceite · pagamento pendente':'Accepted · payment pending'):(lang==='pt'?'Aceite':'Accepted');
-  const pt={requested:'Novo pedido',confirmed:'Pago · confirmado',declined:'Recusado',expired:'Expirado',completed:'Concluído',cancelled:'Cancelado'};
-  const en={requested:'New request',confirmed:'Paid · confirmed',declined:'Declined',expired:'Expired',completed:'Completed',cancelled:'Cancelled'};
+  const pt={requested:'Novo pedido',quoted:'Orçamento enviado · aguarda cliente',confirmed:(paymentsLive?'Aceite · pagamento/confirmado':'Confirmado'),declined:'Recusado',expired:'Expirado',completed:'Concluído',cancelled:'Cancelado'};
+  const en={requested:'New request',quoted:'Quote sent · awaiting customer',confirmed:(paymentsLive?'Accepted · payment/confirmed':'Confirmed'),declined:'Declined',expired:'Expired',completed:'Completed',cancelled:'Cancelled'};
   return (lang==='pt'?pt:en)[status]||status;
 }
 async function openProviderArea(){
@@ -2026,7 +2114,7 @@ function renderProviderDashboard(data){
     });
     $('#paBookings').innerHTML=ordered.map(x=>{
       const generic=x.kind==='matching',isPending=generic?x.status==='sent':x.status==='requested';
-      const when=escapeHtml((x.service_date||'')+(x.service_time?' · '+x.service_time:''));
+      const when=escapeHtml((x.service_date?formatServiceDate(x.service_date):'')+' · '+formatServiceTime(x.service_time));
       const note=escapeHtml(x.description||x.notes||(lang==='pt'?'Sem nota adicional':'No additional note'));
       let actions='';
       if(isPending&&x.response_token){
@@ -2272,30 +2360,76 @@ async function providerAppContinue(){
   $('#providerRequestView').hidden=true;
   await openProviderArea();
 }
+function updateProviderQuotePreview(){
+ const box=$('#prAppQuotePreview'),input=$('#prAppQuoteAmount');
+ if(!box||!input)return;
+ const amount=Number(input.value);
+ if(!Number.isFinite(amount)||amount<=0){box.textContent='';box.hidden=true;return}
+ const fee=Math.round(amount*TRIANGULO_SERVICE_FEE_RATE*100)/100,total=amount+fee;
+ box.hidden=false;
+ box.textContent=lang==='pt'
+  ?'Tu recebes '+formatEuro(amount)+' · cliente vê '+formatEuro(total)
+  :'You receive '+formatEuro(amount)+' · customer sees '+formatEuro(total);
+}
 function providerAppRenderState(state,data={}){
   providerAppHideAll();
   if(state==='sent')state='requested';
   if(state==='requested'){
     $('#prAppRequest').hidden=false;
+    const quote=!!data.requires_quote,kicker=$('#prAppKicker'),title=$('#prAppTitle');
+    if(kicker){
+      kicker.dataset.pt=quote?'Pedido de orçamento':'Novo pedido para ti';
+      kicker.dataset.en=quote?'Quote request':'New request for you';
+      kicker.textContent=lang==='pt'?kicker.dataset.pt:kicker.dataset.en;
+    }
+    if(title){
+      title.dataset.pt=quote?'Queres enviar um orçamento?':'Podes aceitar este serviço?';
+      title.dataset.en=quote?'Would you like to send a quote?':'Can you accept this job?';
+      title.textContent=lang==='pt'?title.dataset.pt:title.dataset.en;
+    }
     $('#prAppIsland').textContent=data.island||'—';
-    $('#prAppDate').textContent=data.service_date||'—';
-    $('#prAppTime').textContent=data.service_time||'—';
+    $('#prAppDate').textContent=data.service_date?formatServiceDate(data.service_date):'—';
+    $('#prAppTime').textContent=formatServiceTime(data.service_time);
     $('#prAppNotes').textContent=data.notes||(lang==='pt'?'Sem notas adicionais':'No additional notes');
-    $('#prAppExpires').textContent=data.expires_at?new Date(data.expires_at).toLocaleString(lang==='pt'?'pt-PT':'en-GB'):'—';
+    $('#prAppExpires').textContent=data.expires_at?formatDeadline(data.expires_at):'—';
     const qb=$('#prAppQuoteBox'),accept=$('#prAppAccept'),paymentNote=$('#prAppPaymentNote');
-    qb.hidden=!data.requires_quote;
-    accept.textContent=data.requires_quote?(lang==='pt'?'Enviar orçamento':'Send quote'):(lang==='pt'?'✓ Aceitar pedido':'✓ Accept request');
-    if(paymentNote)paymentNote.textContent=activeProviderRequestKind==='matching'
-      ?(lang==='pt'?'Ao responderes, o cliente recebe a tua disponibilidade ou orçamento e decide se quer confirmar o teu serviço.':'When you respond, the customer receives your availability or quote and decides whether to confirm your service.')
-      :(paymentsLive
-        ?(lang==='pt'?'Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.':'When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.')
-        :(lang==='pt'?'Ao aceitares, o serviço fica confirmado e os contactos são disponibilizados para combinarem os detalhes.':'When you accept, the service is confirmed and contact details are released so you can coordinate.'));
+    qb.hidden=!quote;
+    accept.textContent=quote?(lang==='pt'?'Enviar orçamento':'Send quote'):(lang==='pt'?'✓ Aceitar pedido':'✓ Accept request');
+    if(quote){
+      paymentNote.textContent=activeProviderRequestKind==='matching'
+        ?(lang==='pt'?'O cliente recebe o teu orçamento e decide se quer escolher o teu serviço.':'The customer receives your quote and decides whether to choose your service.')
+        :(lang==='pt'?'Ao enviares, o cliente recebe o orçamento com o total final. O serviço só fica confirmado quando o cliente aceitar.':'When you send it, the customer receives the quote with the final total. The service is only confirmed when the customer accepts.');
+      updateProviderQuotePreview();
+    }else if(paymentNote){
+      paymentNote.textContent=activeProviderRequestKind==='matching'
+        ?(lang==='pt'?'Ao responderes, o cliente recebe a tua disponibilidade e decide se quer confirmar o teu serviço.':'When you respond, the customer receives your availability and decides whether to confirm your service.')
+        :(paymentsLive
+          ?(lang==='pt'?'Ao aceitares, o cliente é convidado a pagar no TRIÂNGULO. Os contactos só são desbloqueados depois do pagamento integral.':'When you accept, the customer is asked to pay through TRIÂNGULO. Contact details are only unlocked after full payment.')
+          :(lang==='pt'?'Ao aceitares, o serviço fica confirmado e os contactos são disponibilizados para combinarem os detalhes.':'When you accept, the service is confirmed and contact details are released so you can coordinate.'));
+    }
     return;
   }
+
   const result=$('#prAppResult');result.hidden=false;
   if(state==='confirmed'||state==='selected'||state==='accepted'||state==='quoted'){
     const waitingChoice=state==='accepted'||state==='quoted';
-    result.innerHTML='<div class="big">✓</div><h2>'+(waitingChoice?(state==='quoted'?(lang==='pt'?'Orçamento enviado':'Quote sent'):(lang==='pt'?'Disponibilidade enviada':'Availability sent')):(state==='selected'?(lang==='pt'?'Serviço confirmado':'Service confirmed'):(data.requires_quote?(lang==='pt'?'Orçamento aceite':'Quote accepted'):(lang==='pt'?'Serviço aceite':'Service accepted'))))+'</h2>'+(data.total_amount!=null?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Resumo do valor':'Price summary')+'</b><div>'+(lang==='pt'?'Tu recebes':'You receive')+': €'+Number(data.provider_amount).toFixed(2)+'</div><div>'+(lang==='pt'?'Cliente vê':'Customer sees')+': €'+Number(data.total_amount).toFixed(2)+'</div></div>':'')+'<p>'+(waitingChoice?(lang==='pt'?'A tua resposta foi enviada. O cliente pode agora escolher o teu serviço.':'Your response was sent. The customer can now choose your service.'):(paymentsLive&&data.payment_status!=='paid'?(lang==='pt'?'O serviço foi aceite. Aguarda a confirmação do pagamento.':'The service was accepted. Wait for payment confirmation.'):(lang==='pt'?'O serviço ficou confirmado.':'The service is confirmed.')))+'</p>'
+    const headline=state==='quoted'
+      ?(lang==='pt'?'Orçamento enviado':'Quote sent')
+      :state==='accepted'
+        ?(lang==='pt'?'Disponibilidade enviada':'Availability sent')
+        :state==='selected'
+          ?(lang==='pt'?'Serviço confirmado':'Service confirmed')
+          :(data.requires_quote?(lang==='pt'?'Orçamento aceite':'Quote accepted'):(lang==='pt'?'Serviço aceite':'Service accepted'));
+    const body=state==='quoted'
+      ?(lang==='pt'?'O cliente recebeu o orçamento e o total final. Agora decide se quer confirmar.':'The customer received the quote and final total and can now decide whether to confirm.')
+      :state==='accepted'
+        ?(lang==='pt'?'A tua disponibilidade foi enviada. O cliente decide se quer confirmar.':'Your availability was sent. The customer decides whether to confirm.')
+        :(paymentsLive&&data.payment_status!=='paid'
+          ?(lang==='pt'?'O serviço foi aceite. Aguarda a confirmação do pagamento.':'The service was accepted. Wait for payment confirmation.')
+          :(lang==='pt'?'O serviço ficou confirmado.':'The service is confirmed.'));
+    result.innerHTML='<div class="big">✓</div><h2>'+headline+'</h2>'
+      +(data.total_amount!=null?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Resumo do orçamento':'Quote summary')+'</b><div>'+(lang==='pt'?'Tu recebes':'You receive')+': '+formatEuro(data.provider_amount)+'</div><div>'+(lang==='pt'?'Cliente vê':'Customer sees')+': '+formatEuro(data.total_amount)+'</div></div>':'')
+      +'<p>'+body+'</p>'
       +(((data.client_name||data.client_email||data.client_phone))?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><div>'+escapeHtml(data.client_name||'')+'</div><div>'+escapeHtml(data.client_email||'')+'</div><div>'+escapeHtml(data.client_phone||'')+'</div></div>':'')
       +'<button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else if(state==='declined'){
@@ -2349,6 +2483,7 @@ async function providerAppRespond(action){
 }
 $('#prAppAccept').onclick=()=>providerAppRespond('accept');
 $('#prAppDecline').onclick=()=>providerAppRespond('decline');
+$('#prAppQuoteAmount').addEventListener('input',updateProviderQuotePreview);
 
 async function init(){
  const qs=new URLSearchParams(location.search);
@@ -2401,7 +2536,13 @@ async function init(){
          service_fee_amount:data.service_fee_amount,
          total_amount:data.total_amount,
          payment_ready:!!data.payment_ready,
+         requires_quote:!!data.requires_quote,
+         provider_response_deadline:data.provider_response_deadline||null,
          checkout_available:paymentsLive&&!!data.checkout_available,
+         contact_released:!!data.contact_released,
+         provider_email:data.provider_email||null,
+         provider_phone:data.provider_phone||null,
+         service_title:data.service_title||null,
          createdAt:new Date().toISOString()
        });
        history.replaceState({},'',location.pathname);
