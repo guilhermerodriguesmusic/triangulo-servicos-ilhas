@@ -1684,7 +1684,7 @@ function runSearch(q,group=null,pushHistory=true){
 }
 function syncResultsControls(){
  const ib=$('#resultsIslandBtn');if(ib)ib.textContent='📍 '+island+' ▾';
- $('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
+ $$('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
  const sort=$('#resultsSort');if(sort)sort.value=activeResultsSort;
 }
 function syncResultsUrl(mode='replace'){
@@ -1751,7 +1751,7 @@ function bindProvider(){
    card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(card.dataset.service)}};
  });
 }
-function showScreen(id){$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$('[data-nav]').forEach(b=>{const active=b.dataset.nav===id;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
+function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>{const active=b.dataset.nav===id;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
 function isStandaloneApp(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
 function screenUrl(id){
  if(id==='explore')return buildResultsUrl();
@@ -1768,9 +1768,9 @@ function navigateScreen(id){
  if(previous!==id)history.pushState({triScreen:id},'',screenUrl(id));
  if(id==='bookings'){renderBookings();syncLocalBookings().then(renderBookings).catch(()=>{})}
 }
-$('[data-nav]').forEach(b=>b.onclick=()=>navigateScreen(b.dataset.nav));
-$('[data-home]').forEach(b=>b.onclick=()=>navigateScreen('home'));
-$('[data-profile]').forEach(b=>b.onclick=()=>navigateScreen('profile'));
+$$('[data-nav]').forEach(b=>b.onclick=()=>navigateScreen(b.dataset.nav));
+$$('[data-home]').forEach(b=>b.onclick=()=>navigateScreen('home'));
+$$('[data-profile]').forEach(b=>b.onclick=()=>navigateScreen('profile'));
 const resultsBack=$('#resultsBack');if(resultsBack)resultsBack.onclick=()=>{if(isStandaloneApp())navigateScreen('home');else location.href='/'};
 window.addEventListener('popstate',event=>{
  if($('.sheet.open'))closeSheets();
