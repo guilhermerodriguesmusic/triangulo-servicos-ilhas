@@ -80,6 +80,7 @@ jobs:
             {name:'privacy',path:'/privacy.html'},
             {name:'terms',path:'/terms.html'},
             {name:'provider-login',path:'/servicos/?prestador=1&entry=mobile-audit'},
+            {name:'provider-dashboard-seeded',path:'/servicos/?prestador=1&entry=mobile-audit',action:'provider-dashboard-seeded'},
             {name:'provider-password',path:'/servicos/?provider_password_token=0000000000000000000000000000000000000000000000000000000000000000'},
             {name:'install-android',path:'/instalar/',ua:androidUA},
             {name:'install-iphone',path:'/instalar/',ua:iphoneUA}
@@ -144,6 +145,39 @@ jobs:
                   }
                   if(route.action==='request'){
                     await page.click('#publishNav');
+                    await page.waitForTimeout(150);
+                  }
+                  if(route.action==='provider-dashboard-seeded'){
+                    await page.evaluate(()=>{
+                      const data={
+                        ok:true,
+                        email:'prestador@teste.invalid',
+                        profile:{
+                          name:'Dário',business_name:null,status:'active',locality:'Santa Luzia',
+                          description:'Limpeza de terrenos e revisões automóvel',pricing_type:'quote',price:null,
+                          availability:'Seg a Sáb, 08:00–17:00',website:null,other_service:null,
+                          service_islands:['Pico'],categories:['garden','repairs']
+                        },
+                        services:[
+                          {id:'11111111-1111-4111-8111-111111111111',title:'Jardim & Terrenos',category_code:'garden',description:'Limpeza de terrenos',pricing_type:'quote',price:null,availability:'Seg a Sáb, 08:00–17:00',status:'active'},
+                          {id:'22222222-2222-4222-8222-222222222222',title:'Reparações',category_code:'repairs',description:'Revisões automóvel',pricing_type:'quote',price:null,availability:'Seg a Sáb, 08:00–17:00',status:'active'}
+                        ],
+                        bookings:[{
+                          kind:'direct',status:'requested',service_title:'Jardim & Terrenos',
+                          service_date:'2026-09-23',service_time:'11:00',location_text:'Santa Luzia',
+                          notes:'Limpeza de um terreno com erva alta',requires_quote:true,
+                          response_token:'33333333-3333-4333-8333-333333333333'
+                        }],
+                        matches:[],
+                        payment_account:{connected:false,payouts_enabled:false,transfers_capability:'inactive'}
+                      };
+                      providerAccountData=data;
+                      renderProviderDashboard(data);
+                      paShow('paDashboard');
+                      document.querySelector('#providerAreaView').hidden=false;
+                      document.querySelector('#mainShell').classList.add('hidden');
+                      document.querySelector('#splash').classList.add('hidden');
+                    });
                     await page.waitForTimeout(150);
                   }
                 }catch(e){navError=String(e.message||e)}
