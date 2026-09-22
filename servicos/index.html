@@ -1160,6 +1160,33 @@ body.route-public-results #explore{display:block!important}
   .app{box-shadow:none}
 }
 </style>
+
+<style id="mobile-device-size-polish-v1">
+@media(max-width:440px){
+  .result-card-action button{min-height:44px}
+  .settings button{min-height:54px}
+  .booking-local small,.booking-local .booking-help{font-size:10.5px}
+  .client-quote-row{font-size:11px}
+  .client-quote-row b{font-size:11px}
+  #requestSheet{max-height:calc(var(--tri-visual-vh,100dvh) - env(safe-area-inset-top) - 6px)}
+}
+@media(max-width:390px){
+  #explore{padding-left:12px;padding-right:12px}
+  .results-filters{margin-left:-12px;margin-right:-12px;padding-left:12px}
+  .result-card{padding:10px;grid-template-columns:68px minmax(0,1fr);gap:10px}
+  .provider-avatar-card{width:68px;height:88px;font-size:26px}
+  .result-card:has(.provider-avatar-card){grid-template-columns:68px minmax(0,1fr)}
+  .result-card b{font-size:14.5px}
+  .result-card .desc{font-size:10.5px}
+  .provider-tag{font-size:8.5px;padding:4px 6px}
+  .result-card-action{align-items:stretch;flex-direction:column;gap:6px}
+  .result-card-action span{max-width:100%;font-size:9.5px}
+  .result-card-action button{width:100%;font-size:11px}
+  .page-title h1{font-size:25px}
+  .booking-local{padding:13px}
+  .client-quote-box{padding:11px}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -2169,6 +2196,20 @@ function syncNetworkStatus(){
 }
 window.addEventListener('offline',syncNetworkStatus);window.addEventListener('online',()=>{syncNetworkStatus();loadProviders(activeSearchQuery,activeServiceGroup)});
 syncNetworkStatus();
+function syncVisualViewport(){
+ const h=Math.round(window.visualViewport?.height||window.innerHeight);
+ document.documentElement.style.setProperty('--tri-visual-vh',h+'px');
+}
+syncVisualViewport();
+window.visualViewport?.addEventListener('resize',syncVisualViewport);
+window.visualViewport?.addEventListener('scroll',syncVisualViewport);
+window.addEventListener('orientationchange',()=>setTimeout(syncVisualViewport,120));
+document.addEventListener('focusin',e=>{
+ if(!window.matchMedia('(max-width:620px)').matches)return;
+ const sheet=e.target.closest?.('.sheet.open');
+ if(!sheet||!e.target.matches('input,textarea,select'))return;
+ setTimeout(()=>e.target.scrollIntoView({block:'center',behavior:'smooth'}),180);
+});
 function syncInstalledUi(){const b=$('#installBtn');if(b&&isStandaloneApp())b.hidden=true}
 syncInstalledUi();window.addEventListener('appinstalled',syncInstalledUi);
 $('#installBtn').onclick=async()=>{
