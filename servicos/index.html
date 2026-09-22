@@ -1958,8 +1958,8 @@ function renderBookings(){
  $$('[data-pay-booking]').forEach(btn=>btn.onclick=()=>startBookingCheckout(btn.dataset.payBooking,btn));
  $$('[data-select-request]').forEach(btn=>btn.onclick=()=>selectMatchingOffer(btn.dataset.selectRequest,btn.dataset.match,btn));
  $$('[data-complete-request]').forEach(btn=>btn.onclick=()=>completeMatchingRequest(btn.dataset.completeRequest,btn));
- $('[data-complete-booking]').forEach(btn=>btn.onclick=()=>completeDirectBooking(btn.dataset.completeBooking,btn));
- $('[data-retry-service]').forEach(btn=>btn.onclick=()=>runSearch(decodeURIComponent(btn.dataset.retryService||''),null));
+ $$('[data-complete-booking]').forEach(btn=>btn.onclick=()=>completeDirectBooking(btn.dataset.completeBooking,btn));
+ $$('[data-retry-service]').forEach(btn=>btn.onclick=()=>runSearch(decodeURIComponent(btn.dataset.retryService||''),null));
 }
 async function confirmDirectQuote(token,btn){
  if(!token)return;
