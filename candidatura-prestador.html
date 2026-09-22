@@ -89,22 +89,26 @@
   <section id="formCard" class="formcard">
     <h2 data-pt="Cria o teu perfil" data-en="Create your profile">Cria o teu perfil</h2>
     <p class="intro" data-pt="Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO." data-en="Fields marked * are required. You can request changes to your details later through TRIÂNGULO.">Os campos com * são obrigatórios. Podes pedir a alteração dos teus dados mais tarde através do TRIÂNGULO.</p>
+    <p id="applicationTimeEstimate" class="time-estimate" hidden></p>
     <div class="steps" aria-label="Etapas da candidatura" data-aria-pt="Etapas da candidatura" data-aria-en="Application steps"><div class="step"><b>1</b><span data-pt="Dados" data-en="Details">Dados</span></div><div class="step"><b>2</b><span data-pt="Serviços" data-en="Services">Serviços</span></div><div class="step"><b>3</b><span data-pt="Preço" data-en="Pricing">Preço</span></div><div class="step"><b>4</b><span data-pt="Verificação" data-en="Verification">Verificação</span></div></div>
 
     <form id="providerForm">
       <input class="honeypot" name="company_fax" autocomplete="off" tabindex="-1" aria-hidden="true">
 
+      <section class="form-step active" data-form-step="1">
       <div class="section-title" data-pt="1 · Quem és" data-en="1 · About you">1 · Quem és</div>
       <div class="grid2">
         <label><span data-pt="Nome / nome profissional *" data-en="Name / professional name *">Nome / nome profissional *</span><input required name="name" minlength="2" maxlength="120" autocomplete="name"></label>
         <label><span data-pt="Nome do negócio (opcional e privado)" data-en="Business name (optional and private)">Nome do negócio (opcional e privado)</span><input name="business_name" maxlength="120" autocomplete="organization"><small class="note" data-pt="É usado pelo TRIÂNGULO para verificação e só é revelado ao cliente depois de um serviço ser confirmado." data-en="TRIÂNGULO uses it for verification and it is only revealed to the customer after a service is confirmed.">É usado pelo TRIÂNGULO para verificação e só é revelado ao cliente depois de um serviço ser confirmado.</small></label>
         <label><span data-pt="Email (opcional)" data-en="Email (optional)">Email (opcional)</span><input type="email" name="email" maxlength="254" autocomplete="email" placeholder="email@exemplo.pt"><small class="note" data-pt="Não tens email? Sem problema — deixa este campo vazio. O teu telefone/WhatsApp será o acesso à área de prestador." data-en="No email? No problem — leave this field blank. Your phone/WhatsApp number will be used to access the provider area.">Não tens email? Sem problema — deixa este campo vazio. O teu telefone/WhatsApp será o acesso à área de prestador.</small></label>
         <label><span data-pt="Telefone / WhatsApp *" data-en="Phone / WhatsApp *">Telefone / WhatsApp *</span><input required name="phone" minlength="6" maxlength="50" inputmode="tel" autocomplete="tel" placeholder="+351 9xx xxx xxx"><small class="note" data-pt="Obrigatório para verificação, comunicações e acesso à área de prestador quando não tens email. Poderemos confirmar este número por WhatsApp/SMS. Nunca aparece no perfil público; só é partilhado quando necessário para combinar um serviço confirmado, de acordo com o fluxo em vigor." data-en="Required for verification, operational messages and provider-area access when you do not have an email address. We may confirm this number by WhatsApp/SMS. It never appears on your public profile; it is only shared when needed to arrange a confirmed service under the current platform flow.">Obrigatório para verificação, comunicações e acesso à área de prestador quando não tens email. Poderemos confirmar este número por WhatsApp/SMS. Nunca aparece no perfil público; só é partilhado quando necessário para combinar um serviço confirmado, de acordo com o fluxo em vigor.</small></label>
-        <label><span data-pt="NIF / NIPC *" data-en="Portuguese tax ID (NIF/NIPC) *">NIF / NIPC *</span><input required name="tax_id" minlength="9" maxlength="9" inputmode="numeric" autocomplete="off" pattern="[0-9]{9}" placeholder="123456789"><small class="note" data-pt="Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes." data-en="Required for verification. It stays private, is not shown on your profile and is never displayed to customers.">Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes.</small></label>
       </div>
       <div class="contact-reassurance"><span>✓</span><div><b data-pt="Email não é obrigatório" data-en="Email is not required">Email não é obrigatório</b><small data-pt="Telefone/WhatsApp chega para te candidatares e, depois de aprovado, entrares na tua área." data-en="A phone/WhatsApp number is enough to apply and, once approved, sign in to your provider area.">Telefone/WhatsApp chega para te candidatares e, depois de aprovado, entrares na tua área.</small></div></div>
       <label style="display:block;margin-top:12px"><span data-pt="Website / Instagram (opcional e privado)" data-en="Website / Instagram (optional and private)">Website / Instagram (opcional e privado)</span><input name="website" maxlength="500" inputmode="url" placeholder="https://..."><small class="note" data-pt="Usado apenas pelo TRIÂNGULO para verificação. Não será mostrado aos clientes." data-en="Used only by TRIÂNGULO for verification. It will not be shown to customers.">Usado apenas pelo TRIÂNGULO para verificação. Não será mostrado aos clientes.</small></label>
 
+      <div class="step-actions step-actions-next"><button type="button" class="step-next" data-step-next="2" data-pt="Continuar →" data-en="Continue →">Continuar →</button></div>
+      </section>
+      <section class="form-step" data-form-step="2">
       <div class="section-title" data-pt="2 · Onde e o que fazes" data-en="2 · Where and what you do">2 · Onde e o que fazes</div>
       <label style="display:block;margin-top:13px"><span data-pt="Localidade / freguesia *" data-en="Locality / parish *">Localidade / freguesia *</span><input required name="locality" minlength="2" maxlength="120" autocomplete="address-level3" data-ph-pt="Ex.: Santa Luzia" data-ph-en="E.g. Santa Luzia" placeholder="Ex.: Santa Luzia"><small class="note" data-pt="Aparece publicamente junto à ilha para os clientes perceberem onde estás. Não coloques uma morada completa." data-en="Shown publicly next to your island so customers know where you are based. Do not enter a full street address.">Aparece publicamente junto à ilha para os clientes perceberem onde estás. Não coloques uma morada completa.</small></label>
       <fieldset class="choice-fieldset" style="margin-top:13px"><legend class="field-title" data-pt="Em que ilhas trabalhas? *" data-en="Which islands do you work on? *">Em que ilhas trabalhas? *</legend><div class="checks">
@@ -137,6 +141,9 @@
 
       <label style="display:block;margin-top:13px"><span data-pt="Descreve o que fazes *" data-en="Describe what you do *">Descreve o que fazes *</span><textarea id="description" required name="description" minlength="10" maxlength="1200" data-ph-pt="Ex.: Manutenção de jardins, corte de erva, podas e limpeza de terrenos." data-ph-en="E.g. Garden maintenance, grass cutting, pruning and land clearing."></textarea><small class="note"><span data-pt="Não coloques nome do negócio/empresa, telefone, email, WhatsApp, redes sociais ou links na descrição. Esses dados só são partilhados depois da confirmação do serviço." data-en="Do not add your business/company name, phone number, email, WhatsApp, social media or links to the description. Those details are only shared after the service is confirmed.">Não coloques nome do negócio/empresa, telefone, email, WhatsApp, redes sociais ou links na descrição. Esses dados só são partilhados depois da confirmação do serviço.</span><span id="descriptionCount" class="char-count">0/1200</span></small></label>
 
+      <div class="step-actions"><button type="button" class="step-back" data-step-back="1" data-pt="← Voltar" data-en="← Back">← Voltar</button><button type="button" class="step-next" data-step-next="3" data-pt="Continuar →" data-en="Continue →">Continuar →</button></div>
+      </section>
+      <section class="form-step" data-form-step="3">
       <div class="section-title" data-pt="3 · Preço e disponibilidade" data-en="3 · Pricing and availability">3 · Preço e disponibilidade</div>
       <div class="grid2">
         <label><span data-pt="Como cobras? *" data-en="How do you charge? *">Como cobras? *</span><select required name="pricing_type" id="pricingType"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote only">Sob orçamento</option></select></label>
@@ -144,7 +151,13 @@
         <label><span data-pt="Disponibilidade (opcional)" data-en="Availability (optional)">Disponibilidade (opcional)</span><input name="availability" maxlength="500" data-ph-pt="Ex.: Seg–Sex, 09:00–18:00" data-ph-en="E.g. Mon–Fri, 09:00–18:00"></label>
         <label><span data-pt="Foto do perfil ou do trabalho (opcional)" data-en="Profile or work photo (optional)">Foto do perfil ou do trabalho (opcional)</span><input id="providerPhoto" type="file" accept="image/jpeg,image/png,image/webp"><small class="note" data-pt="JPG, PNG ou WebP. Evita logótipos, nomes comerciais, contactos ou texto identificável na imagem." data-en="JPG, PNG or WebP. Avoid logos, business names, contact details or identifying text in the image.">JPG, PNG ou WebP. Evita logótipos, nomes comerciais, contactos ou texto identificável na imagem.</small><img id="providerPhotoPreview" class="photo-preview" alt=""></label>
       </div>
-      <div class="section-title" data-pt="4 · Finalizar candidatura" data-en="4 · Finish application">4 · Finalizar candidatura</div>
+      <div class="step-actions"><button type="button" class="step-back" data-step-back="2" data-pt="← Voltar" data-en="← Back">← Voltar</button><button type="button" class="step-next" data-step-next="4" data-pt="Continuar →" data-en="Continue →">Continuar →</button></div>
+      </section>
+      <section class="form-step" data-form-step="4">
+      <div class="section-title" data-pt="4 · Verificação e envio" data-en="4 · Verification and submission">4 · Verificação e envio</div>
+      <div class="verification-box">
+<label><span data-pt="NIF / NIPC *" data-en="Portuguese tax ID (NIF/NIPC) *">NIF / NIPC *</span><input required name="tax_id" minlength="9" maxlength="9" inputmode="numeric" autocomplete="off" pattern="[0-9]{9}" placeholder="123456789"><small class="note" data-pt="Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes." data-en="Required for verification. It stays private, is not shown on your profile and is never displayed to customers.">Obrigatório para verificação. É privado, não aparece no teu perfil e não é mostrado aos clientes.</small></label>
+      </div>
       <label><span data-pt="Como conheceste o TRIÂNGULO?" data-en="How did you hear about TRIÂNGULO?">Como conheceste o TRIÂNGULO?</span>
         <select name="discovery_source">
           <option value="" data-pt="Selecionar (opcional)" data-en="Choose (optional)">Selecionar (opcional)</option>
@@ -165,7 +178,8 @@
         <label><input required type="checkbox" name="consent_all"><span><span data-pt="Li e aceito os" data-en="I have read and accept the">Li e aceito os</span> <a href="/terms.html" target="_blank" rel="noopener noreferrer" data-pt="Termos" data-en="Terms">Termos</a> <span data-pt="e confirmo que li a" data-en="and confirm that I have read the">e confirmo que li a</span> <a href="/privacy.html" target="_blank" rel="noopener noreferrer" data-pt="Política de Privacidade" data-en="Privacy Policy">Política de Privacidade</a>.</span></label>
       </div>
       <div id="status" class="status" role="status" aria-live="polite"></div>
-      <button id="submitBtn" class="submit" type="submit" data-pt="Enviar candidatura gratuita" data-en="Submit free application">Enviar candidatura gratuita</button>
+      <div class="step-actions final-step-actions"><button type="button" class="step-back" data-step-back="3" data-pt="← Voltar" data-en="← Back">← Voltar</button><button id="submitBtn" class="submit" type="submit" data-pt="Enviar candidatura gratuita" data-en="Submit free application">Enviar candidatura gratuita</button></div>
+      </section>
       <p class="legal"><a href="/terms.html" target="_blank" rel="noopener noreferrer" data-pt="Termos" data-en="Terms">Termos</a> · <a href="/privacy.html" target="_blank" rel="noopener noreferrer" data-pt="Privacidade" data-en="Privacy">Privacidade</a></p>
     </form>
   </section>
@@ -268,20 +282,60 @@ function syncPrimaryCategory(){
 $$('[data-provider-cat]').forEach(x=>x.addEventListener('change',syncPrimaryCategory));
 syncPrimaryCategory();
 
+const APPLICATION_ESTIMATED_MINUTES=null;
+let currentFormStep=1;
+function updateFormStep(step,{focus=true}={}){
+  currentFormStep=Math.max(1,Math.min(4,Number(step)||1));
+  $('.form-step').forEach(s=>s.classList.toggle('active',Number(s.dataset.formStep)===currentFormStep));
+  $('.steps .step').forEach((s,i)=>{const n=i+1;s.classList.toggle('active',n===currentFormStep);s.classList.toggle('done',n<currentFormStep)});
+  const estimate=$('#applicationTimeEstimate');
+  if(estimate&&APPLICATION_ESTIMATED_MINUTES){estimate.hidden=false;estimate.textContent=lang==='pt'?'Demora cerca de '+APPLICATION_ESTIMATED_MINUTES+' minutos.':'Takes about '+APPLICATION_ESTIMATED_MINUTES+' minutes.'}
+  else if(estimate)estimate.hidden=true;
+  $('#status').textContent='';
+  if(focus){window.scrollTo({top:Math.max(0,$('#formCard').offsetTop-10),behavior:'smooth'});setTimeout(()=>{const first=$('.form-step.active input:not([type="hidden"]):not([type="checkbox"]),.form-step.active select,.form-step.active textarea');if(first)first.focus({preventScroll:true})},250)}
+}
+function validateNativeInStep(step){
+  const section=$('.form-step[data-form-step="'+step+'"]');
+  if(!section)return true;
+  const controls=[...section.querySelectorAll('input,select,textarea')].filter(el=>!el.disabled&&el.type!=='hidden');
+  for(const el of controls){if(!el.checkValidity()){el.reportValidity();el.focus({preventScroll:true});return false}}
+  return true;
+}
+function validateFormStep(step){
+  const status=$('#status');status.textContent='';
+  if(!validateNativeInStep(step))return false;
+  if(step===2){
+    const islands=$('[data-service-island]:checked'),cats=$('[data-provider-cat]:checked');
+    if(!islands.length){status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return false}
+    if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return false}
+    if(!$('#primaryCategory').value){status.textContent=lang==='pt'?'Escolhe uma categoria principal.':'Choose a main category.';$('#primaryCategory').focus();return false}
+    if($('#otherCategory').checked&&$('#otherService').value.trim().length<2){status.textContent=lang==='pt'?'Escreve qual é o outro serviço que ofereces.':'Tell us which other service you offer.';$('#otherService').focus();return false}
+  }
+  if(step===3&&$('#pricingType').value!=='quote'&&(!$('#price').value||Number($('#price').value)<=0)){status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return false}
+  if(step===4){
+    const nif=String(document.querySelector('[name="tax_id"]').value||'').replace(/\D/g,'');
+    let sum=0;if(/^\d{9}$/.test(nif)){for(let i=0;i<8;i++)sum+=Number(nif[i])*(9-i);let check=11-(sum%11);if(check>=10)check=0;if(check!==Number(nif[8])){status.textContent=lang==='pt'?'Indica um NIF/NIPC português válido com 9 dígitos.':'Enter a valid 9-digit Portuguese NIF/NIPC.';return false}}else{status.textContent=lang==='pt'?'Indica um NIF/NIPC português válido com 9 dígitos.':'Enter a valid 9-digit Portuguese NIF/NIPC.';return false}
+  }
+  return true;
+}
+$('[data-step-next]').forEach(btn=>btn.onclick=()=>{if(validateFormStep(currentFormStep))updateFormStep(Number(btn.dataset.stepNext))});
+$('[data-step-back]').forEach(btn=>btn.onclick=()=>updateFormStep(Number(btn.dataset.stepBack)));
+updateFormStep(1,{focus:false});
+
 $('#providerForm').onsubmit=async e=>{
   e.preventDefault();
   const f=e.target, status=$('#status'), btn=$('#submitBtn');
   if(f.company_fax.value){$('#formCard').style.display='none';$('#success').classList.add('show');return}
   if(Date.now()-started<1500){status.textContent=lang==='pt'?'Confirma os dados antes de enviar.':'Please check your details before submitting.';return}
   const cats=$$('[data-provider-cat]:checked').map(x=>x.value), islands=$$('[data-service-island]:checked').map(x=>x.value);
-  if(!islands.length){status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return}
-  if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return}
+  if(!islands.length){updateFormStep(2);status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return}
+  if(!cats.length){updateFormStep(2);status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return}
   const d=Object.fromEntries(new FormData(f));
-  if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return}
+  if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){updateFormStep(3);status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return}
   const nif=String(d.tax_id||'').replace(/\D/g,'');
   function validNif(n){if(!/^\d{9}$/.test(n))return false;let s=0;for(let i=0;i<8;i++)s+=Number(n[i])*(9-i);let check=11-(s%11);if(check>=10)check=0;return check===Number(n[8])}
-  if(!validNif(nif)){status.textContent=lang==='pt'?'Indica um NIF/NIPC português válido com 9 dígitos.':'Enter a valid 9-digit Portuguese NIF/NIPC.';f.tax_id.focus();return}
-  if(!d.primary_category||!cats.includes(d.primary_category)){status.textContent=lang==='pt'?'Escolhe uma categoria principal.':'Choose a main category.';$('#primaryCategory').focus();return}
+  if(!validNif(nif)){updateFormStep(4);status.textContent=lang==='pt'?'Indica um NIF/NIPC português válido com 9 dígitos.':'Enter a valid 9-digit Portuguese NIF/NIPC.';f.tax_id.focus();return}
+  if(!d.primary_category||!cats.includes(d.primary_category)){updateFormStep(2);status.textContent=lang==='pt'?'Escolhe uma categoria principal.':'Choose a main category.';$('#primaryCategory').focus();return}
   const contactPattern=/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/|(\+?\d[ .()\/-]*){9,}/i;
   if(contactPattern.test(d.name||'')||contactPattern.test(d.locality||'')||contactPattern.test(d.description||'')||contactPattern.test(d.other_service||'')||contactPattern.test(d.availability||'')){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links nos campos públicos do perfil. Usa apenas os campos próprios de contacto.':'Do not add phone numbers, email, WhatsApp, social media or links to public profile fields. Use the dedicated contact fields instead.';return}
   if(cats.includes('other')&&(!d.other_service||d.other_service.trim().length<2)){status.textContent=lang==='pt'?'Escreve qual é o outro serviço que ofereces.':'Tell us which other service you offer.';$('#otherService').focus();return}
