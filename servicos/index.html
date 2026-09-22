@@ -1788,7 +1788,15 @@ function renderBookings(){
            :'We have not found a matching provider automatically yet. Your request has been flagged for alternative providers.'))+'</small>'
      :'';
    const trackingHelp=state==='tracking_expired'?'<small class="booking-help">'+(lang==='pt'?'A ligação privada de acompanhamento expirou. Este registo fica guardado apenas neste dispositivo.':'The private tracking link has expired. This record remains only on this device.')+'</small>':'';
-   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+matchingHelp+trackingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
+   const matchingNext=state==='offers'
+     ?(lang==='pt'?'Agora: compara as propostas e escolhe a que queres confirmar.':'Next: compare the offers and choose the one you want to confirm.')
+     :state==='confirmed'
+       ?(lang==='pt'?'Agora: combina os detalhes do serviço com o prestador.':'Next: arrange the service details with the provider.')
+       :state==='matching'
+         ?(lang==='pt'?'Agora: aguardamos respostas de prestadores compatíveis.':'Next: we are waiting for responses from matching providers.')
+         :'';
+   const matchingNextHtml=matchingNext?'<div class="booking-next-step">'+matchingNext+'</div>':'';
+   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+matchingNextHtml+matchingHelp+trackingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
   }
 
   const state=x.status||'requested',requiresQuote=!!(x.requires_quote||x.quote);
@@ -1811,8 +1819,16 @@ function renderBookings(){
     :'';
 
   const brief=x.details?'<div class="booking-brief"><b>'+(lang==='pt'?'Pedido':'Request')+'</b><span>'+escapeHtml(x.details)+'</span></div>':'';
+  const directNext=state==='quoted'
+    ?(lang==='pt'?'Agora: revê o valor final e confirma o orçamento.':'Next: review the final amount and confirm the quote.')
+    :state==='requested'
+      ?(requiresQuote?(lang==='pt'?'Agora: aguardamos o orçamento do prestador.':'Next: we are waiting for the provider’s quote.'):(lang==='pt'?'Agora: aguardamos a resposta do prestador.':'Next: we are waiting for the provider’s response.'))
+      :state==='confirmed'
+        ?(paymentsLive&&x.payment_status!=='paid'?(lang==='pt'?'Agora: conclui o pagamento para desbloquear os contactos.':'Next: complete payment to unlock contact details.'):(lang==='pt'?'Agora: combina os detalhes diretamente com o prestador.':'Next: arrange the details directly with the provider.'))
+        :(state==='declined'||state==='expired')?(lang==='pt'?'Agora: procura uma alternativa.':'Next: find an alternative.'):'';
+  const directNextHtml=directNext?'<div class="booking-next-step">'+directNext+'</div>':'';
   const trackingHelp=state==='tracking_expired'?'<small class="booking-help">'+(lang==='pt'?'A ligação privada de acompanhamento expirou. Este registo fica guardado apenas neste dispositivo.':'The private tracking link has expired. This record remains only on this device.')+'</small>':'';
-  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+brief+waitingHelp+trackingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+'</div>';
+  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+directNextHtml+brief+waitingHelp+trackingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+'</div>';
  }).join('')+'</div>';
 
  $$('[data-confirm-quote]').forEach(btn=>btn.onclick=()=>confirmDirectQuote(btn.dataset.confirmQuote,btn));
