@@ -121,8 +121,22 @@ jobs:
           install_page="$(fetch "$base/instalar/?verify=$GITHUB_SHA")"
           live_apple_icon="/tmp/tri-live-apple-touch-icon.png"
           live_precomposed_icon="/tmp/tri-live-apple-touch-icon-precomposed.png"
-          curl --fail --silent --show-error --location --retry 8 --retry-all-errors --retry-delay 2 "$base/apple-touch-icon-v3.png?verify=$GITHUB_SHA" -o "$live_apple_icon"
-          curl --fail --silent --show-error --location --retry 8 --retry-all-errors --retry-delay 2 "$base/apple-touch-icon-precomposed-v3.png?verify=$GITHUB_SHA" -o "$live_precomposed_icon"
+          wait_for_match() {
+            local expected="$1" url="$2" output="$3"
+            for attempt in {1..12}; do
+              curl --fail --silent --show-error --location \
+                --retry 3 --retry-all-errors --retry-delay 1 \
+                "$url?verify=$GITHUB_SHA&attempt=$attempt" -o "$output"
+              if cmp -s "$expected" "$output"; then
+                return 0
+              fi
+              sleep 2
+            done
+            echo "Live asset did not match deployed artifact after cache-propagation retries: $url"
+            return 1
+          }
+          wait_for_match apple-touch-icon-v3.png "$base/apple-touch-icon-v3.png" "$live_apple_icon"
+          wait_for_match apple-touch-icon-precomposed-v3.png "$base/apple-touch-icon-precomposed-v3.png" "$live_precomposed_icon"
           app_redirect="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           home_redirect="$(fetch "$base/inicio.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/servicos/?verify=$GITHUB_SHA")"
@@ -172,8 +186,6 @@ jobs:
           grep -q '<title>TRIÂNGULO</title>' <<<"$install_page"
           grep -q 'href="/apple-touch-icon-v3.png"' <<<"$install_page"
           grep -q 'href="/apple-touch-icon-precomposed-v3.png"' <<<"$install_page"
-          cmp -s apple-touch-icon-v3.png "$live_apple_icon"
-          cmp -s apple-touch-icon-precomposed-v3.png "$live_precomposed_icon"
           grep -q "Instalar TRIÂNGULO" <<<"$install_page"
           grep -q "beforeinstallprompt" <<<"$install_page"
           grep -q "package=com.android.chrome" <<<"$install_page"
