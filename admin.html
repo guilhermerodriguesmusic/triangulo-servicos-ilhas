@@ -112,11 +112,27 @@ function openClientVerificationWhatsApp(phone){
 }
 async function verifyClientRequest(kind,id,btn){
  if(!confirm(tr('Já confirmaste que este contacto pertence ao cliente? Só depois desta ação o pedido será enviado aos prestadores.','Have you confirmed that this contact belongs to the customer? Only after this action will the request be sent to providers.')))return;
+ const followupWin=window.open('about:blank','triangulo_client_verified');
  const old=btn.textContent;btn.disabled=true;btn.textContent=tr('A verificar…','Verifying…');
  const {data,error}=await db.rpc('admin_verify_client_request',{p_kind:kind,p_request_id:id});
  btn.disabled=false;btn.textContent=old;
- if(error||!data||!data.ok){alert((error&&error.message)||tr('Não foi possível verificar o cliente.','Could not verify the customer.'));return}
- alert(tr('Cliente verificado. O pedido foi agora libertado para os prestadores.','Customer verified. The request has now been released to providers.'));
+ if(error||!data||!data.ok){
+  if(followupWin)followupWin.close();
+  alert((error&&error.message)||tr('Não foi possível verificar o cliente.','Could not verify the customer.'));
+  return
+ }
+ const digits=String(data.phone||'').replace(/\D/g,'').replace(/^00/,'');
+ if(digits&&data.tracking_url){
+  const msg=tr(
+   'Contacto verificado ✓ O teu pedido já pode avançar no TRIÂNGULO. Podes acompanhá-lo aqui: '+data.tracking_url,
+   'Contact verified ✓ Your request can now move forward on TRIÂNGULO. You can track it here: '+data.tracking_url
+  );
+  const url='https://wa.me/'+digits+'?text='+encodeURIComponent(msg);
+  if(followupWin)followupWin.location.href=url;else window.open(url,'_blank','noopener');
+ }else{
+  if(followupWin)followupWin.close();
+  alert(tr('Cliente verificado. O pedido foi agora libertado para os prestadores.','Customer verified. The request has now been released to providers.'));
+ }
  load();
 }
 async function reissueProviderAccess(id,channel,btn){
