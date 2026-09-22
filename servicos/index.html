@@ -1914,7 +1914,7 @@ function renderBookings(){
     ?'<small class="booking-help">'+(lang==='pt'?(escapeHtml(x.provider||'O prestador')+' está a analisar o pedido'+(x.provider_response_deadline?' · responde até '+escapeHtml(formatDeadline(x.provider_response_deadline)).toLowerCase():'')+'.'):(escapeHtml(x.provider||'The provider')+' is reviewing the request'+(x.provider_response_deadline?' · reply by '+escapeHtml(formatDeadline(x.provider_response_deadline)).toLowerCase():'')+'.'))+'</small>'
     :'';
   const quoteBox=state==='quoted'&&x.total_amount!=null
-    ?'<div class="client-quote-box"><div class="client-quote-title">'+(lang==='pt'?'Orçamento de '+escapeHtml(x.provider||'prestador'):'Quote from '+escapeHtml(x.provider||'provider'))+'</div><div class="client-quote-row"><span>'+(lang==='pt'?'Serviço':'Service')+'</span><b>'+formatEuro(x.provider_amount)+'</b></div><div class="client-quote-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO':'TRIÂNGULO fee')+'</span><b>'+formatEuro(x.service_fee_amount)+'</b></div><div class="client-quote-row client-quote-total"><span>Total</span><b>'+formatEuro(x.total_amount)+'</b></div><button class="primary client-quote-confirm" data-confirm-quote="'+escapeHtml(x.token||'')+'">'+(lang==='pt'?'Confirmar orçamento':'Confirm quote')+'</button><small>'+(lang==='pt'?'Só fica confirmado depois deste passo.':'The service is only confirmed after this step.')+'</small></div>'
+    ?'<div class="client-quote-box"><div class="client-quote-title">'+(lang==='pt'?'Orçamento de '+escapeHtml(x.provider||'prestador'):'Quote from '+escapeHtml(x.provider||'provider'))+'</div><div class="client-quote-row"><span>'+(lang==='pt'?'Serviço':'Service')+'</span><b>'+formatEuro(x.provider_amount)+'</b></div><div class="client-quote-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO ('+feePercentLabel()+')':'TRIÂNGULO fee ('+feePercentLabel()+')')+'</span><b>'+formatEuro(x.service_fee_amount)+'</b></div><div class="client-quote-row client-quote-total"><span>Total</span><b>'+formatEuro(x.total_amount)+'</b></div><button class="primary client-quote-confirm" data-confirm-quote="'+escapeHtml(x.token||'')+'">'+(lang==='pt'?'Confirmar orçamento':'Confirm quote')+'</button><small>'+(lang==='pt'?'Só fica confirmado depois deste passo.':'The service is only confirmed after this step.')+'</small></div>'
     :'';
   const totalInfo=state!=='quoted'&&x.total_amount!=null
     ?'<small class="booking-total"><b>Total: '+formatEuro(x.total_amount)+'</b> · '+(lang==='pt'?'inclui taxa TRIÂNGULO':'includes TRIÂNGULO fee')+'</small>'
@@ -1935,6 +1935,16 @@ function renderBookings(){
 }
 async function confirmDirectQuote(token,btn){
  if(!token)return;
+ const booking=getLocalBookings().find(x=>x.kind!=='matching'&&x.token===token);
+ const totalText=booking&&booking.total_amount!=null?formatEuro(booking.total_amount):'';
+ const question=paymentsLive
+  ?(lang==='pt'
+    ?'Confirmar este orçamento'+(totalText?' de '+totalText:'')+'? Depois deste passo, podes avançar para o pagamento.'
+    :'Confirm this quote'+(totalText?' for '+totalText:'')+'? After this step, you can continue to payment.')
+  :(lang==='pt'
+    ?'Confirmar este orçamento'+(totalText?' de '+totalText:'')+'? O serviço ficará confirmado e os contactos serão disponibilizados para combinarem os detalhes.'
+    :'Confirm this quote'+(totalText?' for '+totalText:'')+'? The service will be confirmed and contact details will be released so you can arrange the details.');
+ if(!window.confirm(question))return;
  const old=btn?btn.textContent:'';
  if(btn){btn.disabled=true;btn.textContent=lang==='pt'?'A confirmar…':'Confirming…'}
  try{
