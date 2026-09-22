@@ -114,25 +114,18 @@ async function requestAdminReset(){
 }
 async function saveAdminPassword(){
   const p1=$('#newAdminPassword').value,p2=$('#newAdminPassword2').value,msg=$('#recoveryMsg');
-  const resetToken=qs.get('admin_reset')||'';
+  const resetToken=new URLSearchParams(location.search).get('admin_reset')||'';
   if(!resetToken){msg.textContent=tr('A ligação de recuperação não é válida.','The recovery link is not valid.');return}
   if(p1.length<10){msg.textContent=tr('Usa pelo menos 10 caracteres.','Use at least 10 characters.');return}
   if(p1!==p2){msg.textContent=tr('As passwords não coincidem.','Passwords do not match.');return}
   $('#saveAdminPassword').disabled=true;
   msg.textContent=tr('A guardar…','Saving…');
-  let response,payload;
-  try{
-    response=await fetch('https://cozamrvrhmwgxbuubjub.supabase.co/functions/v1/admin-password-reset',{
-      method:'POST',
-      headers:{'content-type':'application/json'},
-      body:JSON.stringify({token:resetToken,password:p1})
-    });
-    payload=await response.json().catch(()=>({}));
-  }catch(err){
-    console.error(err);
-  }
+  const {data:payload,error:resetError}=await db.functions.invoke('admin-password-reset',{
+    body:{token:resetToken,password:p1}
+  });
   $('#saveAdminPassword').disabled=false;
-  if(!response||!response.ok||!payload||payload.ok!==true){
+  if(resetError||!payload||payload.ok!==true){
+    if(resetError)console.error(resetError);
     msg.textContent=tr('Esta ligação é inválida ou expirou. Pede uma nova ligação de recuperação.','This link is invalid or expired. Request a new recovery link.');
     return
   }
@@ -146,7 +139,7 @@ async function saveAdminPassword(){
   $('#adminEmail').focus();
 }
 async function load(){
-  if(qs.get('admin_reset')){showRecovery();return}
+  if(new URLSearchParams(location.search).get('admin_reset')){showRecovery();return}
   if(!token){showMessage(tr('Link inválido','Invalid link'),tr('Esta ligação não é válida.','This link is not valid.'));return}
   $('#message').hidden=true;$('#review').hidden=true;$('#loginbox').classList.remove('show');$('#loading').hidden=false;
   const sessionRes=await db.auth.getSession();
