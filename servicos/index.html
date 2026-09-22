@@ -41,7 +41,7 @@
 #splash{position:fixed;inset:0;z-index:100;background:linear-gradient(180deg,#79c7f7 0%,#5eb1ed 34%,#1b83cf 64%,#0868ad 100%);overflow:auto;color:#fff}.splash-inner{width:min(100%,480px);margin:auto;min-height:100vh;position:relative;padding:calc(env(safe-area-inset-top) + 18px) 16px 26px}.splash-lang{display:flex;justify-content:flex-end}.splash-brand{text-align:center;margin-top:0}.splash-brand img{width:88px;height:88px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(5,55,100,.12))}.splash-brand h1{font-size:34px;margin:2px 0 0;letter-spacing:.015em;color:#123b6b}.splash-brand p{margin:2px 0 0;color:#123b6b;font-weight:760;font-size:16px}.splash-brand em{display:block;margin-top:11px;color:#123b6b;font-style:normal;font-weight:680;font-size:16px}.splash-feature{margin:18px -16px 0;height:auto;position:relative;overflow:hidden}.splash-feature img{display:block;width:100%;height:auto}.feature-overlay{display:none}.feature-overlay div{font-size:12px;font-weight:650;text-shadow:0 1px 5px rgba(0,39,75,.35)}.feature-overlay span{display:block;font-size:28px;margin-bottom:5px}.island-panel{background:#fff;color:var(--ink);border-radius:28px 28px 22px 22px;padding:18px 15px 17px;margin:-18px 2px 0;position:relative;z-index:2;box-shadow:0 -8px 26px rgba(0,55,99,.12)}.island-panel h2{margin:0 0 12px;text-align:center;font-size:17px;letter-spacing:.035em}.island-cards{display:grid;gap:8px}.island-card{border:0;border-radius:16px;padding:0;overflow:hidden;background:#eaf5ff;box-shadow:0 4px 12px rgba(20,55,90,.11);transition:transform .14s ease}.island-card:active{transform:scale(.985)}.island-card img{width:100%;height:auto;display:block}.community-line{text-align:center;font-family:"Comic Sans MS","Bradley Hand",cursive;font-size:20px;font-style:italic;margin:12px 0 0;color:#153e73;line-height:1.25}
 
 /* v2 polish */
-.splash-feature-clean{height:188px;margin:18px -16px 0;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(18,74,118,.03),rgba(0,56,103,.30)),url('/assets/pico-hero-real.jpg') center 50%/cover no-repeat}
+.splash-feature-clean{height:188px;margin:18px -16px 0;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(18,74,118,.03),rgba(0,56,103,.30)),url('/assets/pico-home-hq.webp') center 50%/cover no-repeat}
 .splash-feature-clean .feature-overlay{position:absolute;inset:auto 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:18px 14px 22px;color:#fff;text-align:center;background:linear-gradient(180deg,transparent,rgba(2,65,112,.56));}
 .splash-feature-clean .feature-overlay div{font-size:11px;font-weight:750;text-shadow:0 1px 5px rgba(0,39,75,.35);line-height:1.15}
 .splash-feature-clean .feature-overlay svg{width:28px;height:28px;display:block;margin:0 auto 6px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -1123,6 +1123,42 @@ body.route-public-results #explore{display:block!important}
 .pa-inline-quote-preview[hidden]{display:none}
 .pa-quote-actions button:disabled{opacity:.65;cursor:wait}
 </style>
+
+<style id="mobile-app-experience-v1">
+#networkStatus{
+  position:fixed;z-index:96;left:50%;top:calc(env(safe-area-inset-top) + 8px);
+  transform:translateX(-50%);max-width:calc(100vw - 28px);
+  padding:7px 11px;border-radius:999px;background:#fff3d7;color:#694f08;
+  border:1px solid #ebd28d;box-shadow:0 7px 22px rgba(18,50,74,.12);
+  font-size:10.5px;font-weight:850;text-align:center
+}
+#networkStatus[hidden]{display:none}
+#networkStatus.online{background:#e5f6ee;color:#17654d;border-color:#bcdcca}
+@media(max-width:620px){
+  html{-webkit-text-size-adjust:100%}
+  input,textarea,select{font-size:16px!important}
+  .results-search input{font-size:16px!important;min-height:36px}
+  .result-filter,.results-island,.results-sort{min-height:44px}
+  .clear-search,.back,.close{min-width:44px;min-height:44px}
+  .bottom-nav button{min-height:48px}
+  .bottom-nav small{font-size:10px;line-height:1.05}
+  .sheet{
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+    scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))
+  }
+  .toast{
+    bottom:calc(82px + env(safe-area-inset-bottom));
+    max-width:calc(100vw - 28px);width:max-content;
+    white-space:normal;text-align:center;line-height:1.35
+  }
+}
+@media(display-mode:standalone){
+  html,body,.app{min-height:100dvh}
+  body{overscroll-behavior-y:contain}
+  .app{box-shadow:none}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -1456,7 +1492,7 @@ body.route-public-results #explore{display:block!important}
     </div>
   </div>
 </section>
-<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="networkStatus" role="status" aria-live="polite" aria-atomic="true" hidden></div>\n<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -1600,21 +1636,29 @@ function providerAvatar(photo,name,size='card'){
  return src?'<img class="provider-photo" src="'+src+'" alt="'+escapeHtml(name)+'">':'<div class="provider-avatar provider-avatar-'+size+'" aria-hidden="true">'+providerInitial(name)+'</div>';
 }
 function groupLabel(code){const g=serviceGroups.find(x=>x.code===code);return g?(lang==='pt'?g.pt:g.en):''}
-function runSearch(q,group=null){
- activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;$('#resultsInput').value=activeSearchQuery;
- showScreen('explore');syncResultsUrl();loadProviders(activeSearchQuery,activeServiceGroup);
-}
-function syncResultsControls(){
- const ib=$('#resultsIslandBtn');if(ib)ib.textContent='📍 '+island+' ▾';
- $$('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
- const sort=$('#resultsSort');if(sort)sort.value=activeResultsSort;
-}
-function syncResultsUrl(){
+function buildResultsUrl(){
  const params=new URLSearchParams();
  params.set('island',island);
  if(activeSearchQuery)params.set('q',activeSearchQuery);
  if(activeServiceGroup)params.set('group',activeServiceGroup);
- history.replaceState({},'',location.pathname+'?'+params.toString());
+ if(lang==='en')params.set('lang','en');
+ return location.pathname+'?'+params.toString();
+}
+function runSearch(q,group=null,pushHistory=true){
+ const previous=$('.screen.active')?.id||'explore';
+ activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;$('#resultsInput').value=activeSearchQuery;
+ showScreen('explore');
+ syncResultsUrl(pushHistory&&previous!=='explore'?'push':'replace');
+ loadProviders(activeSearchQuery,activeServiceGroup);
+}
+function syncResultsControls(){
+ const ib=$('#resultsIslandBtn');if(ib)ib.textContent='📍 '+island+' ▾';
+ $('[data-results-group]').forEach(b=>b.classList.toggle('active',(b.dataset.resultsGroup||null)===(activeServiceGroup||null)));
+ const sort=$('#resultsSort');if(sort)sort.value=activeResultsSort;
+}
+function syncResultsUrl(mode='replace'){
+ const state={triScreen:'explore',triIsland:island,triQuery:activeSearchQuery,triGroup:activeServiceGroup};
+ history[mode==='push'?'pushState':'replaceState'](state,'',buildResultsUrl());
 }
 function updateResults(q=activeSearchQuery){
  q=(q||'').trim();syncResultsControls();
@@ -1676,8 +1720,39 @@ function bindProvider(){
    card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(card.dataset.service)}};
  });
 }
-function showScreen(id){$$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
-$$('[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='explore')runSearch('');else showScreen(b.dataset.nav)});$$('[data-home]').forEach(b=>b.onclick=()=>showScreen('home'));$$('[data-profile]').forEach(b=>b.onclick=()=>showScreen('profile'));const resultsBack=$('#resultsBack');if(resultsBack)resultsBack.onclick=()=>{location.href='/'};
+function showScreen(id){$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
+function isStandaloneApp(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
+function screenUrl(id){
+ if(id==='explore')return buildResultsUrl();
+ const params=new URLSearchParams();if(lang==='en')params.set('lang','en');
+ return location.pathname+(params.toString()?'?'+params.toString():'');
+}
+function navigateScreen(id){
+ const previous=$('.screen.active')?.id||'explore';
+ if($('.sheet.open'))closeSheets();
+ if(id==='explore'){runSearch(activeSearchQuery,activeServiceGroup,previous!=='explore');return}
+ showScreen(id);
+ if(previous!==id)history.pushState({triScreen:id},'',screenUrl(id));
+ if(id==='bookings'){renderBookings();syncLocalBookings().then(renderBookings).catch(()=>{})}
+}
+$('[data-nav]').forEach(b=>b.onclick=()=>navigateScreen(b.dataset.nav));
+$('[data-home]').forEach(b=>b.onclick=()=>navigateScreen('home'));
+$('[data-profile]').forEach(b=>b.onclick=()=>navigateScreen('profile'));
+const resultsBack=$('#resultsBack');if(resultsBack)resultsBack.onclick=()=>{if(isStandaloneApp())navigateScreen('home');else location.href='/'};
+window.addEventListener('popstate',event=>{
+ if($('.sheet.open'))closeSheets();
+ const state=event.state||{};
+ if(state.triScreen==='home'||state.triScreen==='profile'||state.triScreen==='bookings'){
+   showScreen(state.triScreen);
+   if(state.triScreen==='bookings'){renderBookings();syncLocalBookings().then(renderBookings).catch(()=>{})}
+   return;
+ }
+ const params=new URLSearchParams(location.search);
+ if(['Pico','Faial','São Jorge'].includes(state.triIsland||params.get('island')))island=state.triIsland||params.get('island');
+ activeSearchQuery=state.triQuery!=null?state.triQuery:(params.get('q')||'');
+ activeServiceGroup=state.triGroup!=null?state.triGroup:(params.get('group')||null);
+ store.set('tri_island',island);$('#resultsInput').value=activeSearchQuery;updateIsland();showScreen('explore');loadProviders(activeSearchQuery,activeServiceGroup);
+});
 function enterIsland(next){island=next;store.set('tri_island',island);store.set('tri_onboarded','1');store.set('tri_client_welcome_v4','1');$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');updateIsland();if(document.body.classList.contains('results-mode'))syncResultsUrl();loadProviders(activeSearchQuery,activeServiceGroup)}
 $$('[data-island]').forEach(b=>b.onclick=()=>enterIsland(b.dataset.island));function updateIsland(){
  $('#islandPill span').textContent=island;
@@ -1720,7 +1795,7 @@ const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandB
 const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{activeResultsSort=e.target.value;updateResults(activeSearchQuery)};
 const desktopPublishNav=$('#desktopPublishNav');if(desktopPublishNav)desktopPublishNav.onclick=()=>openRequest();
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
-$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
+$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null,false);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
 function syncRequestContactPreference(){
  const f=$('#requestForm'),email=f.client_email.value.trim(),phone=f.client_phone.value.trim(),row=$('#requestPreferenceRow');
  if(email&&phone){row.hidden=false;if(!f.contact_preference.value)f.contact_preference.value='both'}
@@ -2069,12 +2144,31 @@ async function openInvalidTrackingLink(kind='request'){
 }
 
 function openProviderSignup(){openProviderArea()}
-$('#bookingsBtn').onclick=openClientBookings;const bookingsNav=$('#bookingsNav');if(bookingsNav)bookingsNav.onclick=openClientBookings;
+$('#bookingsBtn').onclick=()=>navigateScreen('bookings');const bookingsNav=$('#bookingsNav');if(bookingsNav)bookingsNav.onclick=()=>navigateScreen('bookings');
 $('#providerPortalBtn').onclick=()=>{location.href='/prestadores.html'};
 $('#howItWorksBtn').onclick=()=>{location.href='/how-it-works.html'};
 $('#privacyBtn').onclick=()=>{location.href='/privacy.html'};
 $('#termsBtn').onclick=()=>{location.href='/terms.html'};
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
+let networkWasOffline=!navigator.onLine,networkHideTimer=null;
+function syncNetworkStatus(){
+ const el=$('#networkStatus');if(!el)return;
+ clearTimeout(networkHideTimer);
+ if(!navigator.onLine){
+   networkWasOffline=true;el.classList.remove('online');el.hidden=false;
+   el.textContent=lang==='pt'?'Sem ligação — a mostrar o que está guardado.':'Offline — showing saved information.';
+   return;
+ }
+ if(networkWasOffline){
+   networkWasOffline=false;el.classList.add('online');el.hidden=false;
+   el.textContent=lang==='pt'?'Ligação restabelecida ✓':'Back online ✓';
+   networkHideTimer=setTimeout(()=>{el.hidden=true;el.classList.remove('online')},1800);
+ }else el.hidden=true;
+}
+window.addEventListener('offline',syncNetworkStatus);window.addEventListener('online',()=>{syncNetworkStatus();loadProviders(activeSearchQuery,activeServiceGroup)});
+syncNetworkStatus();
+function syncInstalledUi(){const b=$('#installBtn');if(b&&isStandaloneApp())b.hidden=true}
+syncInstalledUi();window.addEventListener('appinstalled',syncInstalledUi);
 $('#installBtn').onclick=async()=>{
  if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){toast(lang==='pt'?'O TRIÂNGULO já está instalado ✓':'TRIÂNGULO is already installed ✓');return}
  if(deferredInstallPrompt){
@@ -2808,9 +2902,9 @@ async function init(){
    store.set('tri_home_search','');
    $('#searchInput').value=homeSearch;
    $('#resultsInput').value=homeSearch;
-   runSearch(homeSearch,activeServiceGroup);
+   runSearch(homeSearch,activeServiceGroup,false);
  }else if(activeServiceGroup){
-   runSearch('',activeServiceGroup);
+   runSearch('',activeServiceGroup,false);
  }else{
    runSearch('',null);
  }
