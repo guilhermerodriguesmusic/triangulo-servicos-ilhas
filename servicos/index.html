@@ -1795,7 +1795,7 @@ const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandB
 const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{activeResultsSort=e.target.value;updateResults(activeSearchQuery)};
 const desktopPublishNav=$('#desktopPublishNav');if(desktopPublishNav)desktopPublishNav.onclick=()=>openRequest();
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
-$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null,false);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
+$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
 function syncRequestContactPreference(){
  const f=$('#requestForm'),email=f.client_email.value.trim(),phone=f.client_phone.value.trim(),row=$('#requestPreferenceRow');
  if(email&&phone){row.hidden=false;if(!f.contact_preference.value)f.contact_preference.value='both'}
@@ -2906,7 +2906,7 @@ async function init(){
  }else if(activeServiceGroup){
    runSearch('',activeServiceGroup,false);
  }else{
-   runSearch('',null);
+   runSearch('',null,false);
  }
  document.body.classList.remove('route-public-results');
 
