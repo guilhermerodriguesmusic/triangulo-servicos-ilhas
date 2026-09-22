@@ -947,7 +947,7 @@ body.route-public-results #explore{display:block!important}
 .booking-verification-box b{font-size:11px;color:#6d520d}.booking-verification-box small{font-size:10px;line-height:1.45;color:#776a4c}.booking-verification-box button{justify-self:start}
 </style>
 <style id="service-reviews-v1">
-.provider-tag-rating{background:#fff7db;color:#6f5600}.book-review-summary{display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:12px;font-weight:850;color:#6f5600}.book-review-excerpt{display:block;margin-top:5px;font-style:italic;color:#667b8b}.client-review{margin-top:11px;padding:12px;border:1px solid #e2d69c;background:#fffdf3;border-radius:14px}.client-review.done{border-color:#cfe3d9;background:#f7fffb}.client-review b{display:block;margin-bottom:4px}.client-review small{display:block;color:#6b8095;line-height:1.4}.review-stars{display:flex;gap:3px;margin:8px 0}.review-stars button{border:0;background:transparent;padding:1px;font-size:27px;line-height:1;color:#b9c3ca;cursor:pointer}.review-stars button.on{color:#b88600}.review-comment{width:100%;min-height:70px;resize:vertical;margin:5px 0 7px;padding:9px 10px;border:1px solid #d8e3eb;border-radius:10px;font:inherit}.review-submit{width:100%;min-height:40px}.review-status{min-height:17px;margin-top:5px}.review-done-stars{color:#9b7200;letter-spacing:1px;font-size:18px}
+.provider-tag-rating{background:#fff7db;color:#6f5600}.book-review-summary{display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:12px;font-weight:850;color:#6f5600}.book-review-excerpt{display:block;margin-top:5px;font-style:italic;color:#667b8b}.client-review{margin-top:11px;padding:12px;border:1px solid #e2d69c;background:#fffdf3;border-radius:14px}.client-review.done{border-color:#cfe3d9;background:#f7fffb}.client-review b{display:block;margin-bottom:4px}.client-review small{display:block;color:#6b8095;line-height:1.4}.review-stars{display:flex;gap:3px;margin:8px 0}.review-stars button{border:0;background:transparent;padding:1px;font-size:27px;line-height:1;color:#b9c3ca;cursor:pointer}.review-stars button.on{color:#b88600}.review-comment{width:100%;min-height:70px;resize:vertical;margin:5px 0 7px;padding:9px 10px;border:1px solid #d8e3eb;border-radius:10px;font:inherit}.review-submit{width:100%;min-height:40px}.review-status{min-height:17px;margin-top:5px}.review-done-stars{color:#9b7200;letter-spacing:1px;font-size:18px}.client-review.review-focus{outline:3px solid #b8d8cc;outline-offset:3px;box-shadow:0 10px 28px #15345816}
 </style>
 <link rel="stylesheet" href="/servicos/request-photos.css">
 </head>
@@ -1873,7 +1873,7 @@ function reviewStarsText(value){
 function clientReviewMarkup(x){
  if((x.status||'')!=='completed'||!x.token)return '';
  if(x.reviewed){
-  return '<div class="client-review done"><b>'+(lang==='pt'?'A tua avaliação':'Your review')+' <span class="review-done-stars">'+reviewStarsText(x.review_rating)+'</span></b>'+(x.review_comment?'<small>“'+escapeHtml(x.review_comment)+'”</small>':'<small>'+(lang==='pt'?'Obrigado por avaliares este serviço.':'Thanks for rating this service.')+'</small>')+'</div>';
+  return '<div class="client-review done" data-review-done data-review-token="'+escapeHtml(x.token)+'"><b>'+(lang==='pt'?'A tua avaliação':'Your review')+' <span class="review-done-stars">'+reviewStarsText(x.review_rating)+'</span></b>'+(x.review_comment?'<small>“'+escapeHtml(x.review_comment)+'”</small>':'<small>'+(lang==='pt'?'Obrigado por avaliares este serviço.':'Thanks for rating this service.')+'</small>')+'</div>';
  }
  const kind=x.kind==='matching'?'service_request':'booking';
  return '<div class="client-review" data-review-card data-review-token="'+escapeHtml(x.token)+'" data-review-kind="'+kind+'"><b>'+(lang==='pt'?'Como correu o serviço?':'How did the service go?')+'</b><small>'+(lang==='pt'?'A tua avaliação ajuda outras pessoas a escolher e ajuda a rede local a melhorar.':'Your review helps others choose and helps the local network improve.')+'</small><div class="review-stars" role="radiogroup" aria-label="'+(lang==='pt'?'Classificação de 1 a 5 estrelas':'Rating from 1 to 5 stars')+'">'+[1,2,3,4,5].map(n=>'<button type="button" data-review-star="'+n+'" role="radio" aria-checked="false" aria-label="'+n+'">★</button>').join('')+'</div><textarea class="review-comment" data-review-comment maxlength="400" placeholder="'+(lang==='pt'?'Comentário opcional (máx. 400 caracteres)':'Optional comment (max. 400 characters)')+'"></textarea><small>'+(lang==='pt'?'Não incluas telefone, email, links ou redes sociais.':'Do not include phone numbers, email, links or social media.')+'</small><button class="primary review-submit" type="button" data-submit-review disabled>'+(lang==='pt'?'Enviar avaliação':'Submit review')+'</button><small class="review-status" data-review-status aria-live="polite"></small></div>';
@@ -1896,7 +1896,7 @@ function bindClientReviewActions(){
      status.textContent=state==='contact_not_allowed'?(lang==='pt'?'O comentário contém dados de contacto.':'The comment contains contact details.'):state==='not_eligible'?(lang==='pt'?'Este serviço ainda não pode ser avaliado.':'This service cannot be reviewed yet.'):(lang==='pt'?'Não foi possível guardar a avaliação.':'Could not save the review.');
      return
     }
-    await syncLocalBookings();renderBookings();toast(lang==='pt'?'Avaliação enviada. Obrigado ✓':'Review submitted. Thank you ✓');
+    await syncLocalBookings();renderBookings();loadProviders(activeSearchQuery,activeServiceGroup).catch(()=>{});toast(lang==='pt'?'Avaliação enviada. Obrigado ✓':'Review submitted. Thank you ✓');
    }catch(e){console.error(e);status.textContent=lang==='pt'?'Não foi possível guardar a avaliação.':'Could not save the review.'}
    finally{if(document.body.contains(submit)){submit.disabled=!rating;submit.textContent=old}}
   };
@@ -2093,6 +2093,18 @@ async function startBookingCheckout(token,btn){
  finally{if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
 async function openClientBookings(){showScreen('bookings');renderBookings();await syncLocalBookings();renderBookings();}
+function focusClientReview(token){
+ setTimeout(()=>{
+  const cards=[...document.querySelectorAll('[data-review-token]')];
+  const card=cards.find(x=>x.dataset.reviewToken===token);
+  if(!card)return;
+  card.classList.add('review-focus');
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  const first=card.querySelector('[data-review-star]');
+  if(first)first.focus({preventScroll:true});
+  setTimeout(()=>card.classList.remove('review-focus'),2200);
+ },120);
+}
 async function openInvalidTrackingLink(kind='request'){
   history.replaceState({},'',location.pathname);
   $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
@@ -2128,7 +2140,7 @@ async function init(){
    return;
  }
  await loadAppConfig();
- const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim(),queryGroup=qs.get('group'),contactRequested=qs.get('contact')==='1';
+ const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim(),queryGroup=qs.get('group'),contactRequested=qs.get('contact')==='1',reviewRequested=qs.get('review')==='1';
  if(['Pico','Faial','São Jorge'].includes(queryIsland)){island=queryIsland;store.set('tri_island',island)}
  activeSearchQuery=querySearch;activeServiceGroup=['home','garden','repairs','personal'].includes(queryGroup)?queryGroup:null;
  updateIsland();applyLang();renderBookings();loadProviders(activeSearchQuery,activeServiceGroup);
@@ -2141,9 +2153,9 @@ async function init(){
    try{
      const {data,error}=await db.rpc('service_request_client_context',{p_token:requestToken});
      if(!error&&data&&data.ok){
-       saveBookingLocal({kind:'matching',token:requestToken,island:data.island||'',description:data.description||'',location_text:data.location_text||null,date:data.requested_date||'',status:data.state||'matching',verification_status:data.verification_status||null,verification_channel:data.verification_channel||null,offers:data.offers||[],provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,createdAt:new Date().toISOString()});
+       saveBookingLocal({kind:'matching',token:requestToken,island:data.island||'',description:data.description||'',location_text:data.location_text||null,date:data.requested_date||'',status:data.state||'matching',verification_status:data.verification_status||null,verification_channel:data.verification_channel||null,offers:data.offers||[],provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,reviewed:!!data.reviewed,review_rating:data.review_rating==null?null:Number(data.review_rating),review_comment:data.review_comment||null,createdAt:new Date().toISOString()});
        history.replaceState({},'',location.pathname);$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-       await openClientBookings();if(data.state==='verification_pending')setTimeout(()=>openClientVerification(requestToken,data.verification_channel||'email'),80);return;
+       await openClientBookings();if(reviewRequested)focusClientReview(requestToken);if(data.state==='verification_pending')setTimeout(()=>openClientVerification(requestToken,data.verification_channel||'email'),80);return;
      }
      await openInvalidTrackingLink('matching');return;
    }catch(e){console.error('request_token deep link',e);await openInvalidTrackingLink('matching');return}
@@ -2176,11 +2188,14 @@ async function init(){
          provider_email:data.provider_email||null,
          provider_phone:data.provider_phone||null,
          service_title:data.service_title||null,
+         reviewed:!!data.reviewed,
+         review_rating:data.review_rating==null?null:Number(data.review_rating),
+         review_comment:data.review_comment||null,
          createdAt:new Date().toISOString()
        });
        history.replaceState({},'',location.pathname);
        $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-       await openClientBookings();if(data.state==='verification_pending')setTimeout(()=>openClientVerification(clientBookingToken,data.verification_channel||'email'),80);
+       await openClientBookings();if(reviewRequested)focusClientReview(clientBookingToken);if(data.state==='verification_pending')setTimeout(()=>openClientVerification(clientBookingToken,data.verification_channel||'email'),80);
        if(paymentResult==='success'){
          toast(data.payment_status==='paid'
            ?(lang==='pt'?'Pagamento confirmado ✓ Contactos desbloqueados.':'Payment confirmed ✓ Contact details unlocked.')
