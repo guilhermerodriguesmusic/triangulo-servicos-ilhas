@@ -380,7 +380,7 @@ $('#providerForm').onsubmit=async e=>{
     if(!r.data||r.data.ok!==true){status.textContent=(r.data&&r.data.message)?r.data.message:(lang==='pt'?'Revê os dados e tenta novamente.':'Check your details and try again.');return}
     const applicationId=r.data&&r.data.id?r.data.id:null;
     const durationSeconds=Math.max(15,Math.min(3600,Math.round((Date.now()-started)/1000)));
-    if(applicationId)db.rpc('record_provider_application_duration',{p_application_id:applicationId,p_seconds:durationSeconds}).catch(()=>{});
+    if(applicationId)Promise.resolve(db.rpc('record_provider_application_duration',{p_application_id:applicationId,p_seconds:durationSeconds})).catch(()=>{});
     const usedEmail=!!(d.email&&d.email.trim());f.reset();photoData=null;$('#providerPhotoPreview').classList.remove('show');updateDescriptionCount();$('#formCard').style.display='none';$('#success').classList.add('show');const extra=$('#successContactNote');if(extra)extra.textContent=usedEmail?(lang==='pt'?'Se fores aprovado, receberás a ligação de acesso por email.':'If approved, you will receive your access link by email.'):(lang==='pt'?'Como não indicaste email, se fores aprovado receberás a ligação de acesso por WhatsApp.':'Because you did not provide an email address, if approved you will receive your access link by WhatsApp.');window.scrollTo({top:0,behavior:'smooth'});
   }catch(err){console.error(err);status.textContent=lang==='pt'?'Não foi possível enviar neste momento. Tenta novamente dentro de alguns segundos.':'Could not submit right now. Please try again in a few seconds.'}
   finally{btn.disabled=false}
