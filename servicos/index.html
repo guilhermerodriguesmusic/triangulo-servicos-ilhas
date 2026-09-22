@@ -1622,6 +1622,7 @@ $('#requestForm').onsubmit=async e=>{
   if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível publicar.':'Could not post.');submitBtn.disabled=false;return}
   saveBookingLocal({kind:'matching',token:data.client_token,island,description:payload.description,date:payload.requested_date||'',status:data.state||'matching',matched_count:Number(data.matched_count||0),createdAt:new Date().toISOString()});
   form.reset();syncRequestContactPreference();status.textContent='';submitBtn.disabled=false;closeSheets();
+  await openClientBookings();
   toast(Number(data.matched_count||0)>0?(lang==='pt'?'Pedido recebido ✓ Já avisámos prestadores compatíveis.':'Request received ✓ We have already notified suitable providers.'):(lang==='pt'?'Pedido recebido ✓ O TRIÂNGULO vai procurar alguém por ti.':'Request received ✓ TRIÂNGULO will look for someone for you.'));
  }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.';submitBtn.disabled=false}
 };
@@ -1664,7 +1665,7 @@ function openBooking(id){
    if(error)throw error;
    if(!data||!data.ok){toast((data&&data.message)?data.message:(lang==='pt'?'Não foi possível enviar.':'Could not submit.'));return}
    saveBookingLocal({kind:'direct',token:data.client_token,provider:p.name||(lang==='pt'?'Prestador verificado':'Verified provider'),service_title:p.title,island,date:payload.service_date,time:payload.service_time,quote,status:'requested',createdAt:new Date().toISOString()});
-   closeSheets();toast(lang==='pt'?'Pedido enviado ✓ Acompanha em “Os meus pedidos”.':'Request sent ✓ Track it in “My requests”.');
+   closeSheets();await openClientBookings();toast(lang==='pt'?'Pedido enviado ✓ Podes acompanhá-lo aqui.':'Request sent ✓ You can track it here.');
   }catch(err){console.error(err);toast(lang==='pt'?'Não foi possível enviar.':'Could not submit.')}
  };
 }
@@ -1718,7 +1719,11 @@ async function syncLocalBookings(){
 function renderBookings(){
  const items=getLocalBookings();
  if(!items.length){
-  $('#bookingList').innerHTML='<div class="empty"><div class="big">📋</div><h3>'+(lang==='pt'?'Ainda não tens pedidos.':'No requests yet.')+'</h3><p>'+(lang==='pt'?'Pesquisa um serviço ou pede ao TRIÂNGULO para encontrar alguém por ti. Não precisas de criar conta.':'Search for a service or ask TRIÂNGULO to find someone for you. No account is required.')+'</p></div>';return
+  $('#bookingList').innerHTML='<div class="empty"><div class="big">📋</div><h3>'+(lang==='pt'?'Ainda não tens pedidos.':'No requests yet.')+'</h3><p>'+(lang==='pt'?'Pesquisa um serviço ou pede ao TRIÂNGULO para encontrar alguém por ti. Não precisas de criar conta.':'Search for a service or ask TRIÂNGULO to find someone for you. No account is required.')+'</p><div class="empty-actions"><button class="primary" id="emptyBrowseServices" type="button">'+(lang==='pt'?'Procurar serviços':'Browse services')+'</button><button class="secondary" id="emptyAskTriangulo" type="button">'+(lang==='pt'?'Pedir ajuda ao TRIÂNGULO':'Ask TRIÂNGULO for help')+'</button></div></div>';
+  const browse=$('#emptyBrowseServices'),ask=$('#emptyAskTriangulo');
+  if(browse)browse.onclick=()=>runSearch('',null);
+  if(ask)ask.onclick=()=>openRequest('');
+  return
  }
  $('#bookingList').innerHTML='<div class="stack">'+items.map(x=>{
   if(x.kind==='matching'){
@@ -2178,12 +2183,11 @@ function providerAppHideAll(){
   $('#prAppRequest').hidden=true;
   $('#prAppResult').hidden=true;
 }
-function providerAppContinue(){
-  history.replaceState({},'',location.pathname);
+async function providerAppContinue(){
+  history.replaceState({},'',location.pathname+'?prestador=1');
   activeProviderBookingToken=null;activeProviderRequestKind='direct';
   $('#providerRequestView').hidden=true;
-  $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-  runSearch(activeSearchQuery,activeServiceGroup);
+  await openProviderArea();
 }
 function providerAppRenderState(state,data={}){
   providerAppHideAll();
@@ -2210,13 +2214,13 @@ function providerAppRenderState(state,data={}){
     const waitingChoice=state==='accepted'||state==='quoted';
     result.innerHTML='<div class="big">✓</div><h2>'+(waitingChoice?(state==='quoted'?(lang==='pt'?'Orçamento enviado':'Quote sent'):(lang==='pt'?'Disponibilidade enviada':'Availability sent')):(state==='selected'?(lang==='pt'?'Serviço confirmado':'Service confirmed'):(data.requires_quote?(lang==='pt'?'Orçamento aceite':'Quote accepted'):(lang==='pt'?'Serviço aceite':'Service accepted'))))+'</h2>'+(data.total_amount!=null?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Resumo do valor':'Price summary')+'</b><div>'+(lang==='pt'?'Tu recebes':'You receive')+': €'+Number(data.provider_amount).toFixed(2)+'</div><div>'+(lang==='pt'?'Cliente vê':'Customer sees')+': €'+Number(data.total_amount).toFixed(2)+'</div></div>':'')+'<p>'+(waitingChoice?(lang==='pt'?'A tua resposta foi enviada. O cliente pode agora escolher o teu serviço.':'Your response was sent. The customer can now choose your service.'):(paymentsLive&&data.payment_status!=='paid'?(lang==='pt'?'O serviço foi aceite. Aguarda a confirmação do pagamento.':'The service was accepted. Wait for payment confirmation.'):(lang==='pt'?'O serviço ficou confirmado.':'The service is confirmed.')))+'</p>'
       +(((data.client_name||data.client_email||data.client_phone))?'<div class="pr-app-contact"><b>'+(lang==='pt'?'Contacto do cliente':'Customer contact')+'</b><div>'+escapeHtml(data.client_name||'')+'</div><div>'+escapeHtml(data.client_email||'')+'</div><div>'+escapeHtml(data.client_phone||'')+'</div></div>':'')
-      +'<button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Continuar no TRIÂNGULO':'Continue in TRIÂNGULO')+'</button>';
+      +'<button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else if(state==='declined'){
-    result.innerHTML='<div class="big">✓</div><h2>'+(lang==='pt'?'Resposta registada':'Response saved')+'</h2><p>'+(lang==='pt'?'O cliente será informado de que não podes aceitar este pedido.':'The customer will be told you cannot accept this request.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Continuar no TRIÂNGULO':'Continue in TRIÂNGULO')+'</button>';
+    result.innerHTML='<div class="big">✓</div><h2>'+(lang==='pt'?'Resposta registada':'Response saved')+'</h2><p>'+(lang==='pt'?'O cliente será informado de que não podes aceitar este pedido.':'The customer will be told you cannot accept this request.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else if(state==='expired'){
-    result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Pedido expirado':'Request expired')+'</h2><p>'+(lang==='pt'?'O prazo terminou e o serviço não foi confirmado.':'The response deadline passed and the service was not confirmed.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Continuar no TRIÂNGULO':'Continue in TRIÂNGULO')+'</button>';
+    result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Pedido expirado':'Request expired')+'</h2><p>'+(lang==='pt'?'O prazo terminou e o serviço não foi confirmado.':'The response deadline passed and the service was not confirmed.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else{
-    result.innerHTML='<div class="big">!</div><h2>'+(lang==='pt'?'Link inválido':'Invalid link')+'</h2><p>'+(lang==='pt'?'Este pedido já não está disponível ou o link não é válido.':'This request is no longer available or the link is invalid.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Continuar no TRIÂNGULO':'Continue in TRIÂNGULO')+'</button>';
+    result.innerHTML='<div class="big">!</div><h2>'+(lang==='pt'?'Link inválido':'Invalid link')+'</h2><p>'+(lang==='pt'?'Este pedido já não está disponível ou o link não é válido.':'This request is no longer available or the link is invalid.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }
   const c=result.querySelector('[data-pr-app-continue]');if(c)c.onclick=providerAppContinue;
 }
