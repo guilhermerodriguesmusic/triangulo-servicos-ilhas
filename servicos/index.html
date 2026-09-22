@@ -1067,6 +1067,7 @@ body.route-public-results #explore{display:block!important}
 .client-quote-box{margin-top:8px;padding:13px 14px;border:1px solid #d9e9e2;border-radius:14px;background:#f7fbf9;display:grid;gap:7px}
 .client-quote-title{font-size:11px;font-weight:900;color:#245d48;margin-bottom:1px}
 .client-quote-row{display:flex;justify-content:space-between;gap:14px;font-size:10.5px;color:#64798a}
+.client-quote-row span{background:transparent!important;color:inherit!important;border-radius:0!important;padding:0!important;font-size:inherit!important;font-weight:inherit!important}
 .client-quote-row b{font-size:10.5px;color:#24455b}
 .client-quote-total{padding-top:7px;border-top:1px solid #dde9e4;color:#123a68;font-weight:900}
 .client-quote-total b{font-size:13px;color:#123a68}
@@ -1786,7 +1787,9 @@ function formatEuro(value){
 function directRequestStatus(status,paymentStatus,requiresQuote=false){
  if(status==='quoted')return lang==='pt'?'Orçamento recebido · por confirmar':'Quote received · awaiting confirmation';
  if(status==='confirmed'){
-   if(paymentsLive&&paymentStatus!=='paid')return lang==='pt'?'Orçamento aceite · pagamento pendente':'Quote accepted · payment pending';
+   if(paymentsLive&&paymentStatus!=='paid')return requiresQuote
+     ?(lang==='pt'?'Orçamento aceite · pagamento pendente':'Quote accepted · payment pending')
+     :(lang==='pt'?'Serviço aceite · pagamento pendente':'Service accepted · payment pending');
    return lang==='pt'?'Serviço confirmado':'Service confirmed';
  }
  const pt={requested:requiresQuote?'A aguardar orçamento':'A aguardar prestador',declined:'Prestador indisponível',expired:'Sem resposta',completed:'Serviço concluído',cancelled:'Cancelado'};
@@ -1977,9 +1980,13 @@ function providerStatusLabel(status){
   return lang==='pt'?'Perfil pausado':'Profile paused';
 }
 function providerBookingStatus(status,paymentStatus){
-  if(status==='confirmed'&&paymentStatus!=='paid')return paymentsLive?(lang==='pt'?'Aceite · pagamento pendente':'Accepted · payment pending'):(lang==='pt'?'Aceite':'Accepted');
-  const pt={requested:'Novo pedido',quoted:'Orçamento enviado · aguarda cliente',confirmed:(paymentsLive?'Aceite · pagamento/confirmado':'Confirmado'),declined:'Recusado',expired:'Expirado',completed:'Concluído',cancelled:'Cancelado'};
-  const en={requested:'New request',quoted:'Quote sent · awaiting customer',confirmed:(paymentsLive?'Accepted · payment/confirmed':'Confirmed'),declined:'Declined',expired:'Expired',completed:'Completed',cancelled:'Cancelled'};
+  if(status==='quoted')return lang==='pt'?'Orçamento enviado · aguarda cliente':'Quote sent · awaiting customer';
+  if(status==='confirmed'){
+    if(paymentsLive&&paymentStatus!=='paid')return lang==='pt'?'Aceite · pagamento pendente':'Accepted · payment pending';
+    return lang==='pt'?'Confirmado':'Confirmed';
+  }
+  const pt={requested:'Novo pedido',declined:'Recusado',expired:'Expirado',completed:'Concluído',cancelled:'Cancelado'};
+  const en={requested:'New request',declined:'Declined',expired:'Expired',completed:'Completed',cancelled:'Cancelled'};
   return (lang==='pt'?pt:en)[status]||status;
 }
 async function openProviderArea(){
@@ -2108,8 +2115,8 @@ function renderProviderDashboard(data){
     $('#paBookings').innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens pedidos. Quando houver um pedido compatível ou um cliente escolher um serviço teu, aparece aqui.':'No requests yet. Matching requests and direct service requests will appear here.')+'</div>';
   }else{
     const ordered=[...requests].sort((a,b)=>{
-      const ap=(a.status==='requested'||a.status==='sent')?0:(a.status==='confirmed'||a.status==='selected')?1:2;
-      const bp=(b.status==='requested'||b.status==='sent')?0:(b.status==='confirmed'||b.status==='selected')?1:2;
+      const ap=(a.status==='requested'||a.status==='sent')?0:(a.status==='quoted'||a.status==='accepted'||a.status==='confirmed'||a.status==='selected')?1:2;
+      const bp=(b.status==='requested'||b.status==='sent')?0:(b.status==='quoted'||b.status==='accepted'||b.status==='confirmed'||b.status==='selected')?1:2;
       if(ap!==bp)return ap-bp;return String(a.service_date||'').localeCompare(String(b.service_date||''));
     });
     $('#paBookings').innerHTML=ordered.map(x=>{
