@@ -83,12 +83,21 @@ function renderHealth(data,error){
   ['direct_quotes_waiting',tr('Orçamentos à espera do cliente','Quotes awaiting customer')],
   ['matching_offers_waiting',tr('Pedidos com propostas por escolher','Requests with offers to choose')],
   ['matching_stale',tr('Matching parado há +24h','Matching stalled for 24h+')],
+  ['client_verifications_waiting',tr('Clientes por verificar','Clients awaiting verification')],
   ['failed_notifications',tr('Notificações falhadas','Failed notifications')],
   ['delayed_notifications',tr('Notificações atrasadas','Delayed notifications')],
   ['providers_without_password',tr('Prestadores sem password','Providers without password')]
  ];
  box.innerHTML=items.map(([key,label])=>{const n=Number(data[key]||0);return '<div class="health-item '+(n>0?'alert':'okay')+'"><b>'+n+'</b><small>'+label+'</small></div>'}).join('');
- const providers=Array.isArray(data.providers_without_password_items)?data.providers_without_password_items:[];
+ const clientVerifications=Array.isArray(data.client_verification_items)?data.client_verification_items:[];
+ if(clientVerifications.length){
+  box.insertAdjacentHTML('beforeend','<div class="health-errors" style="background:#fffaf0;border-color:#efc37a;color:#71531f"><b>'+tr('Contactos de clientes por verificar','Customer contacts awaiting verification')+'</b><div class="health-actions">'+clientVerifications.map(x=>{
+    const label=(x.kind==='booking'?tr('Pedido direto','Direct request'):tr('Pedido geral','General request'))+' · '+esc(x.island||'')+' · '+esc(x.name||tr('Cliente','Customer'));
+    const digits=String(x.phone||'').replace(/\D/g,'').replace(/^00/,'');
+    return '<div class="health-action-row"><span>'+label+'<br><small>'+esc(x.phone||x.email||'—')+'</small></span><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">'+(digits?'<button class="health-action" type="button" onclick="openClientVerificationWhatsApp(\''+digits+'\')">'+tr('WhatsApp','WhatsApp')+'</button>':'')+'<button class="health-action" type="button" onclick="verifyClientRequest(\''+esc(x.kind)+'\',\''+esc(x.request_id)+'\',this)">'+tr('Marcar verificado','Mark verified')+'</button></span></div>';
+  }).join('')+'</div></div>');
+ }
+  const providers=Array.isArray(data.providers_without_password_items)?data.providers_without_password_items:[];
  if(providers.length){
   box.insertAdjacentHTML('beforeend','<div class="health-errors" style="background:#fffaf0;border-color:#efc37a;color:#71531f"><b>'+tr('Prestadores ainda sem acesso','Providers still without access')+'</b><div class="health-actions">'+providers.map(x=>'<div class="health-action-row"><span>'+esc(x.name||tr('Prestador','Provider'))+' · '+esc(x.channel||'')+'</span><button class="health-action" type="button" onclick="reissueProviderAccess(\''+esc(x.provider_id)+'\',\''+esc(x.channel||'email')+'\',this)">'+tr('Reenviar acesso','Resend access')+'</button></div>').join('')+'</div></div>');
  }
@@ -96,6 +105,19 @@ function renderHealth(data,error){
  if(failures.length){
   box.insertAdjacentHTML('beforeend','<div class="health-errors"><b>'+tr('Últimos erros de notificação','Latest notification errors')+'</b><div class="health-actions">'+failures.map(x=>'<div class="health-action-row"><span>#'+esc(x.id)+' · '+esc(x.channel||'')+' · '+esc(x.template||'')+' · '+esc(x.last_error||'')+'</span><button class="health-action" type="button" onclick="retryNotification('+Number(x.id)+',this)">'+tr('Tentar novamente','Retry')+'</button></div>').join('')+'</div></div>');
  }
+}
+function openClientVerificationWhatsApp(phone){
+ const msg=tr('Olá! Falo do TRIÂNGULO Açores. Estamos a confirmar o contacto associado a um pedido antes de o enviarmos aos prestadores. Podes responder a esta mensagem para confirmar que este número é teu?','Hello! This is TRIÂNGULO Açores. We are confirming the contact linked to a request before sending it to providers. Can you reply to confirm this number belongs to you?');
+ window.open('https://wa.me/'+String(phone).replace(/\D/g,'')+'?text='+encodeURIComponent(msg),'_blank','noopener');
+}
+async function verifyClientRequest(kind,id,btn){
+ if(!confirm(tr('Já confirmaste que este contacto pertence ao cliente? Só depois desta ação o pedido será enviado aos prestadores.','Have you confirmed that this contact belongs to the customer? Only after this action will the request be sent to providers.')))return;
+ const old=btn.textContent;btn.disabled=true;btn.textContent=tr('A verificar…','Verifying…');
+ const {data,error}=await db.rpc('admin_verify_client_request',{p_kind:kind,p_request_id:id});
+ btn.disabled=false;btn.textContent=old;
+ if(error||!data||!data.ok){alert((error&&error.message)||tr('Não foi possível verificar o cliente.','Could not verify the customer.'));return}
+ alert(tr('Cliente verificado. O pedido foi agora libertado para os prestadores.','Customer verified. The request has now been released to providers.'));
+ load();
 }
 async function reissueProviderAccess(id,channel,btn){
  if(!confirm(tr('Gerar e reenviar uma nova ligação de acesso? A ligação anterior deixa de funcionar.','Generate and resend a new access link? The previous link will stop working.')))return;
