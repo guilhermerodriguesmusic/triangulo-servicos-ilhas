@@ -252,24 +252,25 @@ h1{
   position:absolute;
   top:66px;
   right:48px;
-  transform:rotate(-7deg);
+  transform:rotate(-7deg) scale(.94);
+  transform-origin:center;
   font-family:"Brush Script MT","Segoe Script","Bradley Hand",cursive;
-  font-size:31px;
+  font-size:29px;
   line-height:.98;
-  color:rgba(255,255,255,.95);
+  color:rgba(255,255,255,.82);
   text-align:left;
-  text-shadow:0 2px 10px rgba(0,0,0,.15);
+  text-shadow:0 2px 8px rgba(0,0,0,.12);
   width:230px
 }
 .handnote::after{
-  content:"";display:block;width:170px;height:3px;background:#a5c75f;border-radius:99px;margin:12px 0 0 18px;transform:rotate(-2deg)
+  content:"";display:block;width:170px;height:3px;background:rgba(165,199,95,.72);border-radius:99px;margin:12px 0 0 18px;transform:rotate(-2deg)
 }
 
 .category-row{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  bottom:26px;
+  bottom:20px;
   width:min(1460px,calc(100% - 76px));
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -277,8 +278,8 @@ h1{
 }
 .category{
   min-height:104px;
-  background:rgba(255,255,255,.90);
-  border:1px solid rgba(255,255,255,.68);
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(255,255,255,.58);
   color:#18374a;
   text-decoration:none;
   border-radius:17px;
@@ -287,12 +288,12 @@ h1{
   grid-template-columns:48px minmax(0,1fr) 20px;
   align-items:center;
   gap:10px;
-  box-shadow:0 11px 25px rgba(0,0,0,.14);
+  box-shadow:0 10px 22px rgba(0,0,0,.12);
   backdrop-filter:blur(7px);
   -webkit-backdrop-filter:blur(7px);
   transition:transform .15s ease,box-shadow .15s ease,background .15s ease
 }
-.category:hover{transform:translateY(-3px);background:rgba(255,255,255,.94);box-shadow:0 15px 31px rgba(0,0,0,.18)}
+.category:hover{transform:translateY(-3px);background:rgba(255,255,255,.90);box-shadow:0 14px 28px rgba(0,0,0,.16)}
 .category-icon{width:46px;height:46px;display:grid;place-items:center;color:#5e8a4d}
 .category-icon svg{width:39px;height:39px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
 .category>span:nth-child(2){min-width:0;height:63px;display:grid;grid-template-rows:31px 28px;row-gap:4px;align-items:start}
