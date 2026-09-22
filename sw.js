@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260923-v1-0-rc79';
+const CACHE='triangulo-pwa-20260923-v1-0-rc80';
 const CORE=[
   '/',
   '/index.html',
