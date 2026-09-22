@@ -282,7 +282,13 @@ function syncPrimaryCategory(){
 $$('[data-provider-cat]').forEach(x=>x.addEventListener('change',syncPrimaryCategory));
 syncPrimaryCategory();
 
-const APPLICATION_ESTIMATED_MINUTES=null;
+let APPLICATION_ESTIMATED_MINUTES=null;
+async function loadApplicationTimeEstimate(){
+  try{
+    const {data,error}=await db.rpc('provider_application_time_estimate');
+    if(!error&&data&&data.ok===true&&Number(data.minutes)>0){APPLICATION_ESTIMATED_MINUTES=Number(data.minutes);updateFormStep(currentFormStep,{focus:false})}
+  }catch(e){console.warn('application time estimate',e)}
+}
 let currentFormStep=1;
 function updateFormStep(step,{focus=true}={}){
   currentFormStep=Math.max(1,Math.min(4,Number(step)||1));
@@ -354,12 +360,15 @@ $('#providerForm').onsubmit=async e=>{
   try{
     const r=await db.rpc('submit_provider_application',{p_payload:payload}); if(r.error)throw r.error;
     if(!r.data||r.data.ok!==true){status.textContent=(r.data&&r.data.message)?r.data.message:(lang==='pt'?'Revê os dados e tenta novamente.':'Check your details and try again.');return}
+    const applicationId=r.data&&r.data.id?r.data.id:null;
+    const durationSeconds=Math.max(15,Math.min(3600,Math.round((Date.now()-started)/1000)));
+    if(applicationId)db.rpc('record_provider_application_duration',{p_application_id:applicationId,p_seconds:durationSeconds}).catch(()=>{});
     const usedEmail=!!(d.email&&d.email.trim());f.reset();photoData=null;$('#providerPhotoPreview').classList.remove('show');updateDescriptionCount();$('#formCard').style.display='none';$('#success').classList.add('show');const extra=$('#successContactNote');if(extra)extra.textContent=usedEmail?(lang==='pt'?'Se fores aprovado, receberás a ligação de acesso por email.':'If approved, you will receive your access link by email.'):(lang==='pt'?'Como não indicaste email, se fores aprovado receberás a ligação de acesso por WhatsApp.':'Because you did not provide an email address, if approved you will receive your access link by WhatsApp.');window.scrollTo({top:0,behavior:'smooth'});
   }catch(err){console.error(err);status.textContent=lang==='pt'?'Não foi possível enviar neste momento. Tenta novamente dentro de alguns segundos.':'Could not submit right now. Please try again in a few seconds.'}
   finally{btn.disabled=false}
 };
 
-setLang(lang);applyPlaceholders();applyInviteSource();
+setLang(lang);applyPlaceholders();applyInviteSource();loadApplicationTimeEstimate();
 </script>
 </body>
 </html>
