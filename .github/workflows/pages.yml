@@ -101,6 +101,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          trap 'echo "VERIFY FAILED at line $LINENO: $BASH_COMMAND"' ERR
           base="https://trianguloacores.pt"
           fetch() {
             curl --fail --silent --show-error --location \
