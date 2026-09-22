@@ -1375,6 +1375,8 @@ body.route-public-results #explore{display:block!important}
           <label class="pa-field"><span data-pt="Nome do negócio (privado)" data-en="Business name (private)">Nome do negócio (privado)</span><input name="business_name" maxlength="120"><small class="pa-note" style="display:block;text-align:left;margin-top:5px!important" data-pt="Guardado pelo TRIÂNGULO. Não aparece publicamente antes de um serviço ser confirmado." data-en="Stored by TRIÂNGULO. It is not shown publicly before a service is confirmed.">Guardado pelo TRIÂNGULO. Não aparece publicamente antes de um serviço ser confirmado.</small></label>
         </div>
 
+        <label class="pa-field"><span data-pt="Localidade / freguesia" data-en="Locality / parish">Localidade / freguesia</span><input name="locality" maxlength="120" autocomplete="address-level3" data-ph-pt="Ex.: Santa Luzia" data-ph-en="E.g. Santa Luzia" placeholder="Ex.: Santa Luzia"><small class="pa-note" style="display:block;text-align:left;margin-top:5px!important" data-pt="Aparece publicamente junto à ilha para ajudar os clientes a perceber onde estás." data-en="Shown publicly next to the island so customers can see where you are based.">Aparece publicamente junto à ilha para ajudar os clientes a perceber onde estás.</small></label>
+
         <label class="pa-field"><span data-pt="Descrição" data-en="Description">Descrição</span><textarea name="description" required minlength="10" maxlength="1200"></textarea><small class="pa-note" style="display:block;text-align:left;margin-top:5px!important" data-pt="Não incluas nome comercial, telefone, email, redes sociais ou links. Esses dados só são partilhados quando o serviço é confirmado." data-en="Do not include a business name, phone number, email, social media or links. Those details are only shared once a service is confirmed.">Não incluas nome comercial, telefone, email, redes sociais ou links. Esses dados só são partilhados quando o serviço é confirmado.</small></label>
 
         <div class="pa-field">
@@ -2204,6 +2206,7 @@ function renderProviderDashboard(data){
   const f=$('#providerProfileForm');
   f.name.value=p.name||'';
   f.business_name.value=p.business_name||'';
+  f.locality.value=p.locality||'';
   f.description.value=p.description||'';
   f.pricing_type.value=p.pricing_type||'quote';
   f.price.value=p.price==null?'':p.price;
@@ -2430,7 +2433,7 @@ $('#paPauseBtn').onclick=async()=>{
   const p=providerAccountData.profile||{};
   const next=p.status==='active'?'paused':'active';
   const payload={
-    name:p.name,business_name:p.business_name,description:p.description,
+    name:p.name,business_name:p.business_name,locality:p.locality,description:p.description,
     pricing_type:p.pricing_type,price:p.price,availability:p.availability,website:p.website,
     service_islands:p.service_islands||[],categories:p.categories||[],other_service:p.other_service,status:next
   };
@@ -2448,10 +2451,12 @@ $('#providerProfileForm').onsubmit=async e=>{
   const islands=$$('[data-pa-island]:checked').map(x=>x.value),cats=$$('[data-pa-cat]:checked').map(x=>x.value);
   if(!islands.length){status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha.':'Select at least one island.';return}
   if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um serviço.':'Select at least one service.';return}
+  if(containsDirectContactText(d.locality)){status.textContent=lang==='pt'?'Não coloques contactos ou links na localidade.':'Do not add contact details or links to the locality.';return}
   if(containsDirectContactText(d.description)||containsDirectContactText(d.other_service)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na descrição pública.':'Do not add phone numbers, email, WhatsApp, social media or links to the public description.';return}
   if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){status.textContent=lang==='pt'?'Indica quanto queres receber ou escolhe “Sob orçamento”.':'Enter how much you want to earn or choose “Quote”.';$('#paPrice').focus();return}
   const payload={
     name:d.name.trim(),business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,
+    locality:d.locality&&d.locality.trim()?d.locality.trim():null,
     description:d.description.trim(),pricing_type:d.pricing_type,
     price:d.pricing_type==='quote'||!d.price?null:Number(d.price),
     availability:d.availability&&d.availability.trim()?d.availability.trim():null,
