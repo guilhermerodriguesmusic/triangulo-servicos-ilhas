@@ -64,21 +64,21 @@ jobs:
               </svg>'''
               cairosvg.svg2png(bytestring=svg.encode(), write_to=output, output_width=size, output_height=size)
 
-          make_icon(180, .78, "apple-touch-icon-v3.png")
-          make_icon(180, .78, "apple-touch-icon-precomposed-v3.png")
-          make_icon(192, .78, "icon-192-v3.png")
-          make_icon(512, .78, "icon-512-v3.png")
-          make_icon(512, .62, "icon-512-maskable-v3.png")
-          make_icon(180, .78, "icons/apple-touch-icon-v3.png")
-          make_icon(192, .78, "icons/icon-192-v3.png")
-          make_icon(512, .78, "icons/icon-512-v3.png")
-          make_icon(512, .62, "icons/icon-512-maskable-v3.png")
+          make_icon(180, .78, "apple-touch-icon.png")
+          make_icon(180, .78, "apple-touch-icon-precomposed.png")
+          make_icon(192, .78, "icon-192.png")
+          make_icon(512, .78, "icon-512.png")
+          make_icon(512, .62, "icon-512-maskable.png")
+          make_icon(180, .78, "icons/apple-touch-icon.png")
+          make_icon(192, .78, "icons/icon-192.png")
+          make_icon(512, .78, "icons/icon-512.png")
+          make_icon(512, .62, "icons/icon-512-maskable.png")
           PY
-          test -s apple-touch-icon-v3.png
-          test -s apple-touch-icon-precomposed-v3.png
-          test -s icon-192-v3.png
-          test -s icon-512-v3.png
-          test -s icon-512-maskable-v3.png
+          test -s apple-touch-icon.png
+          test -s apple-touch-icon-precomposed.png
+          test -s icon-192.png
+          test -s icon-512.png
+          test -s icon-512-maskable.png
       - name: Prepare public site
         shell: bash
         run: |
@@ -136,8 +136,8 @@ jobs:
             echo "Live asset did not match deployed artifact after cache-propagation retries: $url"
             return 1
           }
-          wait_for_match apple-touch-icon-v3.png "$base/apple-touch-icon-v3.png" "$live_apple_icon"
-          wait_for_match apple-touch-icon-precomposed-v3.png "$base/apple-touch-icon-precomposed-v3.png" "$live_precomposed_icon"
+          wait_for_match apple-touch-icon.png "$base/apple-touch-icon.png" "$live_apple_icon"
+          wait_for_match apple-touch-icon-precomposed.png "$base/apple-touch-icon-precomposed.png" "$live_precomposed_icon"
           app_redirect="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           home_redirect="$(fetch "$base/inicio.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/servicos/?verify=$GITHUB_SHA")"
@@ -185,8 +185,8 @@ jobs:
           grep -q "Termos" <<<"$app"
           grep -q "booking_token" <<<"$legacy_reply"
           grep -q '<title>TRIÂNGULO</title>' <<<"$install_page"
-          grep -q 'href="/apple-touch-icon-v3.png"' <<<"$install_page"
-          grep -q 'href="/apple-touch-icon-precomposed-v3.png"' <<<"$install_page"
+          grep -q 'href="/apple-touch-icon.png"' <<<"$install_page"
+          grep -q 'href="/apple-touch-icon-precomposed.png"' <<<"$install_page"
           grep -q "Instalar TRIÂNGULO" <<<"$install_page"
           grep -q "beforeinstallprompt" <<<"$install_page"
           grep -q "package=com.android.chrome" <<<"$install_page"
@@ -239,8 +239,8 @@ jobs:
           fetch "$base/assets/pico-hero-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/faial-real.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/sao-jorge-real.jpg?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icon-192-v3.png?verify=$GITHUB_SHA" >/dev/null
-          fetch "$base/icon-512-v3.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icon-192.png?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/icon-512.png?verify=$GITHUB_SHA" >/dev/null
 
           if curl --fail --silent --location "$base/checkout-teste-20260920.html?verify=$GITHUB_SHA" >/dev/null 2>&1; then
             echo "Temporary checkout test page is still publicly reachable"
