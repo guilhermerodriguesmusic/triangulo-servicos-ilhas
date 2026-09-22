@@ -1780,7 +1780,7 @@ function openBooking(id){
  openSheet('bookSheet');
  $$('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#bookCustomDate').value=''});
  $('#bookCustomDate').onchange=e=>{if(e.target.value)$$('[data-date]').forEach(x=>x.classList.remove('active'))};
- $('[data-time]').forEach(b=>b.onclick=()=>{$('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
+ document.querySelectorAll('[data-time]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
  function syncBookPreference(){
    const email=$('#bookEmail').value.trim(),phone=$('#bookPhone').value.trim(),sel=$('#bookPreference');
    if(email&&phone){sel.disabled=false;if(!['both','email','whatsapp'].includes(sel.value))sel.value='both'}
@@ -2198,7 +2198,7 @@ function renderProviderDashboard(data){
       return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.service_title||(lang==='pt'?'Serviço':'Service'))+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(stateLabel)+'</span></div><div class="pa-request-meta"><span>📍 '+escapeHtml(x.location_text||x.island||'')+'</span><span>🗓 '+when+'</span></div><div class="pa-request-brief"><b>'+(lang==='pt'?'O que é para fazer':'Job details')+'</b><span>'+note+'</span></div>'+actions+locked+client+'</div>';
     }).join('');
 
-    $('[data-pa-quote-amount]').forEach(input=>{
+    document.querySelectorAll('[data-pa-quote-amount]').forEach(input=>{
       const update=()=>{
         const amount=Number(input.value),box=$('[data-pa-quote-preview="'+input.dataset.paQuoteAmount+'"]');
         if(!box)return;
@@ -2211,7 +2211,7 @@ function renderProviderDashboard(data){
       };
       input.addEventListener('input',update);update();
     });
-    $('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
+    document.querySelectorAll('[data-pa-quote]').forEach(btn=>btn.onclick=async()=>{
       const token=btn.dataset.paQuote,input=$('[data-pa-quote-amount="'+token+'"]'),amount=Number(input&&input.value),generic=btn.dataset.kind==='matching';
       if(!amount||amount<=0){toast(lang==='pt'?'Indica o valor do orçamento.':'Enter the quote amount.');return}
       const oldLabel=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A enviar…':'Sending…';
@@ -2220,7 +2220,7 @@ function renderProviderDashboard(data){
       if(error||!r||!r.ok){toast((r&&r.message)||(lang==='pt'?'Não foi possível enviar o orçamento.':'Could not send the quote.'));return}
       toast(lang==='pt'?'Orçamento enviado ✓':'Quote sent ✓');await loadProviderAccount();
     });
-    $('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
+    document.querySelectorAll('[data-pa-respond]').forEach(btn=>btn.onclick=async()=>{
       const action=btn.dataset.paRespond;
       if(action==='decline'&&!window.confirm(lang==='pt'?'Tens a certeza de que não podes aceitar este pedido? Esta resposta é definitiva.':'Are you sure you cannot accept this request? This response is final.'))return;
       const oldLabel=btn.textContent;btn.disabled=true;if(action==='decline')btn.textContent=lang==='pt'?'A recusar…':'Declining…';
