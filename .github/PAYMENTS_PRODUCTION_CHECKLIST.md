@@ -2,7 +2,7 @@
 
 Status: PREPARED, LIVE PAYMENTS DISABLED.
 
-## Verified state — 20 September 2026
+## Verified state — 22 September 2026
 - Supabase project `cozamrvrhmwgxbuubjub` is ACTIVE_HEALTHY.
 - Payment Edge Functions are active:
   - `stripe-create-checkout`
@@ -20,9 +20,12 @@ Status: PREPARED, LIVE PAYMENTS DISABLED.
 Real Stripe payments must remain blocked unless:
 - STRIPE_LIVE_SECRET_KEY is a live key, AND
 - TRIANGULO_PAYMENTS_MODE=live, AND
-- TRIANGULO_PAYMENTS_LIVE_ENABLED=true
+- TRIANGULO_PAYMENTS_LIVE_ENABLED=true, AND
+- public app config has `payment_activation_ready=true`.
 
-Do not enable the live flag until all steps below are complete.
+The database currently keeps `payments_live=false` and `payment_activation_ready=false`. A database trigger blocks accidental activation of `payments_live` while the readiness flag is false.
+
+Do not enable either live flag until all steps below are complete.
 
 ## Stripe production
 1. Activate/verify the TRIÂNGULO Stripe platform account.
@@ -68,6 +71,7 @@ Pending:
 - Payment checkout is unavailable until the provider payout/transfer capability is ready.
 
 ## Before public launch
+- Complete the payment path for generic matching requests (`service_requests`). At present, choosing a matching offer is intentionally blocked when `payments_live=true` because checkout for that flow is not yet integrated. This must be resolved before global live activation.
 - Verify refund/cancellation wording and operational process.
 - Verify dispute/chargeback handling.
 - Confirm invoice/receipt and Portuguese tax/accounting workflow with an accountant.
@@ -81,4 +85,4 @@ The code/backend side is prepared. The remaining production-only values must com
 - STRIPE_LIVE_SECRET_KEY
 - STRIPE_WEBHOOK_SECRET_LIVE
 
-Final activation remains intentionally OFF until the live Stripe account and webhook are verified.
+Final activation remains intentionally OFF until the live Stripe account/webhook are verified **and** generic matching requests support the live payment flow. Only then set `payment_activation_ready=true` and proceed with the live flags.
