@@ -99,7 +99,7 @@ window.addEventListener('online',()=>{
 function renderProviderDashboard(data){
   const p=data.profile||{},bookings=data.bookings||[],matches=data.matches||[],services=data.services||[],requests=[...bookings,...matches];
   $('#paDisplayName').textContent=p.business_name||p.name||(lang==='pt'?'Prestador':'Provider');
-  $('#paAccountEmail').textContent=data.email||data.phone||'';
+  $('#paAccountEmail').textContent=[p.locality,(p.service_islands||[]).join(' · '),data.email||data.phone||''].filter(Boolean).join(' · ');
   const pending=requests.filter(x=>x.status==='requested'||x.status==='sent');
   $('#paQuickStatus').textContent=p.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused');
   $('#paStatusHelp').textContent=p.status==='active'?(lang==='pt'?'Visível aos clientes.':'Visible to customers.'):(lang==='pt'?'Escondido dos clientes.':'Hidden from customers.');
@@ -239,10 +239,20 @@ function renderProviderDashboard(data){
     });
   }
 }
+function providerServiceCategoryLabel(code){
+ const labels={
+  home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Land'},
+  repairs:{pt:'Reparações & Manutenção',en:'Repairs & Maintenance'},moving:{pt:'Mudanças & Entregas',en:'Moves & Deliveries'},
+  lessons:{pt:'Aulas & Explicações',en:'Lessons & Tutoring'},wellness:{pt:'Bem-estar',en:'Wellness'},
+  tech:{pt:'Tecnologia',en:'Technology'},creative:{pt:'Fotografia & Criativos',en:'Photography & Creative'},
+  pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
+ };
+ return labels[code]?.[lang]||code||'';
+}
 function renderProviderServices(services){
  const box=$('#paServicesList');if(!box)return;
  if(!services.length){box.innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens serviços individuais. Adiciona o primeiro.':'You do not have individual services yet. Add the first one.')+'</div>';return}
- box.innerHTML=services.map(s=>'<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(s.title)+'</b><span class="pa-booking-status '+escapeHtml(s.status)+'">'+(s.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused'))+'</span></div><small>'+escapeHtml(s.category_code)+' · '+escapeHtml(s.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(s))+'</small><div class="pa-booking-actions"><button class="accept" data-edit-service="'+s.id+'">'+(lang==='pt'?'Editar':'Edit')+'</button><button class="'+(s.status==='active'?'decline':'accept')+'" data-toggle-service="'+s.id+'">'+(s.status==='active'?(lang==='pt'?'Pausar':'Pause'):(lang==='pt'?'Reativar':'Reactivate'))+'</button></div></div>').join('');
+ box.innerHTML=services.map(s=>'<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(s.title)+'</b><span class="pa-booking-status '+escapeHtml(s.status)+'">'+(s.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused'))+'</span></div><small>'+escapeHtml(providerServiceCategoryLabel(s.category_code))+' · '+escapeHtml(s.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(s))+'</small><div class="pa-booking-actions"><button class="accept" data-edit-service="'+s.id+'">'+(lang==='pt'?'Editar':'Edit')+'</button><button class="'+(s.status==='active'?'decline':'accept')+'" data-toggle-service="'+s.id+'">'+(s.status==='active'?(lang==='pt'?'Pausar':'Pause'):(lang==='pt'?'Reativar':'Reactivate'))+'</button></div></div>').join('');
  $$('[data-edit-service]').forEach(btn=>btn.onclick=()=>openServiceEditor(btn.dataset.editService));
  $$('[data-toggle-service]').forEach(btn=>btn.onclick=()=>toggleProviderService(btn.dataset.toggleService));
 }
