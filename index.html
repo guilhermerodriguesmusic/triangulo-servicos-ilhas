@@ -294,7 +294,8 @@ h1{
 .category:hover{transform:translateY(-3px);box-shadow:0 17px 34px rgba(0,0,0,.20)}
 .category-icon{width:46px;height:46px;display:grid;place-items:center;color:#5e8a4d}
 .category-icon svg{width:39px;height:39px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
-.category b{display:block;font-size:12.6px;margin-bottom:4px;color:#17394b}
+.category>span:nth-child(2){min-width:0}
+.category b{display:flex;align-items:flex-end;min-height:31px;font-size:12.6px;line-height:1.18;margin-bottom:4px;color:#17394b}
 .category small{display:block;font-size:10px;line-height:1.42;color:#4e6b73}
 .category .arr{font-size:26px;color:#214d52}
 
@@ -304,22 +305,37 @@ h1{
   height:98px;
   background:rgba(255,255,255,.97);
   color:#183a55;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  padding:0 max(52px,calc((100vw - 1430px)/2));
-  align-items:center;
+  display:block;
+  padding:0;
   box-shadow:0 -2px 14px rgba(0,0,0,.06)
 }
+.trustbar-inner{
+  width:min(1460px,calc(100% - 76px));
+  height:100%;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:15px;
+  align-items:center
+}
 .trust{
+  position:relative;
   min-height:55px;
   display:grid;
   grid-template-columns:48px 1fr;
   align-items:center;
   gap:12px;
-  padding:0 25px;
-  border-right:1px solid #d7dde0
+  padding:0 25px
 }
-.trust:last-child{border-right:0}
+.trust:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  right:-8px;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:#d7dde0
+}
 .trust svg{width:39px;height:39px;fill:none;stroke:#2d6b52;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .trust b{display:block;font-size:12px;color:#173a55}
 .trust small{display:block;font-size:10px;color:#6d767d;margin-top:3px}
@@ -330,7 +346,9 @@ h1{
   .stage{width:calc(100% - 34px);padding-top:56px}.copy{padding-left:12px;width:70%}
   .handnote{right:10px;font-size:27px}
   .category-row{width:calc(100% - 34px);gap:10px}.category{padding:14px;grid-template-columns:42px 1fr 18px}.category-icon{width:38px}.category-icon svg{width:34px;height:34px}.category small{font-size:9px}
+  .trustbar-inner{width:calc(100% - 34px);gap:10px}
   .trust{padding:0 12px}
+  .trust:not(:last-child)::after{right:-6px}
 }
 @media(max-width:820px){
   .hero{min-height:100svh}.hero::before{background-size:auto 100%;background-position:53% center}
@@ -342,7 +360,7 @@ h1{
   h1{font-size:clamp(52px,14vw,76px)}
   .island-pills{gap:7px;flex-wrap:wrap}.island-pill{height:42px;min-width:0;padding:0 14px;font-size:10px}
   .searchbar{grid-template-columns:1fr 102px;min-height:60px;border-radius:22px;padding:5px 5px 5px 15px}.search-divider,.island-select-wrap{display:none}.searchbar button[type=submit]{height:50px;font-size:12px}.searchbar button[type=submit] span{font-size:17px}
-  .category-row{bottom:18px;grid-template-columns:1fr 1fr;gap:8px}.category{min-height:77px;padding:10px;grid-template-columns:35px 1fr 15px;border-radius:14px}.category-icon{width:31px;height:31px}.category-icon svg{width:29px;height:29px}.category b{font-size:10px;margin-bottom:2px}.category small{display:none}.category .arr{font-size:18px}
+  .category-row{bottom:18px;grid-template-columns:1fr 1fr;gap:8px}.category{min-height:77px;padding:10px;grid-template-columns:35px 1fr 15px;border-radius:14px}.category-icon{width:31px;height:31px}.category-icon svg{width:29px;height:29px}.category b{display:block;min-height:0;font-size:10px;line-height:1.2;margin-bottom:2px}.category small{display:none}.category .arr{font-size:18px}
   .trustbar{display:none}
 }
 @media(max-width:480px){
@@ -472,6 +490,7 @@ h1{
   </section>
 
   <footer class="trustbar">
+    <div class="trustbar-inner">
     <div class="trust">
       <svg viewBox="0 0 48 48"><path d="M24 5 39 10v11c0 10-6 17-15 22C15 38 9 31 9 21V10l15-5Z"/><path d="m17 24 5 5 10-11"/></svg>
       <span><b data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</b><small data-pt="Pessoas da tua ilha" data-en="People from your island">Pessoas da tua ilha</small></span>
@@ -487,6 +506,7 @@ h1{
     <div class="trust">
       <svg viewBox="0 0 48 48"><path d="M40 8C23 9 11 18 10 36c10-1 23-7 30-28Z"/><path d="M11 36c8-8 15-13 25-19"/></svg>
       <span><b data-pt="Um Açores mais forte" data-en="A stronger Azores">Um Açores mais forte</b><small data-pt="Apoia a economia local" data-en="Support the local economy">Apoia a economia local</small></span>
+    </div>
     </div>
   </footer>
 </main>
