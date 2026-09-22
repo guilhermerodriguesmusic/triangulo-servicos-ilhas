@@ -1781,7 +1781,7 @@ function openSheet(id){
  const backdrop=$('#backdrop');backdrop.classList.add('open');backdrop.setAttribute('aria-hidden','false');
  document.querySelectorAll('.sheet').forEach(s=>{s.classList.remove('open');s.setAttribute('aria-hidden','true');s.inert=true});
  const sheet=$('#'+id);sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');sheet.inert=false;document.body.classList.add('sheet-open');
- requestAnimationFrame(()=>{const target=sheet.querySelector('textarea,input:not([type="hidden"]),select,button:not(.close)');if(target)target.focus({preventScroll:true})});
+ requestAnimationFrame(()=>{if(sheet.id==='requestSheet'&&window.matchMedia('(max-width:620px)').matches)return;const target=sheet.querySelector('textarea,input:not([type="hidden"]),select,button:not(.close)');if(target)target.focus({preventScroll:true})});
 }
 function closeSheets(){
  const backdrop=$('#backdrop');backdrop.classList.remove('open');backdrop.setAttribute('aria-hidden','true');
