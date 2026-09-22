@@ -24,7 +24,17 @@
   <input id="adminEmail" type="email" autocomplete="email" placeholder="Email">
   <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Password">
   <button id="adminLogin" class="btn yes" type="button" data-pt="Entrar e rever" data-en="Sign in and review">Entrar e rever</button>
+  <button id="adminReset" class="btn no" type="button" style="width:100%;margin-top:8px" data-pt="Criar / recuperar password" data-en="Create / reset password">Criar / recuperar password</button>
   <p id="loginMsg" class="login-note"></p>
+</div>
+<div id="recoveryBox" class="loginbox">
+  <div class="state" data-pt="Acesso administrativo" data-en="Admin access">Acesso administrativo</div>
+  <h1 data-pt="Definir password" data-en="Set password">Definir password</h1>
+  <p class="login-note" data-pt="Escolhe uma password nova para a tua conta de administrador." data-en="Choose a new password for your administrator account.">Escolhe uma password nova para a tua conta de administrador.</p>
+  <input id="newAdminPassword" type="password" minlength="10" autocomplete="new-password" data-ph-pt="Nova password (mín. 10 caracteres)" data-ph-en="New password (min. 10 characters)" placeholder="Nova password (mín. 10 caracteres)">
+  <input id="newAdminPassword2" type="password" minlength="10" autocomplete="new-password" data-ph-pt="Repetir nova password" data-ph-en="Repeat new password" placeholder="Repetir nova password">
+  <button id="saveAdminPassword" class="btn yes" type="button" data-pt="Guardar password e continuar" data-en="Save password and continue">Guardar password e continuar</button>
+  <p id="recoveryMsg" class="login-note"></p>
 </div>
 <div id="review" hidden>
   <div class="state" data-pt="Candidatura de Prestador de Serviços" data-en="Service Provider Application">Candidatura de Prestador de Serviços</div>
@@ -75,12 +85,48 @@ function applyLang(){
 }
 $('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang();load()};
 $('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang();load()};
-function showMessage(title,text){$('#loading').hidden=true;$('#loginbox').classList.remove('show');$('#review').hidden=true;$('#message').hidden=false;$('#message').innerHTML='<div style="font-size:40px">✓</div><h2>'+title+'</h2><p>'+text+'</p>'}
+function showMessage(title,text){$('#loading').hidden=true;$('#loginbox').classList.remove('show');$('#recoveryBox').classList.remove('show');$('#review').hidden=true;$('#message').hidden=false;$('#message').innerHTML='<div style="font-size:40px">✓</div><h2>'+title+'</h2><p>'+text+'</p>'}
 function fmtPrice(d){if(d.pricing_type==='quote'||d.price==null)return tr('Sob orçamento','Quote required');const labels={hour:tr('por hora','per hour'),fixed:tr('preço fixo','fixed price'),from:tr('desde','from')};return d.price+' € · '+(labels[d.pricing_type]||d.pricing_type)}
+function recoveryRedirectUrl(){
+  const u=new URL(location.href);
+  u.searchParams.set('recovery','1');
+  return u.origin+u.pathname+u.search;
+}
+function showRecovery(){
+  $('#loading').hidden=true;
+  $('#message').hidden=true;
+  $('#review').hidden=true;
+  $('#loginbox').classList.remove('show');
+  $('#recoveryBox').classList.add('show');
+}
+async function requestAdminReset(){
+  const email=$('#adminEmail').value.trim(),msg=$('#loginMsg');
+  if(!email){msg.textContent=tr('Indica primeiro o teu email.','Enter your email first.');$('#adminEmail').focus();return}
+  $('#adminReset').disabled=true;
+  msg.textContent=tr('A enviar ligação segura…','Sending secure link…');
+  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:recoveryRedirectUrl()});
+  $('#adminReset').disabled=false;
+  if(error){msg.textContent=tr('Não foi possível enviar agora. Tenta novamente dentro de alguns segundos.','Could not send it right now. Please try again in a few seconds.');return}
+  msg.textContent=tr('Enviámos uma ligação para definires a password. Abre o email neste dispositivo e volta por essa ligação.','We sent you a link to set your password. Open the email on this device and return using that link.');
+}
+async function saveAdminPassword(){
+  const p1=$('#newAdminPassword').value,p2=$('#newAdminPassword2').value,msg=$('#recoveryMsg');
+  if(p1.length<10){msg.textContent=tr('Usa pelo menos 10 caracteres.','Use at least 10 characters.');return}
+  if(p1!==p2){msg.textContent=tr('As passwords não coincidem.','Passwords do not match.');return}
+  $('#saveAdminPassword').disabled=true;
+  msg.textContent=tr('A guardar…','Saving…');
+  const {error}=await db.auth.updateUser({password:p1});
+  $('#saveAdminPassword').disabled=false;
+  if(error){msg.textContent=tr('Não foi possível guardar a password. Tenta novamente.','Could not save the password. Please try again.');return}
+  const u=new URL(location.href);
+  u.searchParams.delete('recovery');
+  location.replace(u.pathname+u.search);
+}
 async function load(){
   if(!token){showMessage(tr('Link inválido','Invalid link'),tr('Esta ligação não é válida.','This link is not valid.'));return}
   $('#message').hidden=true;$('#review').hidden=true;$('#loginbox').classList.remove('show');$('#loading').hidden=false;
   const sessionRes=await db.auth.getSession();
+  if(qs.get('recovery')==='1'&&sessionRes.data&&sessionRes.data.session){showRecovery();return}
   if(!sessionRes.data||!sessionRes.data.session){
     $('#loading').hidden=true;$('#loginbox').classList.add('show');return
   }
@@ -121,6 +167,8 @@ async function act(action){
   else showMessage(tr('Candidatura processada','Application processed'),tr('Esta candidatura já tinha sido processada.','This application had already been processed.'));
 }
 $('#approve').onclick=()=>act('approve');$('#reject').onclick=()=>act('reject');
+$('#adminReset').onclick=requestAdminReset;
+$('#saveAdminPassword').onclick=saveAdminPassword;
 $('#adminLogin').onclick=async()=>{
   const email=$('#adminEmail').value.trim(),password=$('#adminPassword').value,msg=$('#loginMsg');
   if(!email||!password){msg.textContent=tr('Indica email e password.','Enter email and password.');return}
@@ -130,7 +178,9 @@ $('#adminLogin').onclick=async()=>{
   if(error){msg.textContent=tr('Não foi possível iniciar sessão.','Could not sign in.');return}
   msg.textContent='';await load();
 };
-db.auth.onAuthStateChange(()=>{});
+db.auth.onAuthStateChange((event,session)=>{
+  if(qs.get('recovery')==='1'&&session&&(event==='PASSWORD_RECOVERY'||event==='SIGNED_IN'))showRecovery();
+});
 applyLang();load();
 </script>
 </body></html>
