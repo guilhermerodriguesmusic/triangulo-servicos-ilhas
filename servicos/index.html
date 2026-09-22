@@ -2588,6 +2588,8 @@ function providerAppRenderState(state,data={}){
     result.innerHTML='<div class="big">✓</div><h2>'+(lang==='pt'?'Resposta registada':'Response saved')+'</h2><p>'+(lang==='pt'?'O cliente será informado de que não podes aceitar este pedido.':'The customer will be told you cannot accept this request.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else if(state==='expired'){
     result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Pedido expirado':'Request expired')+'</h2><p>'+(lang==='pt'?'O prazo terminou e o serviço não foi confirmado.':'The response deadline passed and the service was not confirmed.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
+  }else if(state==='link_expired'){
+    result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Ligação expirada':'Link expired')+'</h2><p>'+(lang==='pt'?'Esta ligação privada já expirou. Entra na Área do Prestador para consultar o pedido em segurança.':'This private link has expired. Sign in to the Provider Area to view the request securely.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else{
     result.innerHTML='<div class="big">!</div><h2>'+(lang==='pt'?'Link inválido':'Invalid link')+'</h2><p>'+(lang==='pt'?'Este pedido já não está disponível ou o link não é válido.':'This request is no longer available or the link is invalid.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }
@@ -2598,7 +2600,7 @@ async function openProviderBookingInApp(token){
   $('#splash').classList.add('hidden');$('#mainShell').classList.add('hidden');
   $('#providerRequestView').hidden=false;providerAppHideAll();$('#prAppLoading').hidden=false;
   const {data,error}=await db.rpc('booking_response_context',{p_token:token});
-  if(error||!data||!data.ok){providerAppRenderState('invalid');return}
+  if(error||!data||!data.ok){providerAppRenderState(data&&data.state==='link_expired'?'link_expired':'invalid');return}
   providerAppRenderState(data.state,data);
 }
 async function openServiceMatchInApp(token){
