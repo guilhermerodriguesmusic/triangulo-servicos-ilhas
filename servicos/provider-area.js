@@ -43,35 +43,46 @@ async function loadProviderAccount(){
   const status=$('#providerLoginStatus');
   providerAccountData=null;
 
-  // Never block the provider entry screen behind a spinner.
-  // Show the sign-in form immediately; if a valid saved session exists,
-  // replace it with the dashboard as soon as the session check returns.
+  // Keep a saved provider session through temporary mobile/network failures.
+  // Only remove it after the backend explicitly says that the session is invalid.
   paShow('paSignedOut');
   if(status)status.textContent='';
   if(!providerSessionToken)return;
 
   if(status)status.textContent=lang==='pt'?'A recuperar a tua sessão…':'Restoring your session…';
 
-  let response;
-  try{
-    response=await Promise.race([
-      Promise.resolve(db.rpc('provider_session_context',{p_session_token:providerSessionToken})),
-      new Promise(resolve=>setTimeout(()=>resolve({data:null,error:{message:'timeout'},timedOut:true}),5000))
-    ]);
-  }catch(e){
-    response={data:null,error:e};
+  const requestSession=async(timeoutMs=6500)=>{
+    try{
+      return await Promise.race([
+        Promise.resolve(db.rpc('provider_session_context',{p_session_token:providerSessionToken})),
+        new Promise(resolve=>setTimeout(()=>resolve({data:null,error:{message:'timeout'},timedOut:true}),timeoutMs))
+      ]);
+    }catch(error){
+      return {data:null,error};
+    }
+  };
+
+  let response=await requestSession();
+  if(response?.timedOut||response?.error){
+    if(response?.error&&!response?.timedOut)console.error('provider_session_context',response.error);
+    if(navigator.onLine){
+      await new Promise(resolve=>setTimeout(resolve,700));
+      response=await requestSession(8000);
+    }
   }
 
   const {data,error}=response||{};
-  if(response&&response.timedOut){
-    providerSessionToken='';store.set('tri_provider_session','');
-    if(status)status.textContent='';
+  if(response?.timedOut||error){
+    if(error&&!response?.timedOut)console.error('provider_session_context',error);
+    if(status)status.textContent=lang==='pt'
+      ?'Não foi possível confirmar a sessão agora. Mantivemos o teu acesso guardado — tenta novamente quando a ligação estabilizar.'
+      :'We could not confirm the session right now. Your saved access was kept — try again when the connection is stable.';
     return;
   }
-  if(error||!data||!data.ok){
-    if(error)console.error('provider_session_context',error);
-    providerSessionToken='';store.set('tri_provider_session','');
-    if(status)status.textContent='';
+  if(!data||!data.ok){
+    providerSessionToken='';
+    store.set('tri_provider_session','');
+    if(status)status.textContent=lang==='pt'?'A sessão terminou. Entra novamente.':'Your session has ended. Please sign in again.';
     return;
   }
 
@@ -80,6 +91,11 @@ async function loadProviderAccount(){
   renderProviderDashboard(data);
   paShow('paDashboard');
 }
+window.addEventListener('online',()=>{
+  const view=$('#providerAreaView');
+  if(view&&!view.hidden&&store.get('tri_provider_session',''))loadProviderAccount();
+});
+
 function renderProviderDashboard(data){
   const p=data.profile||{},bookings=data.bookings||[],matches=data.matches||[],services=data.services||[],requests=[...bookings,...matches];
   $('#paDisplayName').textContent=p.business_name||p.name||(lang==='pt'?'Prestador':'Provider');
