@@ -2055,6 +2055,18 @@ async function startBookingCheckout(token,btn){
  finally{if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
 async function openClientBookings(){showScreen('bookings');renderBookings();await syncLocalBookings();renderBookings();}
+async function openInvalidTrackingLink(kind='request'){
+  history.replaceState({},'',location.pathname);
+  $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
+  await openClientBookings();
+  const box=$('#bookingList');if(!box)return;
+  const title=lang==='pt'?'Ligação inválida ou expirada':'Invalid or expired link';
+  const body=lang==='pt'
+    ?'Já não conseguimos abrir este pedido através desta ligação. Se o pedido estiver guardado neste dispositivo, continua disponível abaixo. Caso contrário, podes fazer uma nova pesquisa ou novo pedido.'
+    :'We can no longer open this request from this link. If the request is saved on this device, it is still available below. Otherwise, you can search again or create a new request.';
+  box.insertAdjacentHTML('afterbegin','<div class="card booking-local" style="border-color:#efc37a;background:#fffaf0;margin-bottom:10px"><b>'+title+'</b><small style="display:block;margin-top:5px">'+body+'</small><button class="secondary" type="button" id="expiredLinkSearch" style="margin-top:9px">'+(lang==='pt'?'Procurar serviços':'Browse services')+'</button></div>');
+  const b=$('#expiredLinkSearch');if(b)b.onclick=()=>runSearch('',null);
+}
 
 function openProviderSignup(){openProviderArea()}
 $('#bookingsBtn').onclick=openClientBookings;const bookingsNav=$('#bookingsNav');if(bookingsNav)bookingsNav.onclick=openClientBookings;
@@ -2478,14 +2490,41 @@ $('#providerProfileForm').onsubmit=async e=>{
 let activeProviderPasswordToken=null;
 async function openProviderPasswordSetup(token){
   if(!token)return false;
-  activeProviderPasswordToken=token;
+  activeProviderPasswordToken=null;
   $('#splash').classList.add('hidden');
   $('#mainShell').classList.add('hidden');
   $('#providerRequestView').hidden=true;
   $('#providerAreaView').hidden=false;
-  paShow('paPasswordSet');
+  paShow('paLoading');
   history.replaceState({},'',location.pathname+'?prestador=1');
-  return true;
+
+  const p1=$('#providerNewPassword'),p2=$('#providerNewPassword2'),btn=$('#providerSetPasswordBtn'),status=$('#providerPasswordStatus');
+  [p1,p2,btn].forEach(el=>{if(el)el.disabled=true});
+  if(status)status.textContent=lang==='pt'?'A validar a ligação…':'Validating link…';
+
+  try{
+    const {data,error}=await db.rpc('provider_password_token_status',{p_token:token});
+    paShow('paPasswordSet');
+    if(error||!data||data.ok!==true){
+      if(status)status.textContent=lang==='pt'?'Não foi possível validar esta ligação. Volta a abrir a ligação do email ou pede uma nova na entrada de prestadores.':'Could not validate this link. Reopen the link from the email or request a new one from provider sign-in.';
+      return true;
+    }
+    if(data.valid!==true){
+      if(status)status.textContent=lang==='pt'?'Esta ligação expirou ou já foi usada. Volta à entrada de prestadores e pede uma nova ligação.':'This link has expired or was already used. Return to provider sign-in and request a new link.';
+      return true;
+    }
+
+    activeProviderPasswordToken=token;
+    [p1,p2,btn].forEach(el=>{if(el)el.disabled=false});
+    if(status)status.textContent='';
+    if(p1)requestAnimationFrame(()=>p1.focus({preventScroll:true}));
+    return true;
+  }catch(e){
+    console.error('provider password token validation',e);
+    paShow('paPasswordSet');
+    if(status)status.textContent=lang==='pt'?'Não foi possível validar esta ligação. Verifica a ligação e tenta novamente.':'Could not validate this link. Check the link and try again.';
+    return true;
+  }
 }
 $('#providerSetPasswordBtn').onclick=async()=>{
   const p1=$('#providerNewPassword').value,p2=$('#providerNewPassword2').value,status=$('#providerPasswordStatus');
@@ -2695,7 +2734,8 @@ async function init(){
        history.replaceState({},'',location.pathname);$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
        await openClientBookings();return;
      }
-   }catch(e){console.error('request_token deep link',e)}
+     await openInvalidTrackingLink('matching');return;
+   }catch(e){console.error('request_token deep link',e);await openInvalidTrackingLink('matching');return}
  }
  if(clientBookingToken){
    try{
@@ -2736,7 +2776,8 @@ async function init(){
        }
        return;
      }
-   }catch(e){console.error('client_token deep link',e)}
+     await openInvalidTrackingLink('direct');return;
+   }catch(e){console.error('client_token deep link',e);await openInvalidTrackingLink('direct');return}
  }
  if(matchToken){openServiceMatchInApp(matchToken);return}
  if(bookingToken){openProviderBookingInApp(bookingToken);return}
