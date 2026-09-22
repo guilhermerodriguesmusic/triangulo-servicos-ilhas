@@ -1855,13 +1855,13 @@ function directRequestStatus(status,paymentStatus,requiresQuote=false){
      :(lang==='pt'?'Serviço aceite · pagamento pendente':'Service accepted · payment pending');
    return lang==='pt'?'Serviço confirmado':'Service confirmed';
  }
- const pt={requested:requiresQuote?'A aguardar orçamento':'A aguardar prestador',declined:'Prestador indisponível',expired:'Sem resposta',completed:'Serviço concluído',cancelled:'Cancelado'};
- const en={requested:requiresQuote?'Awaiting quote':'Awaiting provider',declined:'Provider unavailable',expired:'No response',completed:'Service completed',cancelled:'Cancelled'};
+ const pt={requested:requiresQuote?'A aguardar orçamento':'A aguardar prestador',declined:'Prestador indisponível',expired:'Sem resposta',completed:'Serviço concluído',cancelled:'Cancelado',tracking_expired:'Histórico · ligação expirada'};
+ const en={requested:requiresQuote?'Awaiting quote':'Awaiting provider',declined:'Provider unavailable',expired:'No response',completed:'Service completed',cancelled:'Cancelled',tracking_expired:'History · link expired'};
  return (lang==='pt'?pt:en)[status]||(lang==='pt'?'Pedido enviado':'Request sent');
 }
 function matchingRequestStatus(status){
- const pt={matching:'À procura de serviços',offers:'Respostas disponíveis',confirmed:'Serviço confirmado',completed:'Serviço concluído',cancelled:'Cancelado'};
- const en={matching:'Finding services',offers:'Responses available',confirmed:'Service confirmed',completed:'Service completed',cancelled:'Cancelled'};
+ const pt={matching:'À procura de serviços',offers:'Respostas disponíveis',confirmed:'Serviço confirmado',completed:'Serviço concluído',cancelled:'Cancelado',tracking_expired:'Histórico · ligação expirada'};
+ const en={matching:'Finding services',offers:'Responses available',confirmed:'Service confirmed',completed:'Service completed',cancelled:'Cancelled',tracking_expired:'History · link expired'};
  return (lang==='pt'?pt:en)[status]||(lang==='pt'?'Pedido recebido':'Request received');
 }
 async function syncLocalBookings(){
@@ -1871,14 +1871,16 @@ async function syncLocalBookings(){
   try{
    if(x.kind==='matching'){
     const {data,error}=await db.rpc('service_request_client_context',{p_token:x.token});
-    if(error||!data||!data.ok)return;
+    if(error||!data)return;
+    if(!data.ok){if(data.state==='invalid'){if(x.status!=='tracking_expired'){x.status='tracking_expired';x.offers=[];x.contact_released=false;x.provider_email=null;x.provider_phone=null;changed=true}}return}
     const next={...x,status:data.state||x.status,island:data.island||x.island,description:data.description||x.description,date:data.requested_date||x.date,
       location_text:data.location_text||null,budget:data.budget,category_code:data.category_code||null,matched_count:Number(data.matched_count||x.matched_count||0),pending_count:Number(data.pending_count||0),expired_count:Number(data.expired_count||0),declined_count:Number(data.declined_count||0),offers:Array.isArray(data.offers)?data.offers:[],
       provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released};
     if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
    }else{
     const {data,error}=await db.rpc('booking_client_context',{p_token:x.token});
-    if(error||!data||!data.ok)return;
+    if(error||!data)return;
+    if(!data.ok){if(data.state==='invalid'){if(x.status!=='tracking_expired'){x.status='tracking_expired';x.checkout_available=false;x.contact_released=false;x.provider_email=null;x.provider_phone=null;changed=true}}return}
     const next={...x,kind:'direct',status:data.state||x.status,payment_status:data.payment_status||x.payment_status,provider:data.provider||x.provider,
       service_title:data.service_title||x.service_title,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,
       island:data.island||x.island,date:data.service_date||x.date,time:data.service_time||x.time,provider_amount:data.provider_amount,
@@ -1924,7 +1926,8 @@ function renderBookings(){
            ?'Ainda não encontrámos automaticamente um prestador compatível. O pedido ficou sinalizado para procurarmos alternativas.'
            :'We have not found a matching provider automatically yet. Your request has been flagged for alternative providers.'))+'</small>'
      :'';
-   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+matchingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
+   const trackingHelp=state==='tracking_expired'?'<small class="booking-help">'+(lang==='pt'?'A ligação privada de acompanhamento expirou. Este registo fica guardado apenas neste dispositivo.':'The private tracking link has expired. This record remains only on this device.')+'</small>':'';
+   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+matchingHelp+trackingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
   }
 
   const state=x.status||'requested',requiresQuote=!!(x.requires_quote||x.quote);
@@ -1947,7 +1950,8 @@ function renderBookings(){
     :'';
 
   const brief=x.details?'<div class="booking-brief"><b>'+(lang==='pt'?'Pedido':'Request')+'</b><span>'+escapeHtml(x.details)+'</span></div>':'';
-  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+brief+waitingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+'</div>';
+  const trackingHelp=state==='tracking_expired'?'<small class="booking-help">'+(lang==='pt'?'A ligação privada de acompanhamento expirou. Este registo fica guardado apenas neste dispositivo.':'The private tracking link has expired. This record remains only on this device.')+'</small>':'';
+  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+brief+waitingHelp+trackingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+'</div>';
  }).join('')+'</div>';
 
  $$('[data-confirm-quote]').forEach(btn=>btn.onclick=()=>confirmDirectQuote(btn.dataset.confirmQuote,btn));
