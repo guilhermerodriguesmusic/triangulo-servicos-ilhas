@@ -1871,7 +1871,7 @@ async function syncLocalBookings(){
     const {data,error}=await db.rpc('service_request_client_context',{p_token:x.token});
     if(error||!data||!data.ok)return;
     const next={...x,status:data.state||x.status,island:data.island||x.island,description:data.description||x.description,date:data.requested_date||x.date,
-      location_text:data.location_text||null,budget:data.budget,category_code:data.category_code||null,offers:Array.isArray(data.offers)?data.offers:[],
+      location_text:data.location_text||null,budget:data.budget,category_code:data.category_code||null,matched_count:Number(data.matched_count||x.matched_count||0),offers:Array.isArray(data.offers)?data.offers:[],
       provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released};
     if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
    }else{
@@ -1908,7 +1908,17 @@ function renderBookings(){
     return '<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+price+(!o.selected&&state!=='confirmed'?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>';
    }).join('')+'</div>':'';
    const contact=(x.contact_released&&(x.provider_email||x.provider_phone))?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider?'<br>'+escapeHtml(x.provider):'')+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'';
-   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+(state==='matching'?'<small class="booking-help">'+(lang==='pt'?'Estamos a avisar automaticamente serviços compatíveis.':'We are automatically notifying matching services.')+'</small>':'')+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
+   const matchedCount=Number(x.matched_count||0);
+   const matchingHelp=state==='matching'
+     ?'<small class="booking-help">'+(matchedCount>0
+       ?(lang==='pt'
+         ?('Já avisámos '+matchedCount+' '+(matchedCount===1?'prestador compatível':'prestadores compatíveis')+'. Agora aguardamos resposta.')
+         :('We have notified '+matchedCount+' matching '+(matchedCount===1?'provider':'providers')+'. We are waiting for a response.'))
+       :(lang==='pt'
+         ?'Ainda não encontrámos automaticamente um prestador compatível. O TRIÂNGULO continuará a procurar.'
+         :'We have not found a matching provider automatically yet. TRIÂNGULO will keep looking.'))+'</small>'
+     :'';
+   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+matchingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
   }
 
   const state=x.status||'requested',requiresQuote=!!(x.requires_quote||x.quote);
