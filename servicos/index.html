@@ -23,6 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="/manifest.json">
 <link rel="stylesheet" href="/servicos/provider-area.css">
+<link rel="stylesheet" href="/servicos/app-shell.css">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="shortcut icon" type="image/png" href="/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -824,36 +825,6 @@ body.route-public-results #explore{display:block!important}
 }
 </style>
 
-<style id="mobile-visual-audit-v1">
-
-@media(max-width:759px){
-  .topbar{
-    height:calc(60px + env(safe-area-inset-top))!important;
-    padding-top:calc(10px + env(safe-area-inset-top))!important;
-  }
-}
-@media(max-width:360px){
-  .brand-full{width:140px!important}
-  .topbar-actions{gap:4px!important}
-  .lang-switch button{padding:5px 7px!important;min-width:32px}
-  #providerAreaView .pa-brand img{width:132px}
-  #providerAreaView .pa-back{width:36px;height:36px}
-  #providerAreaView .pa-lang-switch button{min-width:34px;min-height:32px;padding:5px 7px}
-  #providerAreaView .pa-hero h1{font-size:30px}
-  #providerAreaView.pa-state-signedout #paSignedOut,
-  #providerAreaView.pa-state-password #paPasswordSet,
-  #providerAreaView.pa-state-missing #paNotProvider{padding:16px}
-}
-
-</style>
-<style id="mobile-hit-target-audit-v1">
-@media(max-width:620px){
-  .results-search input{min-height:32px}
-  .clear-search{width:32px;height:32px;min-width:32px;padding:0;display:grid;place-items:center}
-}
-
-.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
-</style>
 <style id="provider-real-data-polish-v1">
 /* Real provider cards: neutral identity when no profile photo exists. */
 .provider-avatar{
@@ -963,69 +934,7 @@ body.route-public-results #explore{display:block!important}
 }
 </style>
 
-<style id="mobile-app-experience-v1">
-#networkStatus{
-  position:fixed;z-index:96;left:50%;bottom:calc(82px + env(safe-area-inset-bottom));
-  transform:translateX(-50%);max-width:calc(100vw - 28px);
-  padding:7px 11px;border-radius:999px;background:#fff3d7;color:#694f08;
-  border:1px solid #ebd28d;box-shadow:0 7px 22px rgba(18,50,74,.12);
-  font-size:10.5px;font-weight:850;text-align:center
-}
-#networkStatus[hidden]{display:none}
-#networkStatus.online{background:#e5f6ee;color:#17654d;border-color:#bcdcca}
-@media(max-width:620px){
-  html{-webkit-text-size-adjust:100%}
-  input,textarea,select{font-size:16px!important}
-  .results-search input{font-size:16px!important;min-height:36px}
-  .result-filter,.results-island,.results-sort{min-height:44px}
-  .clear-search,.back,.close{min-width:44px;min-height:44px}
-  .bottom-nav button{min-height:48px}
-  .bottom-nav small{font-size:10px;line-height:1.05}
-  .sheet{
-    overscroll-behavior-y:contain;
-    -webkit-overflow-scrolling:touch;
-    scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))
-  }
-  button,a,[role="button"]{touch-action:manipulation}
-  .toast{
-    bottom:calc(124px + env(safe-area-inset-bottom));
-    max-width:calc(100vw - 28px);width:max-content;
-    white-space:normal;text-align:center;line-height:1.35
-  }
-}
-@media(display-mode:standalone){
-  html,body,.app{min-height:100dvh}
-  body{overscroll-behavior-y:contain}
-  .app{box-shadow:none}
-}
-</style>
 
-<style id="mobile-device-size-polish-v1">
-@media(max-width:440px){
-  .result-card-action button{min-height:44px}
-  .settings button{min-height:54px}
-  .booking-local small,.booking-local .booking-help{font-size:10.5px}
-  .client-quote-row{font-size:11px}
-  .client-quote-row b{font-size:11px}
-  #requestSheet{max-height:calc(var(--tri-visual-vh,100dvh) - env(safe-area-inset-top) - 6px)}
-}
-@media(max-width:390px){
-  #explore{padding-left:12px;padding-right:12px}
-  .results-filters{margin-left:-12px;margin-right:-12px;padding-left:12px}
-  .result-card{padding:10px;grid-template-columns:68px minmax(0,1fr);gap:10px}
-  .provider-avatar-card{width:68px;height:88px;font-size:26px}
-  .result-card:has(.provider-avatar-card){grid-template-columns:68px minmax(0,1fr)}
-  .result-card b{font-size:14.5px}
-  .result-card .desc{font-size:10.5px}
-  .provider-tag{font-size:8.5px;padding:4px 6px}
-  .result-card-action{align-items:stretch;flex-direction:column;gap:6px}
-  .result-card-action span{max-width:100%;font-size:9.5px}
-  .result-card-action button{width:100%;font-size:11px}
-  .page-title h1{font-size:25px}
-  .booking-local{padding:13px}
-  .client-quote-box{padding:11px}
-}
-</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -2026,52 +1935,6 @@ $('#providerPortalBtn').onclick=()=>{location.href='/prestadores.html'};
 $('#howItWorksBtn').onclick=()=>{location.href='/how-it-works.html'};
 $('#privacyBtn').onclick=()=>{location.href='/privacy.html'};
 $('#termsBtn').onclick=()=>{location.href='/terms.html'};
-function toast(s){$('#toast').textContent=s;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200)}
-let networkWasOffline=!navigator.onLine,networkHideTimer=null;
-function syncNetworkStatus(){
- const el=$('#networkStatus');if(!el)return;
- clearTimeout(networkHideTimer);
- if(!navigator.onLine){
-   networkWasOffline=true;el.classList.remove('online');el.hidden=false;
-   el.textContent=lang==='pt'?'Sem ligação — a mostrar o que está guardado.':'Offline — showing saved information.';
-   return;
- }
- if(networkWasOffline){
-   networkWasOffline=false;el.classList.add('online');el.hidden=false;
-   el.textContent=lang==='pt'?'Ligação restabelecida ✓':'Back online ✓';
-   networkHideTimer=setTimeout(()=>{el.hidden=true;el.classList.remove('online')},1800);
- }else el.hidden=true;
-}
-window.addEventListener('offline',syncNetworkStatus);window.addEventListener('online',()=>{syncNetworkStatus();loadProviders(activeSearchQuery,activeServiceGroup)});
-syncNetworkStatus();
-function syncVisualViewport(){
- const h=Math.round(window.visualViewport?.height||window.innerHeight);
- document.documentElement.style.setProperty('--tri-visual-vh',h+'px');
-}
-syncVisualViewport();
-window.visualViewport?.addEventListener('resize',syncVisualViewport);
-window.visualViewport?.addEventListener('scroll',syncVisualViewport);
-window.addEventListener('orientationchange',()=>setTimeout(syncVisualViewport,120));
-document.addEventListener('focusin',e=>{
- if(!window.matchMedia('(max-width:620px)').matches)return;
- const sheet=e.target.closest?.('.sheet.open');
- if(!sheet||!e.target.matches('input,textarea,select'))return;
- setTimeout(()=>e.target.scrollIntoView({block:'center',behavior:'smooth'}),180);
-});
-function syncInstalledUi(){const b=$('#installBtn');if(b&&isStandaloneApp())b.hidden=true}
-syncInstalledUi();window.addEventListener('appinstalled',syncInstalledUi);
-$('#installBtn').onclick=async()=>{
- if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){toast(lang==='pt'?'O TRIÂNGULO já está instalado ✓':'TRIÂNGULO is already installed ✓');return}
- if(deferredInstallPrompt){
-  try{
-   await deferredInstallPrompt.prompt();
-   await deferredInstallPrompt.userChoice;
-   deferredInstallPrompt=null;
-   return;
-  }catch{}
- }
- location.href='/instalar/';
-};
 async function init(){
  const qs=new URLSearchParams(location.search);
  const earlyProviderEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1'||String(qs.get('entry')||'').startsWith('provider-');
@@ -2208,6 +2071,7 @@ async function init(){
 }
 window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||location.hash==='#provider')openProviderSignup()});
 </script>
+<script src="/servicos/app-shell.js"></script>
 <script src="/servicos/provider-area.js"></script>
 <script>init();</script>
 </body></html>
