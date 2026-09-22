@@ -7,7 +7,7 @@ function requestPhotoPickerMarkup(prefix='request'){
   return '<div class="request-photo-picker" data-photo-picker="'+prefix+'">'
     +'<div class="request-photo-head"><div><b data-pt="Fotografias · opcional" data-en="Photos · optional">'+(lang==='pt'?'Fotografias · opcional':'Photos · optional')+'</b>'
     +'<small data-pt="Ajudam o prestador a perceber melhor o trabalho e a dar um orçamento mais certo." data-en="They help the provider understand the job and give a more accurate quote.">'+(lang==='pt'?'Ajudam o prestador a perceber melhor o trabalho e a dar um orçamento mais certo.':'They help the provider understand the job and give a more accurate quote.')+'</small></div>'
-    +'<button type="button" class="request-photo-add" data-photo-add="'+prefix+'">＋ '+(lang==='pt'?'Adicionar fotos':'Add photos')+'</button></div>'
+    +'<button type="button" class="request-photo-add" data-photo-add="'+prefix+'" data-pt="＋ Adicionar fotos" data-en="＋ Add photos">＋ '+(lang==='pt'?'Adicionar fotos':'Add photos')+'</button></div>'
     +'<input id="'+prefix+'PhotoInput" class="request-photo-input" type="file" accept="image/*" multiple hidden>'
     +'<div id="'+prefix+'PhotoPreview" class="request-photo-preview" hidden></div>'
     +'<div id="'+prefix+'PhotoNote" class="request-photo-note">'+(lang==='pt'?'Até 5 fotos · removemos metadados e localização antes do envio.':'Up to 5 photos · metadata and location are removed before upload.')+'</div>'
@@ -41,7 +41,7 @@ function renderRequestPhotoPicker(prefix,key=photoKeyForPrefix(prefix)){
   files.forEach((file,index)=>{
     const item=document.createElement('div');item.className='request-photo-thumb';
     const img=document.createElement('img');img.alt=lang==='pt'?'Fotografia selecionada':'Selected photo';
-    const url=URL.createObjectURL(file);img.src=url;img.onload=()=>URL.revokeObjectURL(url);
+    const url=URL.createObjectURL(file);img.src=url;img.onload=()=>URL.revokeObjectURL(url);img.onerror=()=>URL.revokeObjectURL(url);
     const remove=document.createElement('button');remove.type='button';remove.className='request-photo-remove';remove.setAttribute('aria-label',lang==='pt'?'Remover fotografia':'Remove photo');remove.textContent='×';
     remove.onclick=()=>{trianguloPhotoSelections[key].splice(index,1);renderRequestPhotoPicker(prefix,key)};
     item.append(img,remove);box.appendChild(item);
@@ -134,7 +134,7 @@ async function fetchRequestPhotos({access,token,request_kind=null,request_id=nul
 }
 function photoGalleryHtml(items){
   if(!items||!items.length)return '';
-  return '<div class="request-photo-gallery">'+items.map((x,i)=>'<a href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+(lang==='pt'?'Abrir fotografia ':'Open photo ')+(i+1)+'"><img src="'+escapeHtml(x.url)+'" alt="'+(lang==='pt'?'Fotografia do pedido':'Request photo')+'" loading="lazy"></a>').join('')+'</div>';
+  return '<div class="request-photo-gallery">'+items.map((x,i)=>'<a href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+(lang==='pt'?'Abrir fotografia ':'Open photo ')+(i+1)+'"><img src="'+escapeHtml(x.url)+'" alt="'+(lang==='pt'?'Fotografia do pedido':'Request photo')+'" loading="lazy" referrerpolicy="no-referrer"></a>').join('')+'</div>';
 }
 async function loadProviderRequestPhotos(token,container){
   if(!container||!token){if(container)container.hidden=true;return}
