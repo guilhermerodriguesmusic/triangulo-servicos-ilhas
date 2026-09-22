@@ -236,13 +236,14 @@ h1{
 }
 .searchbar button[type=submit]{
   height:56px;border:0;border-radius:999px;background:linear-gradient(135deg,#5f8d50,#759e5b);
-  color:#fff;font-weight:850;font-size:16px;cursor:pointer;box-shadow:0 7px 18px rgba(69,111,64,.25)
+  color:#fff;font-weight:850;font-size:16px;cursor:pointer;box-shadow:0 7px 18px rgba(69,111,64,.25);
+  display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;padding:0 16px;line-height:1
 }
-.searchbar button[type=submit] span{font-size:22px;margin-left:9px;vertical-align:-1px}
+.searchbar button[type=submit] span:first-child{font-size:16px;margin:0;line-height:1;font-weight:850}
+.searchbar button[type=submit] span:last-child{font-size:22px;margin:0;line-height:1;vertical-align:0}
 .searchbar button[type=submit],.login,.island-pill,.category{transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
 .searchbar button[type=submit]:hover,.login:hover{transform:translateY(-1px);filter:brightness(1.025)}
 .provider-mobile-cta{display:none}
-.search-assurance{margin:9px 4px 0;color:rgba(255,255,255,.94);font-size:11px;font-weight:800;letter-spacing:.01em;text-shadow:0 2px 10px rgba(0,0,0,.28)}
 .searchbar button[type=submit]:active,.login:active,.island-pill:active,.category:active{transform:translateY(0) scale(.99)}
 ::selection{background:#d6e8b3;color:#12324a}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
@@ -422,7 +423,7 @@ h1{
   <section class="stage">
     <div class="copy">
       <p class="kicker" data-pt="PESSOAS LOCAIS · ILHAS MAIS FORTES." data-en="LOCAL PEOPLE · STRONGER ISLANDS.">PESSOAS LOCAIS · ILHAS MAIS FORTES.</p>
-      <h1 data-pt="Encontra quem resolve, na tua ilha." data-en="Find someone who gets it done on your island.">Encontra quem resolve, na tua ilha.</h1>
+      <h1 data-pt="Serviços locais nas ilhas" data-en="Local services across the islands">Serviços locais nas ilhas</h1>
       <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</p>
 
       <div class="island-pills" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
@@ -445,7 +446,6 @@ h1{
         </label>
         <button type="submit"><span data-pt="Encontrar serviços" data-en="Find services">Encontrar serviços</span> <span>→</span></button>
       </form>
-      <p class="search-assurance" data-pt="Sem conta · Vês o preço antes de confirmar" data-en="No account · See the price before you confirm">Sem conta · Vês o preço antes de confirmar</p>
       <div class="provider-mobile-cta"><a href="/prestadores.html" data-pt="Para prestadores →" data-en="For providers →">Para prestadores →</a></div>
     </div>
 
