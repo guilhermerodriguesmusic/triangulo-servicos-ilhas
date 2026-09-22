@@ -946,6 +946,9 @@ body.route-public-results #explore{display:block!important}
 .booking-verification-box{margin-top:9px;padding:10px;border:1px solid #ead9a6;border-radius:12px;background:#fffaf0;display:grid;gap:7px}
 .booking-verification-box b{font-size:11px;color:#6d520d}.booking-verification-box small{font-size:10px;line-height:1.45;color:#776a4c}.booking-verification-box button{justify-self:start}
 </style>
+<style id="service-reviews-v1">
+.provider-tag-rating{background:#fff7db;color:#6f5600}.book-review-summary{display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:12px;font-weight:850;color:#6f5600}.book-review-excerpt{display:block;margin-top:5px;font-style:italic;color:#667b8b}.client-review{margin-top:11px;padding:12px;border:1px solid #e2d69c;background:#fffdf3;border-radius:14px}.client-review.done{border-color:#cfe3d9;background:#f7fffb}.client-review b{display:block;margin-bottom:4px}.client-review small{display:block;color:#6b8095;line-height:1.4}.review-stars{display:flex;gap:3px;margin:8px 0}.review-stars button{border:0;background:transparent;padding:1px;font-size:27px;line-height:1;color:#b9c3ca;cursor:pointer}.review-stars button.on{color:#b88600}.review-comment{width:100%;min-height:70px;resize:vertical;margin:5px 0 7px;padding:9px 10px;border:1px solid #d8e3eb;border-radius:10px;font:inherit}.review-submit{width:100%;min-height:40px}.review-status{min-height:17px;margin-top:5px}.review-done-stars{color:#9b7200;letter-spacing:1px;font-size:18px}
+</style>
 <link rel="stylesheet" href="/servicos/request-photos.css">
 </head>
 <body>
@@ -1422,7 +1425,7 @@ function renderProviders(){}
 async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
  const serial=++searchSerial;providersLoading=true;providersLoadError=false;activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;updateResults(activeSearchQuery);
  try{
-  const {data,error}=await db.rpc('search_services_v2',{p_island:island,p_query:activeSearchQuery,p_group:activeServiceGroup});
+  const {data,error}=await db.rpc('search_services_v3',{p_island:island,p_query:activeSearchQuery,p_group:activeServiceGroup});
   if(error)throw error;if(serial!==searchSerial)return;
   realProviders=(data||[]).map(s=>({
     id:s.service_id,service_id:s.service_id,provider_id:s.provider_id,
@@ -1430,6 +1433,7 @@ async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
     pricing_type:s.pricing_type,price:s.price,availability:s.availability,
     name:s.provider_name,locality:s.provider_locality||'',service_islands:s.service_islands||[],
     photo_data:s.photo_data,completed_jobs:Number(s.completed_jobs||0),response_rate:Number(s.response_rate||0),
+    review_average:s.review_average==null?null:Number(s.review_average),review_count:Number(s.review_count||0),review_excerpt:s.review_excerpt||'',
     rank_score:Number(s.rank_score||0)
   }));
  }catch(e){
@@ -1517,6 +1521,7 @@ function updateResults(q=activeSearchQuery){
   const proof=s.completed_jobs>0
     ?'<span class="provider-tag provider-tag-proof">✓ '+s.completed_jobs+' '+(lang==='pt'?'serviço'+(s.completed_jobs===1?'':'s')+' concluído'+(s.completed_jobs===1?'':'s'):'completed job'+(s.completed_jobs===1?'':'s'))+'</span>'
     :'<span class="provider-tag provider-tag-proof">✓ '+(lang==='pt'?'Perfil revisto':'Reviewed profile')+'</span>';
+  const ratingTag=s.review_count>0?'<span class="provider-tag provider-tag-rating">★ '+escapeHtml(Number(s.review_average||0).toFixed(1))+' · '+s.review_count+' '+(lang==='pt'?(s.review_count===1?'avaliação':'avaliações'):(s.review_count===1?'review':'reviews'))+'</span>':'';
   const availability=s.availability?'<span class="provider-tag provider-tag-time">🕒 '+escapeHtml(s.availability)+'</span>':'';
   const quote=s.pricing_type==='quote'||s.price==null;
   const priceNote=quote
@@ -1525,7 +1530,7 @@ function updateResults(q=activeSearchQuery){
   const actionHint=quote
     ?(lang==='pt'?'Recebes o orçamento antes de confirmar':'See the quote before confirming')
     :(lang==='pt'?'Pedido sem criação de conta':'Request without an account');
-  return '<article class="result-card" data-service="'+s.service_id+'">'+providerAvatar(s.photo_data,provider,'card')+'<div class="result-card-copy"><div class="result-card-name"><b>'+provider+'</b><span class="loc">📍 '+escapeHtml([s.locality,(s.service_islands||[]).join(' · ')].filter(Boolean).join(' · '))+'</span></div><div class="provider-tags"><span class="provider-tag provider-tag-service">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price-block"><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+priceNote+'</div></div><div class="result-card-action"><span>'+actionHint+'</span><button type="button" data-open-service="'+s.service_id+'">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Pedir serviço':'Request service'))+'</button></div></div></article>';
+  return '<article class="result-card" data-service="'+s.service_id+'">'+providerAvatar(s.photo_data,provider,'card')+'<div class="result-card-copy"><div class="result-card-name"><b>'+provider+'</b><span class="loc">📍 '+escapeHtml([s.locality,(s.service_islands||[]).join(' · ')].filter(Boolean).join(' · '))+'</span></div><div class="provider-tags"><span class="provider-tag provider-tag-service">'+title+'</span>'+proof+ratingTag+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price-block"><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+priceNote+'</div></div><div class="result-card-action"><span>'+actionHint+'</span><button type="button" data-open-service="'+s.service_id+'">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Pedir serviço':'Request service'))+'</button></div></div></article>';
  }).join('');
  bindProvider();
 }
@@ -1679,7 +1684,9 @@ function openBooking(id){
  const timeOptions=['09:00','11:00','14:00','17:00',''];const defaultTimeIndex=quote?timeOptions.length-1:0;const timeHtml=timeOptions.map((x,i)=>'<button class="time-chip '+(i===defaultTimeIndex?'active':'')+'" type="button" data-time="'+x+'">'+(x||(lang==='pt'?'A combinar':'Flexible'))+'</button>').join('');
  const maxBookDate=new Date();maxBookDate.setDate(maxBookDate.getDate()+90);
  const providerName=escapeHtml(p.name||(lang==='pt'?'Prestador verificado':'Verified provider')),serviceTitle=escapeHtml(p.title||(lang==='pt'?'Serviço':'Service'));
- $('#bookContent').innerHTML='<div class="book-provider">'+providerAvatar(p.photo_data,providerName,'modal')+'<div class="book-provider-copy"><b>'+serviceTitle+' <span>· '+providerName+'</span></b>'+(p.description?'<small>'+escapeHtml(p.description)+'</small>':'')+'</div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><label class="pa-field" style="margin-top:-4px"><span>'+(lang==='pt'?'Outra data':'Another date')+'</span><input id="bookCustomDate" type="date" min="'+localDateISO()+'" max="'+localDateISO(maxBookDate)+'"></label><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form book-request-form" style="margin:12px 0"><div class="book-brief"><div class="book-brief-title">'+(quote?(lang==='pt'?'Detalhes para o orçamento':'Details for the quote'):(lang==='pt'?'Detalhes do pedido':'Request details'))+'</div><label><span>'+(lang==='pt'?'O que precisas?':'What do you need?')+'</span><textarea id="bookNote" required maxlength="1200" placeholder="'+(lang==='pt'?'Ex.: Limpeza de um terreno com cerca de 800 m², erva alta e alguns arbustos.':'E.g. Clear a plot of about 800 m² with tall grass and some shrubs.')+'"></textarea></label><label><span>'+(lang==='pt'?'Onde é o serviço?':'Where is the service?')+'</span><input id="bookLocation" required maxlength="180" autocomplete="address-level2" placeholder="'+(lang==='pt'?'Ex.: São Mateus, Madalena':'E.g. São Mateus, Madalena')+'"><small class="form-note">'+(lang==='pt'?'Indica a zona, freguesia ou localidade. Não precisas de colocar a morada completa nesta fase.':'Enter the area, parish or locality. You do not need to provide the full address at this stage.')+'</small></label>'+requestPhotoPickerMarkup('bookRequest')+'<small class="book-privacy-note">'+(lang==='pt'?'Não incluas telefone, email, redes sociais ou links nestes campos.':'Do not include phone numbers, email addresses, social media or links in these fields.')+'</small></div><label><span>'+(lang==='pt'?'Nome (opcional)':'Name (optional)')+'</span><input id="bookName" maxlength="120" autocomplete="name"></label><div class="two"><label><span>'+(lang==='pt'?'Email (opcional)':'Email (optional)')+'</span><input id="bookEmail" type="email" autocomplete="email" inputmode="email"></label><label><span>'+(lang==='pt'?'WhatsApp (opcional)':'WhatsApp (optional)')+'</span><input id="bookPhone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><label><span>'+(lang==='pt'?'Atualizações por':'Updates via')+'</span><select id="bookPreference"><option value="both">'+(lang==='pt'?'WhatsApp e email':'WhatsApp and email')+'</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note">'+(whatsappNotificationsLive?(lang==='pt'?'Basta um contacto. Não precisas de criar conta.':'One contact method is enough. No account is required.'):(lang==='pt'?'Com email, recebes um código e verificas logo o contacto. Se indicares apenas WhatsApp, o TRIÂNGULO valida o contacto antes de avisar o prestador.':'With email, you receive a code and verify your contact immediately. If you only provide WhatsApp, TRIÂNGULO verifies the contact before notifying the provider.'))+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO ('+feePercentLabel()+')':'TRIÂNGULO fee ('+feePercentLabel()+')')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Enviar pedido':'Send request'))+'</button><p class="demo">'+(quote?(lang==='pt'?'O prestador avalia o pedido e envia-te um orçamento. Vês o valor final antes de confirmar.':'The provider reviews the request and sends you a quote. You see the final amount before confirming.'):(paymentsLive?(lang==='pt'?'O total inclui a taxa TRIÂNGULO. O serviço fica confirmado depois do pagamento.':'The total includes the TRIÂNGULO fee. The service is confirmed after payment.'):(lang==='pt'?'O preço final inclui a taxa TRIÂNGULO. Enquanto os pagamentos estão desligados, os contactos são libertados quando o prestador aceita.':'The final price includes the TRIÂNGULO fee. While payments are off, contact details are released when the provider accepts.')))+'</p>';
+ const ratingSummary=p.review_count>0?'<span class="book-review-summary">★ '+escapeHtml(Number(p.review_average||0).toFixed(1))+' · '+p.review_count+' '+(lang==='pt'?(p.review_count===1?'avaliação':'avaliações'):(p.review_count===1?'review':'reviews'))+'</span>':'';
+ const reviewExcerpt=p.review_excerpt?'<small class="book-review-excerpt">“'+escapeHtml(p.review_excerpt)+'”</small>':'';
+ $('#bookContent').innerHTML='<div class="book-provider">'+providerAvatar(p.photo_data,providerName,'modal')+'<div class="book-provider-copy"><b>'+serviceTitle+' <span>· '+providerName+'</span></b>'+(p.description?'<small>'+escapeHtml(p.description)+'</small>':'')+ratingSummary+reviewExcerpt+'</div></div><h3>'+tr('when')+'</h3><div class="date-row">'+dateHtml+'</div><label class="pa-field" style="margin-top:-4px"><span>'+(lang==='pt'?'Outra data':'Another date')+'</span><input id="bookCustomDate" type="date" min="'+localDateISO()+'" max="'+localDateISO(maxBookDate)+'"></label><h3>'+(lang==='pt'?'Hora':'Time')+'</h3><div class="time-row">'+timeHtml+'</div><div class="form book-request-form" style="margin:12px 0"><div class="book-brief"><div class="book-brief-title">'+(quote?(lang==='pt'?'Detalhes para o orçamento':'Details for the quote'):(lang==='pt'?'Detalhes do pedido':'Request details'))+'</div><label><span>'+(lang==='pt'?'O que precisas?':'What do you need?')+'</span><textarea id="bookNote" required maxlength="1200" placeholder="'+(lang==='pt'?'Ex.: Limpeza de um terreno com cerca de 800 m², erva alta e alguns arbustos.':'E.g. Clear a plot of about 800 m² with tall grass and some shrubs.')+'"></textarea></label><label><span>'+(lang==='pt'?'Onde é o serviço?':'Where is the service?')+'</span><input id="bookLocation" required maxlength="180" autocomplete="address-level2" placeholder="'+(lang==='pt'?'Ex.: São Mateus, Madalena':'E.g. São Mateus, Madalena')+'"><small class="form-note">'+(lang==='pt'?'Indica a zona, freguesia ou localidade. Não precisas de colocar a morada completa nesta fase.':'Enter the area, parish or locality. You do not need to provide the full address at this stage.')+'</small></label>'+requestPhotoPickerMarkup('bookRequest')+'<small class="book-privacy-note">'+(lang==='pt'?'Não incluas telefone, email, redes sociais ou links nestes campos.':'Do not include phone numbers, email addresses, social media or links in these fields.')+'</small></div><label><span>'+(lang==='pt'?'Nome (opcional)':'Name (optional)')+'</span><input id="bookName" maxlength="120" autocomplete="name"></label><div class="two"><label><span>'+(lang==='pt'?'Email (opcional)':'Email (optional)')+'</span><input id="bookEmail" type="email" autocomplete="email" inputmode="email"></label><label><span>'+(lang==='pt'?'WhatsApp (opcional)':'WhatsApp (optional)')+'</span><input id="bookPhone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><label><span>'+(lang==='pt'?'Atualizações por':'Updates via')+'</span><select id="bookPreference"><option value="both">'+(lang==='pt'?'WhatsApp e email':'WhatsApp and email')+'</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select><small class="form-note">'+(whatsappNotificationsLive?(lang==='pt'?'Basta um contacto. Não precisas de criar conta.':'One contact method is enough. No account is required.'):(lang==='pt'?'Com email, recebes um código e verificas logo o contacto. Se indicares apenas WhatsApp, o TRIÂNGULO valida o contacto antes de avisar o prestador.':'With email, you receive a code and verify your contact immediately. If you only provide WhatsApp, TRIÂNGULO verifies the contact before notifying the provider.'))+'</small></label></div>'+(quote?'<div class="summary"><span>'+(lang==='pt'?'Preço':'Price')+'</span><span>'+providerPrice(p)+'</span></div>':'<div class="summary fee-row"><span>'+(lang==='pt'?'Valor do serviço':'Service amount')+'</span><span>'+providerOwnPrice(p)+'</span></div><div class="summary fee-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO ('+feePercentLabel()+')':'TRIÂNGULO fee ('+feePercentLabel()+')')+'</span><span>'+providerFeePrice(p)+'</span></div><div class="summary"><span>'+tr('total')+'</span><span>'+providerPrice(p)+'</span></div>')+'<button id="confirmBook" class="primary" style="width:100%">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Enviar pedido':'Send request'))+'</button><p class="demo">'+(quote?(lang==='pt'?'O prestador avalia o pedido e envia-te um orçamento. Vês o valor final antes de confirmar.':'The provider reviews the request and sends you a quote. You see the final amount before confirming.'):(paymentsLive?(lang==='pt'?'O total inclui a taxa TRIÂNGULO. O serviço fica confirmado depois do pagamento.':'The total includes the TRIÂNGULO fee. The service is confirmed after payment.'):(lang==='pt'?'O preço final inclui a taxa TRIÂNGULO. Enquanto os pagamentos estão desligados, os contactos são libertados quando o prestador aceita.':'The final price includes the TRIÂNGULO fee. While payments are off, contact details are released when the provider accepts.')))+'</p>';
  resetRequestPhotos('direct');initRequestPhotoPicker('bookRequest','direct');
  openSheet('bookSheet');
  $('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#bookCustomDate').value=''});
@@ -1836,7 +1843,8 @@ async function syncLocalBookings(){
     if(!data.ok){if(data.state==='invalid'){if(x.status!=='tracking_expired'){x.status='tracking_expired';x.offers=[];x.contact_released=false;x.provider_email=null;x.provider_phone=null;changed=true}}return}
     const next={...x,status:data.state||x.status,island:data.island||x.island,description:data.description||x.description,date:data.requested_date||x.date,
       location_text:data.location_text||null,budget:data.budget,category_code:data.category_code||null,matched_count:Number(data.matched_count||x.matched_count||0),pending_count:Number(data.pending_count||0),expired_count:Number(data.expired_count||0),declined_count:Number(data.declined_count||0),offers:Array.isArray(data.offers)?data.offers:[],
-      provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,verification_status:data.verification_status||null,verification_channel:data.verification_channel||null};
+      provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,verification_status:data.verification_status||null,verification_channel:data.verification_channel||null,
+      reviewed:!!data.reviewed,review_rating:data.review_rating==null?null:Number(data.review_rating),review_comment:data.review_comment||null};
     if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
    }else{
     const {data,error}=await db.rpc('booking_client_context',{p_token:x.token});
@@ -1848,7 +1856,8 @@ async function syncLocalBookings(){
       total_amount:data.total_amount,service_fee_amount:data.service_fee_amount,payment_ready:!!data.payment_ready,
       requires_quote:!!data.requires_quote,provider_response_deadline:data.provider_response_deadline||x.provider_response_deadline||null,
       location_text:data.location_text||x.location_text||null,details:data.notes||x.details||null,
-      checkout_available:paymentsLive&&!!data.checkout_available,contact_released:!!data.contact_released,verification_status:data.verification_status||null,verification_channel:data.verification_channel||null};
+      checkout_available:paymentsLive&&!!data.checkout_available,contact_released:!!data.contact_released,verification_status:data.verification_status||null,verification_channel:data.verification_channel||null,
+      reviewed:!!data.reviewed,review_rating:data.review_rating==null?null:Number(data.review_rating),review_comment:data.review_comment||null};
     if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
    }
   }catch(e){console.warn('request sync',e)}
@@ -1856,6 +1865,44 @@ async function syncLocalBookings(){
  if(changed)store.set('tri_booking_history',JSON.stringify(items.slice(0,20)));
  return items;
 }
+
+function reviewStarsText(value){
+ const n=Math.max(0,Math.min(5,Number(value)||0));
+ return '★'.repeat(n)+'☆'.repeat(5-n);
+}
+function clientReviewMarkup(x){
+ if((x.status||'')!=='completed'||!x.token)return '';
+ if(x.reviewed){
+  return '<div class="client-review done"><b>'+(lang==='pt'?'A tua avaliação':'Your review')+' <span class="review-done-stars">'+reviewStarsText(x.review_rating)+'</span></b>'+(x.review_comment?'<small>“'+escapeHtml(x.review_comment)+'”</small>':'<small>'+(lang==='pt'?'Obrigado por avaliares este serviço.':'Thanks for rating this service.')+'</small>')+'</div>';
+ }
+ const kind=x.kind==='matching'?'service_request':'booking';
+ return '<div class="client-review" data-review-card data-review-token="'+escapeHtml(x.token)+'" data-review-kind="'+kind+'"><b>'+(lang==='pt'?'Como correu o serviço?':'How did the service go?')+'</b><small>'+(lang==='pt'?'A tua avaliação ajuda outras pessoas a escolher e ajuda a rede local a melhorar.':'Your review helps others choose and helps the local network improve.')+'</small><div class="review-stars" role="radiogroup" aria-label="'+(lang==='pt'?'Classificação de 1 a 5 estrelas':'Rating from 1 to 5 stars')+'">'+[1,2,3,4,5].map(n=>'<button type="button" data-review-star="'+n+'" role="radio" aria-checked="false" aria-label="'+n+'">★</button>').join('')+'</div><textarea class="review-comment" data-review-comment maxlength="400" placeholder="'+(lang==='pt'?'Comentário opcional (máx. 400 caracteres)':'Optional comment (max. 400 characters)')+'"></textarea><small>'+(lang==='pt'?'Não incluas telefone, email, links ou redes sociais.':'Do not include phone numbers, email, links or social media.')+'</small><button class="primary review-submit" type="button" data-submit-review disabled>'+(lang==='pt'?'Enviar avaliação':'Submit review')+'</button><small class="review-status" data-review-status aria-live="polite"></small></div>';
+}
+function bindClientReviewActions(){
+ $('[data-review-card]').forEach(card=>{
+  let rating=0;
+  const stars=[...card.querySelectorAll('[data-review-star]')],submit=card.querySelector('[data-submit-review]'),status=card.querySelector('[data-review-status]'),comment=card.querySelector('[data-review-comment]');
+  const paint=()=>stars.forEach((b,i)=>{const on=i<rating;b.classList.toggle('on',on);b.setAttribute('aria-checked',String(i+1===rating))});
+  stars.forEach(b=>b.onclick=()=>{rating=Number(b.dataset.reviewStar)||0;paint();submit.disabled=!rating});
+  submit.onclick=async()=>{
+   const textValue=(comment.value||'').trim();
+   if(!rating)return;
+   if(textValue&&containsDirectContactText(textValue)){status.textContent=lang==='pt'?'Retira telefone, email, links ou redes sociais do comentário.':'Remove phone numbers, email, links or social media from the comment.';return}
+   const old=submit.textContent;submit.disabled=true;submit.textContent=lang==='pt'?'A enviar…':'Sending…';status.textContent='';
+   try{
+    const {data,error}=await db.rpc('submit_service_review',{p_client_token:card.dataset.reviewToken,p_kind:card.dataset.reviewKind,p_rating:rating,p_comment:textValue||null});
+    if(error||!data||!data.ok){
+     const state=data&&data.state;
+     status.textContent=state==='contact_not_allowed'?(lang==='pt'?'O comentário contém dados de contacto.':'The comment contains contact details.'):state==='not_eligible'?(lang==='pt'?'Este serviço ainda não pode ser avaliado.':'This service cannot be reviewed yet.'):(lang==='pt'?'Não foi possível guardar a avaliação.':'Could not save the review.');
+     return
+    }
+    await syncLocalBookings();renderBookings();toast(lang==='pt'?'Avaliação enviada. Obrigado ✓':'Review submitted. Thank you ✓');
+   }catch(e){console.error(e);status.textContent=lang==='pt'?'Não foi possível guardar a avaliação.':'Could not save the review.'}
+   finally{if(document.body.contains(submit)){submit.disabled=!rating;submit.textContent=old}}
+  };
+ });
+}
+
 function renderBookings(){
  const items=getLocalBookings();
  if(!items.length){
@@ -1902,7 +1949,7 @@ function renderBookings(){
        ?'<div class="booking-verification-box"><b>'+(lang==='pt'?'A verificar o teu contacto':'We are verifying your contact')+'</b><small>'+(lang==='pt'?'O TRIÂNGULO vai confirmar o contacto antes de avisar qualquer prestador.':'TRIÂNGULO will confirm your contact before notifying any provider.')+'</small></div>'
        :'';
    const photoMeta=Number(x.photo_count||0)>0?'<small class="booking-photo-count">📷 '+Number(x.photo_count)+' '+(lang==='pt'?(Number(x.photo_count)===1?'fotografia':'fotografias'):(Number(x.photo_count)===1?'photo':'photos'))+'</small>':'';
-   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b>'+photoMeta+'<small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+verificationBox+matchingNextHtml+matchingHelp+trackingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
+   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b>'+photoMeta+'<small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+verificationBox+matchingNextHtml+matchingHelp+trackingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+clientReviewMarkup(x)+'</div>';
   }
 
   const state=x.status||'requested',requiresQuote=!!(x.requires_quote||x.quote);
@@ -1940,7 +1987,7 @@ function renderBookings(){
     :state==='verification_review'
       ?'<div class="booking-verification-box"><b>'+(lang==='pt'?'A verificar o teu contacto':'We are verifying your contact')+'</b><small>'+(lang==='pt'?'O TRIÂNGULO vai confirmar o contacto antes de enviar o pedido ao prestador.':'TRIÂNGULO will confirm your contact before sending the request to the provider.')+'</small></div>'
       :'';
-  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small>'+directPhotoMeta+'</div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+verificationBox+directNextHtml+brief+waitingHelp+trackingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+'</div>';
+  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small>'+directPhotoMeta+'</div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+verificationBox+directNextHtml+brief+waitingHelp+trackingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+clientReviewMarkup(x)+'</div>';
  }).join('')+'</div>';
 
  $$('[data-confirm-quote]').forEach(btn=>btn.onclick=()=>confirmDirectQuote(btn.dataset.confirmQuote,btn));
@@ -1950,6 +1997,7 @@ function renderBookings(){
  $$('[data-complete-booking]').forEach(btn=>btn.onclick=()=>completeDirectBooking(btn.dataset.completeBooking,btn));
  $('[data-retry-service]').forEach(btn=>btn.onclick=()=>runSearch(decodeURIComponent(btn.dataset.retryService||''),null));
  $('[data-verify-client]').forEach(btn=>btn.onclick=()=>openClientVerification(btn.dataset.verifyClient,btn.dataset.verifyChannel||'email'));
+ bindClientReviewActions();
 }
 async function confirmDirectQuote(token,btn){
  if(!token)return;
@@ -2008,7 +2056,7 @@ async function completeMatchingRequest(token,btn){
     :(lang==='pt'?'Não foi possível concluir.':'Could not complete.');
    toast(msg);return
   }
-  await syncLocalBookings();renderBookings();toast(lang==='pt'?'Serviço concluído ✓':'Service completed ✓');
+  await syncLocalBookings();renderBookings();toast(lang==='pt'?'Serviço concluído ✓ Podes deixar uma avaliação.':'Service completed ✓ You can now leave a review.');
  }catch(e){console.error(e);toast(lang==='pt'?'Não foi possível concluir.':'Could not complete.')}
  finally{if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
@@ -2028,7 +2076,7 @@ async function completeDirectBooking(token,btn){
       :(lang==='pt'?'Não foi possível concluir o serviço.':'Could not complete the service.');
    toast(msg);return
   }
-  await syncLocalBookings();renderBookings();toast(lang==='pt'?'Serviço concluído ✓':'Service completed ✓');
+  await syncLocalBookings();renderBookings();toast(lang==='pt'?'Serviço concluído ✓ Podes deixar uma avaliação.':'Service completed ✓ You can now leave a review.');
  }catch(e){console.error(e);toast(lang==='pt'?'Não foi possível concluir o serviço.':'Could not complete the service.')}
  finally{if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
