@@ -88,3 +88,7 @@
   .client-quote-box{padding:11px}
 }
 
+
+/* request next-action clarity */
+.booking-next-step{margin-top:5px;padding:8px 10px;border-radius:10px;background:#eef8f4;color:#17624d;font-size:10.5px;line-height:1.4;font-weight:850}
+@media(max-width:620px){.result-card .desc{font-size:11px!important;line-height:1.48}.provider-tag{font-size:9px!important}.result-card-action span{font-size:9.5px!important;line-height:1.35}.booking-next-step{font-size:11px}}
