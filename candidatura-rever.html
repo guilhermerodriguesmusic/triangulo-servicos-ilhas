@@ -31,8 +31,8 @@
   <div class="state" data-pt="Acesso administrativo" data-en="Admin access">Acesso administrativo</div>
   <h1 data-pt="Definir password" data-en="Set password">Definir password</h1>
   <p class="login-note" data-pt="Escolhe uma password nova para a tua conta de administrador." data-en="Choose a new password for your administrator account.">Escolhe uma password nova para a tua conta de administrador.</p>
-  <input id="newAdminPassword" type="password" minlength="10" autocomplete="new-password" data-ph-pt="Nova password (mín. 10 caracteres)" data-ph-en="New password (min. 10 characters)" placeholder="Nova password (mín. 10 caracteres)">
-  <input id="newAdminPassword2" type="password" minlength="10" autocomplete="new-password" data-ph-pt="Repetir nova password" data-ph-en="Repeat new password" placeholder="Repetir nova password">
+  <input id="newAdminPassword" type="password" minlength="12" autocomplete="new-password" data-ph-pt="Nova password (mín. 12 caracteres)" data-ph-en="New password (min. 12 characters)" placeholder="Nova password (mín. 12 caracteres)">
+  <input id="newAdminPassword2" type="password" minlength="12" autocomplete="new-password" data-ph-pt="Repetir nova password" data-ph-en="Repeat new password" placeholder="Repetir nova password">
   <button id="saveAdminPassword" class="btn yes" type="button" data-pt="Guardar password e continuar" data-en="Save password and continue">Guardar password e continuar</button>
   <p id="recoveryMsg" class="login-note"></p>
 </div>
@@ -116,7 +116,7 @@ async function saveAdminPassword(){
   const p1=$('#newAdminPassword').value,p2=$('#newAdminPassword2').value,msg=$('#recoveryMsg');
   const resetToken=new URLSearchParams(location.search).get('admin_reset')||'';
   if(!resetToken){msg.textContent=tr('A ligação de recuperação não é válida.','The recovery link is not valid.');return}
-  if(p1.length<10){msg.textContent=tr('Usa pelo menos 10 caracteres.','Use at least 10 characters.');return}
+  if(p1.length<12){msg.textContent=tr('Usa pelo menos 12 caracteres.','Use at least 12 characters.');return}
   if(p1!==p2){msg.textContent=tr('As passwords não coincidem.','Passwords do not match.');return}
   $('#saveAdminPassword').disabled=true;
   msg.textContent=tr('A guardar…','Saving…');
