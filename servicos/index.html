@@ -1730,7 +1730,7 @@ function renderBookings(){
    const state=x.status||'matching',offers=Array.isArray(x.offers)?x.offers:[];
    const offersHtml=offers.length?'<div style="display:grid;gap:7px;margin-top:10px">'+offers.map(o=>'<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+(o.total_amount!=null?'<br><strong>€'+Number(o.total_amount).toFixed(2)+'</strong>':'')+(!o.selected&&state!=='confirmed'?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>').join('')+'</div>':'';
    const contact=(x.contact_released&&(x.provider_email||x.provider_phone))?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider?'<br>'+escapeHtml(x.provider):'')+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'';
-   return '<div class="card booking-local"><b>'+escapeHtml(x.description|| (lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.island||'')+(x.date?' · '+escapeHtml(x.date):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+(state==='matching'?'<small style="margin-top:7px">'+(lang==='pt'?'Estamos a avisar automaticamente serviços compatíveis.':'We are automatically notifying matching services.')+'</small>':'')+offersHtml+contact+(state==='confirmed'?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
+   return '<div class="card booking-local"><b>'+escapeHtml(x.description|| (lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.island||'')+(x.date?' · '+escapeHtml(x.date):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+(state==='matching'?'<small style="margin-top:7px">'+(lang==='pt'?'Estamos a avisar automaticamente serviços compatíveis.':'We are automatically notifying matching services.')+'</small>':'')+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
   }
   const state=x.status||'requested';
   const canCompleteDirect=state==='confirmed'&&(!paymentsLive||x.payment_status==='paid')&&(!x.date||x.date<=localDateISO());
@@ -1754,9 +1754,14 @@ async function completeMatchingRequest(token,btn){
  if(!token)return;const old=btn.textContent;btn.disabled=true;
  try{
   const {data,error}=await db.rpc('complete_service_request',{p_client_token:token});
-  if(error||!data||!data.ok){toast(lang==='pt'?'Não foi possível concluir.':'Could not complete.');return}
+  if(error||!data||!data.ok){
+   const msg=data&&data.state==='too_early'
+    ?(lang==='pt'?'Só podes concluir o serviço na data marcada ou depois.':'You can only complete the service on or after the scheduled date.')
+    :(lang==='pt'?'Não foi possível concluir.':'Could not complete.');
+   toast(msg);return
+  }
   await syncLocalBookings();renderBookings();toast(lang==='pt'?'Serviço concluído ✓':'Service completed ✓');
- }catch(e){console.error(e)}
+ }catch(e){console.error(e);toast(lang==='pt'?'Não foi possível concluir.':'Could not complete.')}
  finally{if(btn&&document.body.contains(btn)){btn.disabled=false;btn.textContent=old}}
 }
 async function completeDirectBooking(token,btn){
