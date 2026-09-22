@@ -43,6 +43,7 @@
     <div class="row"><b data-pt="Nome" data-en="Name">Nome</b><span id="name"></span></div>
     <div class="row"><b data-pt="Negócio" data-en="Business">Negócio</b><span id="business"></span></div><div class="row"><b data-pt="NIF / NIPC" data-en="Tax ID (NIF/NIPC)">NIF / NIPC</b><span id="taxId"></span></div><div class="row" id="emailReviewRow"><b>Email</b><span><span id="emailValue"></span><span class="verify-inline" id="emailVerifyWrap" style="margin-top:5px"><span id="emailVerifyStatus"></span><button id="emailVerifyBtn" type="button"></button></span></span></div><div class="row"><b data-pt="Telefone / WhatsApp" data-en="Phone / WhatsApp">Telefone / WhatsApp</b><span><span id="phoneValue"></span><span class="verify-inline" style="margin-top:5px"><span id="phoneVerifyStatus"></span><button id="phoneVerifyBtn" type="button"></button></span></span></div>
     <div class="row"><b data-pt="Trabalha em" data-en="Works in">Trabalha em</b><span id="islands"></span></div>
+    <div class="row"><b data-pt="Localidade / freguesia" data-en="Locality / parish">Localidade / freguesia</b><span id="locality"></span></div>
     <div class="row"><b data-pt="Categoria principal" data-en="Main category">Categoria principal</b><span id="primaryCategory"></span></div><div class="row"><b data-pt="Categorias" data-en="Categories">Categorias</b><span id="categories"></span></div>
     <div class="row" id="otherRow" hidden><b data-pt="Outro serviço" data-en="Other service">Outro serviço</b><span id="otherService"></span></div>
     <div class="row"><b data-pt="Preço" data-en="Price">Preço</b><span id="price"></span></div>
@@ -157,7 +158,7 @@ async function load(){
   }
   $('#loading').hidden=true;$('#review').hidden=false;
   currentApplicationId=data.application_id||null;$('#name').textContent=data.name||'—';$('#business').textContent=data.business_name||'—';$('#taxId').textContent=data.tax_id||'—';$('#emailValue').textContent=data.email||tr('Não indicado','Not provided');$('#phoneValue').textContent=data.phone||'—';$('#emailVerifyWrap').style.display=data.email?'':'none';if(data.email)renderVerify('email',data.email_verification_status);renderVerify('phone',data.phone_verification_status);
-  $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#primaryCategory').textContent=CAT[data.primary_category]?.[lang]||data.primary_category||'—';$('#categories').textContent=(data.categories||[]).map(x=>CAT[x]?.[lang]||x).join(', ')||'—';if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
+  $('#islands').textContent=(data.service_islands||[]).join(', ')||'—';$('#locality').textContent=data.locality||'—';$('#primaryCategory').textContent=CAT[data.primary_category]?.[lang]||data.primary_category||'—';$('#categories').textContent=(data.categories||[]).map(x=>CAT[x]?.[lang]||x).join(', ')||'—';if(data.other_service){$('#otherRow').hidden=false;$('#otherService').textContent=data.other_service}
   $('#price').textContent=fmtPrice(data);$('#availability').textContent=data.availability||'—';$('#website').textContent=data.website||'—';
   $('#referred').textContent=data.referred_by||'—';$('#description').textContent=data.description||'—';
   if(mode==='approve'){$('#title').textContent=tr('Confirmar aprovação','Confirm approval');$('#reject').style.display='none'}
