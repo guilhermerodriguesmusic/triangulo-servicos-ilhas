@@ -1097,6 +1097,15 @@ body.route-public-results #explore{display:block!important}
  .book-brief textarea{min-height:104px}
 }
 </style>
+<style id="provider-request-details-v1">
+.pr-app-location-row span{font-weight:850;color:#0b755d}
+.pr-app-details-row{grid-template-columns:92px 1fr}
+.pr-app-details-row span{white-space:pre-wrap;line-height:1.5}
+@media(max-width:420px){
+ .pr-app-details-row{grid-template-columns:1fr}
+ .pr-app-details-row b{margin-bottom:-3px}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -1405,9 +1414,10 @@ body.route-public-results #explore{display:block!important}
         <h1 id="prAppTitle" data-pt="Podes aceitar este serviço?" data-en="Can you accept this job?">Podes aceitar este serviço?</h1>
         <div class="pr-app-details">
           <div class="pr-app-row"><b data-pt="Ilha" data-en="Island">Ilha</b><span id="prAppIsland"></span></div>
+          <div class="pr-app-row pr-app-location-row"><b data-pt="Onde" data-en="Where">Onde</b><span id="prAppLocation"></span></div>
           <div class="pr-app-row"><b data-pt="Data" data-en="Date">Data</b><span id="prAppDate"></span></div>
           <div class="pr-app-row"><b data-pt="Hora" data-en="Time">Hora</b><span id="prAppTime"></span></div>
-          <div class="pr-app-row"><b data-pt="Pedido" data-en="Request">Pedido</b><span id="prAppNotes"></span></div>
+          <div class="pr-app-row pr-app-details-row"><b data-pt="O que é para fazer" data-en="Job details">O que é para fazer</b><span id="prAppNotes"></span></div>
           <div class="pr-app-row"><b data-pt="Responder até" data-en="Reply by">Responder até</b><span id="prAppExpires"></span></div>
         </div>
         <div id="prAppQuoteBox" class="pr-app-quote" hidden>
@@ -2411,6 +2421,7 @@ function providerAppRenderState(state,data={}){
       title.textContent=lang==='pt'?title.dataset.pt:title.dataset.en;
     }
     $('#prAppIsland').textContent=data.island||'—';
+    $('#prAppLocation').textContent=data.location_text||data.island||'—';
     $('#prAppDate').textContent=data.service_date?formatServiceDate(data.service_date):'—';
     $('#prAppTime').textContent=formatServiceTime(data.service_time);
     $('#prAppNotes').textContent=data.notes||(lang==='pt'?'Sem notas adicionais':'No additional notes');
