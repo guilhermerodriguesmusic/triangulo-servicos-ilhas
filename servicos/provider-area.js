@@ -191,7 +191,10 @@ function renderProviderDashboard(data){
       if(generic){const pt={sent:'Novo pedido compatível',accepted:'Disponível · aguarda cliente',quoted:'Orçamento enviado · aguarda cliente',selected:'Serviço confirmado',completed:'Concluído',declined:'Recusado',expired:'Expirado'};const en={sent:'New matching request',accepted:'Available · awaiting customer',quoted:'Quote sent · awaiting customer',selected:'Service confirmed',completed:'Completed',declined:'Declined',expired:'Expired'};stateLabel=(lang==='pt'?pt:en)[x.status]||x.status}
       else stateLabel=providerBookingStatus(x.status,x.payment_status);
       const locked=!hasClient&&(x.status==='confirmed'||x.status==='accepted'||x.status==='quoted')?'<div class="pa-note" style="text-align:left">'+(lang==='pt'?'🔒 O contacto é libertado quando o serviço fica confirmado.':'🔒 Contact is released when the service is confirmed.')+'</div>':'';
-      const photoSlot=isPending?'<div class="request-photo-provider-slot" hidden data-provider-photo-kind="'+(generic?'match':'booking')+'" data-provider-photo-id="'+escapeHtml(x.id)+'"></div>':'';
+      const photoVisible=generic
+        ?['sent','accepted','quoted','selected','completed'].includes(x.status)
+        :['requested','quoted','confirmed','completed'].includes(x.status);
+      const photoSlot=photoVisible?'<div class="request-photo-provider-slot" hidden data-provider-photo-kind="'+(generic?'match':'booking')+'" data-provider-photo-id="'+escapeHtml(x.id)+'"></div>':'';
       return '<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(x.service_title||(lang==='pt'?'Serviço':'Service'))+'</b><span class="pa-booking-status '+escapeHtml(x.status||'')+'">'+escapeHtml(stateLabel)+'</span></div><div class="pa-client-verified">✓ '+(lang==='pt'?'Cliente verificado':'Verified customer')+'</div><div class="pa-request-meta"><span>📍 '+escapeHtml(place)+'</span><span>🗓 '+when+'</span></div><div class="pa-request-brief"><b>'+(lang==='pt'?'O que é para fazer':'Job details')+'</b><span>'+note+'</span></div>'+photoSlot+fixedPriceSummary+actions+locked+client+'</div>';
     }).join('');
     if(typeof hydrateProviderDashboardPhotos==='function')hydrateProviderDashboardPhotos(providerSessionToken);
