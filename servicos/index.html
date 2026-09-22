@@ -1736,10 +1736,10 @@ function renderBookings(){
   const canCompleteDirect=state==='confirmed'&&(!paymentsLive||x.payment_status==='paid')&&(!x.date||x.date<=localDateISO());
   return '<div class="card booking-local"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+(x.provider?(lang==='pt'?'por ':'by ')+escapeHtml(x.provider)+' · ':'')+'📍 '+escapeHtml(x.island||'')+' · '+escapeHtml(x.date||'')+(x.time?' · '+escapeHtml(x.time):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status))+'</span>'+(x.total_amount!=null?'<small style="margin-top:7px"><b>Total: €'+Number(x.total_amount).toFixed(2)+'</b> · '+(lang==='pt'?'inclui taxa TRIÂNGULO':'includes TRIÂNGULO fee')+'</small>':'')+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+(x.contact_released&&(x.provider_email||x.provider_phone)?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'')+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+'</div>';
  }).join('')+'</div>';
- $ $('[data-pay-booking]').forEach(btn=>btn.onclick=()=>startBookingCheckout(btn.dataset.payBooking,btn));
- $ $('[data-select-request]').forEach(btn=>btn.onclick=()=>selectMatchingOffer(btn.dataset.selectRequest,btn.dataset.match,btn));
- $ $('[data-complete-request]').forEach(btn=>btn.onclick=()=>completeMatchingRequest(btn.dataset.completeRequest,btn));
- $ $('[data-complete-booking]').forEach(btn=>btn.onclick=()=>completeDirectBooking(btn.dataset.completeBooking,btn));
+ $('[data-pay-booking]').forEach(btn=>btn.onclick=()=>startBookingCheckout(btn.dataset.payBooking,btn));
+ $('[data-select-request]').forEach(btn=>btn.onclick=()=>selectMatchingOffer(btn.dataset.selectRequest,btn.dataset.match,btn));
+ $('[data-complete-request]').forEach(btn=>btn.onclick=()=>completeMatchingRequest(btn.dataset.completeRequest,btn));
+ $('[data-complete-booking]').forEach(btn=>btn.onclick=()=>completeDirectBooking(btn.dataset.completeBooking,btn));
 }
 async function selectMatchingOffer(token,matchId,btn){
  if(!token||!matchId)return;const old=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A confirmar…':'Confirming…';
