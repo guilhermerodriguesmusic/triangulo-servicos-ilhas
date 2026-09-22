@@ -1820,7 +1820,7 @@ function openBooking(id){
  };
 }
 
-function getLocalBookings(){try{return JSON.parse(store.get('tri_booking_history','[]'))||[]}catch{return []}}
+function getLocalBookings(){try{const items=JSON.parse(store.get('tri_booking_history','[]'));return Array.isArray(items)?items:[]}catch{return []}}
 function saveBookingLocal(entry){
  const items=getLocalBookings().filter(x=>!(entry.token&&x.token===entry.token));
  items.unshift(entry);store.set('tri_booking_history',JSON.stringify(items.slice(0,20)));renderBookings();
@@ -1907,7 +1907,7 @@ function renderBookings(){
    const state=x.status||'matching',offers=Array.isArray(x.offers)?x.offers:[];
    const offersHtml=offers.length?'<div style="display:grid;gap:7px;margin-top:10px">'+offers.map(o=>{
     const price=o.total_amount!=null?'<div class="client-quote-row" style="margin-top:8px"><span>'+(lang==='pt'?'Serviço':'Service')+'</span><b>'+formatEuro(o.provider_amount)+'</b></div><div class="client-quote-row"><span>'+(lang==='pt'?'Taxa TRIÂNGULO '+feePercentLabel():'TRIÂNGULO fee '+feePercentLabel())+'</span><b>'+formatEuro(o.service_fee_amount)+'</b></div><div class="client-quote-total"><span>Total</span><strong>'+formatEuro(o.total_amount)+'</strong></div>':'';
-    return '<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+price+(!o.selected&&state!=='confirmed'?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>';
+    return '<div class="pa-client" style="margin-top:0"><b>'+escapeHtml(o.service_title||o.provider||(lang==='pt'?'Serviço':'Service'))+'</b><br><span>'+(lang==='pt'?'por ':'by ')+escapeHtml(o.provider||'')+'</span>'+price+(state==='offers'&&!o.selected?'<br><button class="primary" data-select-request="'+escapeHtml(x.token)+'" data-match="'+escapeHtml(o.match_id)+'" style="margin-top:7px;padding:8px 10px">'+(lang==='pt'?'Escolher este serviço':'Choose this service')+'</button>':'')+'</div>';
    }).join('')+'</div>':'';
    const contact=(x.contact_released&&(x.provider_email||x.provider_phone))?'<div class="pa-client" style="margin-top:9px"><b>'+(lang==='pt'?'Contacto do prestador':'Provider contact')+'</b>'+(x.provider?'<br>'+escapeHtml(x.provider):'')+(x.provider_email?'<br>'+escapeHtml(x.provider_email):'')+(x.provider_phone?'<br>'+escapeHtml(x.provider_phone):'')+'</div>':'';
    const matchedCount=Number(x.matched_count||0),pendingCount=Number(x.pending_count||0),expiredCount=Number(x.expired_count||0),declinedCount=Number(x.declined_count||0);
