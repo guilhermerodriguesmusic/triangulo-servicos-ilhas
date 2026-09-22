@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260922-v1-0-rc59';
+const CACHE='triangulo-pwa-20260922-v1-0-rc60';
 const CORE=[
   '/',
   '/index.html',
@@ -10,6 +10,10 @@ const CORE=[
   '/terms.html',
   '/instalar/',
   '/servicos/',
+  '/servicos/app-shell.css',
+  '/servicos/app-shell.js',
+  '/servicos/provider-area.css',
+  '/servicos/provider-area.js',
   '/app.html',
   '/manifest.json',
   '/logo.svg',
