@@ -1572,13 +1572,13 @@ function renderProviders(){}
 async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
  const serial=++searchSerial;providersLoading=true;providersLoadError=false;activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;updateResults(activeSearchQuery);
  try{
-  const {data,error}=await db.rpc('search_services',{p_island:island,p_query:activeSearchQuery,p_group:activeServiceGroup});
+  const {data,error}=await db.rpc('search_services_v2',{p_island:island,p_query:activeSearchQuery,p_group:activeServiceGroup});
   if(error)throw error;if(serial!==searchSerial)return;
   realProviders=(data||[]).map(s=>({
     id:s.service_id,service_id:s.service_id,provider_id:s.provider_id,
     title:s.service_title,description:s.service_description,category_code:s.category_code,
     pricing_type:s.pricing_type,price:s.price,availability:s.availability,
-    name:s.provider_name,service_islands:s.service_islands||[],
+    name:s.provider_name,locality:s.provider_locality||'',service_islands:s.service_islands||[],
     photo_data:s.photo_data,completed_jobs:Number(s.completed_jobs||0),response_rate:Number(s.response_rate||0),
     rank_score:Number(s.rank_score||0)
   }));
@@ -1661,7 +1661,7 @@ function updateResults(q=activeSearchQuery){
   const actionHint=quote
     ?(lang==='pt'?'Recebes o orçamento antes de confirmar':'See the quote before confirming')
     :(lang==='pt'?'Pedido sem criação de conta':'Request without an account');
-  return '<article class="result-card" data-service="'+s.service_id+'">'+providerAvatar(s.photo_data,provider,'card')+'<div class="result-card-copy"><div class="result-card-name"><b>'+provider+'</b><span class="loc">📍 '+escapeHtml((s.service_islands||[]).join(' · '))+'</span></div><div class="provider-tags"><span class="provider-tag provider-tag-service">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price-block"><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+priceNote+'</div></div><div class="result-card-action"><span>'+actionHint+'</span><button type="button" data-open-service="'+s.service_id+'">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Pedir serviço':'Request service'))+'</button></div></div></article>';
+  return '<article class="result-card" data-service="'+s.service_id+'">'+providerAvatar(s.photo_data,provider,'card')+'<div class="result-card-copy"><div class="result-card-name"><b>'+provider+'</b><span class="loc">📍 '+escapeHtml([s.locality,(s.service_islands||[]).join(' · ')].filter(Boolean).join(' · '))+'</span></div><div class="provider-tags"><span class="provider-tag provider-tag-service">'+title+'</span>'+proof+availability+'</div><div class="desc">'+escapeHtml(s.description||'')+'</div><div class="provider-price-block"><div class="provider-price">'+providerPrice(s)+'</div><div class="provider-price-note">'+priceNote+'</div></div><div class="result-card-action"><span>'+actionHint+'</span><button type="button" data-open-service="'+s.service_id+'">'+(quote?(lang==='pt'?'Pedir orçamento':'Request quote'):(lang==='pt'?'Pedir serviço':'Request service'))+'</button></div></div></article>';
  }).join('');
  bindProvider();
 }
