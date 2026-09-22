@@ -1195,7 +1195,8 @@ body.route-public-results #explore{display:block!important}
   const qs=new URLSearchParams(location.search);
   const privateKeys=['prestador','booking_token','client_token','request_token','match_token','provider_password_token','stripe','payment'];
   const privateRoute=privateKeys.some(k=>qs.has(k))||location.hash==='#prestador'||location.hash==='#provider'||location.hash.startsWith('#provider-password=');
-  if(!privateRoute){
+  const appEntry=qs.get('app')==='1'||window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  if(!privateRoute&&!appEntry){
     document.body.classList.add('route-public-results','results-mode');
   }
 })();
@@ -1667,6 +1668,7 @@ function providerAvatar(photo,name,size='card'){
 function groupLabel(code){const g=serviceGroups.find(x=>x.code===code);return g?(lang==='pt'?g.pt:g.en):''}
 function buildResultsUrl(){
  const params=new URLSearchParams();
+ if(isStandaloneApp()||new URLSearchParams(location.search).get('app')==='1')params.set('app','1');
  params.set('island',island);
  if(activeSearchQuery)params.set('q',activeSearchQuery);
  if(activeServiceGroup)params.set('group',activeServiceGroup);
@@ -1753,7 +1755,9 @@ function showScreen(id){$('.screen').forEach(s=>s.classList.toggle('active',s.id
 function isStandaloneApp(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
 function screenUrl(id){
  if(id==='explore')return buildResultsUrl();
- const params=new URLSearchParams();if(lang==='en')params.set('lang','en');
+ const params=new URLSearchParams();
+ if(isStandaloneApp()||new URLSearchParams(location.search).get('app')==='1')params.set('app','1');
+ if(lang==='en')params.set('lang','en');
  return location.pathname+(params.toString()?'?'+params.toString():'');
 }
 function navigateScreen(id){
@@ -2936,7 +2940,26 @@ async function init(){
    return;
  }
 
- // Public /servicos/ is a results page, not the old app onboarding.
+ const appEntry=qs.get('app')==='1'||isStandaloneApp();
+ if(appEntry&&!querySearch&&!activeServiceGroup){
+   document.body.classList.remove('route-public-results','results-mode');
+   const appParams=new URLSearchParams();appParams.set('app','1');if(lang==='en')appParams.set('lang','en');
+   history.replaceState({triScreen:'home'},'',location.pathname+'?'+appParams.toString());
+
+   if(store.get('tri_onboarded','')!=='1'){
+     $('#mainShell').classList.add('hidden');
+     $('#splash').classList.remove('hidden');
+   }else{
+     $('#splash').classList.add('hidden');
+     $('#mainShell').classList.remove('hidden');
+     showScreen('home');
+     loadProviders('',null);
+   }
+   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+   return;
+ }
+
+ // Public /servicos/ remains a results page in the browser.
  $('#splash').classList.add('hidden');
  $('#mainShell').classList.remove('hidden');
 
