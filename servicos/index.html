@@ -1746,7 +1746,7 @@ $('#requestForm').onsubmit=async e=>{
  let pref=d.contact_preference||'both';
  if(!email)pref='whatsapp';else if(!phone)pref='email';
  status.textContent=lang==='pt'?'A procurar serviços…':'Finding services…';
- const payload={island,description:requestDescription,category_code:d.category_code||null,requested_date:d.date||null,location_text:requestLocation||null,budget:d.budget?Number(d.budget):null,client_name:d.client_name&&d.client_name.trim()?d.client_name.trim():null,client_email:email||null,client_phone:phone||null,contact_preference:pref};
+ const payload={island,description:requestDescription,category_code:d.category_code||null,requested_date:d.date||null,location_text:requestLocation||null,budget:d.budget?Number(d.budget):null,client_name:d.client_name&&d.client_name.trim()?d.client_name.trim():null,client_email:email||null,client_phone:phone||null,contact_preference:pref,locale:lang};
  try{
   const {data,error}=await db.rpc('submit_service_request',{p_payload:payload});
   if(error)throw error;
@@ -1804,7 +1804,7 @@ function openBooking(id){
   const activeDate=$('[data-date].active'),serviceDate=$('#bookCustomDate').value||(activeDate&&activeDate.dataset.date)||'';
   if(!serviceDate){toast(lang==='pt'?'Escolhe uma data.':'Choose a date.');return}
   const activeTime=$('[data-time].active');
-  const payload={provider_id:p.provider_id,service_id:p.service_id,island,service_date:serviceDate,service_time:activeTime?activeTime.dataset.time:null,location_text:locationText,client_name:$('#bookName').value.trim()||null,client_email:email||null,client_phone:phone||null,contact_preference:pref,notes:note,request_version:2};
+  const payload={provider_id:p.provider_id,service_id:p.service_id,island,service_date:serviceDate,service_time:activeTime?activeTime.dataset.time:null,location_text:locationText,client_name:$('#bookName').value.trim()||null,client_email:email||null,client_phone:phone||null,contact_preference:pref,notes:note,request_version:2,locale:lang};
   const originalLabel=submitBtn.textContent;submitBtn.disabled=true;submitBtn.textContent=lang==='pt'?(quote?'A pedir orçamento…':'A enviar…'):(quote?'Requesting quote…':'Sending…');
   try{
    const {data,error}=await db.rpc('create_booking_request',{p_payload:payload});
