@@ -2079,7 +2079,7 @@ async function init(){
    try{
      const {data,error}=await db.rpc('service_request_client_context',{p_token:requestToken});
      if(!error&&data&&data.ok){
-       saveBookingLocal({kind:'matching',token:requestToken,island:data.island||'',description:data.description||'',date:data.requested_date||'',status:data.state||'matching',offers:data.offers||[],provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,createdAt:new Date().toISOString()});
+       saveBookingLocal({kind:'matching',token:requestToken,island:data.island||'',description:data.description||'',location_text:data.location_text||null,date:data.requested_date||'',status:data.state||'matching',verification_status:data.verification_status||null,verification_channel:data.verification_channel||null,offers:data.offers||[],provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,createdAt:new Date().toISOString()});
        history.replaceState({},'',location.pathname);$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
        await openClientBookings();if(data.state==='verification_pending')setTimeout(()=>openClientVerification(requestToken,data.verification_channel||'email'),80);return;
      }
@@ -2091,7 +2091,10 @@ async function init(){
      const {data,error}=await db.rpc('booking_client_context',{p_token:clientBookingToken});
      if(!error&&data&&data.ok){
        saveBookingLocal({
+         kind:'direct',
          token:clientBookingToken,
+         verification_status:data.verification_status||null,
+         verification_channel:data.verification_channel||null,
          provider:data.provider||'TRIÂNGULO',
          island:data.island||'',
          date:data.service_date||'',
