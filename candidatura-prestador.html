@@ -310,8 +310,8 @@ async function loadApplicationTimeEstimate(){
 let currentFormStep=1;
 function updateFormStep(step,{focus=true}={}){
   currentFormStep=Math.max(1,Math.min(4,Number(step)||1));
-  $('.form-step').forEach(s=>s.classList.toggle('active',Number(s.dataset.formStep)===currentFormStep));
-  $('.steps .step').forEach((s,i)=>{const n=i+1;s.classList.toggle('active',n===currentFormStep);s.classList.toggle('done',n<currentFormStep)});
+  $$('.form-step').forEach(s=>s.classList.toggle('active',Number(s.dataset.formStep)===currentFormStep));
+  $$('.steps .step').forEach((s,i)=>{const n=i+1;s.classList.toggle('active',n===currentFormStep);s.classList.toggle('done',n<currentFormStep)});
   const estimate=$('#applicationTimeEstimate');
   if(estimate&&APPLICATION_ESTIMATED_MINUTES){estimate.hidden=false;estimate.textContent=lang==='pt'?'Demora cerca de '+APPLICATION_ESTIMATED_MINUTES+' minutos.':'Takes about '+APPLICATION_ESTIMATED_MINUTES+' minutes.'}
   else if(estimate)estimate.hidden=true;
@@ -329,7 +329,7 @@ function validateFormStep(step){
   const status=$('#status');status.textContent='';
   if(!validateNativeInStep(step))return false;
   if(step===2){
-    const islands=$('[data-service-island]:checked'),cats=$('[data-provider-cat]:checked');
+    const islands=$$('[data-service-island]:checked'),cats=$$('[data-provider-cat]:checked');
     if(!islands.length){status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return false}
     if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return false}
     if(!$('#primaryCategory').value){status.textContent=lang==='pt'?'Escolhe uma categoria principal.':'Choose a main category.';$('#primaryCategory').focus();return false}
