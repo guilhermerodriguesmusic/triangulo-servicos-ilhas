@@ -935,6 +935,17 @@ body.route-public-results #explore{display:block!important}
 </style>
 
 
+
+<style id="client-verification-v1">
+.client-verification-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#e8f6ef;color:#08745c;font-weight:950;font-size:20px;margin-bottom:10px}
+.client-verification-intro{font-size:12px;line-height:1.55;color:#5f7483;margin:0 0 16px}
+.client-verification-code{display:grid;gap:7px}.client-verification-code span{font-size:11px;font-weight:850;color:#315066}.client-verification-code input{width:100%;font-size:26px!important;font-weight:900;letter-spacing:.26em;text-align:center;border:1px solid #cadbd5;border-radius:14px;padding:13px;background:#fff}
+#clientVerifyBtn,#clientVerificationResend{width:100%;margin-top:10px;min-height:48px}
+.client-verification-protection{font-size:10px;line-height:1.45;color:#6b7f8d;margin:12px 0 0;padding:9px 10px;border-radius:10px;background:#f4f8f6}
+.booking-state.verification_pending,.booking-state.verification_review{background:#fff4d8;color:#7a5a0a}
+.booking-verification-box{margin-top:9px;padding:10px;border:1px solid #ead9a6;border-radius:12px;background:#fffaf0;display:grid;gap:7px}
+.booking-verification-box b{font-size:11px;color:#6d520d}.booking-verification-box small{font-size:10px;line-height:1.45;color:#776a4c}.booking-verification-box button{justify-self:start}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -1055,7 +1066,7 @@ body.route-public-results #explore{display:block!important}
 <details class="request-category-details"><summary data-pt="Tipo de serviço · opcional" data-en="Service type · optional">Tipo de serviço · opcional</summary><label><span class="sr-only" data-pt="Tipo de serviço" data-en="Type of service">Tipo de serviço</span><select name="category_code"><option value="" data-pt="Detetar automaticamente" data-en="Detect automatically">Detetar automaticamente</option><option value="home" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</option><option value="garden" data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</option><option value="repairs" data-pt="Reparações & Manutenção" data-en="Repairs & Maintenance">Reparações & Manutenção</option><option value="moving" data-pt="Mudanças & Entregas" data-en="Moves & Deliveries">Mudanças & Entregas</option><option value="lessons" data-pt="Aulas & Explicações" data-en="Lessons & Tutoring">Aulas & Explicações</option><option value="wellness" data-pt="Bem-estar" data-en="Wellness">Bem-estar</option><option value="tech" data-pt="Tecnologia" data-en="Technology">Tecnologia</option><option value="creative" data-pt="Fotografia & Criativos" data-en="Photography & Creative">Fotografia & Criativos</option><option value="pets" data-pt="Animais" data-en="Pets">Animais</option><option value="other" data-pt="Outro" data-en="Other">Outro</option></select></label></details>
 <div class="two"><label><span data-pt="Quando? (opcional)" data-en="When? (optional)">Quando? (opcional)</span><input type="date" name="date"></label><label><span data-pt="Onde é o serviço?" data-en="Where is the service?">Onde é o serviço?</span><input name="where" required maxlength="200" autocomplete="address-level2" data-ph-pt="Ex.: São Mateus, Madalena" data-ph-en="E.g. São Mateus, Madalena"><small class="form-note" data-pt="Zona, freguesia ou localidade — não precisas da morada completa." data-en="Area, parish or locality — no full street address is needed.">Zona, freguesia ou localidade — não precisas da morada completa.</small></label></div>
 <div class="two request-secondary-row"><label><span data-pt="Orçamento máximo (opcional)" data-en="Maximum budget (optional)">Orçamento máximo (opcional)</span><div class="money-input"><span>€</span><input name="budget" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ex.: 50"></div></label><label><span data-pt="Nome (opcional)" data-en="Name (optional)">Nome (opcional)</span><input name="client_name" autocomplete="name"></label></div>
-<fieldset class="request-contact"><legend data-pt="Email ou WhatsApp — indica pelo menos um" data-en="Email or WhatsApp — enter at least one">Email ou WhatsApp — indica pelo menos um</legend><div class="two"><label><span>Email</span><input type="email" name="client_email" autocomplete="email" inputmode="email"></label><label><span>WhatsApp</span><input name="client_phone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><small class="form-note" data-pt="Não precisas de criar conta. O pedido fica guardado neste dispositivo e, através de um canal de notificações ativo, recebes também uma ligação privada." data-en="No account is required. The request is saved on this device and, through an active notification channel, you also receive a private link.">Não precisas de criar conta. O pedido fica guardado neste dispositivo e, através de um canal de notificações ativo, recebes também uma ligação privada.</small></fieldset>
+<fieldset class="request-contact"><legend data-pt="Email ou WhatsApp — indica pelo menos um" data-en="Email or WhatsApp — enter at least one">Email ou WhatsApp — indica pelo menos um</legend><div class="two"><label><span>Email</span><input type="email" name="client_email" autocomplete="email" inputmode="email"></label><label><span>WhatsApp</span><input name="client_phone" inputmode="tel" autocomplete="tel" placeholder="+351 ..."></label></div><small class="form-note" data-pt="Não precisas de criar conta. Verificamos o contacto antes de avisar prestadores. Com email, recebes um código; se indicares apenas WhatsApp, o TRIÂNGULO valida o contacto antes de encaminhar o pedido." data-en="No account is required. We verify your contact before notifying providers. With email, you receive a code; if you only provide WhatsApp, TRIÂNGULO verifies the contact before forwarding the request.">Não precisas de criar conta. Verificamos o contacto antes de avisar prestadores. Com email, recebes um código; se indicares apenas WhatsApp, o TRIÂNGULO valida o contacto antes de encaminhar o pedido.</small></fieldset>
 <label id="requestPreferenceRow" hidden><span data-pt="Como queres receber atualizações?" data-en="How should we update you?">Como queres receber atualizações?</span><select name="contact_preference"><option value="both" data-pt="WhatsApp e email" data-en="WhatsApp and email">WhatsApp e email</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select></label>
 <div class="request-submit-block"><div id="requestSubmitStatus" class="submit-status" role="status" aria-live="polite"></div><button id="requestSubmitBtn" class="primary" type="submit" data-pt="Encontrar alguém →" data-en="Find someone →">Encontrar alguém →</button><p class="form-note" data-pt="Enviamos o pedido a prestadores compatíveis. Só confirmas um serviço quando escolheres uma resposta." data-en="We send the request to matching providers. A service is only confirmed when you choose a response.">Enviamos o pedido a prestadores compatíveis. Só confirmas um serviço quando escolheres uma resposta.</p></div></form></aside>
 <aside id="contactSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar" data-aria-pt="Fechar" data-aria-en="Close">×</button><h2 data-pt="Contactar TRIÂNGULO" data-en="Contact TRIÂNGULO">Contactar TRIÂNGULO</h2><form id="contactForm" class="form">
@@ -1067,6 +1078,17 @@ body.route-public-results #explore{display:block!important}
 <button class="primary" type="submit" data-pt="Enviar mensagem" data-en="Send message">Enviar mensagem</button>
 <p class="form-note" data-pt="O teu email é usado apenas para responder ao teu contacto." data-en="Your email is used only to reply to your enquiry.">O teu email é usado apenas para responder ao teu contacto.</p>
 </form></aside>
+<aside id="clientVerificationSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="clientVerificationTitle">
+  <div class="handle"></div><button class="close" type="button" aria-label="Fechar" data-aria-pt="Fechar" data-aria-en="Close">×</button>
+  <div class="client-verification-icon">✓</div>
+  <h2 id="clientVerificationTitle" data-pt="Confirma o teu contacto" data-en="Verify your contact">Confirma o teu contacto</h2>
+  <p id="clientVerificationIntro" class="client-verification-intro"></p>
+  <label class="client-verification-code"><span data-pt="Código de 6 dígitos" data-en="6-digit code">Código de 6 dígitos</span><input id="clientVerificationCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000"></label>
+  <button id="clientVerifyBtn" class="primary" type="button" data-pt="Verificar e enviar pedido →" data-en="Verify and send request →">Verificar e enviar pedido →</button>
+  <button id="clientVerificationResend" class="secondary" type="button" data-pt="Reenviar código" data-en="Resend code">Reenviar código</button>
+  <div id="clientVerificationStatus" class="submit-status" role="status" aria-live="polite"></div>
+  <p class="client-verification-protection" data-pt="Os prestadores não recebem este pedido antes de verificares o contacto." data-en="Providers do not receive this request until your contact is verified.">Os prestadores não recebem este pedido antes de verificares o contacto.</p>
+</aside>
 <aside id="bookSheet" class="sheet"><div class="handle"></div><button class="close" type="button" aria-label="Fechar" data-aria-pt="Fechar" data-aria-en="Close">×</button><div id="bookContent"></div></aside>
 <section id="providerAreaView" hidden>
   <div class="pa-shell">
@@ -1591,7 +1613,7 @@ $('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResul
 function syncRequestContactPreference(){
  const f=$('#requestForm'),email=f.client_email.value.trim(),phone=f.client_phone.value.trim(),row=$('#requestPreferenceRow');
  if(!whatsappNotificationsLive){
-   row.hidden=true;f.contact_preference.value='email';return;
+   row.hidden=true;f.contact_preference.value=email?'email':phone?'whatsapp':'both';return;
  }
  if(email&&phone){row.hidden=false;if(!f.contact_preference.value)f.contact_preference.value='both'}
  else{row.hidden=true;f.contact_preference.value=email?'email':phone?'whatsapp':'both'}
@@ -1616,19 +1638,18 @@ $('#requestForm').onsubmit=async e=>{
  if(!requestLocation){status.textContent=lang==='pt'?'Indica a zona, freguesia ou localidade do serviço.':'Enter the area, parish or locality for the service.';form.where.focus();submitBtn.disabled=false;return}
  if(containsDirectContactText(requestDescription)||containsDirectContactText(requestLocation)){status.textContent=lang==='pt'?'Não coloques contactos ou links na descrição/localização. Usa os campos de contacto próprios do pedido.':'Do not add contact details or links to the description/location. Use the request contact fields instead.';submitBtn.disabled=false;return}
  if(!email&&!phone){status.textContent=lang==='pt'?'Indica pelo menos um contacto: email ou WhatsApp.':'Enter at least one contact method: email or WhatsApp.';submitBtn.disabled=false;return}
- if(!email&&!whatsappNotificationsLive){status.textContent=lang==='pt'?'Enquanto as notificações por WhatsApp estão em preparação, indica um email para receberes as atualizações e a ligação privada do pedido.':'While WhatsApp notifications are being prepared, enter an email to receive updates and the private request link.';form.client_email.focus();submitBtn.disabled=false;return}
  let pref=d.contact_preference||'both';
- if(!whatsappNotificationsLive)pref='email';else if(!email)pref='whatsapp';else if(!phone)pref='email';
+ if(!email)pref='whatsapp';else if(!whatsappNotificationsLive)pref='email';else if(!phone)pref='email';
  status.textContent=lang==='pt'?'A procurar serviços…':'Finding services…';
  const payload={island,description:requestDescription,category_code:d.category_code||null,requested_date:d.date||null,location_text:requestLocation||null,budget:d.budget?Number(d.budget):null,client_name:d.client_name&&d.client_name.trim()?d.client_name.trim():null,client_email:email||null,client_phone:phone||null,contact_preference:pref,locale:lang};
  try{
   const {data,error}=await db.rpc('submit_service_request',{p_payload:payload});
   if(error)throw error;
   if(!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível publicar.':'Could not post.');submitBtn.disabled=false;return}
-  saveBookingLocal({kind:'matching',token:data.client_token,island,description:payload.description,location_text:payload.location_text,date:payload.requested_date||'',status:data.state||'matching',matched_count:Number(data.matched_count||0),createdAt:new Date().toISOString()});
+  saveBookingLocal({kind:'matching',token:data.client_token,island,description:payload.description,location_text:payload.location_text,date:payload.requested_date||'',status:data.state||'verification_pending',matched_count:Number(data.matched_count||0),verification_status:data.verification_status||null,verification_channel:data.verification_channel||null,createdAt:new Date().toISOString()});
   form.reset();syncRequestContactPreference();status.textContent='';submitBtn.disabled=false;closeSheets();
-  await openClientBookings();
-  toast(Number(data.matched_count||0)>0?(lang==='pt'?'Pedido recebido ✓ Já avisámos prestadores compatíveis.':'Request received ✓ We have already notified suitable providers.'):(lang==='pt'?'Pedido recebido ✓ O TRIÂNGULO vai procurar alguém por ti.':'Request received ✓ TRIÂNGULO will look for someone for you.'));
+  if(data.verification_status==='pending'){openClientVerification(data.client_token,data.verification_channel||'email');toast(lang==='pt'?'Código enviado. Confirma o contacto para enviarmos o pedido.':'Code sent. Verify your contact so we can send the request.');}
+  else{await openClientBookings();toast(lang==='pt'?'Pedido guardado ✓ O TRIÂNGULO vai verificar o contacto antes de avisar prestadores.':'Request saved ✓ TRIÂNGULO will verify the contact before notifying providers.');}
  }catch(err){console.error(err);status.textContent=lang==='pt'?'Erro ao publicar. Tenta novamente.':'Could not post. Please try again.';submitBtn.disabled=false}
 };
 $('#contactForm').onsubmit=async e=>{
@@ -1658,7 +1679,7 @@ function openBooking(id){
  document.querySelectorAll('[data-time]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
  function syncBookPreference(){
    const email=$('#bookEmail').value.trim(),phone=$('#bookPhone').value.trim(),sel=$('#bookPreference');
-   if(!whatsappNotificationsLive){sel.value='email';sel.disabled=true;return}
+   if(!whatsappNotificationsLive){sel.value=email?'email':phone?'whatsapp':'both';sel.disabled=true;return}
    if(email&&phone){sel.disabled=false;if(!['both','email','whatsapp'].includes(sel.value))sel.value='both'}
    else if(email){sel.value='email';sel.disabled=true}
    else if(phone){sel.value='whatsapp';sel.disabled=true}
@@ -1671,8 +1692,7 @@ function openBooking(id){
   const submitBtn=$('#confirmBook');if(submitBtn.disabled)return;
   const email=$('#bookEmail').value.trim(),phone=$('#bookPhone').value.trim();
   if(!email&&!phone){toast(lang==='pt'?'Indica um email ou WhatsApp.':'Enter an email or WhatsApp number.');return}
-  if(!email&&!whatsappNotificationsLive){toast(lang==='pt'?'Enquanto as notificações por WhatsApp estão em preparação, indica um email para receberes as atualizações do pedido.':'While WhatsApp notifications are being prepared, enter an email to receive request updates.');$('#bookEmail').focus();return}
-  let pref=$('#bookPreference').value||'both';if(!whatsappNotificationsLive)pref='email';else if(!email)pref='whatsapp';else if(!phone)pref='email';
+   let pref=$('#bookPreference').value||'both';if(!email)pref='whatsapp';else if(!whatsappNotificationsLive)pref='email';else if(!phone)pref='email';
   const note=$('#bookNote').value.trim(),locationText=$('#bookLocation').value.trim();
   if(!note){toast(lang==='pt'?'Descreve o que precisas para o prestador poder avaliar o trabalho.':'Describe what you need so the provider can assess the job.');$('#bookNote').focus();return}
   if(!locationText){toast(lang==='pt'?'Indica onde é o serviço.':'Enter where the service is.');$('#bookLocation').focus();return}
@@ -1686,13 +1706,69 @@ function openBooking(id){
    const {data,error}=await db.rpc('create_booking_request',{p_payload:payload});
    if(error)throw error;
    if(!data||!data.ok){toast((data&&data.message)?data.message:(lang==='pt'?'Não foi possível enviar.':'Could not submit.'));return}
-   saveBookingLocal({kind:'direct',token:data.client_token,provider:p.name||(lang==='pt'?'Prestador verificado':'Verified provider'),service_title:p.title,island,date:payload.service_date,time:payload.service_time,location_text:locationText,details:note,quote,requires_quote:quote,status:'requested',createdAt:new Date().toISOString()});
-   closeSheets();await openClientBookings();toast(lang==='pt'?'Pedido enviado ✓ Podes acompanhá-lo aqui.':'Request sent ✓ You can track it here.');
+   saveBookingLocal({kind:'direct',token:data.client_token,provider:p.name||(lang==='pt'?'Prestador verificado':'Verified provider'),service_title:p.title,island,date:payload.service_date,time:payload.service_time,location_text:locationText,details:note,quote,requires_quote:quote,status:data.state||'verification_pending',verification_status:data.verification_status||null,verification_channel:data.verification_channel||null,createdAt:new Date().toISOString()});
+   closeSheets();
+   if(data.verification_status==='pending'){openClientVerification(data.client_token,data.verification_channel||'email');toast(lang==='pt'?'Código enviado. Confirma o contacto antes de enviarmos o pedido ao prestador.':'Code sent. Verify your contact before we send the request to the provider.');}
+   else{await openClientBookings();toast(lang==='pt'?'Pedido guardado ✓ O TRIÂNGULO vai verificar o contacto antes de avisar o prestador.':'Request saved ✓ TRIÂNGULO will verify the contact before notifying the provider.');}
   }catch(err){console.error(err);toast(lang==='pt'?'Não foi possível enviar.':'Could not submit.')}
   finally{if(document.body.contains(submitBtn)){submitBtn.disabled=false;submitBtn.textContent=originalLabel}}
  };
 }
 
+let activeClientVerificationToken=null;
+function openClientVerification(token,channel='email'){
+ activeClientVerificationToken=token||null;
+ const intro=$('#clientVerificationIntro'),status=$('#clientVerificationStatus'),code=$('#clientVerificationCode');
+ if(intro)intro.textContent=lang==='pt'
+   ?(channel==='whatsapp'?'Enviámos um código para o teu WhatsApp. Introduz-o aqui para enviarmos o pedido aos prestadores.':'Enviámos um código para o teu email. Introduz-o aqui para enviarmos o pedido aos prestadores.')
+   :(channel==='whatsapp'?'We sent a code to your WhatsApp. Enter it here so we can send the request to providers.':'We sent a code to your email. Enter it here so we can send the request to providers.');
+ if(status)status.textContent='';if(code)code.value='';
+ openSheet('clientVerificationSheet');
+ setTimeout(()=>{if(code&&!window.matchMedia('(max-width:620px)').matches)code.focus({preventScroll:true})},120);
+}
+async function verifyClientContact(){
+ const token=activeClientVerificationToken,code=$('#clientVerificationCode').value.trim(),status=$('#clientVerificationStatus'),btn=$('#clientVerifyBtn');
+ if(!token)return;
+ if(!/^\d{6}$/.test(code)){status.textContent=lang==='pt'?'Introduz o código de 6 dígitos.':'Enter the 6-digit code.';return}
+ const old=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A verificar…':'Verifying…';status.textContent='';
+ try{
+   const {data,error}=await db.rpc('verify_client_request',{p_token:token,p_code:code});
+   if(error)throw error;
+   if(!data||!data.ok){
+     const msg=data&&data.message;
+     status.textContent=msg==='wrong_code'
+       ?(lang==='pt'?'Código incorreto. Confirma e tenta novamente.':'Incorrect code. Check it and try again.')
+       :msg==='expired'
+         ?(lang==='pt'?'O código expirou. Pede um novo código.':'The code expired. Request a new code.')
+         :msg==='too_many_attempts'
+           ?(lang==='pt'?'Demasiadas tentativas. Pede um novo código.':'Too many attempts. Request a new code.')
+           :(lang==='pt'?'Não foi possível verificar agora.':'Could not verify right now.');
+     return;
+   }
+   closeSheets();activeClientVerificationToken=null;
+   await syncLocalBookings();await openClientBookings();
+   const matched=Number(data.matched_count||0);
+   toast(data.kind==='service_request'
+     ?(matched>0?(lang==='pt'?'Contacto verificado ✓ Pedido enviado a prestadores compatíveis.':'Contact verified ✓ Request sent to matching providers.'):(lang==='pt'?'Contacto verificado ✓ O TRIÂNGULO vai procurar alguém por ti.':'Contact verified ✓ TRIÂNGULO will look for someone for you.'))
+     :(lang==='pt'?'Contacto verificado ✓ Pedido enviado ao prestador.':'Contact verified ✓ Request sent to the provider.'));
+ }catch(e){console.error('client verification',e);status.textContent=lang==='pt'?'Não foi possível verificar. Tenta novamente.':'Could not verify. Please try again.'}
+ finally{btn.disabled=false;btn.textContent=old}
+}
+async function resendClientVerification(){
+ const token=activeClientVerificationToken,status=$('#clientVerificationStatus'),btn=$('#clientVerificationResend');
+ if(!token)return;const old=btn.textContent;btn.disabled=true;btn.textContent=lang==='pt'?'A enviar…':'Sending…';status.textContent='';
+ try{
+   const {data,error}=await db.rpc('resend_client_verification',{p_token:token});
+   if(error)throw error;
+   if(!data||!data.ok){status.textContent=(data&&data.message)||(lang==='pt'?'Não foi possível reenviar.':'Could not resend.');return}
+   if(data.status==='manual_review'){closeSheets();await syncLocalBookings();renderBookings();toast(lang==='pt'?'O TRIÂNGULO vai verificar o contacto antes de avisar prestadores.':'TRIÂNGULO will verify the contact before notifying providers.');return}
+   status.textContent=lang==='pt'?'Novo código enviado ✓':'New code sent ✓';
+ }catch(e){console.error('resend verification',e);status.textContent=lang==='pt'?'Não foi possível reenviar.':'Could not resend.'}
+ finally{btn.disabled=false;btn.textContent=old}
+}
+$('#clientVerifyBtn').onclick=verifyClientContact;
+$('#clientVerificationResend').onclick=resendClientVerification;
+$('#clientVerificationCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();verifyClientContact()}});
 function getLocalBookings(){try{const items=JSON.parse(store.get('tri_booking_history','[]'));return Array.isArray(items)?items:[]}catch{return []}}
 function saveBookingLocal(entry){
  const items=getLocalBookings().filter(x=>!(entry.token&&x.token===entry.token));
@@ -1728,13 +1804,13 @@ function directRequestStatus(status,paymentStatus,requiresQuote=false){
      :(lang==='pt'?'Serviço aceite · pagamento pendente':'Service accepted · payment pending');
    return lang==='pt'?'Serviço confirmado':'Service confirmed';
  }
- const pt={requested:requiresQuote?'A aguardar orçamento':'A aguardar prestador',declined:'Prestador indisponível',expired:'Sem resposta',completed:'Serviço concluído',cancelled:'Cancelado',tracking_expired:'Histórico · ligação expirada'};
- const en={requested:requiresQuote?'Awaiting quote':'Awaiting provider',declined:'Provider unavailable',expired:'No response',completed:'Service completed',cancelled:'Cancelled',tracking_expired:'History · link expired'};
+ const pt={verification_pending:'Verificar contacto',verification_review:'Contacto em verificação',requested:requiresQuote?'A aguardar orçamento':'A aguardar prestador',declined:'Prestador indisponível',expired:'Sem resposta',completed:'Serviço concluído',cancelled:'Cancelado',tracking_expired:'Histórico · ligação expirada'};
+ const en={verification_pending:'Verify contact',verification_review:'Contact being verified',requested:requiresQuote?'Awaiting quote':'Awaiting provider',declined:'Provider unavailable',expired:'No response',completed:'Service completed',cancelled:'Cancelled',tracking_expired:'History · link expired'};
  return (lang==='pt'?pt:en)[status]||(lang==='pt'?'Pedido enviado':'Request sent');
 }
 function matchingRequestStatus(status){
- const pt={matching:'À procura de serviços',offers:'Respostas disponíveis',confirmed:'Serviço confirmado',completed:'Serviço concluído',cancelled:'Cancelado',tracking_expired:'Histórico · ligação expirada'};
- const en={matching:'Finding services',offers:'Responses available',confirmed:'Service confirmed',completed:'Service completed',cancelled:'Cancelled',tracking_expired:'History · link expired'};
+ const pt={verification_pending:'Verificar contacto',verification_review:'Contacto em verificação',matching:'À procura de serviços',offers:'Respostas disponíveis',confirmed:'Serviço confirmado',completed:'Serviço concluído',cancelled:'Cancelado',tracking_expired:'Histórico · ligação expirada'};
+ const en={verification_pending:'Verify contact',verification_review:'Contact being verified',matching:'Finding services',offers:'Responses available',confirmed:'Service confirmed',completed:'Service completed',cancelled:'Cancelled',tracking_expired:'History · link expired'};
  return (lang==='pt'?pt:en)[status]||(lang==='pt'?'Pedido recebido':'Request received');
 }
 async function syncLocalBookings(){
@@ -1748,7 +1824,7 @@ async function syncLocalBookings(){
     if(!data.ok){if(data.state==='invalid'){if(x.status!=='tracking_expired'){x.status='tracking_expired';x.offers=[];x.contact_released=false;x.provider_email=null;x.provider_phone=null;changed=true}}return}
     const next={...x,status:data.state||x.status,island:data.island||x.island,description:data.description||x.description,date:data.requested_date||x.date,
       location_text:data.location_text||null,budget:data.budget,category_code:data.category_code||null,matched_count:Number(data.matched_count||x.matched_count||0),pending_count:Number(data.pending_count||0),expired_count:Number(data.expired_count||0),declined_count:Number(data.declined_count||0),offers:Array.isArray(data.offers)?data.offers:[],
-      provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released};
+      provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,verification_status:data.verification_status||null,verification_channel:data.verification_channel||null};
     if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
    }else{
     const {data,error}=await db.rpc('booking_client_context',{p_token:x.token});
@@ -1760,7 +1836,7 @@ async function syncLocalBookings(){
       total_amount:data.total_amount,service_fee_amount:data.service_fee_amount,payment_ready:!!data.payment_ready,
       requires_quote:!!data.requires_quote,provider_response_deadline:data.provider_response_deadline||x.provider_response_deadline||null,
       location_text:data.location_text||x.location_text||null,details:data.notes||x.details||null,
-      checkout_available:paymentsLive&&!!data.checkout_available,contact_released:!!data.contact_released};
+      checkout_available:paymentsLive&&!!data.checkout_available,contact_released:!!data.contact_released,verification_status:data.verification_status||null,verification_channel:data.verification_channel||null};
     if(JSON.stringify(next)!==JSON.stringify(x)){Object.assign(x,next);changed=true}
    }
   }catch(e){console.warn('request sync',e)}
@@ -1808,7 +1884,12 @@ function renderBookings(){
          ?(lang==='pt'?'Agora: aguardamos respostas de prestadores compatíveis.':'Next: we are waiting for responses from matching providers.')
          :'';
    const matchingNextHtml=matchingNext?'<div class="booking-next-step">'+matchingNext+'</div>':'';
-   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+matchingNextHtml+matchingHelp+trackingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
+   const verificationBox=state==='verification_pending'
+     ?'<div class="booking-verification-box"><b>'+(lang==='pt'?'Falta confirmar o contacto':'Contact verification required')+'</b><small>'+(lang==='pt'?'Nenhum prestador recebeu o pedido ainda. Introduz o código que te enviámos.':'No provider has received the request yet. Enter the code we sent you.')+'</small><button class="primary" type="button" data-verify-client="'+escapeHtml(x.token||'')+'" data-verify-channel="'+escapeHtml(x.verification_channel||'email')+'">'+(lang==='pt'?'Verificar contacto':'Verify contact')+'</button></div>'
+     :state==='verification_review'
+       ?'<div class="booking-verification-box"><b>'+(lang==='pt'?'A verificar o teu contacto':'We are verifying your contact')+'</b><small>'+(lang==='pt'?'O TRIÂNGULO vai confirmar o contacto antes de avisar qualquer prestador.':'TRIÂNGULO will confirm your contact before notifying any provider.')+'</small></div>'
+       :'';
+   return '<div class="card booking-local"><b>'+escapeHtml(x.description||(lang==='pt'?'Pedido ao TRIÂNGULO':'TRIÂNGULO request'))+'</b><small>📍 '+escapeHtml(x.location_text||x.island||'')+(x.date?' · '+escapeHtml(formatServiceDate(x.date)):'')+'</small><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(matchingRequestStatus(state))+'</span>'+verificationBox+matchingNextHtml+matchingHelp+trackingHelp+offersHtml+contact+(state==='confirmed'&&(!x.date||x.date<=localDateISO())?'<button class="primary" data-complete-request="'+escapeHtml(x.token)+'" style="margin-top:9px">'+(lang==='pt'?'Marcar como concluído':'Mark completed')+'</button>':'')+'</div>';
   }
 
   const state=x.status||'requested',requiresQuote=!!(x.requires_quote||x.quote);
@@ -1840,7 +1921,12 @@ function renderBookings(){
         :(state==='declined'||state==='expired')?(lang==='pt'?'Agora: procura uma alternativa.':'Next: find an alternative.'):'';
   const directNextHtml=directNext?'<div class="booking-next-step">'+directNext+'</div>':'';
   const trackingHelp=state==='tracking_expired'?'<small class="booking-help">'+(lang==='pt'?'A ligação privada de acompanhamento expirou. Este registo fica guardado apenas neste dispositivo.':'The private tracking link has expired. This record remains only on this device.')+'</small>':'';
-  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+directNextHtml+brief+waitingHelp+trackingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+'</div>';
+  const verificationBox=state==='verification_pending'
+    ?'<div class="booking-verification-box"><b>'+(lang==='pt'?'Falta confirmar o contacto':'Contact verification required')+'</b><small>'+(lang==='pt'?'O prestador ainda não recebeu este pedido. Introduz o código que te enviámos.':'The provider has not received this request yet. Enter the code we sent you.')+'</small><button class="primary" type="button" data-verify-client="'+escapeHtml(x.token||'')+'" data-verify-channel="'+escapeHtml(x.verification_channel||'email')+'">'+(lang==='pt'?'Verificar contacto':'Verify contact')+'</button></div>'
+    :state==='verification_review'
+      ?'<div class="booking-verification-box"><b>'+(lang==='pt'?'A verificar o teu contacto':'We are verifying your contact')+'</b><small>'+(lang==='pt'?'O TRIÂNGULO vai confirmar o contacto antes de enviar o pedido ao prestador.':'TRIÂNGULO will confirm your contact before sending the request to the provider.')+'</small></div>'
+      :'';
+  return '<div class="card booking-local"><div class="booking-main"><b>'+escapeHtml(x.service_title||x.provider||(lang==='pt'?'Serviço':'Service'))+'</b><small>'+meta+'</small></div><span class="booking-state '+escapeHtml(state)+'">'+escapeHtml(directRequestStatus(state,x.payment_status,requiresQuote))+'</span>'+verificationBox+directNextHtml+brief+waitingHelp+trackingHelp+quoteBox+totalInfo+(state==='confirmed'&&paymentsLive&&x.payment_status!=='paid'&&x.checkout_available?'<button class="primary" data-pay-booking="'+escapeHtml(x.token||'')+'" style="margin-top:8px">'+(lang==='pt'?'Confirmar e pagar':'Confirm and pay')+'</button>':'')+contact+(canCompleteDirect?'<button class="secondary" data-complete-booking="'+escapeHtml(x.token||'')+'" style="margin-top:9px">'+(lang==='pt'?'Marcar serviço como concluído':'Mark service as completed')+'</button>':'')+recoveryAction+'</div>';
  }).join('')+'</div>';
 
  $$('[data-confirm-quote]').forEach(btn=>btn.onclick=()=>confirmDirectQuote(btn.dataset.confirmQuote,btn));
@@ -1848,7 +1934,8 @@ function renderBookings(){
  $$('[data-select-request]').forEach(btn=>btn.onclick=()=>selectMatchingOffer(btn.dataset.selectRequest,btn.dataset.match,btn));
  $$('[data-complete-request]').forEach(btn=>btn.onclick=()=>completeMatchingRequest(btn.dataset.completeRequest,btn));
  $$('[data-complete-booking]').forEach(btn=>btn.onclick=()=>completeDirectBooking(btn.dataset.completeBooking,btn));
- $$('[data-retry-service]').forEach(btn=>btn.onclick=()=>runSearch(decodeURIComponent(btn.dataset.retryService||''),null));
+ $('[data-retry-service]').forEach(btn=>btn.onclick=()=>runSearch(decodeURIComponent(btn.dataset.retryService||''),null));
+ $('[data-verify-client]').forEach(btn=>btn.onclick=()=>openClientVerification(btn.dataset.verifyClient,btn.dataset.verifyChannel||'email'));
 }
 async function confirmDirectQuote(token,btn){
  if(!token)return;
@@ -1994,7 +2081,7 @@ async function init(){
      if(!error&&data&&data.ok){
        saveBookingLocal({kind:'matching',token:requestToken,island:data.island||'',description:data.description||'',date:data.requested_date||'',status:data.state||'matching',offers:data.offers||[],provider:data.provider||null,provider_email:data.provider_email||null,provider_phone:data.provider_phone||null,contact_released:!!data.contact_released,createdAt:new Date().toISOString()});
        history.replaceState({},'',location.pathname);$('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-       await openClientBookings();return;
+       await openClientBookings();if(data.state==='verification_pending')setTimeout(()=>openClientVerification(requestToken,data.verification_channel||'email'),80);return;
      }
      await openInvalidTrackingLink('matching');return;
    }catch(e){console.error('request_token deep link',e);await openInvalidTrackingLink('matching');return}
@@ -2028,7 +2115,7 @@ async function init(){
        });
        history.replaceState({},'',location.pathname);
        $('#splash').classList.add('hidden');$('#mainShell').classList.remove('hidden');
-       await openClientBookings();
+       await openClientBookings();if(data.state==='verification_pending')setTimeout(()=>openClientVerification(clientBookingToken,data.verification_channel||'email'),80);
        if(paymentResult==='success'){
          toast(data.payment_status==='paid'
            ?(lang==='pt'?'Pagamento confirmado ✓ Contactos desbloqueados.':'Payment confirmed ✓ Contact details unlocked.')
