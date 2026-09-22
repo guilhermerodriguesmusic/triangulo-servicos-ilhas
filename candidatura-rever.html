@@ -44,6 +44,9 @@
     <div><b>Email</b><span id="summaryEmail">—</span></div>
     <div><b>NIF/NIPC</b><span id="summaryTax">—</span></div>
     <div><b data-pt="Cobertura" data-en="Coverage">Cobertura</b><span id="summaryIslands">—</span></div>
+    <div><b data-pt="Serviços" data-en="Services">Serviços</b><span id="summaryServices">—</span></div>
+    <div><b>Website / Instagram</b><span id="summaryWebsite">—</span></div>
+    <div><b data-pt="Duplicados" data-en="Duplicates">Duplicados</b><span id="summaryDuplicates">—</span></div>
   </div>
   <div class="details">
     <div class="row"><b data-pt="Nome" data-en="Name">Nome</b><span id="name"></span></div>
@@ -173,6 +176,16 @@ async function load(){
   $('#summaryEmail').textContent=!data.email?tr('Não indicado','Not provided'):(emailVerified?tr('Verificado ✓','Verified ✓'):tr('Pendente','Pending'));$('#summaryEmail').className=emailVerified?'okv':'warnv';
   $('#summaryTax').textContent=data.tax_id?tr('Presente ✓','Present ✓'):tr('Em falta','Missing');$('#summaryTax').className=data.tax_id?'okv':'warnv';
   $('#summaryIslands').textContent=(data.service_islands||[]).join(' · ')||'—';
+  $('#summaryServices').textContent=(data.categories||[]).map(x=>CAT[x]?.[lang]||x).join(' · ')||'—';
+  $('#summaryWebsite').textContent=data.website?tr('Indicado ✓','Provided ✓'):tr('Não indicado','Not provided');$('#summaryWebsite').className=data.website?'okv':'';
+  $('#summaryDuplicates').textContent=tr('A verificar…','Checking…');
+  db.rpc('admin_provider_application_duplicate_signals',{p_application_id:data.application_id}).then(({data:dup,error:dupError})=>{
+    const n=!dupError&&dup&&dup.ok===true?Number(dup.potential_duplicates||0):null;
+    const el=$('#summaryDuplicates');if(!el)return;
+    if(n===null){el.textContent='—';el.className='';return}
+    el.textContent=n===0?tr('Sem sinais ✓','No signals ✓'):tr(n+' possível'+(n===1?'':'is'),n+' possible');
+    el.className=n===0?'okv':'warnv';
+  });
   if(mode==='approve'){$('#title').textContent=tr('Confirmar aprovação','Confirm approval');$('#reject').style.display='none'}
   if(mode==='reject'){$('#title').textContent=tr('Confirmar recusa','Confirm rejection');$('#approve').style.display='none';$('#rejectbox').classList.add('show')}
 }
