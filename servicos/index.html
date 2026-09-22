@@ -1126,7 +1126,7 @@ body.route-public-results #explore{display:block!important}
 
 <style id="mobile-app-experience-v1">
 #networkStatus{
-  position:fixed;z-index:96;left:50%;top:calc(env(safe-area-inset-top) + 8px);
+  position:fixed;z-index:96;left:50%;bottom:calc(82px + env(safe-area-inset-bottom));
   transform:translateX(-50%);max-width:calc(100vw - 28px);
   padding:7px 11px;border-radius:999px;background:#fff3d7;color:#694f08;
   border:1px solid #ebd28d;box-shadow:0 7px 22px rgba(18,50,74,.12);
@@ -1147,8 +1147,9 @@ body.route-public-results #explore{display:block!important}
     -webkit-overflow-scrolling:touch;
     scroll-padding-bottom:calc(118px + env(safe-area-inset-bottom))
   }
+  button,a,[role="button"]{touch-action:manipulation}
   .toast{
-    bottom:calc(82px + env(safe-area-inset-bottom));
+    bottom:calc(124px + env(safe-area-inset-bottom));
     max-width:calc(100vw - 28px);width:max-content;
     white-space:normal;text-align:center;line-height:1.35
   }
@@ -1563,6 +1564,7 @@ function applyLang(){
  updateIsland();
  if(typeof updateProviderPricePreview==='function')updateProviderPricePreview();
  updateFeeCopy();
+ if(typeof syncNetworkStatus==='function')syncNetworkStatus();
  if(providerAccountData)renderProviderDashboard(providerAccountData);
  $$('[data-toggle-password]').forEach(btn=>{const input=$('#'+btn.dataset.togglePassword);if(!input)return;const visible=input.type==='text';btn.textContent=visible?(lang==='pt'?'Ocultar':'Hide'):(lang==='pt'?'Mostrar':'Show');btn.setAttribute('aria-label',visible?(lang==='pt'?'Ocultar password':'Hide password'):(lang==='pt'?'Mostrar password':'Show password'))});
  if(document.body.classList.contains('results-mode'))updateResults(activeSearchQuery);
@@ -1720,7 +1722,7 @@ function bindProvider(){
    card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBooking(card.dataset.service)}};
  });
 }
-function showScreen(id){$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
+function showScreen(id){$('.screen').forEach(s=>s.classList.toggle('active',s.id===id));$('[data-nav]').forEach(b=>{const active=b.dataset.nav===id;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});document.body.classList.toggle('results-mode',id==='explore');window.scrollTo({top:0,behavior:'auto'})}
 function isStandaloneApp(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}
 function screenUrl(id){
  if(id==='explore')return buildResultsUrl();
