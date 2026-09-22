@@ -24,6 +24,7 @@
   <a href="#contactsSection" data-pt="Mensagens" data-en="Messages">Mensagens</a>
   <a href="#requestsSection" data-pt="Pedidos" data-en="Requests">Pedidos</a>
   <a href="#bookingsSection" data-pt="Diretos" data-en="Direct">Diretos</a>
+  <a href="#reviewsSection" data-pt="Avaliações" data-en="Reviews">Avaliações</a>
   <span style="flex:1"></span>
   <button type="button" class="active" data-island-filter="" data-pt="Todas" data-en="All">Todas</button>
   <button type="button" data-island-filter="Pico">Pico</button>
@@ -32,7 +33,7 @@
 </div>
 <h2 id="healthSection" data-pt="Atenção agora" data-en="Needs attention now">Atenção agora</h2><p class="muted" data-pt="O que pode exigir intervenção manual neste momento." data-en="Items that may need manual attention right now.">O que pode exigir intervenção manual neste momento.</p><div id="health" class="health-grid"></div>
 <h2 id="demandSection" data-pt="Onde precisamos de prestadores" data-en="Where we need providers">Onde precisamos de prestadores</h2><p class="muted" data-pt="Prioridades geradas automaticamente a partir dos pedidos dos últimos 90 dias." data-en="Priorities generated automatically from requests received in the last 90 days.">Prioridades geradas automaticamente a partir dos pedidos dos últimos 90 dias.</p><div id="demand" class="demand-list"></div>
-<h2 id="appsSection" data-pt="Candidaturas pendentes" data-en="Pending applications">Candidaturas pendentes</h2><div id="apps" class="list"></div><h2 id="contactsSection" data-pt="Mensagens para o TRIÂNGULO" data-en="Messages to TRIÂNGULO">Mensagens para o TRIÂNGULO</h2><div id="contacts" class="list"></div><h2 id="requestsSection" data-pt="Pedidos de clientes" data-en="Customer requests">Pedidos de clientes</h2><div id="requests" class="list"></div><h2 id="bookingsSection" data-pt="Pedidos diretos" data-en="Direct requests">Pedidos diretos</h2><div id="bookings" class="list"></div></section>
+<h2 id="appsSection" data-pt="Candidaturas pendentes" data-en="Pending applications">Candidaturas pendentes</h2><div id="apps" class="list"></div><h2 id="contactsSection" data-pt="Mensagens para o TRIÂNGULO" data-en="Messages to TRIÂNGULO">Mensagens para o TRIÂNGULO</h2><div id="contacts" class="list"></div><h2 id="requestsSection" data-pt="Pedidos de clientes" data-en="Customer requests">Pedidos de clientes</h2><div id="requests" class="list"></div><h2 id="bookingsSection" data-pt="Pedidos diretos" data-en="Direct requests">Pedidos diretos</h2><div id="bookings" class="list"></div><h2 id="reviewsSection" data-pt="Avaliações" data-en="Reviews">Avaliações</h2><p class="muted" data-pt="Avaliações de serviços concluídos. As avaliações ocultas deixam de contar para a média pública." data-en="Reviews from completed services. Hidden reviews no longer count toward the public average.">Avaliações de serviços concluídos. As avaliações ocultas deixam de contar para a média pública.</p><div id="reviews" class="list"></div></section>
 </main>
 <script>
 const db=window.supabase.createClient('https://cozamrvrhmwgxbuubjub.supabase.co','sb_publishable_4WXv0AQJ_HceVNnFKcZFHA_TuZPTHd9',{auth:{persistSession:true,autoRefreshToken:true}});
@@ -56,14 +57,15 @@ async function login(){const email=$('#email').value.trim(),password=$('#passwor
 $('#signin').onclick=()=>login();$('#email').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#password').focus()}});$('#password').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();login()}});$('#refresh').onclick=()=>load();$('#logout').onclick=async()=>{await db.auth.signOut();location.reload()};
 async function check(){const u=await db.auth.getUser();if(!u.data.user){$('#login').hidden=false;$('#panel').hidden=true;$('#logout').hidden=true;$('#refresh').hidden=true;return}try{const r=await db.from('provider_applications').select('id').limit(1);if(r.error)throw r.error;$('#login').hidden=true;$('#panel').hidden=false;$('#logout').hidden=false;$('#refresh').hidden=false;load()}catch(e){$('#loginMsg').textContent=tr('Conta autenticada, mas este email ainda não está autorizado como administrador do TRIÂNGULO.','Signed in, but this email is not authorized as a TRIÂNGULO administrator.');$('#login').hidden=false;$('#panel').hidden=true;$('#logout').hidden=false;$('#refresh').hidden=true}}
 async function load(){
- const [a,p,r,b,c,g,h]=await Promise.all([
+ const [a,p,r,b,c,g,h,v]=await Promise.all([
   db.from('provider_applications').select('*').eq('status','pending').order('created_at',{ascending:true}),
   db.from('providers').select('id'),
   db.from('service_requests').select('*').in('status',['new','matching','offers','confirmed']).order('created_at',{ascending:false}),
   db.from('bookings').select('*,providers(name,business_name)').in('status',['requested','quoted','confirmed','declined','expired']).order('created_at',{ascending:false}).limit(50),
   db.from('contact_messages').select('*').eq('status','new').order('created_at',{ascending:false}),
   db.rpc('admin_recruitment_demand',{p_days:90}),
-  db.rpc('admin_operational_health')
+  db.rpc('admin_operational_health'),
+  db.rpc('admin_list_service_reviews')
  ]);
  const gaps=(g.data||[]).filter(x=>Number(x.unmatched_count||0)>0||Number(x.provider_count||0)===0||Number(x.open_count||0)>0);
  const todayKey=new Date().toLocaleDateString('en-CA');
@@ -73,7 +75,7 @@ async function load(){
  $('#todayDirect').textContent=(b.data||[]).filter(isToday).length;
  $('#todayContacts').textContent=(c.data||[]).filter(isToday).length;
  $('#nPending').textContent=(a.data||[]).length;$('#nProviders').textContent=(p.data||[]).length;$('#nRequests').textContent=(r.data||[]).length;$('#nBookings').textContent=(b.data||[]).filter(x=>x.status==='requested'||x.status==='quoted').length;$('#nContacts').textContent=(c.data||[]).length;$('#nGaps').textContent=gaps.length;
- renderHealth(h.data,h.error);renderDemand(g.error?[]:gaps,g.error);renderApps(a.data||[]);renderContacts(c.data||[]);renderRequests(r.data||[]);renderBookings(b.data||[]);
+ renderHealth(h.data,h.error);renderDemand(g.error?[]:gaps,g.error);renderApps(a.data||[]);renderContacts(c.data||[]);renderRequests(r.data||[]);renderBookings(b.data||[]);renderReviews(v.data,v.error);
 }
 function renderHealth(data,error){
  const box=$('#health');
@@ -223,6 +225,20 @@ async function setRequestStatus(id,status){
 }
 function bookingStatusLabel(s){return s==='requested'?tr('A aguardar prestador','Awaiting provider'):s==='quoted'?tr('Orçamento enviado · aguarda cliente','Quote sent · awaiting customer'):s==='confirmed'?tr('Confirmado','Confirmed'):s==='declined'?tr('Recusado','Declined'):s==='expired'?tr('Expirado','Expired'):s==='completed'?tr('Concluído','Completed'):s==='cancelled'?tr('Cancelado','Cancelled'):s}
 function renderBookings(rows){$('#bookings').innerHTML=rows.length?rows.map(x=>'<div class="item" data-island="'+esc(x.island||'')+'"><div class="row"><strong>'+esc((x.providers&&(x.providers.business_name||x.providers.name))||tr('Prestador','Provider'))+'</strong><span class="tag">'+esc(bookingStatusLabel(x.status))+'</span></div><div class="muted">'+esc(x.service_date)+' · '+esc(x.service_time||'—')+' · '+esc(x.island)+'<br>'+esc(x.client_name||'')+' · '+esc(x.client_email)+' · '+esc(x.client_phone||'')+(x.notes?'<br>'+tr('Nota: ','Note: ')+esc(x.notes):'')+(x.status==='requested'&&x.provider_response_deadline?'<br>⏳ '+tr('Responder até: ','Reply by: ')+new Date(x.provider_response_deadline).toLocaleString(lang==='pt'?'pt-PT':'en-GB'):'')+'<br>'+tr('Recebida: ','Received: ')+new Date(x.created_at).toLocaleString(lang==='pt'?'pt-PT':'en-GB')+' · <span class="age">'+esc(ageLabel(x.created_at))+'</span></div><div class="row" style="margin-top:10px">'+(x.status==='requested'?'<button class="btn ok" onclick="sendBookingWhatsApp(\''+x.id+'\')">'+tr('WhatsApp ao prestador','WhatsApp provider')+'</button>':'')+(x.status==='confirmed'?'<button class="btn blue" onclick="setBookingStatus(\''+x.id+'\',\'completed\')">'+tr('Concluir','Complete')+'</button>':'')+((x.status==='requested'||x.status==='quoted'||x.status==='confirmed')?'<button class="btn no" onclick="setBookingStatus(\''+x.id+'\',\'cancelled\')">'+tr('Cancelar','Cancel')+'</button>':'')+'</div></div>').join(''):'<div class="item muted">'+tr('Sem pedidos diretos recentes.','No recent direct requests.')+'</div>'}
+
+function reviewStars(n){const v=Math.max(0,Math.min(5,Number(n)||0));return '★'.repeat(v)+'☆'.repeat(5-v)}
+function renderReviews(data,error){
+ const rows=!error&&data&&data.ok&&Array.isArray(data.items)?data.items:[];
+ if(error||!data||data.ok!==true){$('#reviews').innerHTML='<div class="item muted">'+tr('Não foi possível carregar as avaliações.','Could not load reviews.')+'</div>';return}
+ $('#reviews').innerHTML=rows.length?rows.map(x=>'<div class="item"><div class="row"><strong>'+esc(x.provider||tr('Prestador','Provider'))+'</strong><span class="tag">'+esc(reviewStars(x.rating))+' · '+Number(x.rating||0)+'/5</span><span class="tag">'+(x.is_visible?tr('Pública','Public'):tr('Oculta','Hidden'))+'</span></div>'+(x.comment?'<p>“'+esc(x.comment)+'”</p>':'<p class="muted">'+tr('Sem comentário.','No comment.')+'</p>')+'<div class="muted">'+tr('Cliente: ','Customer: ')+esc(x.client_name||'—')+' · '+esc(x.request_kind||'')+'<br>'+new Date(x.created_at).toLocaleString(lang==='pt'?'pt-PT':'en-GB')+'</div><div class="row" style="margin-top:10px"><button class="btn '+(x.is_visible?'no':'ok')+'" onclick="setReviewVisibility(\''+esc(x.id)+'\','+(!x.is_visible)+')">'+(x.is_visible?tr('Ocultar','Hide'):tr('Tornar pública','Make public'))+'</button></div></div>').join(''):'<div class="item muted">'+tr('Ainda não existem avaliações.','There are no reviews yet.')+'</div>';
+}
+async function setReviewVisibility(id,visible){
+ if(!confirm(visible?tr('Tornar esta avaliação pública e voltar a incluí-la na média?','Make this review public and include it in the average again?'):tr('Ocultar esta avaliação? Deixará de contar para a média pública.','Hide this review? It will stop counting toward the public average.')))return;
+ const {data,error}=await db.rpc('admin_set_service_review_visibility',{p_review_id:id,p_visible:visible});
+ if(error||!data||!data.ok){alert((error&&error.message)||tr('Não foi possível atualizar a avaliação.','Could not update the review.'));return}
+ load();
+}
+
 function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00351'))p=p.slice(2);if(p.length===9&&p.startsWith('9'))p='351'+p;return p}
 function openWhatsApp(raw,message){const phone=waPhone(raw);if(!phone){alert(tr('Não existe um número de WhatsApp válido.','There is no valid WhatsApp number.'));return}window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer')}
 function whatsappApplication(id,phoneEnc,nameEnc){const phone=decodeURIComponent(phoneEnc||''),name=decodeURIComponent(nameEnc||'');openWhatsApp(phone,lang==='pt'?'Olá '+(name||'')+'! Falo do TRIÂNGULO. Recebemos a tua candidatura de prestador e estou a entrar em contacto por aqui para facilitar a comunicação.':'Hello '+(name||'')+'! This is TRIÂNGULO. We received your provider application and I am contacting you here to make communication easier.')}
