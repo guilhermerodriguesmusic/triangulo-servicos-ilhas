@@ -96,9 +96,11 @@ function recruitmentQuery(x){return catLabel(x.category_code)+' '+x.island+' Aç
 function openRecruitmentSearch(cat,island){const q=catLabel(cat)+' '+island+' Açores serviços';window.open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank','noopener,noreferrer')}
 async function copyRecruitmentPitch(cat,island){
  const service=catLabel(cat);
+ const invite='recrutamento-'+String(island).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+String(cat).toLowerCase().replace(/[^a-z0-9]+/g,'-');
+ const applyUrl='https://trianguloacores.pt/candidatura-prestador.html?invite='+encodeURIComponent(invite);
  const msg=lang==='pt'
-  ?'Olá! Falo do TRIÂNGULO Açores, uma plataforma local de serviços no Pico, Faial e São Jorge. Estamos neste momento à procura de prestadores de '+service+' em '+island+'. A criação do perfil é gratuita e o prestador escolhe os pedidos que quer aceitar. Se tiver interesse, pode ver mais em https://trianguloacores.pt/prestadores.html'
-  :'Hello! This is TRIÂNGULO Açores, a local services platform for Pico, Faial and São Jorge. We are currently looking for '+service+' providers on '+island+'. Creating a profile is free and providers choose which requests they want to accept. More information: https://trianguloacores.pt/prestadores.html';
+  ?'Olá! Falo do TRIÂNGULO Açores, uma plataforma local de serviços no Pico, Faial e São Jorge. Estamos neste momento à procura de prestadores de '+service+' em '+island+'. Criar o perfil é gratuito e escolhe os pedidos que quer aceitar. Se tiver interesse, pode candidatar-se aqui: '+applyUrl
+  :'Hello! This is TRIÂNGULO Açores, a local services platform for Pico, Faial and São Jorge. We are currently looking for '+service+' providers on '+island+'. Creating a profile is free and you choose which requests to accept. If interested, you can apply here: '+applyUrl;
  try{await navigator.clipboard.writeText(msg);alert(tr('Mensagem de recrutamento copiada.','Recruitment message copied.'))}catch{prompt(tr('Copia esta mensagem:','Copy this message:'),msg)}
 }
 function renderDemand(rows,error){
