@@ -334,8 +334,17 @@ h1{
     min-height:720px;
   }
   .hero::before{
-    background-size:130.6% auto;
-    background-position:3px calc(66% - 8px);
+    inset:0;
+    background-size:cover;
+    background-position:center 45%;
+    transform:scale(1.18);
+    transform-origin:left center;
+  }
+  .hero::after{
+    background:
+      linear-gradient(180deg,rgba(72,143,210,.78) 0%,rgba(72,143,210,.56) 10%,rgba(72,143,210,.22) 23%,rgba(72,143,210,0) 36%),
+      linear-gradient(90deg,rgba(5,39,67,.16) 0%,rgba(5,39,67,.04) 44%,rgba(5,39,67,.02) 70%,rgba(5,39,67,.05) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.11) 68%,rgba(4,27,44,.38) 100%);
   }
 
   /* Header — fixed to the supplied reference */
@@ -356,7 +365,7 @@ h1{
     align-items:center;
   }
   .brand img{
-    width:19.8vw;
+    width:min(19.4vw,360px);
     max-width:none;
     transform:none;
   }
@@ -370,7 +379,7 @@ h1{
     top:0;
   }
   .nav a,.nav button{
-    font-size:14px;
+    font-size:16px;
     padding:8px 0;
   }
   .actions{
@@ -421,11 +430,11 @@ h1{
     width:680px;
     max-width:680px;
     margin:0;
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:88px;
-    line-height:.855;
-    font-weight:500;
-    letter-spacing:-.043em;
+    font-family:"Times New Roman",Times,serif;
+    font-size:clamp(96px,5.4vw,104px);
+    line-height:.84;
+    font-weight:400;
+    letter-spacing:-.035em;
     transform:none;
   }
   .promise{
@@ -433,9 +442,11 @@ h1{
     left:7.10vw;
     top:37.75vh;
     margin:0;
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:37px;
-    line-height:1.02;
+    font-family:"Times New Roman",Times,serif;
+    font-size:clamp(36px,2.05vw,39px);
+    line-height:1;
+    font-weight:400;
+    letter-spacing:-.02em;
     transform:none;
   }
 
@@ -475,19 +486,19 @@ h1{
   }
   .searchmain{gap:1.02vw}
   .searchmain svg{width:1.35vw;height:1.35vw}
-  .searchmain input{font-size:14px;padding:0}
+  .searchmain input{font-size:16px;padding:0}
   .search-divider{height:4.25vh}
   .island-select-wrap{gap:.65vw;padding:0 1.3vw}
   .pin{width:1.15vw;height:1.15vw}
-  .island-select-wrap select{font-size:13px}
+  .island-select-wrap select{font-size:15px}
   .searchbar button[type=submit]{
     height:7.35vh;
     border-radius:3.68vh;
-    font-size:16px;
-    padding:0 16px;
+    font-size:20px;
+    padding:0 18px;
   }
-  .searchbar button[type=submit] span:first-child{font-size:16px}
-  .searchbar button[type=submit] span:last-child{font-size:22px}
+  .searchbar button[type=submit] span:first-child{font-size:20px}
+  .searchbar button[type=submit] span:last-child{font-size:25px}
 
   .handnote{
     top:15.65vh;
@@ -528,18 +539,18 @@ h1{
     background:rgba(255,255,255,.965);
     box-shadow:0 1.15vh 2.5vh rgba(0,0,0,.16);
   }
-  .category-icon{width:46px;height:46px}
-  .category-icon svg{width:39px;height:39px}
+  .category-icon{width:49px;height:49px}
+  .category-icon svg{width:43px;height:43px}
   .category b{
     display:block;
     min-height:0;
-    margin:0 0 4px;
-    font-size:12.6px;
+    margin:0 0 6px;
+    font-size:15px;
     line-height:1.2;
   }
   .category small{
     display:block;
-    font-size:10px;
+    font-size:12.5px;
     line-height:1.42;
   }
   .category .arr{font-size:26px}
@@ -557,9 +568,9 @@ h1{
     padding:0 2.55vw;
     border-right:0;
   }
-  .trust svg{width:39px;height:39px}
-  .trust b{font-size:12px}
-  .trust small{font-size:10px;margin-top:3px}
+  .trust svg{width:43px;height:43px}
+  .trust b{font-size:15.5px}
+  .trust small{font-size:13px;margin-top:4px}
 }
 </style>
 <style id="accessibility-v1">
