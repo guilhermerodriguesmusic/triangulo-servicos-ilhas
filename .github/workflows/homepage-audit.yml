@@ -133,7 +133,7 @@ jobs:
             assert.equal(await page.locator('.master-desktop-ui').isVisible(),false,'PT master should not cover EN');
             assert.equal(await page.locator('#homeSearch').isVisible(),true);
             assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'What service do you need?');
-            assert.match(await page.locator('a[href^="/sobre-nos"]').getAttribute('href'),/lang=en/);
+            assert.match(await page.locator('.top a[href^="/sobre-nos"]').getAttribute('href'),/lang=en/);
             await page.selectOption('#islandSelect','São Jorge');
             await page.fill('#searchInput','cleaning');
             await Promise.all([
