@@ -141,16 +141,18 @@ jobs:
           app_redirect="$(fetch "$base/app.html?verify=$GITHUB_SHA")"
           home_redirect="$(fetch "$base/inicio.html?verify=$GITHUB_SHA")"
           app="$(fetch "$base/servicos/?verify=$GITHUB_SHA")"
+          provider_area="$(fetch "$base/servicos/provider-area.js?verify=$GITHUB_SHA")"
           manifest="$(fetch "$base/manifest.json?verify=$GITHUB_SHA")"
           sw="$(fetch "$base/sw.js?verify=$GITHUB_SHA")"
           robots="$(fetch "$base/robots.txt?verify=$GITHUB_SHA")"
           sitemap="$(fetch "$base/sitemap.xml?verify=$GITHUB_SHA")"
 
           grep -q "TRIÂNGULO" <<<"$index"
-          grep -q "Casa & Limpeza" <<<"$index"
-          grep -q "Perfis revistos" <<<"$index"
+          grep -q 'class="searchbar"' <<<"$index"
+          grep -q 'data-group="home"' <<<"$index"
+          grep -q 'data-group="repairs"' <<<"$index"
           grep -q "PARA PRESTADORES" <<<"$providers"
-          grep -q "Mais clientes para o teu trabalho" <<<"$providers"
+          grep -q 'candidatura-prestador.html?invite=site-prestadores' <<<"$providers"
           grep -q "Criar perfil gratuito" <<<"$providers"
           grep -q "Sem email?" <<<"$providers"
           grep -q "Valor do serviço" <<<"$application"
@@ -165,12 +167,11 @@ jobs:
           grep -q "Pending applications" <<<"$admin"
           grep -q "booking_client_context" <<<"$app"
           grep -q "stripe-create-checkout" <<<"$app"
-          grep -q "Ativar pagamentos" <<<"$app"
           grep -q "Confirmar e pagar" <<<"$app"
           grep -q "loadAppConfig" <<<"$app"
           grep -q "Email ou telefone" <<<"$app"
-          grep -q "provider_password_login" <<<"$app"
-          grep -q "request_provider_password_reset" <<<"$app"
+          grep -q "provider_password_login" <<<"$provider_area"
+          grep -q "request_provider_password_reset" <<<"$provider_area"
           grep -q "Pagamentos em breve" <<<"$app"
           grep -q "Termos de Utilização" <<<"$terms"
           grep -q "Terms of Use" <<<"$terms"
@@ -212,8 +213,8 @@ jobs:
             exit 1
           fi
 
-          if grep -q ".wrap>section[data-en]" <<<"$privacy$terms"; then
-            echo "Privacy/terms language-section selector regression"
+          if grep -q ".wrap>section[data-en]" <<<"$privacy$terms$how$about"; then
+            echo "Language-section selector regression"
             exit 1
           fi
 
