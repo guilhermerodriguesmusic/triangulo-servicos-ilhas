@@ -1,0 +1,217 @@
+name: Homepage functional audit
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/homepage-audit.yml"
+      - "index.html"
+      - "servicos/index.html"
+      - "how-it-works.html"
+      - "sobre-nos.html"
+      - "sw.js"
+      - "assets/home-master.webp"
+      - "assets/home-master-2x.webp"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: triangulo-homepage-audit
+  cancel-in-progress: true
+
+jobs:
+  homepage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start local site
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/triangulo-home-http.log 2>&1 &
+          for i in {1..30}; do
+            curl --silent --fail http://127.0.0.1:4173/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/triangulo-home-http.log
+          exit 1
+
+      - name: Audit desktop and mobile interactions
+        run: |
+          mkdir -p homepage-audit
+          cat > homepage-audit.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+
+          const base='http://127.0.0.1:4173';
+          const browser=await chromium.launch({headless:true});
+          const report=[];
+
+          async function open(viewport, lang='pt'){
+            const context=await browser.newContext({viewport,locale:lang==='pt'?'pt-PT':'en-GB'});
+            const page=await context.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e.message||e)));
+            await page.goto(base+'/?lang='+lang+'&audit=1',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(250);
+            return {context,page,errors};
+          }
+
+          function assertNoOverflow(page){
+            return page.evaluate(()=>({
+              vw:innerWidth,
+              sw:Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)
+            })).then(({vw,sw})=>assert.ok(sw<=vw+2,'horizontal overflow '+sw+' > '+vw));
+          }
+
+          async function assertRoute(page, expectedPath, expectedParams={}){
+            await page.waitForLoadState('domcontentloaded');
+            const u=new URL(page.url());
+            assert.equal(u.pathname,expectedPath);
+            for(const [k,v] of Object.entries(expectedParams))assert.equal(u.searchParams.get(k),v,'param '+k);
+          }
+
+          // DESKTOP PT: approved master + real control layer.
+          {
+            const {context,page,errors}=await open({width:1857,height:1042},'pt');
+            assert.equal(await page.locator('.master-desktop-ui').isVisible(),true,'desktop master overlay not visible');
+            assert.equal(await page.locator('.stage .island-pills').isVisible(),true,'real island pills not visible');
+            assert.equal(await page.locator('.stage .searchbar').isVisible(),true,'real searchbar not visible');
+            assert.match(await page.locator('.hero').evaluate(el=>getComputedStyle(el,'::before').backgroundImage),/home-master/);
+            await assertNoOverflow(page);
+
+            await page.click('#masterTopSearch');
+            assert.equal(await page.evaluate(()=>document.activeElement?.id),'searchInput','top search did not focus query');
+
+            assert.equal(await page.locator('#masterIslandsMenu').isVisible(),false);
+            await page.click('#masterNavIslands');
+            assert.equal(await page.locator('#masterIslandsMenu').isVisible(),true,'desktop islands menu did not open');
+            const islandMenuHrefs=await page.locator('#masterIslandsMenu a').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
+            assert.deepEqual(islandMenuHrefs,['/servicos/?island=Pico','/servicos/?island=Faial','/servicos/?island=S%C3%A3o+Jorge']);
+            await page.keyboard.press('Escape');
+            assert.equal(await page.locator('#masterIslandsMenu').isVisible(),false,'desktop islands menu did not close');
+
+            await page.click('.island-pill[data-island="Faial"]');
+            assert.equal(await page.locator('#islandSelect').inputValue(),'Faial');
+            assert.equal(await page.locator('.island-pill[data-island="Faial"]').evaluate(el=>el.classList.contains('active')),true);
+            await page.fill('#searchInput','jardim');
+            await Promise.all([
+              page.waitForURL(/\/servicos\//),
+              page.click('#homeSearch button[type="submit"]')
+            ]);
+            await assertRoute(page,'/servicos/',{island:'Faial',q:'jardim'});
+            assert.equal(errors.length,0,'desktop PT page errors: '+errors.join(' | '));
+            await context.close();
+          }
+
+          // DESKTOP PT: every master link has a real destination.
+          {
+            const {context,page}=await open({width:1857,height:1042},'pt');
+            const hrefs=await page.locator('.master-desktop-ui a.master-hotspot').evaluateAll(as=>as.map(a=>({cls:a.className,href:a.getAttribute('href')})));
+            for(const x of hrefs)assert.ok(x.href&&x.href!=='#','dead master link '+JSON.stringify(x));
+            const expected=[
+              '/', '/servicos/', '/how-it-works.html', '/sobre-nos.html',
+              '/?lang=pt','/?lang=en','/servicos/#prestador',
+              '/servicos/?group=repairs','/servicos/?group=garden','/servicos/?group=home','/servicos/?group=personal'
+            ];
+            for(const href of expected)assert.ok(hrefs.some(x=>x.href===href),'missing master href '+href);
+            await page.screenshot({path:'homepage-audit/desktop-pt.png',fullPage:true});
+            await context.close();
+          }
+
+          // DESKTOP EN: underlying translated page remains complete.
+          {
+            const {context,page,errors}=await open({width:1857,height:1042},'en');
+            assert.equal(await page.locator('.master-desktop-ui').isVisible(),false,'PT master should not cover EN');
+            assert.equal(await page.locator('#homeSearch').isVisible(),true);
+            assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'What service do you need?');
+            assert.match(await page.locator('a[href^="/sobre-nos"]').getAttribute('href'),/lang=en/);
+            await page.selectOption('#islandSelect','São Jorge');
+            await page.fill('#searchInput','cleaning');
+            await Promise.all([
+              page.waitForURL(/\/servicos\//),
+              page.click('#homeSearch button[type="submit"]')
+            ]);
+            await assertRoute(page,'/servicos/',{island:'São Jorge',q:'cleaning',lang:'en'});
+            assert.equal(errors.length,0,'desktop EN page errors: '+errors.join(' | '));
+            await context.close();
+          }
+
+          // MOBILE PT: real responsive page, navigation, search and categories.
+          {
+            const {context,page,errors}=await open({width:390,height:844},'pt');
+            assert.equal(await page.locator('.master-desktop-ui').isVisible(),false);
+            assert.equal(await page.locator('#mobileMenuToggle').isVisible(),true,'mobile menu button missing');
+            await page.click('#mobileMenuToggle');
+            assert.equal(await page.locator('#mobileMenuPanel').isVisible(),true,'mobile menu did not open');
+            const mobileHrefs=await page.locator('#mobileMenuPanel a').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
+            for(const href of ['/servicos/','/how-it-works.html','/sobre-nos.html','/servicos/#prestador'])assert.ok(mobileHrefs.includes(href),'mobile menu missing '+href);
+            await page.keyboard.press('Escape');
+            assert.equal(await page.locator('#mobileMenuPanel').isVisible(),false);
+
+            await page.click('.island-pill[data-island="Faial"]');
+            await page.fill('#searchInput','limpeza');
+            await Promise.all([
+              page.waitForURL(/\/servicos\//),
+              page.click('#homeSearch button[type="submit"]')
+            ]);
+            await assertRoute(page,'/servicos/',{island:'Faial',q:'limpeza'});
+            assert.equal(errors.length,0,'mobile PT page errors: '+errors.join(' | '));
+            await context.close();
+          }
+
+          // MOBILE PT category + MOBILE EN translation.
+          {
+            const {context,page}=await open({width:390,height:844},'pt');
+            await page.click('.island-pill[data-island="São Jorge"]');
+            await Promise.all([
+              page.waitForURL(/\/servicos\//),
+              page.click('.category[data-group="garden"]')
+            ]);
+            await assertRoute(page,'/servicos/',{island:'São Jorge',group:'garden'});
+            await context.close();
+          }
+          {
+            const {context,page,errors}=await open({width:390,height:844},'en');
+            assert.equal(await page.locator('#mobileMenuToggle').isVisible(),true);
+            await page.click('#mobileMenuToggle');
+            assert.equal((await page.locator('#mobileMenuPanel a').first().textContent()).trim(),'Services');
+            assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'What service do you need?');
+            await assertNoOverflow(page);
+            assert.equal(errors.length,0,'mobile EN page errors: '+errors.join(' | '));
+            await page.screenshot({path:'homepage-audit/mobile-en.png',fullPage:true});
+            await context.close();
+          }
+
+          // Static route existence through local server.
+          {
+            const context=await browser.newContext();
+            const page=await context.newPage();
+            for(const path of ['/servicos/','/how-it-works.html','/sobre-nos.html','/prestadores.html','/candidatura-prestador.html','/instalar/','/privacy.html','/terms.html']){
+              const res=await page.request.get(base+path);
+              assert.equal(res.status(),200,'route '+path+' returned '+res.status());
+            }
+            await context.close();
+          }
+
+          await browser.close();
+          fs.writeFileSync('homepage-audit/report.json',JSON.stringify({ok:true,checkedAt:new Date().toISOString()},null,2));
+          console.log('Homepage audit passed');
+          JS
+          node homepage-audit.mjs
+
+      - name: Upload homepage audit screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triangulo-homepage-audit
+          path: homepage-audit/
+          retention-days: 7
