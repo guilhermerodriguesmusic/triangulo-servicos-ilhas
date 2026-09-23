@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260923-v1-0-rc99';
+const CACHE='triangulo-pwa-20260923-v1-0-rc100';
 const CORE=[
   '/',
   '/index.html',
@@ -22,6 +22,7 @@ const CORE=[
   '/logo-v2.svg',
   '/assets/pico-home-hq.webp',
   '/assets/home-master.webp',
+  '/assets/home-master-2x.webp',
   '/icon-192.png',
   '/icon-512.png',
   '/icons/icon-512-maskable.png',
