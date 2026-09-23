@@ -334,8 +334,8 @@ h1{
     min-height:720px;
   }
   .hero::before{
-    background-size:cover;
-    background-position:center 60%;
+    background-size:100% auto;
+    background-position:calc(50% - 24px) 75%;
   }
 
   /* Reference canvas: 1857 × 1042. Positions below follow the supplied image. */
@@ -355,8 +355,18 @@ h1{
     gap:1.4vw;
     align-items:center;
   }
-  .brand img{width:19.7vw;max-width:370px}
-  .nav{gap:3.55vw}
+  .brand img{
+    width:19.7vw;
+    max-width:370px;
+    transform:translateX(-.2vw) scaleX(1.25) scaleY(.80);
+    transform-origin:left center;
+  }
+  .nav{
+    gap:3.55vw;
+    position:relative;
+    left:-4.05vw;
+    top:-.65vh;
+  }
   .nav a,.nav button{
     font-size:1.03vw;
     min-font-size:15px;
@@ -402,11 +412,15 @@ h1{
     font-size:5.25vw;
     line-height:.86;
     letter-spacing:-.045em;
+    transform:scaleX(1.19);
+    transform-origin:left top;
   }
   .promise{
     margin:1.25vh 0 0 .1vw;
     font-size:2.18vw;
     line-height:1;
+    transform:translateY(.65vh) scaleX(1.02);
+    transform-origin:left center;
   }
 
   .island-pills{
@@ -475,8 +489,8 @@ h1{
 
   .category-row{
     position:absolute;
-    left:5.35vw;
-    right:5.35vw;
+    left:6.05vw;
+    right:6.05vw;
     bottom:15.85vh;
     width:auto;
     transform:none;
