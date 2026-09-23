@@ -90,25 +90,8 @@ body{min-height:100svh;overflow-x:hidden}
   border:0;background:none;color:#fff;text-decoration:none;font-size:14px;font-weight:650;padding:8px 0;cursor:pointer;text-shadow:0 2px 11px rgba(0,0,0,.24)
 }
 .nav .with-chevron::after{content:"⌄";font-size:15px;margin-left:8px;position:relative;top:-1px}
-.nav>a{position:relative}
-.nav>a::before{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;border-radius:2px;background:#a5c75f;transform:scaleX(0);transform-origin:center;transition:transform .16s ease}
-.nav>a:hover::before{transform:scaleX(1)}
 .nav a:hover,.nav button:hover{opacity:.82}
-.nav-islands{position:relative;display:flex;align-items:center}
-.islands-menu{
-  position:absolute;top:calc(100% + 10px);left:50%;transform:translate(-50%,-4px);
-  min-width:180px;padding:7px;background:rgba(255,255,255,.98);border:1px solid rgba(255,255,255,.75);
-  border-radius:15px;box-shadow:0 16px 34px rgba(5,38,65,.22);opacity:0;visibility:hidden;
-  pointer-events:none;transition:.16s ease;z-index:40
-}
-.nav-islands.open .islands-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
-.islands-menu a{
-  display:flex!important;align-items:center;justify-content:space-between;width:100%;padding:10px 11px!important;
-  border-radius:10px;color:#173d4e!important;text-shadow:none!important;font-size:12px!important;font-weight:800!important
-}
-.islands-menu a:hover{background:#edf5e8;opacity:1!important}
-.islands-menu a span{color:#5f8d50;font-size:16px}
-.nav a:focus-visible,.nav button:focus-visible,.login:focus-visible,.provider-join:focus-visible,.provider-mobile-cta a:focus-visible,.island-pill:focus-visible,.searchbar button:focus-visible,.category:focus-visible{outline:3px solid rgba(255,255,255,.92);outline-offset:3px}
+.nav a:focus-visible,.nav button:focus-visible,.login:focus-visible,.island-pill:focus-visible,.searchbar button:focus-visible,.category:focus-visible{outline:3px solid rgba(255,255,255,.92);outline-offset:3px}
 .island-pill:hover{transform:translateY(-1px)}
 .searchbar:focus-within{box-shadow:0 18px 44px rgba(0,0,0,.25),0 0 0 2px rgba(255,255,255,.75)}
 .actions{display:flex;align-items:center;gap:17px}
@@ -118,15 +101,10 @@ body{min-height:100svh;overflow-x:hidden}
 .search-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.7}
 .vrule{height:31px;width:1px;background:rgba(255,255,255,.7);margin:0 3px}
 .lang{display:flex;gap:12px;align-items:center}
-.lang button{position:relative;border:0;background:none;color:#fff;min-width:36px;min-height:36px;padding:7px 6px;font-size:13px;font-weight:850;cursor:pointer;opacity:.85}
+.lang button{position:relative;border:0;background:none;color:#fff;padding:7px 3px;font-size:13px;font-weight:850;cursor:pointer;opacity:.85}
 .lang button+button::before{content:"|";position:absolute;left:-8px;color:rgba(255,255,255,.65)}
 .lang button.active{opacity:1}
 .lang button.active::after{content:"";position:absolute;left:1px;right:1px;bottom:0;height:2px;background:#83a14f;border-radius:2px}
-.provider-join{
-  color:#fff;text-decoration:none;font-size:12px;font-weight:800;white-space:nowrap;
-  padding:10px 2px;border-bottom:1px solid rgba(255,255,255,.72)
-}
-.provider-join:hover{opacity:.82}
 .login{
   text-decoration:none;
   border:0;
@@ -150,7 +128,7 @@ body{min-height:100svh;overflow-x:hidden}
   padding:43px 0 226px;
   position:relative;
 }
-.copy{width:min(790px,58%);padding-left:38px}
+.copy{width:min(790px,58%);padding-left:70px}
 .kicker{
   font-size:11px;
   font-weight:700;
@@ -210,7 +188,7 @@ h1{
   background:#fff;
   border-radius:30px;
   display:grid;
-  grid-template-columns:minmax(0,1fr) 1px 205px 202px;
+  grid-template-columns:minmax(0,1fr) 1px 205px 190px;
   align-items:center;
   gap:0;
   padding:5px 6px 5px 22px;
@@ -236,14 +214,11 @@ h1{
 }
 .searchbar button[type=submit]{
   height:56px;border:0;border-radius:999px;background:linear-gradient(135deg,#5f8d50,#759e5b);
-  color:#fff;font-weight:850;font-size:16px;cursor:pointer;box-shadow:0 7px 18px rgba(69,111,64,.25);
-  display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;padding:0 16px;line-height:1
+  color:#fff;font-weight:850;font-size:16px;cursor:pointer;box-shadow:0 7px 18px rgba(69,111,64,.25)
 }
-.searchbar button[type=submit] span:first-child{font-size:16px;margin:0;line-height:1;font-weight:850}
-.searchbar button[type=submit] span:last-child{font-size:22px;margin:0;line-height:1;vertical-align:0}
+.searchbar button[type=submit] span{font-size:22px;margin-left:9px;vertical-align:-1px}
 .searchbar button[type=submit],.login,.island-pill,.category{transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
 .searchbar button[type=submit]:hover,.login:hover{transform:translateY(-1px);filter:brightness(1.025)}
-.provider-mobile-cta{display:none}
 .searchbar button[type=submit]:active,.login:active,.island-pill:active,.category:active{transform:translateY(0) scale(.99)}
 ::selection{background:#d6e8b3;color:#12324a}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
@@ -252,76 +227,96 @@ h1{
   position:absolute;
   top:66px;
   right:48px;
-  transform:rotate(-7deg) scale(.90);
-  transform-origin:center;
+  transform:rotate(-7deg);
   font-family:"Brush Script MT","Segoe Script","Bradley Hand",cursive;
-  font-size:27px;
+  font-size:31px;
   line-height:.98;
-  color:rgba(255,255,255,.74);
+  color:rgba(255,255,255,.95);
   text-align:left;
-  text-shadow:0 2px 7px rgba(0,0,0,.10);
+  text-shadow:0 2px 10px rgba(0,0,0,.15);
   width:230px
 }
 .handnote::after{
-  content:"";display:block;width:158px;height:2px;background:rgba(165,199,95,.58);border-radius:99px;margin:11px 0 0 18px;transform:rotate(-2deg)
+  content:"";display:block;width:170px;height:3px;background:#a5c75f;border-radius:99px;margin:12px 0 0 18px;transform:rotate(-2deg)
 }
 
 .category-row{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  bottom:20px;
-  width:min(1370px,calc(100% - 100px));
+  bottom:111px;
+  width:min(1460px,calc(100% - 76px));
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:15px
 }
 .category{
-  min-height:92px;
-  background:rgba(255,255,255,.86);
-  border:1px solid rgba(255,255,255,.58);
+  min-height:112px;
+  background:rgba(255,255,255,.95);
+  border:1px solid rgba(255,255,255,.8);
   color:#18374a;
   text-decoration:none;
-  border-radius:16px;
-  padding:9px 15px;
+  border-radius:17px;
+  padding:15px 18px;
   display:grid;
-  grid-template-columns:42px minmax(0,1fr) 18px;
+  grid-template-columns:48px minmax(0,1fr) 20px;
   align-items:center;
-  gap:9px;
-  box-shadow:0 10px 22px rgba(0,0,0,.12);
-  backdrop-filter:blur(7px);
-  -webkit-backdrop-filter:blur(7px);
-  transition:transform .15s ease,box-shadow .15s ease,background .15s ease
+  gap:10px;
+  box-shadow:0 13px 29px rgba(0,0,0,.16);
+  backdrop-filter:blur(5px);
+  transition:transform .15s ease,box-shadow .15s ease
 }
-.category:hover{transform:translateY(-3px);background:rgba(255,255,255,.90);box-shadow:0 14px 28px rgba(0,0,0,.16)}
-.category-icon{width:40px;height:40px;display:grid;place-items:center;color:#5e8a4d}
-.category-icon svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
-.category>span:nth-child(2){min-width:0;height:55px;display:grid;grid-template-rows:27px 24px;row-gap:4px;align-items:start}
-.category b{display:flex;align-items:flex-end;min-height:0;font-size:11.9px;line-height:1.16;margin:0;color:#17394b;font-weight:700}
-@media(min-width:1400px){
-  .category[data-group="repairs"] b{font-size:10.95px;letter-spacing:-.015em;white-space:nowrap}
+.category:hover{transform:translateY(-3px);box-shadow:0 17px 34px rgba(0,0,0,.20)}
+.category-icon{width:46px;height:46px;display:grid;place-items:center;color:#5e8a4d}
+.category-icon svg{width:39px;height:39px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.category b{display:block;font-size:12.6px;margin-bottom:4px;color:#17394b}
+.category small{display:block;font-size:10px;line-height:1.42;color:#4e6b73}
+.category .arr{font-size:26px;color:#214d52}
+
+.trustbar{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:98px;
+  background:rgba(255,255,255,.97);
+  color:#183a55;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:0 max(52px,calc((100vw - 1430px)/2));
+  align-items:center;
+  box-shadow:0 -2px 14px rgba(0,0,0,.06)
 }
-.category small{display:block;align-self:start;font-size:9.35px;line-height:1.34;color:#59717a;font-weight:450}
-.category .arr{font-size:23px;color:#2b5558}
+.trust{
+  min-height:55px;
+  display:grid;
+  grid-template-columns:48px 1fr;
+  align-items:center;
+  gap:12px;
+  padding:0 25px;
+  border-right:1px solid #d7dde0
+}
+.trust:last-child{border-right:0}
+.trust svg{width:39px;height:39px;fill:none;stroke:#2d6b52;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.trust b{display:block;font-size:12px;color:#173a55}
+.trust small{display:block;font-size:10px;color:#6d767d;margin-top:3px}
 
 @media(max-width:1120px){
   .hero::before{background-size:112% auto;background-position:center 65%}
   .top{width:calc(100% - 34px);grid-template-columns:240px 1fr auto}.brand img{width:225px}.nav{gap:24px}.nav a,.nav button{font-size:12px}
   .stage{width:calc(100% - 34px);padding-top:56px}.copy{padding-left:12px;width:70%}
   .handnote{right:10px;font-size:27px}
-  .category-row{width:calc(100% - 34px);gap:10px}.category{min-height:96px;padding:12px 14px;grid-template-columns:42px 1fr 18px}.category-icon{width:38px;height:38px}.category-icon svg{width:34px;height:34px}.category>span:nth-child(2){height:58px;grid-template-rows:29px 25px}.category small{font-size:9px}
+  .category-row{width:calc(100% - 34px);gap:10px}.category{padding:14px;grid-template-columns:42px 1fr 18px}.category-icon{width:38px}.category-icon svg{width:34px;height:34px}.category small{font-size:9px}
+  .trust{padding:0 12px}
 }
 @media(max-width:820px){
   .hero{min-height:100svh}.hero::before{background-size:auto 100%;background-position:53% center}
-  .top{display:flex;justify-content:space-between;padding-top:14px}.brand img{width:205px}.nav{display:none}.search-icon,.vrule{display:none}.login,.provider-join{display:none}
-  .provider-mobile-cta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 2px 0;font-size:10px;font-weight:750;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.22)}
-  .provider-mobile-cta a{display:inline-flex;align-items:center;color:#fff;text-decoration:none;font-weight:900;background:rgba(4,43,72,.58);border:1px solid rgba(255,255,255,.42);border-radius:999px;padding:8px 11px;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+  .top{display:flex;justify-content:space-between;padding-top:14px}.brand img{width:205px}.nav{display:none}.search-icon,.vrule{display:none}.login{display:none}
   .stage{padding:72px 0 294px;align-items:flex-start}.copy{width:100%;padding:0 2px}.handnote{display:none}
   .kicker{font-size:9px;letter-spacing:.28em}.promise{font-size:28px}
   h1{font-size:clamp(52px,14vw,76px)}
   .island-pills{gap:7px;flex-wrap:wrap}.island-pill{height:42px;min-width:0;padding:0 14px;font-size:10px}
   .searchbar{grid-template-columns:1fr 102px;min-height:60px;border-radius:22px;padding:5px 5px 5px 15px}.search-divider,.island-select-wrap{display:none}.searchbar button[type=submit]{height:50px;font-size:12px}.searchbar button[type=submit] span{font-size:17px}
-  .category-row{bottom:18px;grid-template-columns:1fr 1fr;gap:8px}.category{min-height:77px;padding:10px;grid-template-columns:35px 1fr 15px;border-radius:14px}.category-icon{width:31px;height:31px}.category-icon svg{width:29px;height:29px}.category>span:nth-child(2){display:block;height:auto}.category b{display:block;min-height:0;font-size:10px;line-height:1.2;margin-bottom:2px}.category small{display:none}.category .arr{font-size:18px}
+  .category-row{bottom:18px;grid-template-columns:1fr 1fr;gap:8px}.category{min-height:77px;padding:10px;grid-template-columns:35px 1fr 15px;border-radius:14px}.category-icon{width:31px;height:31px}.category-icon svg{width:29px;height:29px}.category b{font-size:10px;margin-bottom:2px}.category small{display:none}.category .arr{font-size:18px}
+  .trustbar{display:none}
 }
 @media(max-width:480px){
   .top{width:calc(100% - 24px)}.brand img{width:176px}.lang{gap:8px}.lang button{font-size:11px}
@@ -332,42 +327,8 @@ h1{
   .category-row{width:calc(100% - 24px)}
 }
 </style>
-<style id="mobile-home-polish-v3">
-@media(max-width:820px){
-  .searchbar button[type=submit]{
-    display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;
-    padding:0 9px;font-size:12px;line-height:1;height:48px;
-  }
-  .searchbar button[type=submit] span:first-child{margin:0;font-size:12px;line-height:1;font-weight:850}
-  .searchbar button[type=submit] span:last-child{margin:0;font-size:17px;line-height:1;font-weight:700}
-}
-@media(max-width:430px){
-  .searchbar{grid-template-columns:minmax(0,1fr) 104px;min-height:60px;padding-left:16px}
-  .searchmain{gap:10px}
-  .searchmain svg{width:21px;height:21px}
-  .searchmain input{font-size:13px}
-  .searchbar button[type=submit]{height:48px;border-radius:24px}
-}
-</style>
-
-<style id="mobile-visual-audit-v1">
-
-@media(max-width:820px){
-  .top{padding-top:calc(14px + env(safe-area-inset-top))}
-  .category-row{bottom:calc(18px + env(safe-area-inset-bottom))}
-}
-@media(max-width:360px){
-  .brand img{width:160px}
-  .lang{gap:4px}
-  .lang button{min-width:34px;padding-left:5px;padding-right:5px}
-  h1{font-size:46px}
-  .promise{font-size:22px}
-  .searchbar{grid-template-columns:minmax(0,1fr) 96px}
-  .searchbar button[type=submit]{padding-left:7px;padding-right:7px}
-}
-
-
-.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #159e78;outline-offset:3px}
+<style id="accessibility-v1">
+.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -376,25 +337,18 @@ h1{
   <header class="top">
     <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
     <nav class="nav" aria-label="Principal" data-aria-pt="Principal" data-aria-en="Main navigation">
-      <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
-      <div class="nav-islands" id="navIslandsWrap">
-        <button type="button" class="with-chevron" id="navIslands" aria-haspopup="true" aria-expanded="false" data-pt="Ilhas" data-en="Islands">Ilhas</button>
-        <div class="islands-menu" id="islandsMenu" aria-label="Ilhas" data-aria-pt="Ilhas" data-aria-en="Islands">
-          <a href="/servicos/?island=Pico" data-nav-island="Pico">Pico <span>›</span></a>
-          <a href="/servicos/?island=Faial" data-nav-island="Faial">Faial <span>›</span></a>
-          <a href="/servicos/?island=S%C3%A3o+Jorge" data-nav-island="São Jorge">São Jorge <span>›</span></a>
-        </div>
-      </div>
+      <a href="/servicos/" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
+      <button type="button" class="with-chevron" id="navIslands" data-pt="Ilhas" data-en="Islands">Ilhas</button>
       <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
-      <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a><a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a>
+      <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
     </nav>
     <div class="actions">
-      <button class="search-icon" type="button" id="topSearch" aria-label="Pesquisar" data-aria-pt="Pesquisar" data-aria-en="Search">
+      <button class="search-icon" type="button" id="topSearch" aria-label="Pesquisar">
         <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg>
       </button>
       <div class="vrule"></div>
       <div class="lang"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div>
-      <a class="provider-join" href="/servicos/#prestador" data-pt="Para prestadores" data-en="For providers">Para prestadores</a>
+      <a class="login" href="/servicos/#prestador" data-pt="Entrar" data-en="Sign in">Entrar</a>
     </div>
   </header>
 
@@ -411,45 +365,61 @@ h1{
       </div>
 
       <form id="homeSearch" class="searchbar" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
-        <label class="searchmain" aria-label="Serviço" data-aria-pt="Serviço" data-aria-en="Service">
+        <label class="searchmain" aria-label="Serviço">
           <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.3 4.3"/></svg>
-          <input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-aria-pt="Que serviço precisas?" data-aria-en="What service do you need?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
+          <input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
         </label>
         <div class="search-divider"></div>
         <label class="island-select-wrap">
           <svg class="pin" viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-13A7 7 0 1 0 5 9c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.4" fill="#fff"/></svg>
-          <select id="islandSelect" aria-label="Ilha" data-aria-pt="Ilha" data-aria-en="Island">
+          <select id="islandSelect" aria-label="Ilha">
             <option>Pico</option><option>Faial</option><option>São Jorge</option>
           </select>
         </label>
-        <button type="submit"><span data-pt="Encontrar serviços" data-en="Find services">Encontrar serviços</span> <span>→</span></button>
+        <button type="submit"><span data-pt="Pesquisar" data-en="Search">Pesquisar</span> <span>→</span></button>
       </form>
-      <div class="provider-mobile-cta"><a href="/servicos/#prestador" data-pt="Para prestadores →" data-en="For providers →">Para prestadores →</a></div>
     </div>
 
-    <div class="handnote" data-pt="Três ilhas&#10;mais ligadas" data-en="Three islands&#10;better connected">Três ilhas<br>mais ligadas</div>
+    <div class="handnote" data-pt="Pico&#10;sempre à frente" data-en="Pico&#10;always ahead">Pico<br>sempre à frente</div>
   </section>
 
   <section class="category-row" aria-label="Categorias" data-aria-pt="Categorias" data-aria-en="Categories">
     <a class="category" href="/servicos/?group=repairs" data-group="repairs">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
-      <span><b data-pt="Reparações, Tecnologia & Mudanças" data-en="Repairs, Tech & Moving">Reparações, Tecnologia & Mudanças</b><small data-pt="Reparações, tecnologia, mudanças e mais." data-en="Repairs, technology, moving and more.">Reparações, tecnologia, mudanças e mais.</small></span><span class="arr">›</span>
+      <span><b data-pt="Obras e Reparações" data-en="Repairs & Maintenance">Obras e Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrical and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=garden" data-group="garden">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M39 9C23 9 11 18 10 36c10-1 23-7 29-27Z"/><path d="M11 36c7-8 14-13 24-19"/></svg></span>
-      <span><b data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</b><small data-pt="Limpeza de terrenos, jardinagem e manutenção." data-en="Land clearing, gardening and maintenance.">Limpeza de terrenos, jardinagem e manutenção.</small></span><span class="arr">›</span>
+      <span><b data-pt="Jardim e Espaços Exteriores" data-en="Garden & Outdoor Spaces">Jardim e Espaços Exteriores</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening and maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=home" data-group="home">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M7 23 24 9l17 14"/><path d="M11 21v20h26V21"/><path d="M20 41V29h8v12"/></svg></span>
-      <span><b data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</b><small data-pt="Limpezas, apoio doméstico e serviços para casa." data-en="Cleaning, home help and household services.">Limpezas, apoio doméstico e serviços para casa.</small></span><span class="arr">›</span>
+      <span><b data-pt="Casa e Alojamento" data-en="Home & Accommodation">Casa e Alojamento</b><small data-pt="Limpezas, gestão, pequenas obras, apoio ao alojamento." data-en="Cleaning, management, small jobs and accommodation support.">Limpezas, gestão, pequenas obras, apoio ao alojamento.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=personal" data-group="personal">
       <span class="category-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><circle cx="11" cy="18" r="4"/><circle cx="37" cy="18" r="4"/><path d="M14 39v-5c0-6 4-10 10-10s10 4 10 10v5"/><path d="M4 38v-4c0-5 3-8 8-8 2 0 4 .5 5 1.5"/><path d="M44 38v-4c0-5-3-8-8-8-2 0-4 .5-5 1.5"/></svg></span>
-      <span><b data-pt="Aulas, Bem-estar & Mais" data-en="Lessons, Wellness & More">Aulas, Bem-estar & Mais</b><small data-pt="Aulas, bem-estar, criativos, animais e mais." data-en="Lessons, wellness, creative services, pets and more.">Aulas, bem-estar, criativos, animais e mais.</small></span><span class="arr">›</span>
+      <span><b data-pt="Serviços Pessoais" data-en="Personal Services">Serviços Pessoais</b><small data-pt="Bem-estar, aulas, eventos e serviços do dia a dia." data-en="Wellness, lessons, events and everyday services.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
     </a>
   </section>
 
-
+  <footer class="trustbar">
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="M24 5 39 10v11c0 10-6 17-15 22C15 38 9 31 9 21V10l15-5Z"/><path d="m17 24 5 5 10-11"/></svg>
+      <span><b data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</b><small data-pt="Pessoas da tua ilha" data-en="People from your island">Pessoas da tua ilha</small></span>
+    </div>
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="m24 5 5.5 11 12 1.7-8.7 8.5 2.1 12-10.9-5.7-10.9 5.7 2.1-12-8.7-8.5 12-1.7L24 5Z"/></svg>
+      <span><b data-pt="Reservas simples" data-en="Simple bookings">Reservas simples</b><small data-pt="Em poucos cliques" data-en="In a few clicks">Em poucos cliques</small></span>
+    </div>
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="M24 43s13-11.3 13-24a13 13 0 1 0-26 0c0 12.7 13 24 13 24Z"/><circle cx="24" cy="19" r="4"/></svg>
+      <span><b data-pt="Três ilhas, uma comunidade" data-en="Three islands, one community">Três ilhas, uma comunidade</b><small>Pico · Faial · São Jorge</small></span>
+    </div>
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="M40 8C23 9 11 18 10 36c10-1 23-7 30-28Z"/><path d="M11 36c8-8 15-13 25-19"/></svg>
+      <span><b data-pt="Um Açores mais forte" data-en="A stronger Azores">Um Açores mais forte</b><small data-pt="Apoia a economia local" data-en="Support the local economy">Apoia a economia local</small></span>
+    </div>
+  </footer>
 </main>
 <script>
 const urlLang=new URLSearchParams(location.search).get('lang');
@@ -466,13 +436,22 @@ function applyLang(){
   });
   document.querySelectorAll('[data-ph-pt][data-ph-en]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
   document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
-  const si=document.querySelector('#searchInput'); if(si)si.setAttribute('aria-label',lang==='pt'?'Que serviço precisas?':'What service do you need?');
-  const form=document.querySelector('#homeSearch'); if(form)form.setAttribute('aria-label',lang==='pt'?'Pesquisar serviços':'Search services');
+  const si=document.querySelector('#searchInput');
+  if(si)si.setAttribute('aria-label',lang==='pt'?'Que serviço precisas?':'What service do you need?');
+  const form=document.querySelector('#homeSearch');
+  if(form)form.setAttribute('aria-label',lang==='pt'?'Pesquisar serviços':'Search services');
   document.querySelector('#pt').classList.toggle('active',lang==='pt');
   document.querySelector('#en').classList.toggle('active',lang==='en');
-  document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
+  document.querySelectorAll('a[href^="/"]').forEach(a=>{
+    const u=new URL(a.getAttribute('href'),location.origin);
+    if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
+    a.setAttribute('href',u.pathname+u.search+u.hash);
+  });
   document.title=lang==='pt'?'TRIÂNGULO Açores — Serviços locais nas ilhas':'TRIÂNGULO Azores — Local services across the islands';
-  const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=lang==='pt'?'Encontra e reserva serviços locais no Pico, Faial e São Jorge com o TRIÂNGULO Açores.':'Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.';
+  const meta=document.querySelector('meta[name="description"]');
+  if(meta)meta.content=lang==='pt'
+    ?'Encontra e reserva serviços locais no Pico, Faial e São Jorge com o TRIÂNGULO Açores.'
+    :'Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.';
 }
 function setIsland(v){
   island=v;
@@ -494,31 +473,7 @@ function openSearch(q,group=null){
 }
 document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
 document.querySelector('#islandSelect').onchange=e=>setIsland(e.target.value);
-const navIslands=document.querySelector('#navIslands'),navIslandsWrap=document.querySelector('#navIslandsWrap');
-navIslands.onclick=e=>{
-  e.stopPropagation();
-  const open=navIslandsWrap.classList.toggle('open');
-  navIslands.setAttribute('aria-expanded',open?'true':'false');
-};
-document.querySelectorAll('[data-nav-island]').forEach(a=>a.onclick=e=>{
-  e.preventDefault();
-  const next=a.dataset.navIsland;
-  localStorage.setItem('tri_island',next);
-  localStorage.setItem('tri_client_welcome_v4','1');
-  const params=new URLSearchParams({island:next});
-  if(lang==='en')params.set('lang','en');
-  location.href='/servicos/?'+params.toString();
-});
-document.addEventListener('click',e=>{
-  if(navIslandsWrap.classList.contains('open')&&!navIslandsWrap.contains(e.target)){
-    navIslandsWrap.classList.remove('open');navIslands.setAttribute('aria-expanded','false');
-  }
-});
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&navIslandsWrap.classList.contains('open')){
-    navIslandsWrap.classList.remove('open');navIslands.setAttribute('aria-expanded','false');navIslands.focus();
-  }
-});
+document.querySelector('#navIslands').onclick=()=>document.querySelector('.island-pills').scrollIntoView({behavior:'smooth',block:'center'});
 document.querySelector('#topSearch').onclick=()=>document.querySelector('#searchInput').focus();
 document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch(document.querySelector('#searchInput').value)};
 document.querySelectorAll('[data-group]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch('',a.dataset.group)});
