@@ -22,7 +22,8 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="shortcut icon" type="image/png" href="/icon-192.png">
 <link rel="preload" href="/assets/pico-home-hq.webp" as="image" type="image/webp" fetchpriority="high">
-<link rel="preload" href="/assets/home-master.webp" as="image" type="image/webp">
+<link rel="preload" href="/assets/home-master.webp" as="image" type="image/webp" media="(max-resolution: 1.49dppx)">
+<link rel="preload" href="/assets/home-master-2x.webp" as="image" type="image/webp" media="(min-resolution: 1.5dppx)">
 <meta name="color-scheme" content="light only">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -592,7 +593,12 @@ h1{
     inset:0;
     z-index:-1;
     background-image:url('/assets/home-master.webp');
+    background-image:image-set(
+      url('/assets/home-master.webp') 1x,
+      url('/assets/home-master-2x.webp') 2x
+    );
     background-repeat:no-repeat;
+    image-rendering:auto;
     background-position:center center;
     background-size:100% 100%;
     transform:none;
