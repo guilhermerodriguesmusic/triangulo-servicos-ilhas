@@ -23,6 +23,9 @@
 <link rel="shortcut icon" type="image/png" href="/icon-192.png">
 <link rel="preload" href="/assets/pico-home-hq.webp" as="image" type="image/webp" fetchpriority="high">
 <meta name="color-scheme" content="light only">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=GFS+Didot&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#0a3157;
@@ -337,7 +340,7 @@ h1{
     inset:0;
     background-size:cover;
     background-position:center 45%;
-    transform:scale(1.18);
+    transform:translate(11px,-4px) scale(1.18);
     transform-origin:left center;
   }
   .hero::after{
@@ -426,25 +429,26 @@ h1{
   h1{
     position:absolute;
     left:7.10vw;
-    top:18.45vh;
-    width:680px;
-    max-width:680px;
+    top:18.05vh;
+    width:760px;
+    max-width:760px;
     margin:0;
-    font-family:"Times New Roman",Times,serif;
-    font-size:clamp(96px,5.4vw,104px);
-    line-height:.84;
+    font-family:"GFS Didot",Didot,"Bodoni 72",Georgia,serif;
+    font-size:88px;
+    line-height:1;
     font-weight:400;
     letter-spacing:-.035em;
+    white-space:pre-line;
     transform:none;
   }
   .promise{
     position:absolute;
     left:7.10vw;
-    top:37.75vh;
+    top:38.00vh;
     margin:0;
-    font-family:"Times New Roman",Times,serif;
-    font-size:clamp(36px,2.05vw,39px);
-    line-height:1;
+    font-family:"GFS Didot",Didot,"Bodoni 72",Georgia,serif;
+    font-size:31px;
+    line-height:1.2;
     font-weight:400;
     letter-spacing:-.02em;
     transform:none;
@@ -474,11 +478,11 @@ h1{
 
   .searchbar{
     position:absolute;
-    left:7.10vw;
-    top:52.50vh;
+    left:7.49vw;
+    top:52.31vh;
     margin:0;
     width:50.46vw;
-    height:8.73vh;
+    height:8.25vh;
     min-height:0;
     border-radius:4.36vh;
     grid-template-columns:minmax(0,1fr) 1px 12.55vw 12.55vw;
@@ -492,7 +496,7 @@ h1{
   .pin{width:1.15vw;height:1.15vw}
   .island-select-wrap select{font-size:15px}
   .searchbar button[type=submit]{
-    height:7.35vh;
+    height:6.95vh;
     border-radius:3.68vh;
     font-size:20px;
     padding:0 18px;
@@ -520,9 +524,9 @@ h1{
   /* Cards — exact reference row geometry */
   .category-row{
     position:absolute;
-    left:6.08vw;
-    right:5.87vw;
-    top:70.44vh;
+    left:6.42vw;
+    right:5.53vw;
+    top:69.86vh;
     bottom:auto;
     width:auto;
     transform:none;
@@ -530,7 +534,7 @@ h1{
     gap:1.18vw;
   }
   .category{
-    height:13.44vh;
+    height:13.34vh;
     min-height:0;
     border-radius:.95vw;
     padding:1.55vh 1.35vw;
@@ -557,7 +561,7 @@ h1{
 
   /* Bottom trust bar */
   .trustbar{
-    height:12.76vh;
+    height:13.30vh;
     padding:0 7.05vw;
     grid-template-columns:repeat(4,1fr);
   }
@@ -601,7 +605,8 @@ h1{
   <section class="stage">
     <div class="copy">
       <p class="kicker" data-pt="PESSOAS LOCAIS · ILHAS MAIS FORTES." data-en="LOCAL PEOPLE · STRONGER ISLANDS.">PESSOAS LOCAIS · ILHAS MAIS FORTES.</p>
-      <h1 data-pt="Serviços locais nas ilhas" data-en="Local services across the islands">Serviços locais nas ilhas</h1>
+      <h1 data-pt="Serviços locais&#10;nas ilhas" data-en="Local services&#10;across the islands">Serviços locais
+nas ilhas</h1>
       <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</p>
 
       <div class="island-pills" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
