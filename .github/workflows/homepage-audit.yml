@@ -104,7 +104,7 @@ jobs:
             assert.equal(await page.locator('.island-pill[data-island="Faial"]').evaluate(el=>el.classList.contains('active')),true);
             await page.fill('#searchInput','jardim');
             await Promise.all([
-              page.waitForURL(/\/servicos\//),
+              page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
               page.click('#homeSearch button[type="submit"]')
             ]);
             await assertRoute(page,'/servicos/',{island:'Faial',q:'jardim'});
@@ -137,7 +137,7 @@ jobs:
             await page.selectOption('#islandSelect','São Jorge');
             await page.fill('#searchInput','cleaning');
             await Promise.all([
-              page.waitForURL(/\/servicos\//),
+              page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
               page.click('#homeSearch button[type="submit"]')
             ]);
             await assertRoute(page,'/servicos/',{island:'São Jorge',q:'cleaning',lang:'en'});
@@ -160,7 +160,7 @@ jobs:
             await page.click('.island-pill[data-island="Faial"]');
             await page.fill('#searchInput','limpeza');
             await Promise.all([
-              page.waitForURL(/\/servicos\//),
+              page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
               page.click('#homeSearch button[type="submit"]')
             ]);
             await assertRoute(page,'/servicos/',{island:'Faial',q:'limpeza'});
@@ -173,7 +173,7 @@ jobs:
             const {context,page}=await open({width:390,height:844},'pt');
             await page.click('.island-pill[data-island="São Jorge"]');
             await Promise.all([
-              page.waitForURL(/\/servicos\//),
+              page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
               page.click('.category[data-group="garden"]')
             ]);
             await assertRoute(page,'/servicos/',{island:'São Jorge',group:'garden'});
