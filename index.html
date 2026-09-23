@@ -412,7 +412,7 @@ h1{
     font-size:5.25vw;
     line-height:.86;
     letter-spacing:-.045em;
-    transform:scaleX(1.19);
+    transform:translate(-2px,-3px) scaleX(1.195);
     transform-origin:left top;
   }
   .promise{
@@ -444,9 +444,12 @@ h1{
     margin-top:2.55vh;
     width:50.45vw;
     min-height:0;
-    height:8.15vh;
+    height:calc(8.15vh + 3px);
+    position:relative;
+    left:-2px;
+    top:-5px;
     border-radius:4.1vh;
-    grid-template-columns:minmax(0,1fr) 1px 12.6vw 12.7vw;
+    grid-template-columns:minmax(0,1fr) 1px 12.6vw calc(12.7vw - 9px);
     padding:.65vh .45vw .65vh 1.55vw;
   }
   .searchmain{gap:1.05vw}
@@ -463,8 +466,8 @@ h1{
   .pin{width:1.25vw;height:1.25vw}
   .island-select-wrap select{font-size:.95vw}
   .searchbar button[type=submit]{
-    height:6.7vh;
-    border-radius:3.35vh;
+    height:calc(6.7vh + 5px);
+    border-radius:3.6vh;
     font-size:1.18vw;
     padding:0 1vw;
   }
@@ -472,8 +475,8 @@ h1{
   .searchbar button[type=submit] span:last-child{font-size:1.45vw}
 
   .handnote{
-    top:15.7vh;
-    right:7.2vw;
+    top:calc(15.7vh - 30px);
+    right:calc(7.2vw - 16px);
     width:14vw;
     transform:rotate(-7deg);
     font-size:1.92vw;
@@ -489,9 +492,9 @@ h1{
 
   .category-row{
     position:absolute;
-    left:6.05vw;
-    right:6.05vw;
-    bottom:15.85vh;
+    left:calc(6.05vw - 2px);
+    right:calc(6.05vw + 2px);
+    bottom:calc(15.85vh + 10px);
     width:auto;
     transform:none;
     grid-template-columns:repeat(4,1fr);
@@ -499,7 +502,7 @@ h1{
   }
   .category{
     min-height:0;
-    height:13.55vh;
+    height:calc(13.55vh - 2px);
     border-radius:1.0vw;
     padding:1.8vh 1.45vw;
     grid-template-columns:3.15vw minmax(0,1fr) 1.4vw;
@@ -524,7 +527,7 @@ h1{
   .category .arr{font-size:1.65vw}
 
   .trustbar{
-    height:12.55vh;
+    height:calc(12.55vh + 5px);
     padding:0 7.0vw;
     grid-template-columns:repeat(4,1fr);
   }
