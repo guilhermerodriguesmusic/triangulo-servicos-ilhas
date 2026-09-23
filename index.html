@@ -22,6 +22,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="shortcut icon" type="image/png" href="/icon-192.png">
 <link rel="preload" href="/assets/pico-home-hq.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="/assets/home-master.webp" as="image" type="image/webp">
 <meta name="color-scheme" content="light only">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -577,6 +578,123 @@ h1{
   .trust small{font-size:13px;margin-top:4px}
 }
 </style>
+<style id="approved-master-desktop">
+.master-desktop-ui{display:none}
+@media(min-width:1121px){
+  html[lang="pt"] .hero{
+    height:100svh;
+    min-height:720px;
+    background:#fff;
+  }
+  html[lang="pt"] .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background-image:url('/assets/home-master.webp');
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size:100% 100%;
+    transform:none;
+  }
+  html[lang="pt"] .hero::after{display:none}
+
+  /* Hide the reconstructed desktop artwork completely; the approved visual is the master itself. */
+  html[lang="pt"] .top,
+  html[lang="pt"] .stage,
+  html[lang="pt"] .category-row,
+  html[lang="pt"] .trustbar{
+    opacity:0;
+    pointer-events:none;
+  }
+
+  html[lang="pt"] .master-desktop-ui{
+    display:block;
+    position:absolute;
+    inset:0;
+    z-index:50;
+    pointer-events:none;
+  }
+  html[lang="pt"] .master-hotspot{
+    position:absolute;
+    display:block;
+    border:0;
+    background:transparent;
+    padding:0;
+    margin:0;
+    color:transparent;
+    text-decoration:none;
+    cursor:pointer;
+    pointer-events:auto;
+    outline:none;
+  }
+  html[lang="pt"] .master-hotspot:focus-visible{
+    outline:3px solid rgba(255,255,255,.95);
+    outline-offset:2px;
+    border-radius:12px;
+  }
+
+  /* Header hotspots */
+  .mh-brand{left:3.7%;top:1.4%;width:21%;height:7.8%}
+  .mh-services{left:30.2%;top:1.6%;width:8%;height:6.5%}
+  .mh-islands-nav{left:39.2%;top:1.6%;width:6.5%;height:6.5%}
+  .mh-how{left:47.0%;top:1.6%;width:11.8%;height:6.5%}
+  .mh-about{left:58.1%;top:1.6%;width:8.6%;height:6.5%}
+  .mh-top-search{left:73.0%;top:1.4%;width:4.4%;height:7.2%}
+  .mh-pt{left:79.2%;top:1.4%;width:3.2%;height:7.2%}
+  .mh-en{left:83.2%;top:1.4%;width:3.2%;height:7.2%}
+  .mh-login{left:88.0%;top:1.1%;width:8.1%;height:7.8%}
+
+  /* Island controls */
+  .mh-pico{left:7.05%;top:39.3%;width:8.1%;height:5.9%}
+  .mh-faial{left:15.7%;top:39.3%;width:8.2%;height:5.9%}
+  .mh-saojorge{left:24.5%;top:39.3%;width:10.5%;height:5.9%}
+
+  /* Search interaction layer */
+  .master-query{
+    position:absolute;
+    left:9.8%;
+    top:47.6%;
+    width:20.5%;
+    height:7.1%;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:transparent;
+    caret-color:#173e50;
+    font:600 16px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;
+    padding:0 14px;
+    pointer-events:auto;
+    z-index:2;
+  }
+  .master-query::placeholder{color:transparent}
+  .master-query:focus{
+    color:#243d50;
+    background:rgba(255,255,255,.98);
+    border-radius:22px;
+    box-shadow:0 0 0 2px rgba(255,255,255,.75);
+  }
+  .master-island-select{
+    position:absolute;
+    left:32.7%;
+    top:47.5%;
+    width:10.6%;
+    height:7.2%;
+    opacity:.01;
+    pointer-events:auto;
+    cursor:pointer;
+    z-index:2;
+  }
+  .mh-search-submit{left:44.8%;top:47.3%;width:12.8%;height:7.5%}
+
+  /* Category hotspots */
+  .mh-cat-repairs{left:5.7%;top:63.0%;width:21.6%;height:12.2%}
+  .mh-cat-garden{left:28.2%;top:63.0%;width:21.6%;height:12.2%}
+  .mh-cat-home{left:50.7%;top:63.0%;width:21.6%;height:12.2%}
+  .mh-cat-personal{left:73.0%;top:63.0%;width:21.2%;height:12.2%}
+}
+html[lang="en"] .master-desktop-ui{display:none!important}
+</style>
 <style id="accessibility-v1">
 .skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}
 </style>
@@ -652,6 +770,34 @@ nas ilhas</h1>
       <span><b data-pt="Serviços Pessoais" data-en="Personal Services">Serviços Pessoais</b><small data-pt="Bem-estar, aulas, eventos e serviços do dia a dia." data-en="Wellness, lessons, events and everyday services.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
     </a>
   </section>
+
+
+  <div class="master-desktop-ui" aria-label="Homepage controls">
+    <a class="master-hotspot mh-brand" href="/" aria-label="TRIÂNGULO Açores"></a>
+    <a class="master-hotspot mh-services" href="/servicos/" aria-label="Serviços"></a>
+    <button class="master-hotspot mh-islands-nav" id="masterNavIslands" type="button" aria-label="Ilhas"></button>
+    <a class="master-hotspot mh-how" href="/how-it-works.html" aria-label="Como funciona"></a>
+    <a class="master-hotspot mh-about" href="/sobre-nos.html" aria-label="Sobre nós"></a>
+    <button class="master-hotspot mh-top-search" id="masterTopSearch" type="button" aria-label="Pesquisar"></button>
+    <button class="master-hotspot mh-pt" id="masterPt" type="button" aria-label="Português"></button>
+    <button class="master-hotspot mh-en" id="masterEn" type="button" aria-label="English"></button>
+    <a class="master-hotspot mh-login" href="/servicos/#prestador" aria-label="Entrar"></a>
+
+    <button class="master-hotspot mh-pico" type="button" data-master-island="Pico" aria-label="Pico"></button>
+    <button class="master-hotspot mh-faial" type="button" data-master-island="Faial" aria-label="Faial"></button>
+    <button class="master-hotspot mh-saojorge" type="button" data-master-island="São Jorge" aria-label="São Jorge"></button>
+
+    <input class="master-query" id="masterSearchInput" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?">
+    <select class="master-island-select" id="masterIslandSelect" aria-label="Ilha">
+      <option>Pico</option><option>Faial</option><option>São Jorge</option>
+    </select>
+    <button class="master-hotspot mh-search-submit" id="masterSearchSubmit" type="button" aria-label="Pesquisar"></button>
+
+    <a class="master-hotspot mh-cat-repairs" href="/servicos/?group=repairs" data-master-group="repairs" aria-label="Obras e Reparações"></a>
+    <a class="master-hotspot mh-cat-garden" href="/servicos/?group=garden" data-master-group="garden" aria-label="Jardim e Espaços Exteriores"></a>
+    <a class="master-hotspot mh-cat-home" href="/servicos/?group=home" data-master-group="home" aria-label="Casa e Alojamento"></a>
+    <a class="master-hotspot mh-cat-personal" href="/servicos/?group=personal" data-master-group="personal" aria-label="Serviços Pessoais"></a>
+  </div>
 
   <footer class="trustbar">
     <div class="trust">
@@ -732,6 +878,28 @@ document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_l
 document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()};
 setIsland(['Pico','Faial','São Jorge'].includes(island)?island:'Pico');
 applyLang();
+
+const masterSearchInput=document.querySelector('#masterSearchInput');
+const masterIslandSelect=document.querySelector('#masterIslandSelect');
+if(masterIslandSelect) masterIslandSelect.value=island;
+
+document.querySelectorAll('[data-master-island]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    setIsland(btn.dataset.masterIsland);
+    if(masterIslandSelect) masterIslandSelect.value=btn.dataset.masterIsland;
+  });
+});
+if(masterIslandSelect){
+  masterIslandSelect.addEventListener('change',e=>setIsland(e.target.value));
+}
+const runMasterSearch=()=>openSearch(masterSearchInput?masterSearchInput.value:'');
+document.querySelector('#masterSearchSubmit')?.addEventListener('click',runMasterSearch);
+masterSearchInput?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runMasterSearch()}});
+document.querySelector('#masterTopSearch')?.addEventListener('click',()=>masterSearchInput?.focus());
+document.querySelector('#masterNavIslands')?.addEventListener('click',()=>document.querySelector('.mh-pico')?.focus());
+document.querySelector('#masterPt')?.addEventListener('click',()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()});
+document.querySelector('#masterEn')?.addEventListener('click',()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()});
+document.querySelectorAll('[data-master-group]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openSearch('',a.dataset.masterGroup)}));
 </script>
 </body>
 </html>
