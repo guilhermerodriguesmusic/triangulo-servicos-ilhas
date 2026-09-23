@@ -657,6 +657,14 @@ h1{
   .mh-saojorge{left:24.5%;top:39.3%;width:10.5%;height:5.9%}
 
   /* Search interaction layer */
+  .master-search-form{
+    position:absolute;
+    inset:0;
+    margin:0;
+    padding:0;
+    border:0;
+    pointer-events:none;
+  }
   .master-query{
     position:absolute;
     left:9.8%;
@@ -673,6 +681,7 @@ h1{
     pointer-events:auto;
     z-index:2;
   }
+  .master-search-form .master-hotspot{pointer-events:auto}
   .master-query::placeholder{color:transparent}
   .master-query:focus{
     color:#243d50;
@@ -781,28 +790,32 @@ nas ilhas</h1>
   <div class="master-desktop-ui" aria-label="Homepage controls">
     <a class="master-hotspot mh-brand" href="/" aria-label="TRIÂNGULO Açores"></a>
     <a class="master-hotspot mh-services" href="/servicos/" aria-label="Serviços"></a>
-    <button class="master-hotspot mh-islands-nav" id="masterNavIslands" type="button" aria-label="Ilhas"></button>
+    <a class="master-hotspot mh-islands-nav" href="/servicos/" aria-label="Ilhas"></a>
     <a class="master-hotspot mh-how" href="/how-it-works.html" aria-label="Como funciona"></a>
     <a class="master-hotspot mh-about" href="/sobre-nos.html" aria-label="Sobre nós"></a>
     <button class="master-hotspot mh-top-search" id="masterTopSearch" type="button" aria-label="Pesquisar"></button>
-    <button class="master-hotspot mh-pt" id="masterPt" type="button" aria-label="Português"></button>
-    <button class="master-hotspot mh-en" id="masterEn" type="button" aria-label="English"></button>
+    <a class="master-hotspot mh-pt" href="/?lang=pt" aria-label="Português"></a>
+    <a class="master-hotspot mh-en" href="/?lang=en" aria-label="English"></a>
     <a class="master-hotspot mh-login" href="/servicos/#prestador" aria-label="Entrar"></a>
 
-    <button class="master-hotspot mh-pico" type="button" data-master-island="Pico" aria-label="Pico"></button>
-    <button class="master-hotspot mh-faial" type="button" data-master-island="Faial" aria-label="Faial"></button>
-    <button class="master-hotspot mh-saojorge" type="button" data-master-island="São Jorge" aria-label="São Jorge"></button>
+    <a class="master-hotspot mh-pico" href="/servicos/?island=Pico" aria-label="Serviços no Pico"></a>
+    <a class="master-hotspot mh-faial" href="/servicos/?island=Faial" aria-label="Serviços no Faial"></a>
+    <a class="master-hotspot mh-saojorge" href="/servicos/?island=S%C3%A3o+Jorge" aria-label="Serviços em São Jorge"></a>
 
-    <input class="master-query" id="masterSearchInput" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?">
-    <select class="master-island-select" id="masterIslandSelect" aria-label="Ilha">
-      <option>Pico</option><option>Faial</option><option>São Jorge</option>
-    </select>
-    <button class="master-hotspot mh-search-submit" id="masterSearchSubmit" type="button" aria-label="Pesquisar"></button>
+    <form class="master-search-form" action="/servicos/" method="get" role="search" aria-label="Pesquisar serviços">
+      <input class="master-query" id="masterSearchInput" name="q" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?">
+      <select class="master-island-select" id="masterIslandSelect" name="island" aria-label="Ilha">
+        <option value="Pico">Pico</option>
+        <option value="Faial">Faial</option>
+        <option value="São Jorge">São Jorge</option>
+      </select>
+      <button class="master-hotspot mh-search-submit" type="submit" aria-label="Pesquisar"></button>
+    </form>
 
-    <a class="master-hotspot mh-cat-repairs" href="/servicos/?group=repairs" data-master-group="repairs" aria-label="Obras e Reparações"></a>
-    <a class="master-hotspot mh-cat-garden" href="/servicos/?group=garden" data-master-group="garden" aria-label="Jardim e Espaços Exteriores"></a>
-    <a class="master-hotspot mh-cat-home" href="/servicos/?group=home" data-master-group="home" aria-label="Casa e Alojamento"></a>
-    <a class="master-hotspot mh-cat-personal" href="/servicos/?group=personal" data-master-group="personal" aria-label="Serviços Pessoais"></a>
+    <a class="master-hotspot mh-cat-repairs" href="/servicos/?group=repairs" aria-label="Obras e Reparações"></a>
+    <a class="master-hotspot mh-cat-garden" href="/servicos/?group=garden" aria-label="Jardim e Espaços Exteriores"></a>
+    <a class="master-hotspot mh-cat-home" href="/servicos/?group=home" aria-label="Casa e Alojamento"></a>
+    <a class="master-hotspot mh-cat-personal" href="/servicos/?group=personal" aria-label="Serviços Pessoais"></a>
   </div>
 
   <footer class="trustbar">
@@ -887,25 +900,8 @@ applyLang();
 
 const masterSearchInput=document.querySelector('#masterSearchInput');
 const masterIslandSelect=document.querySelector('#masterIslandSelect');
-if(masterIslandSelect) masterIslandSelect.value=island;
-
-document.querySelectorAll('[data-master-island]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    setIsland(btn.dataset.masterIsland);
-    if(masterIslandSelect) masterIslandSelect.value=btn.dataset.masterIsland;
-  });
-});
-if(masterIslandSelect){
-  masterIslandSelect.addEventListener('change',e=>setIsland(e.target.value));
-}
-const runMasterSearch=()=>openSearch(masterSearchInput?masterSearchInput.value:'');
-document.querySelector('#masterSearchSubmit')?.addEventListener('click',runMasterSearch);
-masterSearchInput?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runMasterSearch()}});
+if(masterIslandSelect && ['Pico','Faial','São Jorge'].includes(island)) masterIslandSelect.value=island;
 document.querySelector('#masterTopSearch')?.addEventListener('click',()=>masterSearchInput?.focus());
-document.querySelector('#masterNavIslands')?.addEventListener('click',()=>document.querySelector('.mh-pico')?.focus());
-document.querySelector('#masterPt')?.addEventListener('click',()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()});
-document.querySelector('#masterEn')?.addEventListener('click',()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()});
-document.querySelectorAll('[data-master-group]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openSearch('',a.dataset.masterGroup)}));
 </script>
 </body>
 </html>
