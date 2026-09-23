@@ -750,7 +750,7 @@ html[lang="en"] .master-desktop-ui{display:none!important}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
       <a class="login" href="/servicos/#prestador" data-pt="Entrar" data-en="Sign in">Entrar</a>
-      <nav class="mobile-menu-panel" id="mobileMenuPanel" aria-label="Menu móvel">
+      <nav class="mobile-menu-panel" id="mobileMenuPanel" aria-label="Menu móvel" data-aria-pt="Menu móvel" data-aria-en="Mobile menu">
         <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
         <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
         <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
@@ -766,21 +766,21 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 nas ilhas</h1>
       <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</p>
 
-      <div class="island-pills" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
-        <button class="island-pill active" type="button" data-island="Pico"><span class="mini-mountain"></span>Pico</button>
-        <button class="island-pill" type="button" data-island="Faial"><span class="mini-mountain"></span>Faial</button>
-        <button class="island-pill" type="button" data-island="São Jorge"><span class="mini-mountain"></span>São Jorge</button>
+      <div class="island-pills" id="island-picker" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
+        <button class="island-pill active" type="button" data-island="Pico" aria-pressed="true"><span class="mini-mountain"></span>Pico</button>
+        <button class="island-pill" type="button" data-island="Faial" aria-pressed="false"><span class="mini-mountain"></span>Faial</button>
+        <button class="island-pill" type="button" data-island="São Jorge" aria-pressed="false"><span class="mini-mountain"></span>São Jorge</button>
       </div>
 
-      <form id="homeSearch" class="searchbar" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
+      <form id="homeSearch" class="searchbar" action="/servicos/" method="get" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
         <label class="searchmain" aria-label="Serviço">
           <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.3 4.3"/></svg>
-          <input id="searchInput" autocomplete="off" autocapitalize="none" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
+          <input id="searchInput" name="q" type="search" autocomplete="off" autocapitalize="none" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
         </label>
         <div class="search-divider"></div>
         <label class="island-select-wrap">
           <svg class="pin" viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-13A7 7 0 1 0 5 9c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.4" fill="#fff"/></svg>
-          <select id="islandSelect" aria-label="Ilha">
+          <select id="islandSelect" name="island" aria-label="Ilha" data-aria-pt="Ilha" data-aria-en="Island">
             <option>Pico</option><option>Faial</option><option>São Jorge</option>
           </select>
         </label>
@@ -822,10 +822,10 @@ nas ilhas</h1>
     <a class="master-hotspot mh-en" href="/?lang=en" data-fixed-lang-link aria-label="English"></a>
     <a class="master-hotspot mh-login" href="/servicos/#prestador" aria-label="Entrar"></a>
 
-    <div class="master-islands-menu" id="masterIslandsMenu" hidden>
-      <a href="/servicos/?island=Pico">Pico</a>
-      <a href="/servicos/?island=Faial">Faial</a>
-      <a href="/servicos/?island=S%C3%A3o+Jorge">São Jorge</a>
+    <div class="master-islands-menu" id="masterIslandsMenu" hidden role="menu" aria-label="Escolher ilha">
+      <a role="menuitem" href="/servicos/?island=Pico">Pico</a>
+      <a role="menuitem" href="/servicos/?island=Faial">Faial</a>
+      <a role="menuitem" href="/servicos/?island=S%C3%A3o+Jorge">São Jorge</a>
     </div>
 
     <a class="master-hotspot mh-cat-repairs" href="/servicos/?group=repairs" aria-label="Obras e Reparações"></a>
@@ -888,8 +888,13 @@ function applyLang(){
 function setIsland(v){
   island=v;
   localStorage.setItem('tri_island',v);
-  document.querySelectorAll('[data-island]').forEach(b=>b.classList.toggle('active',b.dataset.island===v));
-  document.querySelector('#islandSelect').value=v;
+  document.querySelectorAll('[data-island]').forEach(b=>{
+    const active=b.dataset.island===v;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',active?'true':'false');
+  });
+  const islandSelect=document.querySelector('#islandSelect');
+  if(islandSelect)islandSelect.value=v;
 }
 function openSearch(q,group=null){
   const query=(q||'').trim();
@@ -905,9 +910,13 @@ function openSearch(q,group=null){
 }
 document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
 document.querySelector('#islandSelect').onchange=e=>setIsland(e.target.value);
-document.querySelector('#navIslands').onclick=()=>document.querySelector('.island-pills').scrollIntoView({behavior:'smooth',block:'center'});
+document.querySelector('#navIslands').onclick=()=>document.querySelector('#island-picker')?.scrollIntoView({behavior:'smooth',block:'center'});
 document.querySelector('#topSearch').onclick=()=>document.querySelector('#searchInput').focus();
-document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch(document.querySelector('#searchInput').value)};
+document.querySelector('#homeSearch').onsubmit=e=>{
+  e.preventDefault();
+  const q=document.querySelector('#searchInput')?.value||'';
+  openSearch(q);
+};
 document.querySelectorAll('[data-group]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch('',a.dataset.group)});
 document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()};
 document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()};
@@ -940,13 +949,21 @@ const masterTopSearch=document.querySelector('#masterTopSearch');
 const masterNavIslands=document.querySelector('#masterNavIslands');
 const masterIslandsMenu=document.querySelector('#masterIslandsMenu');
 
-masterTopSearch?.addEventListener('click',()=>document.querySelector('#searchInput')?.focus());
+masterTopSearch?.addEventListener('click',()=>{
+  const input=document.querySelector('#searchInput');
+  input?.focus({preventScroll:true});
+  document.querySelector('#homeSearch')?.scrollIntoView({behavior:'smooth',block:'center'});
+});
 masterNavIslands?.addEventListener('click',e=>{
   e.preventDefault();
   const willOpen=masterIslandsMenu?.hidden!==false;
   if(masterIslandsMenu)masterIslandsMenu.hidden=!willOpen;
   masterNavIslands.setAttribute('aria-expanded',willOpen?'true':'false');
 });
+masterIslandsMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  masterIslandsMenu.hidden=true;
+  masterNavIslands?.setAttribute('aria-expanded','false');
+}));
 document.addEventListener('click',e=>{
   if(!masterIslandsMenu||masterIslandsMenu.hidden)return;
   if(masterIslandsMenu.contains(e.target)||masterNavIslands?.contains(e.target))return;
