@@ -342,8 +342,8 @@ function validateFormStep(step){
   }
   return true;
 }
-$('[data-step-next]').forEach(btn=>btn.onclick=()=>{if(validateFormStep(currentFormStep))updateFormStep(Number(btn.dataset.stepNext))});
-$('[data-step-back]').forEach(btn=>btn.onclick=()=>updateFormStep(Number(btn.dataset.stepBack)));
+$$('[data-step-next]').forEach(btn=>btn.onclick=()=>{if(validateFormStep(currentFormStep))updateFormStep(Number(btn.dataset.stepNext))});
+$$('[data-step-back]').forEach(btn=>btn.onclick=()=>updateFormStep(Number(btn.dataset.stepBack)));
 updateFormStep(1,{focus:false});
 
 $('#providerForm').onsubmit=async e=>{
