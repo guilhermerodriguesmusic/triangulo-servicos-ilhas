@@ -86,7 +86,7 @@ const CAT={
  creative:{pt:'Fotografia / Criativos',en:'Photography & Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
 };
 function tr(pt,en){return lang==='pt'?pt:en}
-function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00'))p=p.slice(2);if(p.length===9&&p.startsWith('9'))p='351'+p;return p}
+function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00'))p=p.slice(2);if(p.length===9)p='351'+p;return p}
 function applyLang(){
  document.documentElement.lang=lang;
  document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en);
