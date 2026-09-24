@@ -339,6 +339,9 @@ function publicFieldContainsBusiness(value,business){
   const identity=compactIdentityText(business);
   return identity.length>=4&&compactIdentityText(value).includes(identity);
 }
+function publicFieldContainsDirectContact(value){
+  return /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/|(\+?\d[ .()\/-]*){9,}/i.test(String(value||''));
+}
 function validateFormStep(step){
   const status=$('#status');status.textContent='';
   if(!validateNativeInStep(step))return false;
@@ -359,12 +362,14 @@ function validateFormStep(step){
       [$('#otherService'),lang==='pt'?'outro serviço':'other service']
     ];
     for(const [field,label] of publicIdentityFields){
+      if(field&&publicFieldContainsDirectContact(field.value)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na '+label+' pública.':'Do not include phone numbers, email, WhatsApp, social media or links in the public '+label+'.';field.focus();return false}
       if(field&&publicFieldContainsBusiness(field.value,business)){status.textContent=lang==='pt'?'Não coloques o nome do negócio na '+label+' pública.':'Do not include the business name in the public '+label+'.';field.focus();return false}
     }
   }
   if(step===3){
     if($('#pricingType').value!=='quote'&&(!$('#price').value||Number($('#price').value)<=0)){status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return false}
     const availability=$('[name="availability"]'),business=$('[name="business_name"]').value;
+    if(availability&&publicFieldContainsDirectContact(availability.value)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na disponibilidade pública.':'Do not include phone numbers, email, WhatsApp, social media or links in the public availability.';availability.focus();return false}
     if(availability&&publicFieldContainsBusiness(availability.value,business)){status.textContent=lang==='pt'?'Não coloques o nome do negócio na disponibilidade pública.':'Do not include the business name in the public availability.';availability.focus();return false}
   }
   if(step===4){
