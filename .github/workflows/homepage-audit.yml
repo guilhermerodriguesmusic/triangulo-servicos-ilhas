@@ -308,6 +308,10 @@ jobs:
               openBooking('11111111-1111-4111-8111-111111111111');
             });
             assert.equal(await page.locator('#bookSheet').evaluate(el=>el.classList.contains('open')),true,'direct booking sheet did not open');
+            const quickDates=page.locator('[data-date]');
+            assert.ok(await quickDates.count()>=2,'booking quick dates missing');
+            await quickDates.nth(1).click();
+            assert.equal(await quickDates.nth(1).evaluate(el=>el.classList.contains('active')),true,'booking quick date did not activate');
             await page.fill('#bookNote','Limpeza de um terreno com erva alta.');
             await page.fill('#bookLocation','Madalena');
             await page.fill('#bookPhone','123');
