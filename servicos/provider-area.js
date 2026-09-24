@@ -25,6 +25,9 @@ function providerBookingStatus(status,paymentStatus){
 }
 async function openProviderArea(){
   document.title=lang==='pt'?'Área do prestador — TRIÂNGULO':'Provider area — TRIÂNGULO';
+  if(!new URLSearchParams(location.search).has('prestador')||new URLSearchParams(location.search).get('prestador')!=='1'){
+    history.replaceState({},'',location.pathname+'?prestador=1');
+  }
   $('#splash').classList.add('hidden');
   $('#mainShell').classList.add('hidden');
   $('#providerRequestView').hidden=true;
