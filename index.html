@@ -779,7 +779,7 @@ nas ilhas</h1>
       <form id="homeSearch" class="searchbar" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
         <label class="searchmain" aria-label="Serviço">
           <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.3 4.3"/></svg>
-          <input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
+          <input id="searchInput" name="q" maxlength="120" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
         </label>
         <div class="search-divider"></div>
         <label class="island-select-wrap">
@@ -831,7 +831,7 @@ nas ilhas</h1>
     <a class="master-hotspot mh-saojorge" href="/servicos/?island=S%C3%A3o+Jorge" aria-label="Serviços em São Jorge"></a>
 
     <form class="master-search-form" id="masterSearchForm" action="/servicos/" method="get" role="search" aria-label="Pesquisar serviços">
-      <input class="master-query" id="masterSearchInput" name="q" type="search" autocomplete="off" autocapitalize="none" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?">
+      <input class="master-query" id="masterSearchInput" name="q" type="search" maxlength="120" autocomplete="off" autocapitalize="none" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?">
       <select class="master-island-select" id="masterIslandSelect" name="island" aria-label="Ilha">
         <option value="Pico">Pico</option>
         <option value="Faial">Faial</option>
@@ -943,11 +943,16 @@ const masterIslandSelect=document.querySelector('#masterIslandSelect');
 const masterSearchForm=document.querySelector('#masterSearchForm');
 if(masterIslandSelect && ['Pico','Faial','São Jorge'].includes(island)) masterIslandSelect.value=island;
 masterIslandSelect?.addEventListener('change',()=>{
-  localStorage.setItem('tri_island',masterIslandSelect.value);
+  if(['Pico','Faial','São Jorge'].includes(masterIslandSelect.value))setIsland(masterIslandSelect.value);
 });
+document.querySelectorAll('.mh-pico,.mh-faial,.mh-saojorge').forEach(a=>a.addEventListener('click',()=>{
+  const u=new URL(a.href,location.origin);
+  const next=u.searchParams.get('island');
+  if(['Pico','Faial','São Jorge'].includes(next))setIsland(next);
+}));
 masterSearchForm?.addEventListener('submit',()=>{
-  if(masterSearchInput) masterSearchInput.value=masterSearchInput.value.trim();
-  if(masterIslandSelect) localStorage.setItem('tri_island',masterIslandSelect.value);
+  if(masterSearchInput) masterSearchInput.value=masterSearchInput.value.trim().slice(0,120);
+  if(masterIslandSelect&&['Pico','Faial','São Jorge'].includes(masterIslandSelect.value))setIsland(masterIslandSelect.value);
 });
 document.querySelector('#masterTopSearch')?.addEventListener('click',()=>masterSearchInput?.focus());
 if(desktopMasterMedia.addEventListener)desktopMasterMedia.addEventListener('change',syncDesktopMasterInteractivity);
