@@ -1509,17 +1509,26 @@ function updateResults(q=activeSearchQuery){
   $('#resultsList').innerHTML='<div class="real-empty"><b>'+(lang==='pt'?'Não foi possível carregar os prestadores.':'Could not load providers.')+'</b><span>'+(lang==='pt'?'Verifica a ligação e tenta novamente.':'Check your connection and try again.')+'</span><br><button class="primary" type="button" id="retryProviders">'+(lang==='pt'?'Tentar novamente':'Try again')+'</button></div>';
   const retry=$('#retryProviders');if(retry)retry.onclick=()=>loadProviders(activeSearchQuery,activeServiceGroup);return;
  }
+ const comparableServicePrice=s=>{
+   if(!s||s.pricing_type==='quote'||s.price==null)return Infinity;
+   const n=Number(s.price);return Number.isFinite(n)?n:Infinity;
+ };
  const bestByProvider=new Map();
  realProviders.forEach(s=>{
    const prev=bestByProvider.get(s.provider_id);
    const score=Number(s.rank_score||0),prevScore=prev?Number(prev.rank_score||0):-Infinity;
-   if(!prev||score>prevScore)bestByProvider.set(s.provider_id,s);
+   if(!prev){bestByProvider.set(s.provider_id,s);return}
+   if(activeResultsSort==='price'){
+     const price=comparableServicePrice(s),prevPrice=comparableServicePrice(prev);
+     if(price<prevPrice||(price===prevPrice&&score>prevScore))bestByProvider.set(s.provider_id,s);
+     return
+   }
+   if(score>prevScore)bestByProvider.set(s.provider_id,s);
  });
  let list=[...bestByProvider.values()];
  if(activeResultsSort==='price'){
    list=[...list].sort((a,b)=>{
-     const ap=(a.pricing_type==='quote'||a.price==null)?Infinity:Number(a.price);
-     const bp=(b.pricing_type==='quote'||b.price==null)?Infinity:Number(b.price);
+     const ap=comparableServicePrice(a),bp=comparableServicePrice(b);
      return ap-bp || Number(b.rank_score||0)-Number(a.rank_score||0);
    });
  }else if(activeResultsSort==='completed'){
