@@ -250,7 +250,7 @@ async function setReviewVisibility(id,visible){
  load();
 }
 
-function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00'))p=p.slice(2);if(p.length===9&&p.startsWith('9'))p='351'+p;return p}
+function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00'))p=p.slice(2);if(p.length===9)p='351'+p;return p}
 function openWhatsApp(raw,message){const phone=waPhone(raw);if(!phone){alert(tr('Não existe um número de WhatsApp válido.','There is no valid WhatsApp number.'));return}window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer')}
 function whatsappApplication(id,phoneEnc,nameEnc){const phone=decodeURIComponent(phoneEnc||''),name=decodeURIComponent(nameEnc||'');openWhatsApp(phone,lang==='pt'?'Olá '+(name||'')+'! Falo do TRIÂNGULO. Recebemos a tua candidatura de prestador e estou a entrar em contacto por aqui para facilitar a comunicação.':'Hello '+(name||'')+'! This is TRIÂNGULO. We received your provider application and I am contacting you here to make communication easier.')}
 function whatsappRequestClient(id,phoneEnc,nameEnc){const phone=decodeURIComponent(phoneEnc||''),name=decodeURIComponent(nameEnc||'');openWhatsApp(phone,lang==='pt'?'Olá '+(name||'')+'! Falo do TRIÂNGULO. Recebemos o teu pedido de serviço e estou a entrar em contacto por WhatsApp para facilitar o acompanhamento.':'Hello '+(name||'')+'! This is TRIÂNGULO. We received your service request and I am contacting you on WhatsApp to make follow-up easier.')}
