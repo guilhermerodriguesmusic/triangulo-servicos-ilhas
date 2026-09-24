@@ -9,6 +9,8 @@ on:
       - "servicos/index.html"
       - "prestadores.html"
       - "candidatura-prestador.html"
+      - "candidatura-rever.html"
+      - "admin.html"
       - "how-it-works.html"
       - "sobre-nos.html"
       - "privacy.html"
@@ -254,6 +256,26 @@ jobs:
             assert.match(await sw.text(),/triangulo-pwa-20260924-v1-0-rc110/,'unexpected service-worker cache version');
 
             assert.equal(errors.length,0,'provider/contact/PWA page errors: '+errors.join(' | '));
+            await context.close();
+          }
+
+          // Admin/review entry shells must remain operational without exposing data when signed out.
+          {
+            const context=await browser.newContext({viewport:{width:1280,height:800},locale:'pt-PT'});
+            const page=await context.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e.message||e)));
+
+            await page.goto(base+'/admin.html',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(200);
+            assert.equal(await page.locator('#login').isVisible(),true,'admin login shell missing');
+            assert.equal(await page.locator('#panel').isVisible(),false,'admin panel visible while signed out');
+
+            await page.goto(base+'/candidatura-rever.html?token=00000000-0000-0000-0000-000000000000',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(200);
+            assert.equal(await page.locator('#loginbox').evaluate(el=>el.classList.contains('show')),true,'provider review admin login missing');
+
+            assert.equal(errors.length,0,'admin/review page errors: '+errors.join(' | '));
             await context.close();
           }
 
