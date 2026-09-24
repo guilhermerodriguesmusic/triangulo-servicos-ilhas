@@ -105,7 +105,7 @@ function renderHealth(data,error){
  }
  const failures=Array.isArray(data.failed_notification_items)?data.failed_notification_items:[];
  if(failures.length){
-  box.insertAdjacentHTML('beforeend','<div class="health-errors"><b>'+tr('Últimos erros de notificação','Latest notification errors')+'</b><div class="health-actions">'+failures.map(x=>'<div class="health-action-row"><span>#'+esc(x.id)+' · '+esc(x.channel||'')+' · '+esc(x.template||'')+' · '+esc(x.last_error||'')+'</span><button class="health-action" type="button" onclick="retryNotification('+Number(x.id)+',this)">'+tr('Tentar novamente','Retry')+'</button></div>').join('')+'</div></div>');
+  box.insertAdjacentHTML('beforeend','<div class="health-errors"><b>'+tr('Últimos erros de notificação','Latest notification errors')+'</b><div class="health-actions">'+failures.map(x=>'<div class="health-action-row"><span>#'+esc(x.id)+' · '+esc(x.channel||'')+' · '+esc(x.template||'')+' · '+esc(x.last_error||'')+'</span>'+(x.retryable===false?'':'<button class="health-action" type="button" onclick="retryNotification('+Number(x.id)+',this)">'+tr('Tentar novamente','Retry')+'</button>')+'</div>').join('')+'</div></div>');
  }
 }
 function openClientVerificationWhatsApp(phone){
