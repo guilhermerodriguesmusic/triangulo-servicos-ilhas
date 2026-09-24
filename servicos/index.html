@@ -1035,7 +1035,7 @@ body.route-public-results #explore{display:block!important}
  <header class="topbar"><a class="logo-row" href="/" aria-label="TRIÂNGULO Açores"><img class="brand-full" src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><nav class="desktop-client-nav" aria-label="Navegação principal" data-aria-pt="Navegação principal" data-aria-en="Main navigation"><a href="/" data-pt="Início" data-en="Home">Início</a><a class="active" href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a><a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a><a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a><button type="button" id="desktopPublishNav" class="desktop-nav-primary" data-pt="Pedir ajuda" data-en="Get help">Pedir ajuda</button></nav><div class="topbar-actions"><a class="topbar-link" href="/prestadores.html" data-pt="Para prestadores" data-en="For providers">Para prestadores</a><div class="lang-switch"><button data-lang="pt" class="active">PT</button><button data-lang="en">EN</button></div></div></header>
  <main id="main-content">
   <section id="home" class="screen active">
-   <div class="home-hero"><div class="island-select"><button id="islandPill"><svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Pico</span><span aria-hidden="true">⌄</span></button></div><div class="home-title"><h1 data-t="whatNeed">O que precisas?</h1><p data-t="homeSub">Serviços locais para o teu dia a dia.</p></div><form id="searchForm" class="searchbar" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services"><span>⌕</span><input id="searchInput" name="q" autocomplete="off" enterkeyhint="search" placeholder="Limpeza, jardim, aulas..."><button type="submit" aria-label="Pesquisar" data-aria-pt="Pesquisar" data-aria-en="Search">→</button></form></div>
+   <div class="home-hero"><div class="island-select"><button id="islandPill"><svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Pico</span><span aria-hidden="true">⌄</span></button></div><div class="home-title"><h1 data-t="whatNeed">O que precisas?</h1><p data-t="homeSub">Serviços locais para o teu dia a dia.</p></div><form id="searchForm" class="searchbar" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services"><span>⌕</span><input id="searchInput" name="q" maxlength="120" autocomplete="off" enterkeyhint="search" placeholder="Limpeza, jardim, aulas..."><button type="submit" aria-label="Pesquisar" data-aria-pt="Pesquisar" data-aria-en="Search">→</button></form></div>
    <div class="section-head"><h2 data-t="categories">Categorias</h2><button id="allCatsBtn" data-t="seeAll">Ver todas ›</button></div><div id="homeCats" class="category-grid">
 <button class="category c0" data-cat="0"><span>⌂</span><small data-pt="Casa" data-en="Home">Casa</small></button>
 <button class="category c1" data-cat="1"><span>⌁</span><small data-pt="Jardim" data-en="Garden">Jardim</small></button>
@@ -1046,7 +1046,7 @@ body.route-public-results #explore{display:block!important}
   </section>
 
   <section id="explore" class="screen">
-   <div class="results-head"><button class="back" id="resultsBack" aria-label="Voltar" data-aria-pt="Voltar" data-aria-en="Back">‹</button><div class="results-search">⌕<input id="resultsInput" value="" autocomplete="off" enterkeyhint="search" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?"><button id="clearResultsSearch" type="button" class="clear-search" aria-label="Limpar pesquisa" data-aria-pt="Limpar pesquisa" data-aria-en="Clear search">×</button></div></div>
+   <div class="results-head"><button class="back" id="resultsBack" aria-label="Voltar" data-aria-pt="Voltar" data-aria-en="Back">‹</button><div class="results-search">⌕<input id="resultsInput" value="" maxlength="120" autocomplete="off" enterkeyhint="search" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?"><button id="clearResultsSearch" type="button" class="clear-search" aria-label="Limpar pesquisa" data-aria-pt="Limpar pesquisa" data-aria-en="Clear search">×</button></div></div>
    <div class="results-filters" aria-label="Categorias" data-aria-pt="Categorias" data-aria-en="Categories">
     <button class="result-filter active" type="button" data-results-group="" data-pt="Todos" data-en="All">Todos</button>
     <button class="result-filter" type="button" data-results-group="home" data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</button>
@@ -1436,7 +1436,7 @@ function providerPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang
 function providerCategoryLabels(p){return (p.categories||[]).map(code=>{if(code==='other'&&p.other_service)return p.other_service;const i=CATEGORY_CODES.indexOf(code),c=categories[i];return c?(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en)):code}).slice(0,3)}
 function renderProviders(){}
 async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
- const serial=++searchSerial;providersLoading=true;providersLoadError=false;activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;updateResults(activeSearchQuery);
+ const serial=++searchSerial;providersLoading=true;providersLoadError=false;activeSearchQuery=String(q||'').trim().slice(0,120);activeServiceGroup=group||null;updateResults(activeSearchQuery);
  try{
   const {data,error}=await db.rpc('search_services_v3',{p_island:island,p_query:activeSearchQuery,p_group:activeServiceGroup});
   if(error)throw error;if(serial!==searchSerial)return;
@@ -1477,7 +1477,7 @@ function buildResultsUrl(){
 }
 function runSearch(q,group=null,pushHistory=true){
  const previous=$('.screen.active')?.id||'explore';
- activeSearchQuery=(q||'').trim();activeServiceGroup=group||null;$('#resultsInput').value=activeSearchQuery;
+ activeSearchQuery=String(q||'').trim().slice(0,120);activeServiceGroup=group||null;$('#resultsInput').value=activeSearchQuery;
  showScreen('explore');
  syncResultsUrl(pushHistory&&previous!=='explore'?'push':'replace');
  loadProviders(activeSearchQuery,activeServiceGroup);
