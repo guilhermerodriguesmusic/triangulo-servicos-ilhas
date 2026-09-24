@@ -332,8 +332,14 @@ jobs:
             await page.waitForURL(u=>new URL(u).pathname==='/'&&new URL(u).searchParams.get('lang')==='en');
 
             const fake='00000000-0000-0000-0000-000000000000';
+            const tokenNav=page.waitForRequest(req=>{
+              const u=new URL(req.url());
+              return u.pathname==='/servicos/'&&u.searchParams.get('booking_token')===fake&&u.searchParams.get('lang')==='en';
+            });
             await page.goto(base+'/reserva-responder.html?token='+fake+'&lang=en',{waitUntil:'domcontentloaded'});
-            await page.waitForURL(u=>new URL(u).pathname==='/servicos/'&&new URL(u).searchParams.get('booking_token')===fake&&new URL(u).searchParams.get('lang')==='en');
+            await tokenNav;
+            await page.waitForURL(u=>new URL(u).pathname==='/servicos/');
+            assert.equal(new URL(page.url()).searchParams.has('booking_token'),false,'private booking token remained visible in the address bar');
 
             await context.close();
           }
