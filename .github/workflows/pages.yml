@@ -195,7 +195,7 @@ jobs:
           grep -q "Install TRIÂNGULO" <<<"$install_page"
           grep -q "Already have a profile? Sign in" <<<"$providers"
           grep -q "Local services across the islands" <<<"$index"
-          grep -q "Provider sign in" <<<"$app"
+          grep -q "Provider sign-in" <<<"$app"
           grep -q '"sizes": "192x192"' <<<"$manifest"
           grep -q '"sizes": "512x512"' <<<"$manifest"
           grep -q "/servicos/" <<<"$app_redirect"
