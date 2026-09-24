@@ -271,16 +271,16 @@ jobs:
             page.on('pageerror',e=>errors.push(String(e.message||e)));
             await page.addInitScript(()=>sessionStorage.setItem('tri_sw_reload','1'));
             await page.goto(base+'/instalar/',{waitUntil:'domcontentloaded'});
-            await page.evaluate(async()=>{
+            const installResult=await page.evaluate(async()=>{
               window.__triInstallPrompt={
                 prompt:async()=>{},
                 userChoice:Promise.resolve({outcome:'accepted'})
               };
               captureInstallPrompt();
               await triggerAndroidInstall();
+              return document.querySelector('#androidStatus').textContent;
             });
-            await page.waitForTimeout(50);
-            assert.match(await page.locator('#androidStatus').textContent(),/Instalação iniciada/i,'Android install result was not read from userChoice');
+            assert.match(installResult,/Instalação iniciada/i,'Android install result was not read from userChoice');
             assert.equal(errors.length,0,'Android install page errors: '+errors.join(' | '));
             await context.close();
           }
