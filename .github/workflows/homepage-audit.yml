@@ -505,6 +505,7 @@ jobs:
             assert.equal(await page.locator('#login').isVisible(),true,'admin login shell missing');
             assert.equal(await page.locator('#panel').isVisible(),false,'admin panel visible while signed out');
             assert.equal(await page.evaluate(()=>waPhone('912 345 678')),'351912345678','Portuguese WhatsApp number was not normalized');
+            assert.equal(await page.evaluate(()=>waPhone('296 123 456')),'351296123456','Portuguese 9-digit fixed number was not normalized');
             assert.equal(await page.evaluate(()=>waPhone('0049123456789')),'49123456789','international 00 WhatsApp number was not normalized');
 
             await page.goto(base+'/candidatura-rever.html?token=00000000-0000-0000-0000-000000000000',{waitUntil:'domcontentloaded'});
