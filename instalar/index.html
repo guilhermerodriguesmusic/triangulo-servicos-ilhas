@@ -227,10 +227,11 @@ async function triggerAndroidInstall(){
     androidHeroBtn.classList.add('is-installing');
     androidStatus.textContent=tr('A abrir a instalação…','Opening installation…');
     try{
-      const result=await promptEvent.prompt();
+      await promptEvent.prompt();
+      const result=await promptEvent.userChoice;
       deferredPrompt=null;
       window.__triInstallPrompt=null;
-      androidStatus.textContent=result.outcome==='accepted'
+      androidStatus.textContent=result&&result.outcome==='accepted'
         ?tr('Instalação iniciada ✓','Installation started ✓')
         :tr('Instalação cancelada. Podes tentar novamente quando quiseres.','Installation cancelled. You can try again whenever you want.');
     }catch{
