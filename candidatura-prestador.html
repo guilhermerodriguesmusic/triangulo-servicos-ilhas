@@ -325,9 +325,19 @@ function validateNativeInStep(step){
   for(const el of controls){if(!el.checkValidity()){el.reportValidity();el.focus({preventScroll:true});return false}}
   return true;
 }
+function normalizePhoneForValidation(value){
+  let digits=String(value||'').replace(/\D/g,'');
+  if(digits.startsWith('00'))digits=digits.slice(2);
+  if(digits.length===9)digits='351'+digits;
+  return digits;
+}
 function validateFormStep(step){
   const status=$('#status');status.textContent='';
   if(!validateNativeInStep(step))return false;
+  if(step===1){
+    const phone=$('[name="phone"]'),digits=normalizePhoneForValidation(phone&&phone.value);
+    if(digits.length<9||digits.length>15){status.textContent=lang==='pt'?'Indica um número de telefone/WhatsApp válido.':'Enter a valid phone/WhatsApp number.';if(phone)phone.focus();return false}
+  }
   if(step===2){
     const islands=$$('[data-service-island]:checked'),cats=$$('[data-provider-cat]:checked');
     if(!islands.length){status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return false}
@@ -355,6 +365,8 @@ $('#providerForm').onsubmit=async e=>{
   if(!islands.length){updateFormStep(2);status.textContent=lang==='pt'?'Seleciona pelo menos uma ilha onde trabalhas.':'Select at least one island where you work.';return}
   if(!cats.length){updateFormStep(2);status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return}
   const d=Object.fromEntries(new FormData(f));
+  const phoneDigits=normalizePhoneForValidation(d.phone);
+  if(phoneDigits.length<9||phoneDigits.length>15){updateFormStep(1);status.textContent=lang==='pt'?'Indica um número de telefone/WhatsApp válido.':'Enter a valid phone/WhatsApp number.';f.phone.focus();return}
   if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){updateFormStep(3);status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return}
   const nif=String(d.tax_id||'').replace(/\D/g,'');
   function validNif(n){if(!/^\d{9}$/.test(n))return false;let s=0;for(let i=0;i<8;i++)s+=Number(n[i])*(9-i);let check=11-(s%11);if(check>=10)check=0;return check===Number(n[8])}
