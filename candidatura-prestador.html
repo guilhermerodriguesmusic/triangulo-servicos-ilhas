@@ -372,7 +372,7 @@ function validateFormStep(step){
     }
   }
   if(step===3){
-    if($('#pricingType').value!=='quote'&&(!$('#price').value||Number($('#price').value)<=0)){status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return false}
+    if($('#pricingType').value!=='quote'&&(!$('#price').value||Number($('#price').value)<=0)){status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote required”.';$('#price').focus();return false}
     const availability=$('[name="availability"]'),business=$('[name="business_name"]').value,name=$('[name="name"]').value;
     if(availability&&publicFieldContainsDirectContact(availability.value)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na disponibilidade pública.':'Do not include phone numbers, email, WhatsApp, social media or links in the public availability.';availability.focus();return false}
     if(availability&&publicFieldContainsBusiness(availability.value,business)){status.textContent=lang==='pt'?'Não coloques o nome do negócio na disponibilidade pública.':'Do not include the business name in the public availability.';availability.focus();return false}
@@ -399,7 +399,7 @@ $('#providerForm').onsubmit=async e=>{
   const d=Object.fromEntries(new FormData(f));
   const phoneDigits=normalizePhoneForValidation(d.phone);
   if(phoneDigits.length<9||phoneDigits.length>15){updateFormStep(1);status.textContent=lang==='pt'?'Indica um número de telefone/WhatsApp válido.':'Enter a valid phone/WhatsApp number.';f.phone.focus();return}
-  if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){updateFormStep(3);status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return}
+  if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){updateFormStep(3);status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote required”.';$('#price').focus();return}
   const nif=String(d.tax_id||'').replace(/\D/g,'');
   function validNif(n){if(!/^\d{9}$/.test(n))return false;let s=0;for(let i=0;i<8;i++)s+=Number(n[i])*(9-i);let check=11-(s%11);if(check>=10)check=0;return check===Number(n[8])}
   if(!validNif(nif)){updateFormStep(4);status.textContent=lang==='pt'?'Indica um NIF/NIPC português válido com 9 dígitos.':'Enter a valid 9-digit Portuguese NIF/NIPC.';f.tax_id.focus();return}
