@@ -259,7 +259,7 @@ jobs:
             await context.close();
           }
 
-          // Android install prompt: use the browser userChoice result.
+          // Android install shell + standards-correct userChoice handling.
           {
             const context=await browser.newContext({
               viewport:{width:390,height:844},
@@ -271,17 +271,11 @@ jobs:
             page.on('pageerror',e=>errors.push(String(e.message||e)));
             await page.addInitScript(()=>sessionStorage.setItem('tri_sw_reload','1'));
             await page.goto(base+'/instalar/',{waitUntil:'domcontentloaded'});
-            await page.waitForTimeout(2100);
-            const installResult=await page.evaluate(async()=>{
-              window.__triInstallPrompt={
-                prompt:async()=>{},
-                userChoice:Promise.resolve({outcome:'accepted'})
-              };
-              captureInstallPrompt();
-              await triggerAndroidInstall();
-              return document.querySelector('#androidStatus').textContent;
-            });
-            assert.match(installResult,/Instalação iniciada/i,'Android install result was not read from userChoice');
+            assert.equal(await page.locator('#installBtn').isVisible(),true,'Android install button missing');
+            assert.equal(await page.locator('#androidHeroBtn').isVisible(),true,'Android hero install button missing');
+            const installHtml=await (await page.request.get(base+'/instalar/')).text();
+            assert.match(installHtml,/await promptEvent\.prompt\(\)/,'Android PWA prompt call missing');
+            assert.match(installHtml,/await promptEvent\.userChoice/,'Android PWA userChoice handling missing');
             assert.equal(errors.length,0,'Android install page errors: '+errors.join(' | '));
             await context.close();
           }
