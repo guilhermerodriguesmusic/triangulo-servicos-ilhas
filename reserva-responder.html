@@ -31,8 +31,8 @@
 </main>
 <script>
 const q=new URLSearchParams(location.search),t=q.get('token')||q.get('booking_token');let savedLang2='';try{savedLang2=localStorage.getItem('tri_lang')||''}catch(e){}const lang=(q.get('lang')==='en'||savedLang2==='en')?'en':'pt';
-document.documentElement.lang=lang;document.title=lang==='en'?'Open request — TRIÂNGULO':'Responder ao pedido — TRIÂNGULO';
-document.getElementById('opening').textContent=lang==='en'?'Opening your TRIÂNGULO request…':'A abrir o teu pedido no TRIÂNGULO…';
+document.documentElement.lang=lang;document.title=lang==='en'?'Respond to request — TRIÂNGULO':'Responder ao pedido — TRIÂNGULO';
+document.getElementById('opening').textContent=lang==='en'?'Opening your request in TRIÂNGULO…':'A abrir o teu pedido no TRIÂNGULO…';
 document.getElementById('fallback').textContent=lang==='en'?'Continue':'Continuar';
 const p=new URLSearchParams();if(t)p.set('booking_token',t);if(lang==='en')p.set('lang','en');document.getElementById('fallback').href='/servicos/'+(p.toString()?'?'+p.toString():'');
 </script>
