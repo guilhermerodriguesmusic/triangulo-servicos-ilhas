@@ -330,6 +330,33 @@ jobs:
             await page.click('#emptyPost');
             assert.equal(await page.locator('#requestSheet').evaluate(el=>el.classList.contains('open')),true,'empty-island help CTA did not open request form');
 
+            // Results search must preserve an active category filter when editing/clearing text.
+            await page.evaluate(()=>{
+              closeSheets();
+              activeSearchQuery='aulas';
+              activeServiceGroup='garden';
+              $('#resultsInput').value='aulas';
+            });
+            await page.press('#resultsInput','Enter');
+            await page.waitForTimeout(30);
+            assert.equal(await page.evaluate(()=>activeServiceGroup),'garden','results Enter cleared the active category filter');
+            assert.equal(new URL(page.url()).searchParams.get('group'),'garden','results URL lost category filter after Enter');
+            await page.click('#clearResultsSearch');
+            await page.waitForTimeout(30);
+            assert.equal(await page.evaluate(()=>activeServiceGroup),'garden','clear search cleared the active category filter');
+            assert.equal(await page.evaluate(()=>activeSearchQuery),'','clear search did not clear only the query');
+
+            // Broad results groups must not be misclassified as one narrow request category.
+            await page.evaluate(()=>{
+              closeSheets();
+              activeSearchQuery='Preciso de ajuda';
+              activeServiceGroup='repairs';
+              $('#requestForm [name="category_code"]').value='garden';
+              openRequest(activeSearchQuery);
+            });
+            assert.equal(await page.locator('#requestForm [name="category_code"]').inputValue(),'','broad repairs/tech/moving group forced a narrow request category');
+            assert.equal(await page.locator('#requestForm [name="description"]').inputValue(),'Preciso de ajuda','fallback request lost active search text');
+
             await page.evaluate(()=>{
               closeSheets();
               island='Pico';
