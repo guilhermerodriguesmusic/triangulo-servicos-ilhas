@@ -83,29 +83,23 @@ jobs:
           {
             const {context,page,errors}=await open({width:1857,height:1042},'pt');
             assert.equal(await page.locator('.master-desktop-ui').isVisible(),true,'desktop master overlay not visible');
-            assert.equal(await page.locator('.stage .island-pills').isVisible(),true,'real island pills not visible');
-            assert.equal(await page.locator('.stage .searchbar').isVisible(),true,'real searchbar not visible');
+            assert.equal(await page.locator('.stage .island-pills').isVisible(),true,'legacy island pills missing');
+            assert.equal(await page.locator('.stage .searchbar').isVisible(),true,'legacy searchbar missing');
+            assert.equal(await page.locator('.island-pills').getAttribute('inert'),'','legacy island controls must be inert under the PT desktop master');
+            assert.equal(await page.locator('#homeSearch').getAttribute('inert'),'','legacy search must be inert under the PT desktop master');
+            assert.equal(await page.locator('.category-row').getAttribute('inert'),'','legacy categories must be inert under the PT desktop master');
             assert.match(await page.locator('.hero').evaluate(el=>getComputedStyle(el,'::before').backgroundImage),/home-master/);
             await assertNoOverflow(page);
 
             await page.click('#masterTopSearch');
-            assert.equal(await page.evaluate(()=>document.activeElement?.id),'searchInput','top search did not focus query');
+            assert.equal(await page.evaluate(()=>document.activeElement?.id),'masterSearchInput','top search did not focus master query');
 
-            assert.equal(await page.locator('#masterIslandsMenu').isVisible(),false);
-            await page.click('#masterNavIslands');
-            assert.equal(await page.locator('#masterIslandsMenu').isVisible(),true,'desktop islands menu did not open');
-            const islandMenuHrefs=await page.locator('#masterIslandsMenu a').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
-            assert.deepEqual(islandMenuHrefs,['/servicos/?island=Pico','/servicos/?island=Faial','/servicos/?island=S%C3%A3o+Jorge']);
-            await page.keyboard.press('Escape');
-            assert.equal(await page.locator('#masterIslandsMenu').isVisible(),false,'desktop islands menu did not close');
-
-            await page.click('.island-pill[data-island="Faial"]');
-            assert.equal(await page.locator('#islandSelect').inputValue(),'Faial');
-            assert.equal(await page.locator('.island-pill[data-island="Faial"]').evaluate(el=>el.classList.contains('active')),true);
-            await page.fill('#searchInput','jardim');
+            await page.selectOption('#masterIslandSelect','Faial');
+            assert.equal(await page.locator('#masterIslandSelect').inputValue(),'Faial');
+            await page.fill('#masterSearchInput','jardim');
             await Promise.all([
               page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
-              page.click('#homeSearch button[type="submit"]')
+              page.click('#masterSearchForm button[type="submit"]')
             ]);
             await assertRoute(page,'/servicos/',{island:'Faial',q:'jardim'});
             assert.equal(errors.length,0,'desktop PT page errors: '+errors.join(' | '));
@@ -120,6 +114,7 @@ jobs:
             const expected=[
               '/', '/servicos/', '/how-it-works.html', '/sobre-nos.html',
               '/?lang=pt','/?lang=en','/servicos/#prestador',
+              '/servicos/?island=Pico','/servicos/?island=Faial','/servicos/?island=S%C3%A3o+Jorge',
               '/servicos/?group=repairs','/servicos/?group=garden','/servicos/?group=home','/servicos/?group=personal'
             ];
             for(const href of expected)assert.ok(hrefs.some(x=>x.href===href),'missing master href '+href);
@@ -149,13 +144,9 @@ jobs:
           {
             const {context,page,errors}=await open({width:390,height:844},'pt');
             assert.equal(await page.locator('.master-desktop-ui').isVisible(),false);
-            assert.equal(await page.locator('#mobileMenuToggle').isVisible(),true,'mobile menu button missing');
-            await page.click('#mobileMenuToggle');
-            assert.equal(await page.locator('#mobileMenuPanel').isVisible(),true,'mobile menu did not open');
-            const mobileHrefs=await page.locator('#mobileMenuPanel a').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
-            for(const href of ['/servicos/','/how-it-works.html','/sobre-nos.html','/servicos/#prestador'])assert.ok(mobileHrefs.includes(href),'mobile menu missing '+href);
-            await page.keyboard.press('Escape');
-            assert.equal(await page.locator('#mobileMenuPanel').isVisible(),false);
+            assert.equal(await page.locator('#homeSearch').isVisible(),true,'mobile search missing');
+            assert.equal(await page.locator('.island-pills').getAttribute('inert'),null,'mobile island controls must remain interactive');
+            assert.equal(await page.locator('#homeSearch').getAttribute('inert'),null,'mobile search must remain interactive');
 
             await page.click('.island-pill[data-island="Faial"]');
             await page.fill('#searchInput','limpeza');
@@ -181,10 +172,10 @@ jobs:
           }
           {
             const {context,page,errors}=await open({width:390,height:844},'en');
-            assert.equal(await page.locator('#mobileMenuToggle').isVisible(),true);
-            await page.click('#mobileMenuToggle');
-            assert.equal((await page.locator('#mobileMenuPanel a').first().textContent()).trim(),'Services');
+            assert.equal(await page.locator('.master-desktop-ui').isVisible(),false);
+            assert.equal(await page.locator('#homeSearch').isVisible(),true);
             assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'What service do you need?');
+            assert.equal(await page.locator('#homeSearch').getAttribute('inert'),null);
             await assertNoOverflow(page);
             assert.equal(errors.length,0,'mobile EN page errors: '+errors.join(' | '));
             await page.screenshot({path:'homepage-audit/mobile-en.png',fullPage:true});
