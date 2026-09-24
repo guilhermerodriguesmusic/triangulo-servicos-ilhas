@@ -284,7 +284,9 @@ $('#paServiceForm [name="pricing_type"]').onchange=syncServicePriceField;
 $('#paServiceForm').onsubmit=async e=>{
  e.preventDefault();const form=e.target,status=$('#paServiceStatus'),submitBtn=form.querySelector('[type="submit"]'),d=Object.fromEntries(new FormData(form));
  if(submitBtn.disabled)return;
+ const providerName=(providerAccountData&&providerAccountData.profile&&providerAccountData.profile.name)||'';
  if(containsDirectContactText(d.title)||containsDirectContactText(d.description)||containsDirectContactText(d.availability)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links nos campos públicos do serviço.':'Do not add phone numbers, email, WhatsApp, social media or links to public service fields.';return}
+ if(containsFullProviderIdentityText(d.title,providerName)||containsFullProviderIdentityText(d.description,providerName)||containsFullProviderIdentityText(d.availability,providerName)){status.textContent=lang==='pt'?'Não coloques o teu nome completo nos campos públicos do serviço.':'Do not include your full name in public service fields.';return}
  const payload={category_code:d.category_code,title:(d.title||'').trim(),description:(d.description||'').trim()||null,pricing_type:d.pricing_type,price:d.pricing_type==='quote'?null:Number(d.price),availability:(d.availability||'').trim()||null,status:form.dataset.status||'active'};
  const oldLabel=submitBtn.textContent;submitBtn.disabled=true;submitBtn.textContent=lang==='pt'?'A guardar…':'Saving…';status.textContent='';
  try{
@@ -432,6 +434,9 @@ $('#providerProfileForm').onsubmit=async e=>{
   if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um serviço.':'Select at least one service.';return}
   if(containsDirectContactText(d.name)||containsDirectContactText(d.locality)||containsDirectContactText(d.availability)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links nos campos públicos do perfil.':'Do not add phone numbers, email, WhatsApp, social media or links to public profile fields.';return}
   if(containsDirectContactText(d.description)||containsDirectContactText(d.other_service)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na descrição pública.':'Do not add phone numbers, email, WhatsApp, social media or links to the public description.';return}
+  if(containsFullProviderIdentityText(d.locality,d.name)||containsFullProviderIdentityText(d.description,d.name)||containsFullProviderIdentityText(d.availability,d.name)||containsFullProviderIdentityText(d.other_service,d.name)){status.textContent=lang==='pt'?'Não coloques o teu nome completo nos campos públicos do perfil.':'Do not include your full name in public profile fields.';return}
+  const conflictingService=(providerAccountData.services||[]).find(s=>containsFullProviderIdentityText(s.title,d.name)||containsFullProviderIdentityText(s.description,d.name)||containsFullProviderIdentityText(s.availability,d.name));
+  if(conflictingService){status.textContent=lang==='pt'?'O nome completo que escolheste já aparece num serviço público. Edita primeiro esse serviço.':'The full name you chose already appears in a public service. Edit that service first.';return}
   if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){status.textContent=lang==='pt'?'Indica quanto queres receber ou escolhe “Sob orçamento”.':'Enter how much you want to earn or choose “Quote”.';$('#paPrice').focus();return}
   const payload={
     name:d.name.trim(),business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,
