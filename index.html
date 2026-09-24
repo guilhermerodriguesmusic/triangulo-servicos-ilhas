@@ -933,8 +933,13 @@ document.querySelector('#navIslands').onclick=()=>document.querySelector('.islan
 document.querySelector('#topSearch').onclick=()=>document.querySelector('#searchInput').focus();
 document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch(document.querySelector('#searchInput').value)};
 document.querySelectorAll('[data-group]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch('',a.dataset.group)});
-document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);applyLang()};
-document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);applyLang()};
+function syncHomepageLanguageUrl(){
+  const u=new URL(location.href);
+  if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
+  history.replaceState(history.state,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);
+}
+document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
+document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
 setIsland(['Pico','Faial','São Jorge'].includes(island)?island:'Pico');
 applyLang();
 
