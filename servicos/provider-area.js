@@ -127,7 +127,7 @@ function renderProviderDashboard(data){
     payBadge.classList.remove('active');
     payBadge.classList.add('paused');
     payBadge.textContent=lang==='pt'?'Em preparação':'Coming soon';
-    payHelp.textContent=lang==='pt'?'Os pagamentos através do TRIÂNGULO ainda não estão ativos. Avisaremos antes da ativação.':'Payments through TRIÂNGULO are not active yet. We will let you know before activation.';
+    payHelp.textContent=lang==='pt'?'Os pagamentos através do TRIÂNGULO ainda não estão ativos. Avisaremos antes da ativação.':'Payments through TRIÂNGULO are not active yet. We will let you know before they are activated.';
     payBtn.textContent=lang==='pt'?'Pagamentos em breve':'Payments coming soon';
     payBtn.disabled=true;
   }else{
@@ -144,7 +144,7 @@ function renderProviderDashboard(data){
       payBtn.textContent=lang==='pt'?'Continuar verificação →':'Continue verification →';
     }else{
       payBadge.textContent=lang==='pt'?'Por ativar':'Not active';
-      payHelp.textContent=lang==='pt'?'Ativa os pagamentos para poderes receber através do TRIÂNGULO.':'Activate payments so you can receive money through TRIÂNGULO.';
+      payHelp.textContent=lang==='pt'?'Ativa os pagamentos para poderes receber através do TRIÂNGULO.':'Activate payments so you can receive payments through TRIÂNGULO.';
       payBtn.textContent=lang==='pt'?'Ativar pagamentos →':'Activate payments →';
     }
   }
@@ -166,7 +166,7 @@ function renderProviderDashboard(data){
   renderProviderServices(services);
   $('#paRequestCount').textContent=pending.length;
   if(!requests.length){
-    $('#paBookings').innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens pedidos. Quando houver um pedido compatível ou um cliente escolher um serviço teu, aparece aqui.':'No requests yet. Matching requests and direct service requests will appear here.')+'</div>';
+    $('#paBookings').innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens pedidos. Quando houver um pedido compatível ou um cliente escolher um serviço teu, aparece aqui.':'No requests yet. When a matching request arrives or a customer chooses one of your services, it will appear here.')+'</div>';
   }else{
     const ordered=[...requests].sort((a,b)=>{
       const ap=(a.status==='requested'||a.status==='sent')?0:(a.status==='quoted'||a.status==='accepted'||a.status==='confirmed'||a.status==='selected')?1:2;
@@ -260,7 +260,7 @@ function providerServiceCategoryLabel(code){
 function renderProviderServices(services){
  const box=$('#paServicesList');if(!box)return;
  if(!services.length){box.innerHTML='<div class="pa-note">'+(lang==='pt'?'Ainda não tens serviços individuais. Adiciona o primeiro.':'You do not have individual services yet. Add the first one.')+'</div>';return}
- box.innerHTML=services.map(s=>'<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(s.title)+'</b><span class="pa-booking-status '+escapeHtml(s.status)+'">'+(s.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused'))+'</span></div><small>'+escapeHtml(providerServiceCategoryLabel(s.category_code))+' · '+escapeHtml(s.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote'):providerOwnPrice(s))+'</small><div class="pa-booking-actions"><button class="accept" data-edit-service="'+s.id+'">'+(lang==='pt'?'Editar':'Edit')+'</button><button class="'+(s.status==='active'?'decline':'accept')+'" data-toggle-service="'+s.id+'">'+(s.status==='active'?(lang==='pt'?'Pausar':'Pause'):(lang==='pt'?'Reativar':'Reactivate'))+'</button></div></div>').join('');
+ box.innerHTML=services.map(s=>'<div class="pa-booking"><div class="pa-booking-top"><b>'+escapeHtml(s.title)+'</b><span class="pa-booking-status '+escapeHtml(s.status)+'">'+(s.status==='active'?(lang==='pt'?'Ativo':'Active'):(lang==='pt'?'Pausado':'Paused'))+'</span></div><small>'+escapeHtml(providerServiceCategoryLabel(s.category_code))+' · '+escapeHtml(s.pricing_type==='quote'?(lang==='pt'?'Sob orçamento':'Quote required'):providerOwnPrice(s))+'</small><div class="pa-booking-actions"><button class="accept" data-edit-service="'+s.id+'">'+(lang==='pt'?'Editar':'Edit')+'</button><button class="'+(s.status==='active'?'decline':'accept')+'" data-toggle-service="'+s.id+'">'+(s.status==='active'?(lang==='pt'?'Pausar':'Pause'):(lang==='pt'?'Reativar':'Reactivate'))+'</button></div></div>').join('');
  $$('[data-edit-service]').forEach(btn=>btn.onclick=()=>openServiceEditor(btn.dataset.editService));
  $$('[data-toggle-service]').forEach(btn=>btn.onclick=()=>toggleProviderService(btn.dataset.toggleService));
 }
@@ -437,7 +437,7 @@ $('#providerProfileForm').onsubmit=async e=>{
   if(containsFullProviderIdentityText(d.locality,d.name)||containsFullProviderIdentityText(d.description,d.name)||containsFullProviderIdentityText(d.availability,d.name)||containsFullProviderIdentityText(d.other_service,d.name)){status.textContent=lang==='pt'?'Não coloques o teu nome completo nos campos públicos do perfil.':'Do not include your full name in public profile fields.';return}
   const conflictingService=(providerAccountData.services||[]).find(s=>containsFullProviderIdentityText(s.title,d.name)||containsFullProviderIdentityText(s.description,d.name)||containsFullProviderIdentityText(s.availability,d.name));
   if(conflictingService){status.textContent=lang==='pt'?'O nome completo que escolheste já aparece num serviço público. Edita primeiro esse serviço.':'The full name you chose already appears in a public service. Edit that service first.';return}
-  if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){status.textContent=lang==='pt'?'Indica quanto queres receber ou escolhe “Sob orçamento”.':'Enter how much you want to earn or choose “Quote”.';$('#paPrice').focus();return}
+  if(d.pricing_type!=='quote'&&(!d.price||Number(d.price)<=0)){status.textContent=lang==='pt'?'Indica quanto queres receber ou escolhe “Sob orçamento”.':'Enter how much you want to receive or choose “Quote required”.';$('#paPrice').focus();return}
   const payload={
     name:d.name.trim(),business_name:d.business_name&&d.business_name.trim()?d.business_name.trim():null,
     locality:d.locality&&d.locality.trim()?d.locality.trim():null,
@@ -482,7 +482,7 @@ async function openProviderPasswordSetup(token){
     const {data,error}=await db.rpc('provider_password_token_status',{p_token:token});
     paShow('paPasswordSet');
     if(error||!data||data.ok!==true){
-      if(status)status.textContent=lang==='pt'?'Não foi possível validar esta ligação. Volta a abrir a ligação do email ou pede uma nova na entrada de prestadores.':'Could not validate this link. Reopen the link from the email or request a new one from provider sign-in.';
+      if(status)status.textContent=lang==='pt'?'Não foi possível validar esta ligação. Volta a abrir a ligação do email ou pede uma nova na entrada de prestadores.':'Could not validate this link. Reopen the link from the email or request a new one from the provider sign-in page.';
       return true;
     }
     if(data.valid!==true){
@@ -618,7 +618,7 @@ function providerAppRenderState(state,data={}){
   }else if(state==='expired'){
     result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Pedido expirado':'Request expired')+'</h2><p>'+(lang==='pt'?'O prazo terminou e o serviço não foi confirmado.':'The response deadline passed and the service was not confirmed.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else if(state==='link_expired'){
-    result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Ligação expirada':'Link expired')+'</h2><p>'+(lang==='pt'?'Esta ligação privada já expirou. Entra na Área do Prestador para consultar o pedido em segurança.':'This private link has expired. Sign in to the Provider Area to view the request securely.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
+    result.innerHTML='<div class="big">⌛</div><h2>'+(lang==='pt'?'Ligação expirada':'Link expired')+'</h2><p>'+(lang==='pt'?'Esta ligação privada já expirou. Entra na Área do Prestador para consultar o pedido em segurança.':'This private link has expired. Sign in to your Provider Area to view the request securely.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }else{
     result.innerHTML='<div class="big">!</div><h2>'+(lang==='pt'?'Link inválido':'Invalid link')+'</h2><p>'+(lang==='pt'?'Este pedido já não está disponível ou o link não é válido.':'This request is no longer available or the link is invalid.')+'</p><button class="pr-app-continue" data-pr-app-continue>'+(lang==='pt'?'Ir para a Área do Prestador':'Go to Provider Area')+'</button>';
   }
