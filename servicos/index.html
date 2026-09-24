@@ -1620,6 +1620,7 @@ const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{acti
 const desktopPublishNav=$('#desktopPublishNav');if(desktopPublishNav)desktopPublishNav.onclick=()=>openRequest();
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,null)};
 $('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',null);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();function localDateISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
+function validClientPhone(value){const digits=String(value||'').replace(/\D/g,'');return digits.length>=8&&digits.length<=15}
 function syncRequestContactPreference(){
  const f=$('#requestForm'),email=f.client_email.value.trim(),phone=f.client_phone.value.trim(),row=$('#requestPreferenceRow');
  if(!whatsappNotificationsLive){
@@ -1648,6 +1649,7 @@ $('#requestForm').onsubmit=async e=>{
  if(!requestLocation){status.textContent=lang==='pt'?'Indica a zona, freguesia ou localidade do serviço.':'Enter the area, parish or locality for the service.';form.where.focus();submitBtn.disabled=false;return}
  if(containsDirectContactText(requestDescription)||containsDirectContactText(requestLocation)){status.textContent=lang==='pt'?'Não coloques contactos ou links na descrição/localização. Usa os campos de contacto próprios do pedido.':'Do not add contact details or links to the description/location. Use the request contact fields instead.';submitBtn.disabled=false;return}
  if(!email&&!phone){status.textContent=lang==='pt'?'Indica pelo menos um contacto: email ou WhatsApp.':'Enter at least one contact method: email or WhatsApp.';submitBtn.disabled=false;return}
+ if(phone&&!validClientPhone(phone)){status.textContent=lang==='pt'?'Indica um número de WhatsApp válido ou deixa o telefone vazio.':'Enter a valid WhatsApp number or leave the phone field empty.';form.client_phone.focus();submitBtn.disabled=false;return}
  let pref=d.contact_preference||'both';
  if(!email)pref='whatsapp';else if(!whatsappNotificationsLive)pref='email';else if(!phone)pref='email';
  status.textContent=lang==='pt'?'A guardar o pedido…':'Saving request…';
@@ -1705,8 +1707,10 @@ function openBooking(id){
  syncBookPreference();
  $('#confirmBook').onclick=async()=>{
   const submitBtn=$('#confirmBook');if(submitBtn.disabled)return;
-  const email=$('#bookEmail').value.trim(),phone=$('#bookPhone').value.trim();
+  const emailInput=$('#bookEmail'),phoneInput=$('#bookPhone'),email=emailInput.value.trim(),phone=phoneInput.value.trim();
   if(!email&&!phone){toast(lang==='pt'?'Indica um email ou WhatsApp.':'Enter an email or WhatsApp number.');return}
+  if(email&&!emailInput.checkValidity()){toast(lang==='pt'?'Indica um email válido ou deixa o email vazio.':'Enter a valid email or leave the email field empty.');emailInput.focus();return}
+  if(phone&&!validClientPhone(phone)){toast(lang==='pt'?'Indica um número de WhatsApp válido ou deixa o telefone vazio.':'Enter a valid WhatsApp number or leave the phone field empty.');phoneInput.focus();return}
    let pref=$('#bookPreference').value||'both';if(!email)pref='whatsapp';else if(!whatsappNotificationsLive)pref='email';else if(!phone)pref='email';
   const note=$('#bookNote').value.trim(),locationText=$('#bookLocation').value.trim();
   if(!note){toast(lang==='pt'?'Descreve o que precisas para o prestador poder avaliar o trabalho.':'Describe what you need so the provider can assess the job.');$('#bookNote').focus();return}
