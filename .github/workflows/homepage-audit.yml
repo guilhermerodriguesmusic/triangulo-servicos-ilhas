@@ -113,7 +113,7 @@ jobs:
             for(const x of hrefs)assert.ok(x.href&&x.href!=='#','dead master link '+JSON.stringify(x));
             const expected=[
               '/', '/servicos/', '/how-it-works.html', '/sobre-nos.html',
-              '/?lang=pt','/?lang=en','/servicos/#prestador',
+              '/?lang=pt','/?lang=en','/prestadores.html',
               '/servicos/?island=Pico','/servicos/?island=Faial','/servicos/?island=S%C3%A3o+Jorge',
               '/servicos/?group=repairs','/servicos/?group=garden','/servicos/?group=home','/servicos/?group=personal'
             ];
