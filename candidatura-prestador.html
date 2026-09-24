@@ -232,7 +232,7 @@ function setLang(next){
   document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});
   document.title=lang==='pt'?'Candidatura de Prestador de Serviços — TRIÂNGULO':'Service Provider Application — TRIÂNGULO';
 }
-$('#pt').onclick=()=>{setLang('pt');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()}; $('#en').onclick=()=>{setLang('en');if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()};
+$('#pt').onclick=()=>{setLang('pt');applyInviteSource();if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()}; $('#en').onclick=()=>{setLang('en');applyInviteSource();if(typeof syncPrimaryCategory==='function')syncPrimaryCategory()};
 
 function applyPlaceholders(){
   document.querySelectorAll('[data-ph-pt]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
@@ -245,7 +245,8 @@ function applyInviteSource(){
   const label=lang==='pt'?'Convite direto do TRIÂNGULO':'Direct TRIÂNGULO invitation';
   const value='Convite direto TRIÂNGULO · '+invite.slice(0,40);
   let opt=[...sel.options].find(o=>o.value===value);
-  if(!opt){opt=document.createElement('option');opt.value=value;opt.textContent=label;sel.appendChild(opt)}
+  if(!opt){opt=document.createElement('option');opt.value=value;sel.appendChild(opt)}
+  opt.textContent=label;
   sel.value=value;
 }
 function compressImage(file,max=700,quality=.78){
