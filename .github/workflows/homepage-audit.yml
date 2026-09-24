@@ -382,6 +382,25 @@ jobs:
             await context.close();
           }
 
+          // Private provider/client tokens must be removed from the address bar after processing.
+          {
+            const context=await browser.newContext();
+            const page=await context.newPage();
+            const fake='00000000-0000-0000-0000-000000000000';
+            const cases=[
+              ['request_token',fake],
+              ['match_token',fake],
+              ['booking_token',fake],
+              ['provider_password_token','deadbeef']
+            ];
+            for(const [key,value] of cases){
+              await page.goto(base+'/servicos/?'+key+'='+encodeURIComponent(value),{waitUntil:'domcontentloaded'});
+              await page.waitForFunction(k=>!new URL(location.href).searchParams.has(k),key,{timeout:5000});
+              assert.equal(new URL(page.url()).searchParams.has(key),false,key+' remained visible in the address bar');
+            }
+            await context.close();
+          }
+
           // Admin/review entry shells must remain operational without exposing data when signed out.
           {
             const context=await browser.newContext({viewport:{width:1280,height:800},locale:'pt-PT'});
