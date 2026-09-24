@@ -1634,7 +1634,7 @@ $('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResul
 function azoresParts(d=new Date()){const out={};new Intl.DateTimeFormat('en-CA',{timeZone:'Atlantic/Azores',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(d).forEach(p=>{if(p.type!=='literal')out[p.type]=p.value});return out}
 function localDateISO(d=new Date()){const p=azoresParts(d);return p.year+'-'+p.month+'-'+p.day}
 function azoresTimeHM(d=new Date()){const p=azoresParts(d);return p.hour+':'+p.minute}
-function isPastAzoresSlot(date,time){if(!date||!time)return false;const today=localDateISO(),nowTime=azoresTimeHM();return date<today||(date===today&&time<=nowTime)}
+function isPastAzoresSlot(date,time){if(!date)return false;const today=localDateISO(),nowTime=azoresTimeHM();if(date<today)return true;if(!time)return false;return date===today&&time<=nowTime}
 function addDaysDate(n){return new Date(Date.now()+Number(n||0)*86400000)}
 function validClientPhone(value){const digits=String(value||'').replace(/\D/g,'');return digits.length>=8&&digits.length<=15}
 function syncRequestContactPreference(){
@@ -2026,6 +2026,7 @@ function renderBookings(){
 async function confirmDirectQuote(token,btn){
  if(!token)return;
  const booking=getLocalBookings().find(x=>x.kind!=='matching'&&x.token===token);
+ if(booking&&isPastAzoresSlot(booking.date,booking.time)){toast(lang==='pt'?'A data ou hora deste pedido já passou. Faz um novo pedido com uma data válida.':'The date or time for this request has passed. Create a new request with a valid date.');return}
  const totalText=booking&&booking.total_amount!=null?formatEuro(booking.total_amount):'';
  const question=paymentsLive
   ?(lang==='pt'
@@ -2054,6 +2055,7 @@ async function confirmDirectQuote(token,btn){
 async function selectMatchingOffer(token,matchId,btn){
  if(!token||!matchId)return;
  const request=getLocalBookings().find(x=>x.kind==='matching'&&x.token===token);
+ if(request&&request.date&&isPastAzoresSlot(request.date,null)){toast(lang==='pt'?'A data deste pedido já passou. Faz um novo pedido com uma data válida.':'The date for this request has passed. Create a new request with a valid date.');return}
  const offer=request&&Array.isArray(request.offers)?request.offers.find(o=>o.match_id===matchId):null;
  const totalText=offer&&offer.total_amount!=null?formatEuro(offer.total_amount):'';
  const question=lang==='pt'
