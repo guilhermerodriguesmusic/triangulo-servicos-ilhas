@@ -227,6 +227,36 @@ jobs:
             await context.close();
           }
 
+          // Provider sign-in entry, contact deep link and PWA shell.
+          {
+            const context=await browser.newContext({viewport:{width:390,height:844},locale:'pt-PT'});
+            const page=await context.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e.message||e)));
+
+            await page.goto(base+'/servicos/?prestador=1',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(300);
+            assert.equal(await page.locator('#providerAreaView').isVisible(),true,'provider area entry did not open');
+            assert.equal(await page.locator('#paSignedOut').isVisible(),true,'provider signed-out card missing');
+            assert.equal(await page.locator('#providerLoginEmail').isVisible(),true,'provider identifier field missing');
+            assert.equal(await page.locator('#providerLoginPassword').isVisible(),true,'provider password field missing');
+
+            await page.goto(base+'/servicos/?contact=1',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(250);
+            assert.equal(await page.locator('#contactSheet').evaluate(el=>el.classList.contains('open')),true,'contact deep link did not open');
+
+            await page.goto(base+'/instalar/',{waitUntil:'domcontentloaded'});
+            assert.equal(await page.locator('link[rel="manifest"]').getAttribute('href'),'/manifest.json');
+            const manifest=await page.request.get(base+'/manifest.json');
+            assert.equal(manifest.status(),200,'manifest unavailable');
+            const sw=await page.request.get(base+'/sw.js');
+            assert.equal(sw.status(),200,'service worker unavailable');
+            assert.match(await sw.text(),/triangulo-pwa-20260924-v1-0-rc110/,'unexpected service-worker cache version');
+
+            assert.equal(errors.length,0,'provider/contact/PWA page errors: '+errors.join(' | '));
+            await context.close();
+          }
+
           // Static route existence + internal public-link crawl.
           {
             const context=await browser.newContext();
