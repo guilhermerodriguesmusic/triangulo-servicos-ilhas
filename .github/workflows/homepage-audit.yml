@@ -271,6 +271,7 @@ jobs:
             page.on('pageerror',e=>errors.push(String(e.message||e)));
             await page.addInitScript(()=>sessionStorage.setItem('tri_sw_reload','1'));
             await page.goto(base+'/instalar/',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(2100);
             const installResult=await page.evaluate(async()=>{
               window.__triInstallPrompt={
                 prompt:async()=>{},
