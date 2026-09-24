@@ -1706,9 +1706,9 @@ function openBooking(id){
  resetRequestPhotos('direct');initRequestPhotoPicker('bookRequest','direct');
  openSheet('bookSheet');
  const selectedBookDate=()=>$('#bookCustomDate').value||($('[data-date].active')&&$('[data-date].active').dataset.date)||'';
- function refreshBookingTimes(){const selectedDate=selectedBookDate(),buttons=$('[data-time]');buttons.forEach(b=>{const past=isPastAzoresSlot(selectedDate,b.dataset.time);b.disabled=past;if(past)b.classList.remove('active')});if(!buttons.some(b=>b.classList.contains('active')&&!b.disabled)){const next=buttons.find(b=>!b.disabled&&b.dataset.time)||buttons.find(b=>!b.disabled);if(next)next.classList.add('active')}}
- $('[data-date]').forEach(b=>b.onclick=()=>{$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#bookCustomDate').value='';refreshBookingTimes()});
- $('#bookCustomDate').onchange=e=>{if(e.target.value)$('[data-date]').forEach(x=>x.classList.remove('active'));refreshBookingTimes()};
+ function refreshBookingTimes(){const selectedDate=selectedBookDate(),buttons=$$('[data-time]');buttons.forEach(b=>{const past=isPastAzoresSlot(selectedDate,b.dataset.time);b.disabled=past;if(past)b.classList.remove('active')});if(!buttons.some(b=>b.classList.contains('active')&&!b.disabled)){const next=buttons.find(b=>!b.disabled&&b.dataset.time)||buttons.find(b=>!b.disabled);if(next)next.classList.add('active')}}
+ $$('[data-date]').forEach(b=>b.onclick=()=>{$$('[data-date]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#bookCustomDate').value='';refreshBookingTimes()});
+ $('#bookCustomDate').onchange=e=>{if(e.target.value)$$('[data-date]').forEach(x=>x.classList.remove('active'));refreshBookingTimes()};
  document.querySelectorAll('[data-time]').forEach(b=>b.onclick=()=>{if(b.disabled)return;document.querySelectorAll('[data-time]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
  refreshBookingTimes();
  function syncBookPreference(){
