@@ -420,7 +420,7 @@ $('#providerForm').onsubmit=async e=>{
     pricing_type:d.pricing_type, price:d.pricing_type==='quote'||!d.price?null:Number(d.price),
     availability:d.availability&&d.availability.trim()?d.availability.trim():null,
     photo_data:photoData, website:d.website&&d.website.trim()?d.website.trim():null,
-    referred_by:d.discovery_source&&d.discovery_source.trim()?d.discovery_source.trim():null ,
+    referred_by:(()=>{const invite=(new URLSearchParams(location.search).get('invite')||'').trim().toLowerCase().slice(0,40);return invite?('Convite direto TRIÂNGULO · '+invite):(d.discovery_source&&d.discovery_source.trim()?d.discovery_source.trim():null)})(),
     consent_commission:!!d.consent_all, consent_terms:!!d.consent_all, consent_privacy:!!d.consent_all,
     locale:lang, status:'pending'
   };
