@@ -151,7 +151,7 @@ async function reissueProviderAccess(id,channel,btn){
   if(accessWin)accessWin.location.href=url;else window.open(url,'_blank','noopener');
  }else{
   if(accessWin)accessWin.close();
-  alert(tr('Nova ligação de acesso enviada por email.','New access link sent by email.'));
+  alert(tr('Nova ligação de acesso preparada para envio por email.','New access link queued for email delivery.'));
  }
  load()
 }
