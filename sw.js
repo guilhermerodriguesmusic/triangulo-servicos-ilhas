@@ -1,4 +1,4 @@
-const CACHE='triangulo-pwa-20260924-v1-0-rc109';
+const CACHE='triangulo-pwa-20260924-v1-0-rc110';
 const CORE=[
   '/',
   '/index.html',
@@ -135,8 +135,14 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Installed Android app: serve static assets from local cache whenever possible.
-  if(['image','style','script','font','manifest'].includes(request.destination)||url.pathname==='/manifest.json'){
+  // Keep executable/UI assets fresh while preserving an offline fallback.
+  if(['style','script','manifest'].includes(request.destination)||url.pathname==='/manifest.json'){
+    event.respondWith(networkFirst(request,null,request));
+    return;
+  }
+
+  // Images/fonts are immutable enough to prefer the local cache.
+  if(['image','font'].includes(request.destination)){
     event.respondWith(cacheFirst(request));
     return;
   }
