@@ -103,6 +103,13 @@ jobs:
 
             await page.selectOption('#masterIslandSelect','Faial');
             assert.equal(await page.locator('#masterIslandSelect').inputValue(),'Faial');
+            assert.equal(await page.locator('#islandSelect').inputValue(),'Faial','master island selection did not sync legacy control');
+            assert.equal(await page.evaluate(()=>localStorage.getItem('tri_island')),'Faial','master island selection did not persist');
+            await page.setViewportSize({width:390,height:844});
+            await page.waitForTimeout(60);
+            assert.equal(await page.locator('#islandSelect').inputValue(),'Faial','selected island changed after switching to mobile layout');
+            await page.setViewportSize({width:1857,height:1042});
+            await page.waitForTimeout(60);
             await page.fill('#masterSearchInput','jardim');
             await Promise.all([
               page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
@@ -184,6 +191,19 @@ jobs:
             assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'What service do you need?');
             assert.equal(await page.locator('#homeSearch').getAttribute('inert'),null);
             await assertNoOverflow(page);
+
+            await page.click('#pt');
+            assert.equal(new URL(page.url()).searchParams.get('lang'),null,'PT selection left lang=en in the URL');
+            await page.reload({waitUntil:'domcontentloaded'});
+            assert.equal(await page.locator('html').getAttribute('lang'),'pt','PT choice did not survive reload');
+            assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'Que serviço precisas?');
+
+            await page.click('#en');
+            assert.equal(new URL(page.url()).searchParams.get('lang'),'en','EN selection was not persisted in the URL');
+            await page.reload({waitUntil:'domcontentloaded'});
+            assert.equal(await page.locator('html').getAttribute('lang'),'en','EN choice did not survive reload');
+            assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'What service do you need?');
+
             assert.equal(errors.length,0,'mobile EN page errors: '+errors.join(' | '));
             await page.screenshot({path:'homepage-audit/mobile-en.png',fullPage:true});
             await context.close();
