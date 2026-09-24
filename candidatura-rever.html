@@ -86,6 +86,7 @@ const CAT={
  creative:{pt:'Fotografia / Criativos',en:'Photography & Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
 };
 function tr(pt,en){return lang==='pt'?pt:en}
+function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00'))p=p.slice(2);if(p.length===9&&p.startsWith('9'))p='351'+p;return p}
 function applyLang(){
  document.documentElement.lang=lang;
  document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en);
@@ -206,7 +207,7 @@ async function act(action){
   else if(data.state==='approved'){
     showMessage(tr('Candidatura aprovada','Application approved'),data.setup_channel==='whatsapp'?tr('O prestador já ficou ativo. Falta enviar a ligação de acesso por WhatsApp.','The provider is now active. Send the access link by WhatsApp.'):tr('O prestador já ficou ativo no TRIÂNGULO e receberá a ligação de acesso por email.','The provider is now active on TRIÂNGULO and will receive the access link by email.'));
     if(data.setup_channel==='whatsapp'&&data.setup_phone&&data.setup_message){
-      const digits=String(data.setup_phone).replace(/\D/g,'').replace(/^00/,'');
+      const digits=waPhone(data.setup_phone);
       const a=document.createElement('a');a.className='btn yes';a.style.display='inline-block';a.style.marginTop='14px';a.target='_blank';a.rel='noopener';a.href='https://wa.me/'+digits+'?text='+encodeURIComponent(data.setup_message);a.textContent=tr('Enviar acesso por WhatsApp →','Send access by WhatsApp →');$('#message').appendChild(a);
     }
   }
