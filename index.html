@@ -884,6 +884,18 @@ function applyLang(){
   if(meta)meta.content=lang==='pt'
     ?'Encontra e reserva serviços locais no Pico, Faial e São Jorge com o TRIÂNGULO Açores.'
     :'Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.';
+  syncDesktopMasterInteractivity();
+}
+
+const desktopMasterMedia=window.matchMedia('(min-width:1121px)');
+function syncDesktopMasterInteractivity(){
+  const masterActive=lang==='pt'&&desktopMasterMedia.matches;
+  ['.top','.island-pills','#homeSearch','.category-row'].forEach(selector=>{
+    const el=document.querySelector(selector);
+    if(!el)return;
+    if(masterActive)el.setAttribute('inert','');
+    else el.removeAttribute('inert');
+  });
 }
 function setIsland(v){
   island=v;
@@ -926,6 +938,9 @@ masterSearchForm?.addEventListener('submit',()=>{
   if(masterIslandSelect) localStorage.setItem('tri_island',masterIslandSelect.value);
 });
 document.querySelector('#masterTopSearch')?.addEventListener('click',()=>masterSearchInput?.focus());
+if(desktopMasterMedia.addEventListener)desktopMasterMedia.addEventListener('change',syncDesktopMasterInteractivity);
+else if(desktopMasterMedia.addListener)desktopMasterMedia.addListener(syncDesktopMasterInteractivity);
+syncDesktopMasterInteractivity();
 </script>
 </body>
 </html>
