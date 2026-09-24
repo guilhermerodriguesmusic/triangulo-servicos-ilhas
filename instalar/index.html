@@ -262,7 +262,7 @@ document.querySelector('#iosHeroBtn').onclick=()=>{
 };
 const copySafariBtn=document.querySelector('#copySafariUrl');
 if(copySafariBtn)copySafariBtn.onclick=async()=>{
-  const url='https://trianguloacores.pt/instalar/?ios=1';
+  const url='https://trianguloacores.pt/instalar/?ios=1'+(lang==='en'?'&lang=en':'');
   const status=document.querySelector('#copySafariStatus');
   try{await navigator.clipboard.writeText(url);status.textContent=tr('Ligação copiada ✓ Agora abre o Safari e cola-a.','Link copied ✓ Now open Safari and paste it.');}
   catch{status.textContent=url;}
