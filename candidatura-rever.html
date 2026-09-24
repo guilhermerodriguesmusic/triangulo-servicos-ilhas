@@ -200,7 +200,10 @@ async function act(action){
   $('#approve').disabled=true;$('#reject').disabled=true;
   const {data,error}=await db.rpc('respond_to_provider_application',{p_token:token,p_action:action,p_note:$('#note').value.trim()||null});
   if(error||!data||!data.ok){showMessage(tr('Não foi possível','Could not complete'),tr('Tenta novamente.','Please try again.'));return}
-  if(data.state==='approved'){
+  if(data.state==='approved_access_pending'){
+    showMessage(tr('Candidatura aprovada · acesso pendente','Application approved · access pending'),tr('O prestador ficou ativo, mas não foi possível preparar a ligação de acesso. Abre o painel Admin e reenvia o acesso em “Atenção agora”.','The provider is active, but the access link could not be prepared. Open Admin and resend access under “Needs attention now”.'));
+  }
+  else if(data.state==='approved'){
     showMessage(tr('Candidatura aprovada','Application approved'),data.setup_channel==='whatsapp'?tr('O prestador já ficou ativo. Falta enviar a ligação de acesso por WhatsApp.','The provider is now active. Send the access link by WhatsApp.'):tr('O prestador já ficou ativo no TRIÂNGULO e recebeu a ligação de acesso por email.','The provider is now active on TRIÂNGULO and received the access link by email.'));
     if(data.setup_channel==='whatsapp'&&data.setup_phone&&data.setup_message){
       const digits=String(data.setup_phone).replace(/\D/g,'').replace(/^00/,'');
