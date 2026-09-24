@@ -1518,12 +1518,13 @@ function updateResults(q=activeSearchQuery){
    const prev=bestByProvider.get(s.provider_id);
    const score=Number(s.rank_score||0),prevScore=prev?Number(prev.rank_score||0):-Infinity;
    if(!prev){bestByProvider.set(s.provider_id,s);return}
-   if(activeResultsSort==='price'){
+   if(activeResultsSort==='price'&&!q){
      const price=comparableServicePrice(s),prevPrice=comparableServicePrice(prev);
      if(price<prevPrice||(price===prevPrice&&score>prevScore))bestByProvider.set(s.provider_id,s);
      return
    }
-   if(score>prevScore)bestByProvider.set(s.provider_id,s);
+   const price=comparableServicePrice(s),prevPrice=comparableServicePrice(prev);
+   if(score>prevScore||(score===prevScore&&price<prevPrice))bestByProvider.set(s.provider_id,s);
  });
  let list=[...bestByProvider.values()];
  if(activeResultsSort==='price'){
