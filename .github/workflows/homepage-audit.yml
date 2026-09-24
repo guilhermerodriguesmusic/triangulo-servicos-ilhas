@@ -187,6 +187,46 @@ jobs:
             await context.close();
           }
 
+          // Provider recruitment path: landing CTA, sign-in and multi-step application validation.
+          {
+            const context=await browser.newContext({viewport:{width:1280,height:900},locale:'pt-PT'});
+            const page=await context.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e.message||e)));
+
+            await page.goto(base+'/prestadores.html',{waitUntil:'domcontentloaded'});
+            assert.equal(await page.locator('.cta').getAttribute('href'),'/candidatura-prestador.html?invite=site-prestadores');
+            assert.equal(await page.locator('.login-link').getAttribute('href'),'/servicos/?prestador=1');
+
+            await page.goto(base+'/candidatura-prestador.html?invite=site-prestadores',{waitUntil:'domcontentloaded'});
+            assert.equal(await page.locator('[data-form-step="1"]').isVisible(),true);
+            await page.click('[data-step-next="2"]');
+            assert.equal(await page.locator('[data-form-step="1"]').isVisible(),true,'empty step 1 should not advance');
+
+            await page.fill('[name="name"]','Prestador Teste');
+            await page.fill('[name="phone"]','912345678');
+            await page.click('[data-step-next="2"]');
+            assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,'valid step 1 did not advance');
+
+            await page.fill('[name="locality"]','Madalena');
+            await page.check('[data-service-island][value="Pico"]');
+            await page.check('[data-provider-cat][value="garden"]');
+            await page.selectOption('#primaryCategory','garden');
+            await page.fill('#description','Manutenção de jardins e terrenos.');
+            await page.click('[data-step-next="3"]');
+            assert.equal(await page.locator('[data-form-step="3"]').isVisible(),true,'valid step 2 did not advance');
+
+            await page.selectOption('#pricingType','hour');
+            await page.fill('#price','40');
+            await page.click('[data-step-next="4"]');
+            assert.equal(await page.locator('[data-form-step="4"]').isVisible(),true,'valid step 3 did not advance');
+
+            await page.fill('[name="tax_id"]','123456789');
+            assert.equal(await page.locator('[name="consent_all"]').isChecked(),false);
+            assert.equal(errors.length,0,'provider application page errors: '+errors.join(' | '));
+            await context.close();
+          }
+
           // Static route existence + internal public-link crawl.
           {
             const context=await browser.newContext();
