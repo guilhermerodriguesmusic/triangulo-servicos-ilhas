@@ -280,6 +280,19 @@ jobs:
 
             await page.evaluate(()=>{
               closeSheets();
+              island='Faial';
+              providersLoading=false;
+              providersLoadError=false;
+              realProviders=[];
+              updateResults('');
+            });
+            assert.equal(await page.locator('#emptyPost').isVisible(),true,'empty-island help CTA missing');
+            assert.equal(await page.locator('.empty-provider-cta').getAttribute('href'),'/prestadores.html','empty-island provider CTA incorrect');
+            await page.click('#emptyPost');
+            assert.equal(await page.locator('#requestSheet').evaluate(el=>el.classList.contains('open')),true,'empty-island help CTA did not open request form');
+
+            await page.evaluate(()=>{
+              closeSheets();
               island='Pico';
               providersLoading=false;
               providersLoadError=false;
