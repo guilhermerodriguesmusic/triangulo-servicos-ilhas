@@ -406,6 +406,7 @@ jobs:
             const page=await context.newPage();
             const fake='00000000-0000-0000-0000-000000000000';
             const cases=[
+              ['client_token',fake],
               ['request_token',fake],
               ['match_token',fake],
               ['booking_token',fake],
