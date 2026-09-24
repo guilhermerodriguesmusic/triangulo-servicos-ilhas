@@ -259,6 +259,32 @@ jobs:
             await context.close();
           }
 
+          // Android install prompt: use the browser userChoice result.
+          {
+            const context=await browser.newContext({
+              viewport:{width:390,height:844},
+              locale:'pt-PT',
+              userAgent:'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36'
+            });
+            const page=await context.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e.message||e)));
+            await page.goto(base+'/instalar/',{waitUntil:'domcontentloaded'});
+            await page.evaluate(()=>{
+              deferredPrompt={
+                prompt:async()=>{},
+                userChoice:Promise.resolve({outcome:'accepted'})
+              };
+              window.__triInstallPrompt=deferredPrompt;
+              setInstallReady(true);
+            });
+            await page.click('#installBtn');
+            await page.waitForTimeout(50);
+            assert.match(await page.locator('#androidStatus').textContent(),/Instalação iniciada/i,'Android install result was not read from userChoice');
+            assert.equal(errors.length,0,'Android install page errors: '+errors.join(' | '));
+            await context.close();
+          }
+
           // Client request and direct-booking forms: critical validation must happen before any backend call.
           {
             const context=await browser.newContext({viewport:{width:390,height:844},locale:'pt-PT'});
