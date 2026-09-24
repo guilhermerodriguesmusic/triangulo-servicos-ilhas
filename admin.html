@@ -160,7 +160,13 @@ async function retryNotification(id,btn){
  const old=btn.textContent;btn.disabled=true;btn.textContent=tr('A colocar na fila…','Queuing…');
  const {data,error}=await db.rpc('admin_retry_notification',{p_notification_id:id});
  btn.disabled=false;btn.textContent=old;
- if(error||!data||!data.ok){alert((error&&error.message)||tr('Não foi possível repetir o envio.','Could not retry delivery.'));return}
+ if(error||!data||!data.ok){
+  if(data&&data.state==='requires_new_token'){
+   alert(tr('Esta notificação contém uma ligação de password que pode ter expirado. Gera uma nova ligação em “Prestadores ainda sem acesso” ou pede ao prestador para voltar a pedir reposição.','This notification contains a password link that may have expired. Generate a new link under “Providers still without access” or ask the provider to request another reset.'));
+   return
+  }
+  alert((error&&error.message)||tr('Não foi possível repetir o envio.','Could not retry delivery.'));return
+ }
  alert(tr('Notificação novamente na fila.','Notification queued again.'));
  load()
 }
