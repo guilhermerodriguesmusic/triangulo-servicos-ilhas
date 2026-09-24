@@ -58,7 +58,7 @@
     <div class="row"><b data-pt="Preço" data-en="Price">Preço</b><span id="price"></span></div>
     <div class="row"><b data-pt="Disponibilidade" data-en="Availability">Disponibilidade</b><span id="availability"></span></div><div class="row" id="photoRow" hidden><b data-pt="Foto pública" data-en="Public photo">Foto pública</b><span><img id="reviewPhoto" class="review-photo" alt=""><small class="login-note" data-pt="Confirma que a imagem não contém logótipos, contactos ou texto identificável antes de aprovar." data-en="Check that the image does not contain logos, contact details or identifying text before approval.">Confirma que a imagem não contém logótipos, contactos ou texto identificável antes de aprovar.</small></span></div>
     <div class="row"><b data-pt="Website / Instagram (privado)" data-en="Website / Instagram (private)">Website / Instagram (privado)</b><span id="website"></span></div>
-    <div class="row"><b data-pt="Como conheceu o TRIÂNGULO" data-en="How they heard about TRIÂNGULO">Como conheceu o TRIÂNGULO</b><span id="referred"></span></div>
+    <div class="row"><b data-pt="Como conheceu o TRIÂNGULO" data-en="How they found TRIÂNGULO">Como conheceu o TRIÂNGULO</b><span id="referred"></span></div>
     <div class="row"><b data-pt="Descrição" data-en="Description">Descrição</b><span id="description" class="desc"></span></div>
   </div>
   <div id="rejectbox" class="rejectbox">
@@ -81,9 +81,9 @@ const qs=new URLSearchParams(location.search),token=qs.get('token'),mode=qs.get(
 let lang=(qs.get('lang')==='en'||qs.get('lang')==='pt')?qs.get('lang'):(localStorage.getItem('tri_lang')||'pt');
 const CAT={
  home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Land'},
- repairs:{pt:'Reparações',en:'Repairs'},moving:{pt:'Mudanças & Entregas',en:'Moves & Deliveries'},
+ repairs:{pt:'Reparações',en:'Repairs'},moving:{pt:'Mudanças & Entregas',en:'Moving & Deliveries'},
  lessons:{pt:'Aulas',en:'Lessons'},wellness:{pt:'Bem-estar',en:'Wellness'},tech:{pt:'Tecnologia',en:'Technology'},
- creative:{pt:'Fotografia / Criativos',en:'Photography & Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
+ creative:{pt:'Fotografia / Criativos',en:'Photography & Creative Services'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
 };
 function tr(pt,en){return lang==='pt'?pt:en}
 function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00'))p=p.slice(2);if(p.length===9)p='351'+p;return p}
