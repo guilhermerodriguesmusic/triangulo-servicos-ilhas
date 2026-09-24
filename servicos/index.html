@@ -1634,7 +1634,7 @@ const resultsIslandBtn=$('#resultsIslandBtn');if(resultsIslandBtn)resultsIslandB
 const resultsSort=$('#resultsSort');if(resultsSort)resultsSort.onchange=e=>{activeResultsSort=e.target.value;updateResults(activeSearchQuery)};
 const desktopPublishNav=$('#desktopPublishNav');if(desktopPublishNav)desktopPublishNav.onclick=()=>openRequest();
 $('#urgentBtn').onclick=()=>openRequest();const allAvailableBtn=$('#allAvailable');if(allAvailableBtn)allAvailableBtn.onclick=()=>openRequest();$('#resultsInput').onkeydown=e=>{if(e.key==='Enter')runSearch(e.target.value,activeServiceGroup)};
-$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',activeServiceGroup);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest();
+$('#contactTrianguloBtn').onclick=()=>openSheet('contactSheet');const clearResults=$('#clearResultsSearch');if(clearResults)clearResults.onclick=()=>{$('#resultsInput').value='';runSearch('',activeServiceGroup);$('#resultsInput').focus()};$('#publishNav').onclick=()=>openRequest();$('#postFromResults').onclick=()=>openRequest(activeSearchQuery);
 function azoresParts(d=new Date()){const out={};new Intl.DateTimeFormat('en-CA',{timeZone:'Atlantic/Azores',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(d).forEach(p=>{if(p.type!=='literal')out[p.type]=p.value});return out}
 function localDateISO(d=new Date()){const p=azoresParts(d);return p.year+'-'+p.month+'-'+p.day}
 function azoresTimeHM(d=new Date()){const p=azoresParts(d);return p.hour+':'+p.minute}
