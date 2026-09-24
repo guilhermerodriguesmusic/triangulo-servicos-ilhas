@@ -101,7 +101,7 @@
   <main id="main-content">
   <section class="hero">
     <h1 data-pt="Torna-te Prestador de Serviços TRIÂNGULO" data-en="Become a TRIÂNGULO Service Provider">Torna-te Prestador de Serviços TRIÂNGULO</h1>
-    <p data-pt="0 € para entrar e 0 € por pedido. Definis os preços dos teus serviços e escolhes que pedidos queres aceitar. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente, sem reduzir o valor que definiste." data-en="€0 to join and €0 per request. You set your service prices and choose which requests to accept. TRIÂNGULO adds the service fee to the price shown to the customer without reducing the price you set.">0 € para entrar e 0 € por pedido. Definis os preços dos teus serviços e escolhes que pedidos queres aceitar. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente, sem reduzir o valor que definiste.</p>
+    <p data-pt="0 € para entrar e 0 € por pedido. Definis os preços dos teus serviços e escolhes que pedidos queres aceitar. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente, sem reduzir o valor que definiste." data-en="€0 to join and €0 per request. You set your service prices and choose which requests to accept. TRIÂNGULO adds the service fee to the price shown to the customer without reducing the amount you set.">0 € para entrar e 0 € por pedido. Definis os preços dos teus serviços e escolhes que pedidos queres aceitar. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente, sem reduzir o valor que definiste.</p>
   </section>
 
   <section id="formCard" class="formcard">
@@ -133,17 +133,17 @@
         <label class="check"><input type="checkbox" data-service-island value="Pico">Pico</label>
         <label class="check"><input type="checkbox" data-service-island value="Faial">Faial</label>
         <label class="check"><input type="checkbox" data-service-island value="São Jorge">São Jorge</label>
-      </div><p class="note" data-pt="Seleciona todas as ilhas onde aceitas trabalhar." data-en="Select every island where you accept work.">Seleciona todas as ilhas onde aceitas trabalhar.</p></fieldset>
+      </div><p class="note" data-pt="Seleciona todas as ilhas onde aceitas trabalhar." data-en="Select all the islands where you are available to work.">Seleciona todas as ilhas onde aceitas trabalhar.</p></fieldset>
 
       <fieldset class="choice-fieldset" style="margin-top:14px"><legend class="field-title" data-pt="Que serviços ofereces? *" data-en="What services do you offer? *">Que serviços ofereces? *</legend><div class="checks">
         <label class="check"><input type="checkbox" data-provider-cat value="home"><span data-pt="Casa & Limpeza" data-en="Home & Cleaning">Casa & Limpeza</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="garden"><span data-pt="Jardim & Terrenos" data-en="Garden & Land">Jardim & Terrenos</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="repairs"><span data-pt="Reparações & Manutenção" data-en="Repairs & Maintenance">Reparações & Manutenção</span></label>
-        <label class="check"><input type="checkbox" data-provider-cat value="moving"><span data-pt="Mudanças & Entregas" data-en="Moves & Deliveries">Mudanças & Entregas</span></label>
+        <label class="check"><input type="checkbox" data-provider-cat value="moving"><span data-pt="Mudanças & Entregas" data-en="Moving & Deliveries">Mudanças & Entregas</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="lessons"><span data-pt="Aulas & Explicações" data-en="Lessons & Tutoring">Aulas & Explicações</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="wellness"><span data-pt="Bem-estar" data-en="Wellness">Bem-estar</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="tech"><span data-pt="Tecnologia" data-en="Technology">Tecnologia</span></label>
-        <label class="check"><input type="checkbox" data-provider-cat value="creative"><span data-pt="Fotografia & Criativos" data-en="Photography & Creative">Fotografia & Criativos</span></label>
+        <label class="check"><input type="checkbox" data-provider-cat value="creative"><span data-pt="Fotografia & Criativos" data-en="Photography & Creative Services">Fotografia & Criativos</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="pets"><span data-pt="Animais" data-en="Pets">Animais</span></label>
         <label class="check"><input type="checkbox" data-provider-cat value="other" id="otherCategory"><span data-pt="Outro" data-en="Other">Outro</span></label>
       </div>
@@ -164,7 +164,7 @@
       <section class="form-step" data-form-step="3">
       <div class="section-title" data-pt="3 · Preço e disponibilidade" data-en="3 · Pricing and availability">3 · Preço e disponibilidade</div>
       <div class="grid2">
-        <label><span data-pt="Como cobras? *" data-en="How do you charge? *">Como cobras? *</span><select required name="pricing_type" id="pricingType"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote only">Sob orçamento</option></select></label>
+        <label><span data-pt="Como cobras? *" data-en="How do you charge? *">Como cobras? *</span><select required name="pricing_type" id="pricingType"><option value="hour" data-pt="Por hora" data-en="Per hour">Por hora</option><option value="fixed" data-pt="Preço fixo" data-en="Fixed price">Preço fixo</option><option value="from" data-pt="Desde" data-en="From">Desde</option><option value="quote" data-pt="Sob orçamento" data-en="Quote required">Sob orçamento</option></select></label>
         <label><span data-pt="Valor do serviço (€)" data-en="Service price (€)">Valor do serviço (€)</span><input id="price" name="price" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="40"><small class="note" data-pt="Este é o valor base do serviço. O TRIÂNGULO acrescenta 12% ao preço apresentado ao cliente; essa taxa não é descontada do valor que definiste." data-en="This is the base service price. TRIÂNGULO adds 12% to the price shown to the customer; that fee is not deducted from the price you set.">Este é o valor base do serviço. O TRIÂNGULO acrescenta 12% ao preço apresentado ao cliente; essa taxa não é descontada do valor que definiste.</small></label>
         <label><span data-pt="Disponibilidade (opcional)" data-en="Availability (optional)">Disponibilidade (opcional)</span><input name="availability" maxlength="500" data-ph-pt="Ex.: Seg–Sex, 09:00–18:00" data-ph-en="E.g. Mon–Fri, 09:00–18:00"></label>
         <label><span data-pt="Foto do perfil ou do trabalho (opcional)" data-en="Profile or work photo (optional)">Foto do perfil ou do trabalho (opcional)</span><input id="providerPhoto" type="file" accept="image/jpeg,image/png,image/webp"><small class="note" data-pt="JPG, PNG ou WebP. Evita logótipos, nomes comerciais, contactos ou texto identificável na imagem." data-en="JPG, PNG or WebP. Avoid logos, business names, contact details or identifying text in the image.">JPG, PNG ou WebP. Evita logótipos, nomes comerciais, contactos ou texto identificável na imagem.</small><img id="providerPhotoPreview" class="photo-preview" alt=""></label>
@@ -288,9 +288,9 @@ if($('#otherCategory'))$('#otherCategory').onchange=syncOtherService;syncOtherSe
 
 const CAT_LABELS={
  home:{pt:'Casa & Limpeza',en:'Home & Cleaning'},garden:{pt:'Jardim & Terrenos',en:'Garden & Land'},
- repairs:{pt:'Reparações & Manutenção',en:'Repairs & Maintenance'},moving:{pt:'Mudanças & Entregas',en:'Moves & Deliveries'},
+ repairs:{pt:'Reparações & Manutenção',en:'Repairs & Maintenance'},moving:{pt:'Mudanças & Entregas',en:'Moving & Deliveries'},
  lessons:{pt:'Aulas & Explicações',en:'Lessons & Tutoring'},wellness:{pt:'Bem-estar',en:'Wellness'},tech:{pt:'Tecnologia',en:'Technology'},
- creative:{pt:'Fotografia & Criativos',en:'Photography & Creative'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
+ creative:{pt:'Fotografia & Criativos',en:'Photography & Creative Services'},pets:{pt:'Animais',en:'Pets'},other:{pt:'Outro',en:'Other'}
 };
 function syncPrimaryCategory(){
   const sel=$('#primaryCategory'),chosen=sel.value,cats=$$('[data-provider-cat]:checked').map(x=>x.value);
