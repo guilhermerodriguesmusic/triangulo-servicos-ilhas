@@ -206,6 +206,7 @@ jobs:
             assert.equal(await page.locator('[data-form-step="1"]').isVisible(),true,'empty step 1 should not advance');
 
             await page.fill('[name="name"]','Prestador Teste');
+            await page.fill('[name="business_name"]','Empresa Teste');
             await page.fill('[name="phone"]','912345678');
             await page.click('[data-step-next="2"]');
             assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,'valid step 1 did not advance');
@@ -214,6 +215,10 @@ jobs:
             await page.check('[data-service-island][value="Pico"]');
             await page.check('[data-provider-cat][value="garden"]');
             await page.selectOption('#primaryCategory','garden');
+            await page.fill('#description','Serviços da Empresa Teste em jardins.');
+            await page.click('[data-step-next="3"]');
+            assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,'business identity leak should keep provider on step 2');
+            assert.match(await page.locator('#status').textContent(),/nome do negócio/i,'business identity validation message missing');
             await page.fill('#description','Manutenção de jardins e terrenos.');
             await page.click('[data-step-next="3"]');
             assert.equal(await page.locator('[data-form-step="3"]').isVisible(),true,'valid step 2 did not advance');
