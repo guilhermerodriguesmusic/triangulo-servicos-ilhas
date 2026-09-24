@@ -362,6 +362,52 @@ jobs:
               island='Pico';
               providersLoading=false;
               providersLoadError=false;
+              activeResultsSort='price';
+              realProviders=[
+                {
+                  id:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+                  service_id:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+                  provider_id:'33333333-3333-4333-8333-333333333333',
+                  title:'Serviço caro',
+                  description:'Opção cara',
+                  category_code:'repairs',
+                  pricing_type:'fixed',
+                  price:100,
+                  availability:'Seg–Sex',
+                  name:'Mesmo Prestador',
+                  locality:'Madalena',
+                  service_islands:['Pico'],
+                  photo_data:null,
+                  completed_jobs:0,response_rate:0,review_average:null,review_count:0,review_excerpt:'',rank_score:20
+                },
+                {
+                  id:'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+                  service_id:'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+                  provider_id:'33333333-3333-4333-8333-333333333333',
+                  title:'Serviço barato',
+                  description:'Opção barata',
+                  category_code:'repairs',
+                  pricing_type:'fixed',
+                  price:25,
+                  availability:'Seg–Sex',
+                  name:'Mesmo Prestador',
+                  locality:'Madalena',
+                  service_islands:['Pico'],
+                  photo_data:null,
+                  completed_jobs:0,response_rate:0,review_average:null,review_count:0,review_excerpt:'',rank_score:10
+                }
+              ];
+              updateResults('');
+            });
+            assert.match(await page.locator('#resultsList').textContent(),/Serviço barato/,'price sort did not select provider cheapest matching service');
+            assert.doesNotMatch(await page.locator('#resultsList').textContent(),/Serviço caro/,'price sort kept a more expensive service for the same provider');
+
+            await page.evaluate(()=>{
+              activeResultsSort='relevance';
+              closeSheets();
+              island='Pico';
+              providersLoading=false;
+              providersLoadError=false;
               realProviders=[{
                 id:'11111111-1111-4111-8111-111111111111',
                 service_id:'11111111-1111-4111-8111-111111111111',
