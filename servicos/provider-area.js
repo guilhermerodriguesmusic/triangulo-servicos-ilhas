@@ -595,6 +595,7 @@ function providerAppRenderState(state,data={}){
 }
 async function openProviderBookingInApp(token){
   if(!token)return;activeProviderBookingToken=token;activeProviderRequestKind='direct';
+  history.replaceState({},'',location.pathname);
   $('#splash').classList.add('hidden');$('#mainShell').classList.add('hidden');
   $('#providerRequestView').hidden=false;providerAppHideAll();$('#prAppLoading').hidden=false;
   const {data,error}=await db.rpc('booking_response_context',{p_token:token});
@@ -603,6 +604,7 @@ async function openProviderBookingInApp(token){
 }
 async function openServiceMatchInApp(token){
   if(!token)return;activeProviderBookingToken=token;activeProviderRequestKind='matching';
+  history.replaceState({},'',location.pathname);
   $('#splash').classList.add('hidden');$('#mainShell').classList.add('hidden');
   $('#providerRequestView').hidden=false;providerAppHideAll();$('#prAppLoading').hidden=false;
   const {data,error}=await db.rpc('service_request_match_context',{p_token:token});
