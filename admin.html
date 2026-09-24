@@ -110,7 +110,7 @@ function renderHealth(data,error){
 }
 function openClientVerificationWhatsApp(phone){
  const msg=tr('Olá! Falo do TRIÂNGULO Açores. Estamos a confirmar o contacto associado a um pedido antes de o enviarmos aos prestadores. Podes responder a esta mensagem para confirmar que este número é teu?','Hello! This is TRIÂNGULO Açores. We are confirming the contact linked to a request before sending it to providers. Can you reply to confirm this number belongs to you?');
- window.open('https://wa.me/'+String(phone).replace(/\D/g,'')+'?text='+encodeURIComponent(msg),'_blank','noopener');
+ const digits=waPhone(phone);if(!digits){alert(tr('Não existe um número de WhatsApp válido.','There is no valid WhatsApp number.'));return}window.open('https://wa.me/'+digits+'?text='+encodeURIComponent(msg),'_blank','noopener');
 }
 async function verifyClientRequest(kind,id,btn){
  if(!confirm(tr('Já confirmaste que este contacto pertence ao cliente? Só depois desta ação o pedido será enviado aos prestadores.','Have you confirmed that this contact belongs to the customer? Only after this action will the request be sent to providers.')))return;
@@ -123,7 +123,7 @@ async function verifyClientRequest(kind,id,btn){
   alert((error&&error.message)||tr('Não foi possível verificar o cliente.','Could not verify the customer.'));
   return
  }
- const digits=String(data.phone||'').replace(/\D/g,'').replace(/^00/,'');
+ const digits=waPhone(data.phone);
  if(digits&&data.tracking_url){
   const msg=tr(
    'Contacto verificado ✓ O teu pedido já pode avançar no TRIÂNGULO. Podes acompanhá-lo aqui: '+data.tracking_url,
@@ -146,7 +146,7 @@ async function reissueProviderAccess(id,channel,btn){
  btn.disabled=false;btn.textContent=old;
  if(error||!data||!data.ok){if(accessWin)accessWin.close();alert((error&&error.message)||tr('Não foi possível reenviar o acesso.','Could not resend access.'));return}
  if(data.setup_channel==='whatsapp'&&data.setup_phone&&data.setup_message){
-  const digits=String(data.setup_phone).replace(/\D/g,'').replace(/^00/,'');
+  const digits=waPhone(data.setup_phone);
   const url='https://wa.me/'+digits+'?text='+encodeURIComponent(data.setup_message);
   if(accessWin)accessWin.location.href=url;else window.open(url,'_blank','noopener');
  }else{
@@ -211,7 +211,7 @@ async function approve(id,needsWhatsApp=false){
     load();return;
   }
   if(r.data.setup_channel==='whatsapp'&&r.data.setup_phone&&r.data.setup_message){
-    const digits=String(r.data.setup_phone).replace(/\D/g,'').replace(/^00/,'');
+    const digits=waPhone(r.data.setup_phone);
     const url='https://wa.me/'+digits+'?text='+encodeURIComponent(r.data.setup_message);
     if(accessWin)accessWin.location.href=url;
     else window.open(url,'_blank','noopener');
@@ -250,7 +250,7 @@ async function setReviewVisibility(id,visible){
  load();
 }
 
-function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00351'))p=p.slice(2);if(p.length===9&&p.startsWith('9'))p='351'+p;return p}
+function waPhone(raw){let p=String(raw||'').replace(/\D/g,'');if(!p)return'';if(p.startsWith('00'))p=p.slice(2);if(p.length===9&&p.startsWith('9'))p='351'+p;return p}
 function openWhatsApp(raw,message){const phone=waPhone(raw);if(!phone){alert(tr('Não existe um número de WhatsApp válido.','There is no valid WhatsApp number.'));return}window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer')}
 function whatsappApplication(id,phoneEnc,nameEnc){const phone=decodeURIComponent(phoneEnc||''),name=decodeURIComponent(nameEnc||'');openWhatsApp(phone,lang==='pt'?'Olá '+(name||'')+'! Falo do TRIÂNGULO. Recebemos a tua candidatura de prestador e estou a entrar em contacto por aqui para facilitar a comunicação.':'Hello '+(name||'')+'! This is TRIÂNGULO. We received your provider application and I am contacting you here to make communication easier.')}
 function whatsappRequestClient(id,phoneEnc,nameEnc){const phone=decodeURIComponent(phoneEnc||''),name=decodeURIComponent(nameEnc||'');openWhatsApp(phone,lang==='pt'?'Olá '+(name||'')+'! Falo do TRIÂNGULO. Recebemos o teu pedido de serviço e estou a entrar em contacto por WhatsApp para facilitar o acompanhamento.':'Hello '+(name||'')+'! This is TRIÂNGULO. We received your service request and I am contacting you on WhatsApp to make follow-up easier.')}
