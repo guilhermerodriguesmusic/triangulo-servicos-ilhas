@@ -279,18 +279,25 @@ function syncServicePriceField(){
 }
 $('#paServiceForm [name="pricing_type"]').onchange=syncServicePriceField;
 $('#paServiceForm').onsubmit=async e=>{
- e.preventDefault();const form=e.target,status=$('#paServiceStatus'),d=Object.fromEntries(new FormData(form));
+ e.preventDefault();const form=e.target,status=$('#paServiceStatus'),submitBtn=form.querySelector('[type="submit"]'),d=Object.fromEntries(new FormData(form));
+ if(submitBtn.disabled)return;
  if(containsDirectContactText(d.title)||containsDirectContactText(d.description)||containsDirectContactText(d.availability)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links nos campos públicos do serviço.':'Do not add phone numbers, email, WhatsApp, social media or links to public service fields.';return}
  const payload={category_code:d.category_code,title:(d.title||'').trim(),description:(d.description||'').trim()||null,pricing_type:d.pricing_type,price:d.pricing_type==='quote'?null:Number(d.price),availability:(d.availability||'').trim()||null,status:form.dataset.status||'active'};
- status.textContent=lang==='pt'?'A guardar…':'Saving…';
- const {data,error}=await db.rpc('provider_session_save_service',{p_session_token:providerSessionToken,p_service_id:d.service_id||null,p_payload:payload});
- if(error||!data||!data.ok){status.textContent=(data&&data.message)||(lang==='pt'?'Não foi possível guardar.':'Could not save.');return}
- status.textContent=lang==='pt'?'Serviço guardado ✓':'Service saved ✓';form.style.display='none';await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
+ const oldLabel=submitBtn.textContent;submitBtn.disabled=true;submitBtn.textContent=lang==='pt'?'A guardar…':'Saving…';status.textContent='';
+ try{
+  const {data,error}=await db.rpc('provider_session_save_service',{p_session_token:providerSessionToken,p_service_id:d.service_id||null,p_payload:payload});
+  if(error||!data||!data.ok){if(handleProviderSignedOut(data))return;status.textContent=(data&&data.message)||(lang==='pt'?'Não foi possível guardar.':'Could not save.');return}
+  status.textContent=lang==='pt'?'Serviço guardado ✓':'Service saved ✓';form.style.display='none';await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
+ }catch(error){
+  console.error('provider_session_save_service',error);status.textContent=lang==='pt'?'Não foi possível guardar. Tenta novamente.':'Could not save. Please try again.';
+ }finally{
+  if(document.body.contains(submitBtn)){submitBtn.disabled=false;submitBtn.textContent=oldLabel}
+ }
 };
 async function toggleProviderService(id){
  if(!id)return;
  const {data,error}=await db.rpc('provider_session_remove_service',{p_session_token:providerSessionToken,p_service_id:id});
- if(error||!data||!data.ok){toast((data&&data.message)||(lang==='pt'?'Não foi possível alterar o serviço.':'Could not update the service.'));return}
+ if(error||!data||!data.ok){if(handleProviderSignedOut(data))return;toast((data&&data.message)||(lang==='pt'?'Não foi possível alterar o serviço.':'Could not update the service.'));return}
  const active=data.status==='active';
  toast(active?(lang==='pt'?'Serviço reativado ✓':'Service reactivated ✓'):(lang==='pt'?'Serviço pausado ✓':'Service paused ✓'));
  await loadProviderAccount();await loadProviders(activeSearchQuery,activeServiceGroup);
@@ -323,6 +330,14 @@ function openProviderProfileEditor(focusSelector){
   form.hidden=false;
   form.scrollIntoView({behavior:'smooth',block:'start'});
   if(focusSelector)setTimeout(()=>{const el=$(focusSelector);if(el)el.focus()},250);
+}
+function handleProviderSignedOut(data){
+  if(!data||data.state!=='signed_out')return false;
+  providerSessionToken='';providerAccountData=null;store.set('tri_provider_session','');
+  $('#providerLoginPassword').value='';
+  $('#providerLoginStatus').textContent=lang==='pt'?'A sessão terminou. Entra novamente.':'Your session has ended. Please sign in again.';
+  paShow('paSignedOut');
+  return true;
 }
 async function providerSignOut(){
   const token=store.get('tri_provider_session','');
@@ -401,7 +416,7 @@ $('#paPauseBtn').onclick=async()=>{
   $('#paPauseBtn').disabled=true;
   const {data,error}=await db.rpc('provider_session_update_profile',{p_session_token:providerSessionToken,p_payload:payload});
   $('#paPauseBtn').disabled=false;
-  if(error||!data||!data.ok){toast(lang==='pt'?'Não foi possível alterar o perfil.':'Could not update profile.');return}
+  if(error||!data||!data.ok){if(handleProviderSignedOut(data))return;toast(lang==='pt'?'Não foi possível alterar o perfil.':'Could not update profile.');return}
   toast(next==='paused'?(lang==='pt'?'Perfil pausado':'Profile paused'):(lang==='pt'?'Perfil reativado ✓':'Profile reactivated ✓'));
   await loadProviderAccount();loadProviders();
 };
@@ -427,9 +442,17 @@ $('#providerProfileForm').onsubmit=async e=>{
     status:(providerAccountData.profile&&providerAccountData.profile.status)||'active'
   };
   status.textContent=lang==='pt'?'A guardar…':'Saving…';
-  const {data,error}=await db.rpc('provider_session_update_profile',{p_session_token:providerSessionToken,p_payload:payload});
-  if(error||!data||!data.ok){status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível guardar.':'Could not save.');return}
-  status.textContent=lang==='pt'?'Alterações guardadas ✓':'Changes saved ✓';
+  const submitBtn=f.querySelector('[type="submit"]'),oldLabel=submitBtn?submitBtn.textContent:'';
+  if(submitBtn){if(submitBtn.disabled)return;submitBtn.disabled=true;submitBtn.textContent=lang==='pt'?'A guardar…':'Saving…'}
+  try{
+    const {data,error}=await db.rpc('provider_session_update_profile',{p_session_token:providerSessionToken,p_payload:payload});
+    if(error||!data||!data.ok){if(handleProviderSignedOut(data))return;status.textContent=(data&&data.message)?data.message:(lang==='pt'?'Não foi possível guardar.':'Could not save.');return}
+    status.textContent=lang==='pt'?'Alterações guardadas ✓':'Changes saved ✓';
+  }catch(error){
+    console.error('provider_session_update_profile',error);status.textContent=lang==='pt'?'Não foi possível guardar. Tenta novamente.':'Could not save. Please try again.';return
+  }finally{
+    if(submitBtn&&document.body.contains(submitBtn)){submitBtn.disabled=false;submitBtn.textContent=oldLabel}
+  }
   await loadProviderAccount();loadProviders();
 };
 let activeProviderPasswordToken=null;
