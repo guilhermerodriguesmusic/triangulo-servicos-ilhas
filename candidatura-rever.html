@@ -204,7 +204,7 @@ async function act(action){
     showMessage(tr('Candidatura aprovada · acesso pendente','Application approved · access pending'),tr('O prestador ficou ativo, mas não foi possível preparar a ligação de acesso. Abre o painel Admin e reenvia o acesso em “Atenção agora”.','The provider is active, but the access link could not be prepared. Open Admin and resend access under “Needs attention now”.'));
   }
   else if(data.state==='approved'){
-    showMessage(tr('Candidatura aprovada','Application approved'),data.setup_channel==='whatsapp'?tr('O prestador já ficou ativo. Falta enviar a ligação de acesso por WhatsApp.','The provider is now active. Send the access link by WhatsApp.'):tr('O prestador já ficou ativo no TRIÂNGULO e recebeu a ligação de acesso por email.','The provider is now active on TRIÂNGULO and received the access link by email.'));
+    showMessage(tr('Candidatura aprovada','Application approved'),data.setup_channel==='whatsapp'?tr('O prestador já ficou ativo. Falta enviar a ligação de acesso por WhatsApp.','The provider is now active. Send the access link by WhatsApp.'):tr('O prestador já ficou ativo no TRIÂNGULO e receberá a ligação de acesso por email.','The provider is now active on TRIÂNGULO and will receive the access link by email.'));
     if(data.setup_channel==='whatsapp'&&data.setup_phone&&data.setup_message){
       const digits=String(data.setup_phone).replace(/\D/g,'').replace(/^00/,'');
       const a=document.createElement('a');a.className='btn yes';a.style.display='inline-block';a.style.marginTop='14px';a.target='_blank';a.rel='noopener';a.href='https://wa.me/'+digits+'?text='+encodeURIComponent(data.setup_message);a.textContent=tr('Enviar acesso por WhatsApp →','Send access by WhatsApp →');$('#message').appendChild(a);
