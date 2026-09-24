@@ -1453,6 +1453,8 @@ async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
 }
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function containsDirectContactText(v){const s=String(v||'');return /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/i.test(s)||/(https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/)/i.test(s)||/(\+?\d[ .()\/-]*){9,}/.test(s)}
+function compactProviderIdentity(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'')}
+function containsFullProviderIdentityText(value,name){const parts=String(name||'').trim().split(/\s+/).filter(Boolean),identity=compactProviderIdentity(name);return parts.length>=2&&identity.length>=4&&compactProviderIdentity(value).includes(identity)}
 function safeProviderPhoto(v){const s=String(v||'');return /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(s)?s:''}
 function providerInitial(name){const s=String(name||'').trim();return escapeHtml((s&&s[0]?s[0]:'T').toUpperCase())}
 function providerAvatar(photo,name,size='card'){
