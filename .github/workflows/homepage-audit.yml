@@ -223,6 +223,10 @@ jobs:
             await page.click('[data-step-next="3"]');
             assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,'direct contact should keep provider on step 2');
             assert.match(await page.locator('#status').textContent(),/(telefone|contactos|links)/i,'direct contact validation message missing');
+            await page.fill('#description','O Prestador Teste faz manutenção de jardins.');
+            await page.click('[data-step-next="3"]');
+            assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,'full provider identity should keep provider on step 2');
+            assert.match(await page.locator('#status').textContent(),/nome completo/i,'full provider identity validation message missing');
             await page.fill('#description','Manutenção de jardins e terrenos.');
             await page.click('[data-step-next="3"]');
             assert.equal(await page.locator('[data-form-step="3"]').isVisible(),true,'valid step 2 did not advance');
