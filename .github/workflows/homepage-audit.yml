@@ -319,6 +319,25 @@ jobs:
             await context.close();
           }
 
+          // Legacy aliases must land on current routes without losing useful parameters.
+          {
+            const context=await browser.newContext();
+            const page=await context.newPage();
+
+            await page.goto(base+'/app.html?lang=en&q=garden',{waitUntil:'domcontentloaded'});
+            await page.waitForURL(/\/servicos\/\?lang=en&q=garden/);
+            assert.equal(new URL(page.url()).pathname,'/servicos/');
+
+            await page.goto(base+'/inicio.html?lang=en',{waitUntil:'domcontentloaded'});
+            await page.waitForURL(u=>new URL(u).pathname==='/'&&new URL(u).searchParams.get('lang')==='en');
+
+            const fake='00000000-0000-0000-0000-000000000000';
+            await page.goto(base+'/reserva-responder.html?token='+fake+'&lang=en',{waitUntil:'domcontentloaded'});
+            await page.waitForURL(u=>new URL(u).pathname==='/servicos/'&&new URL(u).searchParams.get('booking_token')===fake&&new URL(u).searchParams.get('lang')==='en');
+
+            await context.close();
+          }
+
           // Admin/review entry shells must remain operational without exposing data when signed out.
           {
             const context=await browser.newContext({viewport:{width:1280,height:800},locale:'pt-PT'});
