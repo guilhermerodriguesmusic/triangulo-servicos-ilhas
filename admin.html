@@ -199,6 +199,11 @@ async function approve(id,needsWhatsApp=false){
     alert((r.error&&r.error.message)||tr('Não foi possível aprovar.','Could not approve.'));
     return;
   }
+  if(r.data.state==='approved_access_pending'){
+    if(accessWin)accessWin.close();
+    alert(tr('Prestador aprovado, mas o acesso ficou pendente. O caso aparece em “Atenção agora” para poderes reenviar a ligação.','Provider approved, but access is pending. The case appears under “Needs attention now” so you can resend the access link.'));
+    load();return;
+  }
   if(r.data.setup_channel==='whatsapp'&&r.data.setup_phone&&r.data.setup_message){
     const digits=String(r.data.setup_phone).replace(/\D/g,'').replace(/^00/,'');
     const url='https://wa.me/'+digits+'?text='+encodeURIComponent(r.data.setup_message);
