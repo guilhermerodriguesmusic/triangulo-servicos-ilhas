@@ -2140,6 +2140,7 @@ $('#termsBtn').onclick=()=>{location.href='/terms.html'};
 async function init(){
  const qs=new URLSearchParams(location.search);
  const earlyProviderEntry=location.hash==='#prestador'||location.hash==='#provider'||qs.get('prestador')==='1'||String(qs.get('entry')||'').startsWith('provider-');
+ const earlyContactEntry=qs.get('contact')==='1';
  if(earlyProviderEntry){
    $('#splash').classList.add('hidden');
    $('#mainShell').classList.add('hidden');
@@ -2152,8 +2153,17 @@ async function init(){
    loadAppConfig().then(()=>{if(providerAccountData)renderProviderDashboard(providerAccountData)}).catch(()=>{});
    return;
  }
+ if(earlyContactEntry){
+   $('#splash').classList.add('hidden');
+   $('#mainShell').classList.remove('hidden');
+   updateIsland();applyLang();renderBookings();
+   setTimeout(()=>openSheet('contactSheet'),0);
+   loadAppConfig().then(()=>loadProviders('',null)).catch(()=>{});
+   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+   return;
+ }
  await loadAppConfig();
- const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim(),queryGroup=qs.get('group'),contactRequested=qs.get('contact')==='1',reviewRequested=qs.get('review')==='1';
+ const queryIsland=qs.get('island'),querySearch=(qs.get('q')||'').trim(),queryGroup=qs.get('group'),contactRequested=false,reviewRequested=qs.get('review')==='1';
  if(['Pico','Faial','São Jorge'].includes(queryIsland)){island=queryIsland;store.set('tri_island',island)}
  activeSearchQuery=querySearch;activeServiceGroup=['home','garden','repairs','personal'].includes(queryGroup)?queryGroup:null;
  updateIsland();applyLang();renderBookings();loadProviders(activeSearchQuery,activeServiceGroup);
