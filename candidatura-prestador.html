@@ -339,6 +339,10 @@ function publicFieldContainsBusiness(value,business){
   const identity=compactIdentityText(business);
   return identity.length>=4&&compactIdentityText(value).includes(identity);
 }
+function publicFieldContainsFullName(value,name){
+  const parts=String(name||'').trim().split(/\s+/).filter(Boolean);
+  return parts.length>=2&&publicFieldContainsBusiness(value,name);
+}
 function publicFieldContainsDirectContact(value){
   return /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/|(\+?\d[ .()\/-]*){9,}/i.test(String(value||''));
 }
@@ -355,7 +359,7 @@ function validateFormStep(step){
     if(!cats.length){status.textContent=lang==='pt'?'Seleciona pelo menos um tipo de serviço.':'Select at least one service type.';return false}
     if(!$('#primaryCategory').value){status.textContent=lang==='pt'?'Escolhe uma categoria principal.':'Choose a main category.';$('#primaryCategory').focus();return false}
     if($('#otherCategory').checked&&$('#otherService').value.trim().length<2){status.textContent=lang==='pt'?'Escreve qual é o outro serviço que ofereces.':'Tell us which other service you offer.';$('#otherService').focus();return false}
-    const business=$('[name="business_name"]').value;
+    const business=$('[name="business_name"]').value,name=$('[name="name"]').value;
     const publicIdentityFields=[
       [$('[name="locality"]'),lang==='pt'?'localidade':'locality'],
       [$('#description'),lang==='pt'?'descrição':'description'],
@@ -364,13 +368,15 @@ function validateFormStep(step){
     for(const [field,label] of publicIdentityFields){
       if(field&&publicFieldContainsDirectContact(field.value)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na '+label+' pública.':'Do not include phone numbers, email, WhatsApp, social media or links in the public '+label+'.';field.focus();return false}
       if(field&&publicFieldContainsBusiness(field.value,business)){status.textContent=lang==='pt'?'Não coloques o nome do negócio na '+label+' pública.':'Do not include the business name in the public '+label+'.';field.focus();return false}
+      if(field&&publicFieldContainsFullName(field.value,name)){status.textContent=lang==='pt'?'Não coloques o teu nome completo na '+label+' pública.':'Do not include your full name in the public '+label+'.';field.focus();return false}
     }
   }
   if(step===3){
     if($('#pricingType').value!=='quote'&&(!$('#price').value||Number($('#price').value)<=0)){status.textContent=lang==='pt'?'Indica o valor do serviço ou escolhe “Sob orçamento”.':'Enter the service price or choose “Quote”.';$('#price').focus();return false}
-    const availability=$('[name="availability"]'),business=$('[name="business_name"]').value;
+    const availability=$('[name="availability"]'),business=$('[name="business_name"]').value,name=$('[name="name"]').value;
     if(availability&&publicFieldContainsDirectContact(availability.value)){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links na disponibilidade pública.':'Do not include phone numbers, email, WhatsApp, social media or links in the public availability.';availability.focus();return false}
     if(availability&&publicFieldContainsBusiness(availability.value,business)){status.textContent=lang==='pt'?'Não coloques o nome do negócio na disponibilidade pública.':'Do not include the business name in the public availability.';availability.focus();return false}
+    if(availability&&publicFieldContainsFullName(availability.value,name)){status.textContent=lang==='pt'?'Não coloques o teu nome completo na disponibilidade pública.':'Do not include your full name in public availability.';availability.focus();return false}
   }
   if(step===4){
     const nif=String(document.querySelector('[name="tax_id"]').value||'').replace(/\D/g,'');
@@ -400,7 +406,9 @@ $('#providerForm').onsubmit=async e=>{
   if(!d.primary_category||!cats.includes(d.primary_category)){updateFormStep(2);status.textContent=lang==='pt'?'Escolhe uma categoria principal.':'Choose a main category.';$('#primaryCategory').focus();return}
   const contactPattern=/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|https?:\/\/|www\.|wa\.me|whatsapp|instagram|facebook|telegram|t\.me\/|(\+?\d[ .()\/-]*){9,}/i;
   if(contactPattern.test(d.name||'')||contactPattern.test(d.locality||'')||contactPattern.test(d.description||'')||contactPattern.test(d.other_service||'')||contactPattern.test(d.availability||'')){status.textContent=lang==='pt'?'Não coloques telefone, email, WhatsApp, redes sociais ou links nos campos públicos do perfil. Usa apenas os campos próprios de contacto.':'Do not add phone numbers, email, WhatsApp, social media or links to public profile fields. Use the dedicated contact fields instead.';return}
-  const businessIdentity=d.business_name||'';
+  const businessIdentity=d.business_name||'',providerIdentity=d.name||'';
+  if(publicFieldContainsFullName(d.locality,providerIdentity)||publicFieldContainsFullName(d.description,providerIdentity)||publicFieldContainsFullName(d.other_service,providerIdentity)){updateFormStep(2);status.textContent=lang==='pt'?'Não coloques o teu nome completo nos campos públicos do perfil.':'Do not include your full name in public profile fields.';$('#description').focus();return}
+  if(publicFieldContainsFullName(d.availability,providerIdentity)){updateFormStep(3);status.textContent=lang==='pt'?'Não coloques o teu nome completo na disponibilidade pública.':'Do not include your full name in public availability.';f.availability.focus();return}
   if(publicFieldContainsBusiness(d.locality,businessIdentity)){updateFormStep(2);status.textContent=lang==='pt'?'Não coloques o nome do negócio na localidade pública.':'Do not include the business name in the public locality.';f.locality.focus();return}
   if(publicFieldContainsBusiness(d.description,businessIdentity)||publicFieldContainsBusiness(d.other_service,businessIdentity)){updateFormStep(2);status.textContent=lang==='pt'?'Não coloques o nome do negócio nos campos públicos do perfil.':'Do not include the business name in public profile fields.';$('#description').focus();return}
   if(publicFieldContainsBusiness(d.availability,businessIdentity)){updateFormStep(3);status.textContent=lang==='pt'?'Não coloques o nome do negócio na disponibilidade pública.':'Do not include the business name in public availability.';f.availability.focus();return}
