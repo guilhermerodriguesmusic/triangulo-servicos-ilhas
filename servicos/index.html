@@ -958,6 +958,15 @@ body.route-public-results #explore{display:block!important}
   const qs=new URLSearchParams(location.search);
   const privateKeys=['prestador','booking_token','client_token','request_token','match_token','provider_password_token','stripe','payment'];
   const privateRoute=privateKeys.some(k=>qs.has(k))||location.hash==='#prestador'||location.hash==='#provider'||location.hash.startsWith('#provider-password=');
+  window.__triProviderEntryTokens={
+    booking_token:qs.get('booking_token')||null,
+    match_token:qs.get('match_token')||null
+  };
+  if(window.__triProviderEntryTokens.booking_token||window.__triProviderEntryTokens.match_token){
+    const clean=new URLSearchParams(qs);
+    clean.delete('booking_token');clean.delete('match_token');
+    history.replaceState({},'',location.pathname+(clean.toString()?'?'+clean.toString():'')+location.hash);
+  }
   const appEntry=qs.get('app')==='1'||window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
   if(!privateRoute&&!appEntry){
     document.body.classList.add('route-public-results','results-mode');
@@ -2151,7 +2160,7 @@ async function init(){
  try{db.channel('triangulo-providers-live').on('postgres_changes',{event:'*',schema:'public',table:'providers'},()=>loadProviders()).subscribe()}catch(e){console.warn('provider realtime',e)}
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadProviders()});
  window.addEventListener('focus',()=>loadProviders());
- const bookingToken=qs.get('booking_token'),matchToken=qs.get('match_token'),clientBookingToken=qs.get('client_token'),requestToken=qs.get('request_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=earlyProviderEntry;
+ const bookingToken=qs.get('booking_token')||(window.__triProviderEntryTokens&&window.__triProviderEntryTokens.booking_token),matchToken=qs.get('match_token')||(window.__triProviderEntryTokens&&window.__triProviderEntryTokens.match_token),clientBookingToken=qs.get('client_token'),requestToken=qs.get('request_token'),paymentResult=qs.get('payment'),stripeReturn=qs.get('stripe'),providerPasswordToken=qs.get('provider_password_token')||(location.hash.startsWith('#provider-password=')?location.hash.slice('#provider-password='.length):null),providerEntry=earlyProviderEntry;
  if(providerPasswordToken){openProviderPasswordSetup(providerPasswordToken);return}
  if(requestToken){
    try{
