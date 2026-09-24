@@ -7,8 +7,13 @@ on:
       - ".github/workflows/homepage-audit.yml"
       - "index.html"
       - "servicos/index.html"
+      - "prestadores.html"
+      - "candidatura-prestador.html"
       - "how-it-works.html"
       - "sobre-nos.html"
+      - "privacy.html"
+      - "terms.html"
+      - "instalar/index.html"
       - "sw.js"
       - "assets/home-master.webp"
       - "assets/home-master-2x.webp"
@@ -182,19 +187,37 @@ jobs:
             await context.close();
           }
 
-          // Static route existence through local server.
+          // Static route existence + internal public-link crawl.
           {
             const context=await browser.newContext();
             const page=await context.newPage();
-            for(const path of ['/servicos/','/how-it-works.html','/sobre-nos.html','/prestadores.html','/candidatura-prestador.html','/instalar/','/privacy.html','/terms.html']){
+            const publicRoutes=['/','/servicos/','/how-it-works.html','/sobre-nos.html','/prestadores.html','/candidatura-prestador.html','/instalar/','/privacy.html','/terms.html'];
+            for(const path of publicRoutes){
               const res=await page.request.get(base+path);
               assert.equal(res.status(),200,'route '+path+' returned '+res.status());
             }
+
+            const checked=new Set();
+            for(const route of publicRoutes){
+              await page.goto(base+route,{waitUntil:'domcontentloaded'});
+              const hrefs=await page.locator('a[href]').evaluateAll(as=>as.map(a=>a.getAttribute('href')).filter(Boolean));
+              for(const href of hrefs){
+                if(href.startsWith('#')||href.startsWith('mailto:')||href.startsWith('tel:')||href.startsWith('javascript:'))continue;
+                const u=new URL(href,base+route);
+                if(u.origin!==new URL(base).origin)continue;
+                const key=u.pathname+u.search;
+                if(checked.has(key))continue;
+                checked.add(key);
+                const res=await page.request.get(u.toString());
+                assert.ok(res.status()>=200&&res.status()<400,'internal link '+key+' returned '+res.status()+' from '+route);
+              }
+            }
+            report.push({internalLinksChecked:checked.size});
             await context.close();
           }
 
           await browser.close();
-          fs.writeFileSync('homepage-audit/report.json',JSON.stringify({ok:true,checkedAt:new Date().toISOString()},null,2));
+          fs.writeFileSync('homepage-audit/report.json',JSON.stringify({ok:true,checkedAt:new Date().toISOString(),report},null,2));
           console.log('Homepage audit passed');
           JS
           node homepage-audit.mjs
