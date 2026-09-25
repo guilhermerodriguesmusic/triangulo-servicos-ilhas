@@ -695,13 +695,17 @@ h1{
   }
   .master-search-form .master-hotspot{pointer-events:auto}
   .master-query::placeholder{color:transparent}
-  .master-query:focus::placeholder{color:#9a9ea3}
-  .master-query:focus,
+  .master-query:focus{
+    color:transparent;
+    background:transparent;
+    box-shadow:none;
+  }
+  .master-query:focus::placeholder{color:transparent}
   .master-query.has-value{
     color:#243d50;
     background:#fff;
     border-radius:22px;
-    box-shadow:0 0 0 2px rgba(255,255,255,.75);
+    box-shadow:none;
   }
   .master-island-select{
     position:absolute;
