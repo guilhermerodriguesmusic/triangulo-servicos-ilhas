@@ -1,0 +1,81 @@
+name: Vendor island images locally
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/vendor-island-images.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vendor-island-images
+  cancel-in-progress: false
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download exact island images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -L --fail --retry 5 --retry-delay 2             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pico%2C_Azores_%2824309854589%29.jpg?width=1200"             -o assets/island-pico.jpg
+          curl -L --fail --retry 5 --retry-delay 2             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Faial.jpg?width=1200"             -o assets/island-faial.jpg
+          curl -L --fail --retry 5 --retry-delay 2             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Faja_dos_bodes.jpg?width=1200"             -o assets/island-sao-jorge.jpg
+          test -s assets/island-pico.jpg
+          test -s assets/island-faial.jpg
+          test -s assets/island-sao-jorge.jpg
+          file assets/island-pico.jpg assets/island-faial.jpg assets/island-sao-jorge.jpg
+
+      - name: Point service pages to local copies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pico%2C_Azores_%2824309854589%29.jpg?width=1200": "/assets/island-pico.jpg",
+              "https://commons.wikimedia.org/wiki/Special:Redirect/file/Faial.jpg?width=1200": "/assets/island-faial.jpg",
+              "https://commons.wikimedia.org/wiki/Special:Redirect/file/Faja_dos_bodes.jpg?width=1200": "/assets/island-sao-jorge.jpg",
+          }
+
+          for name in ["servicos/index.html", "en/servicos/index.html"]:
+              path = Path(name)
+              text = path.read_text()
+              original = text
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+              if text == original:
+                  raise SystemExit(f"No external island image URLs found in {name}")
+              path.write_text(text)
+          PY
+
+      - name: Verify no Wikimedia dependency remains in public HTML
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -R -E "https://(commons|upload)\.wikimedia\.org"             --include="*.html" --include="*.css" --include="*.js" .             --exclude-dir=.git --exclude-dir=_site; then
+            echo "External Wikimedia dependency still present"
+            exit 1
+          fi
+
+      - name: Commit vendored assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/island-pico.jpg assets/island-faial.jpg assets/island-sao-jorge.jpg servicos/index.html en/servicos/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Vendor island imagery locally"
+          git push
