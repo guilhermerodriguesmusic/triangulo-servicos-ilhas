@@ -120,6 +120,35 @@ jobs:
             await context.close();
           }
 
+          // DESKTOP PT: regression for the real user viewport that exposed overlapping hotspots.
+          {
+            const {context,page,errors}=await open({width:1536,height:768},'pt');
+            const boxes=await page.evaluate(()=>{
+              const rect=s=>{const el=document.querySelector(s),r=el?.getBoundingClientRect();return r?{x:r.x,y:r.y,w:r.width,h:r.height}:null};
+              return {
+                pico:rect('.mh-pico'),faial:rect('.mh-faial'),saojorge:rect('.mh-saojorge'),
+                query:rect('#masterSearchInput'),island:rect('#masterIslandSelect'),submit:rect('.mh-search-submit'),
+                repairs:rect('.mh-cat-repairs'),garden:rect('.mh-cat-garden'),home:rect('.mh-cat-home'),personal:rect('.mh-cat-personal')
+              };
+            });
+            const overlap=(a,b)=>Math.max(a.x,b.x)<Math.min(a.x+a.w,b.x+b.w)&&Math.max(a.y,b.y)<Math.min(a.y+a.h,b.y+b.h);
+            for(const key of ['pico','faial','saojorge']){
+              assert.equal(overlap(boxes[key],boxes.query),false,key+' island hotspot overlaps search input');
+              assert.equal(overlap(boxes[key],boxes.island),false,key+' island hotspot overlaps search island selector');
+              assert.equal(overlap(boxes[key],boxes.submit),false,key+' island hotspot overlaps search submit');
+            }
+            assert.ok(boxes.query.y>boxes.faial.y+boxes.faial.h,'search input must sit below island pills');
+            assert.ok(boxes.repairs.y>boxes.submit.y+boxes.submit.h,'category cards must sit below search bar');
+
+            await Promise.all([
+              page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
+              page.click('.mh-faial')
+            ]);
+            await assertRoute(page,'/servicos/',{island:'Faial'});
+            assert.equal(errors.length,0,'real-viewport desktop PT errors: '+errors.join(' | '));
+            await context.close();
+          }
+
           // DESKTOP PT: every master link has a real destination.
           {
             const {context,page}=await open({width:1857,height:1042},'pt');
