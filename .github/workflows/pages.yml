@@ -33,7 +33,7 @@ jobs:
           set -euo pipefail
           mkdir -p assets
           curl -L --fail --retry 3 --retry-delay 2 "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Ilha_do_Pico%2C_Montanha_ao_nascer_do_Sol%2C_A%C3%A7ores%2C_Portugal.JPG/1280px-Ilha_do_Pico%2C_Montanha_ao_nascer_do_Sol%2C_A%C3%A7ores%2C_Portugal.JPG" -o assets/pico-real.jpg
-          curl -L --fail --retry 3 --retry-delay 2 "https://commons.wikimedia.org/wiki/Special:Redirect/file/Mt._Pico%2C_Azores_%286025734835%29.jpg?width=1920" -o assets/pico-hero-real.jpg
+          curl -L --fail --retry 3 --retry-delay 2 "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rock%20walled%20plots%20of%20S%C3%A3o%20Mateus%20where%20grapes%20are%20grown%20with%20Mt.%20Pico%20in%20the%20background.jpg?width=1920" -o assets/pico-hero-real.jpg
           curl -L --fail --retry 3 --retry-delay 2 "https://commons.wikimedia.org/wiki/Special:Redirect/file/Cidade_da_Horta%2C_vista_parcial_do_cimo_do_Miradouro_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o%2C_concelho_da_Horta%2C_ilha_do_Faial%2C_A%C3%A7ores%2C_Porttugal.JPG?width=1280" -o assets/faial-real.jpg
           curl -L --fail --retry 3 --retry-delay 2 "https://commons.wikimedia.org/wiki/Special:Redirect/file/Faj%C3%A3_de_S%C3%A3o_Jo%C3%A3o%2C_vista%2C_Calheta%2C_S%C3%A3o_Jorge%2C_A%C3%A7ores.JPG?width=1280" -o assets/sao-jorge-real.jpg
           test -s assets/pico-real.jpg
