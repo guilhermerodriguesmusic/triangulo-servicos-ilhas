@@ -956,8 +956,19 @@ function syncHomepageLanguageUrl(){
   if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
   history.replaceState(history.state,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);
 }
-document.querySelector('#pt').onclick=()=>{lang='pt';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
-document.querySelector('#en').onclick=()=>{lang='en';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
+function syncHomepageSearchFields(sourceMode=null){
+  const normal=document.querySelector('#searchInput');
+  const master=document.querySelector('#masterSearchInput');
+  if(!normal||!master)return;
+  const useMaster=sourceMode==='master'||(sourceMode===null&&lang==='pt'&&desktopMasterMedia.matches);
+  const source=useMaster?master:normal;
+  const value=String(source.value||'').slice(0,120);
+  normal.value=value;
+  master.value=value;
+  master.classList.toggle('has-value',Boolean(value.trim()));
+}
+document.querySelector('#pt').onclick=()=>{syncHomepageSearchFields();lang='pt';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
+document.querySelector('#en').onclick=()=>{syncHomepageSearchFields();lang='en';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
 setIsland(['Pico','Faial','São Jorge'].includes(island)?island:'Pico');
 applyLang();
 
@@ -1004,9 +1015,15 @@ masterSearchForm?.addEventListener('submit',()=>{
   }
 });
 document.querySelector('#masterTopSearch')?.addEventListener('click',()=>masterSearchInput?.focus());
-if(desktopMasterMedia.addEventListener)desktopMasterMedia.addEventListener('change',syncDesktopMasterInteractivity);
-else if(desktopMasterMedia.addListener)desktopMasterMedia.addListener(syncDesktopMasterInteractivity);
+function handleHomepageViewportChange(e){
+  if(lang==='pt')syncHomepageSearchFields(e.matches?'normal':'master');
+  syncDesktopMasterInteractivity();
+  syncMasterIsland();
+}
+if(desktopMasterMedia.addEventListener)desktopMasterMedia.addEventListener('change',handleHomepageViewportChange);
+else if(desktopMasterMedia.addListener)desktopMasterMedia.addListener(handleHomepageViewportChange);
 syncDesktopMasterInteractivity();
+syncMasterIsland();
 </script>
 </body>
 </html>
