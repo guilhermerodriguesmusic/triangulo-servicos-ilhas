@@ -229,6 +229,14 @@ jobs:
             assert.equal(await page.locator('#homeSearch').isVisible(),true);
             assert.equal(await page.locator('#searchInput').getAttribute('placeholder'),'What service do you need?');
             assert.match(await page.locator('.nav a[href^="/sobre-nos"]').getAttribute('href'),/lang=en/);
+            const englishLayout=await page.evaluate(()=>{
+              const box=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,width:r.width,height:r.height}};
+              return {headline:box('h1'),promise:box('.promise'),search:box('#homeSearch'),categories:box('.category-row'),trust:box('.trustbar')};
+            });
+            assert.ok(englishLayout.promise.top>englishLayout.headline.bottom+6,'English promise overlaps headline');
+            assert.ok(englishLayout.categories.top>englishLayout.search.bottom+35,'English category row crowds search bar');
+            assert.equal(await page.locator('.trust b').nth(2).evaluate(el=>el.getClientRects().length),1,'English trust heading wrapped');
+            await page.screenshot({path:'homepage-audit/desktop-en.png',fullPage:true});
             await page.selectOption('#islandSelect','São Jorge');
             await page.fill('#searchInput','cleaning');
             await Promise.all([
