@@ -23,6 +23,8 @@
 <meta property="og:description" content="Create your free TRIÂNGULO provider profile and receive customer requests across Pico, Faial and São Jorge.">
 <meta property="og:url" content="https://trianguloacores.pt/en/prestadores.html">
 <meta property="og:image" content="https://trianguloacores.pt/assets/pico-home-hq.webp">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="pt_PT">
 <meta name="twitter:card" content="summary_large_image">
 <style>
 :root{--navy:#0a3157;--navy-dark:#052b49;--green:#5f8d50;--green-dark:#2b6a50;--cream:#f8f8f5;--ink:#12324a;--muted:#667985;--line:#dce5e2}
@@ -217,7 +219,6 @@ setLang(lang);
 </script>
 <script id="localized-seo-sync">
 (()=>{
-  const base=location.origin+location.pathname;
   const canonical=document.querySelector('link[rel="canonical"]');
   const ogTitle=document.querySelector('meta[property="og:title"]');
   const ogDescription=document.querySelector('meta[property="og:description"]');
@@ -228,7 +229,8 @@ setLang(lang);
   if(!ogLocaleAlt){ogLocaleAlt=document.createElement('meta');ogLocaleAlt.setAttribute('property','og:locale:alternate');document.head.appendChild(ogLocaleAlt)}
   function syncLocalizedSeo(){
     const isEn=(document.documentElement.lang||'').toLowerCase().startsWith('en');
-    const url=isEn?base+'?lang=en':base;
+    const alternate=document.querySelector('link[rel="alternate"][hreflang="'+(isEn?'en':'pt-PT')+'"]');
+    const url=alternate?.href||location.origin+location.pathname;
     const description=document.querySelector('meta[name="description"]')?.content||'';
     if(canonical)canonical.href=url;
     if(ogTitle)ogTitle.content=document.title;
