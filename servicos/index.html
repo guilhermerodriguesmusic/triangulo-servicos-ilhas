@@ -1268,7 +1268,7 @@ body.route-public-results #explore{display:block!important}
 
         <div id="providerProfileStatus" class="pa-feedback"></div>
         <button class="pa-primary" type="submit" data-pt="Guardar alterações" data-en="Save changes">Guardar alterações</button>
-        <p id="paFeeNote" class="pa-note">Este é o teu valor. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente; essa taxa não é descontada do que definiste.</p>
+        <p id="paFeeNote" class="pa-note" data-pt="Este é o teu valor. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente; essa taxa não é descontada do que definiste." data-en="This is the amount you receive. TRIÂNGULO adds the service fee to the price shown to the customer; you keep the amount you set.">Este é o teu valor. O TRIÂNGULO acrescenta a taxa de serviço ao preço apresentado ao cliente; essa taxa não é descontada do que definiste.</p>
       </form>
     </div>
   </div>
@@ -1367,6 +1367,9 @@ function applyLang(){
  store.set('tri_lang',lang);
  document.documentElement.lang=lang;
  document.title=lang==='pt'?'TRIÂNGULO — Serviços locais nas ilhas':'TRIÂNGULO — Local services across the islands';
+ const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=lang==='pt'?'Encontra prestadores de serviços locais no Pico, Faial e São Jorge ou publica o que precisas e deixa o TRIÂNGULO procurar por ti.':'Find local service providers across Pico, Faial and São Jorge, or post what you need and let TRIÂNGULO find someone for you.';
+ const ogTitle=document.querySelector('meta[property="og:title"]');if(ogTitle)ogTitle.content=lang==='pt'?'Prestadores e serviços locais — TRIÂNGULO Açores':'Local providers and services — TRIÂNGULO Azores';
+ const ogDesc=document.querySelector('meta[property="og:description"]');if(ogDesc)ogDesc.content=lang==='pt'?'Encontra serviços locais no Pico, Faial e São Jorge.':'Find local services across Pico, Faial and São Jorge.';
  $$('[data-t]').forEach(el=>{let v=tr(el.dataset.t);if(v.includes('<br>'))el.innerHTML=v;else el.textContent=v});
  $$('[data-pt][data-en]').forEach(el=>{el.textContent=lang==='pt'?el.dataset.pt:el.dataset.en});
  document.querySelectorAll('[data-ph-pt][data-ph-en]').forEach(el=>{el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn});
