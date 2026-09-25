@@ -723,7 +723,7 @@ h1{
     top:55.15%;
     width:6.25%;
     height:3.5%;
-    display:flex;
+    display:none;
     align-items:center;
     padding-left:4px;
     background:#fff;
@@ -732,6 +732,7 @@ h1{
     pointer-events:none;
     z-index:1;
   }
+  .master-island-value.visible{display:flex}
   .master-island-select:focus-visible + .master-island-value{
     outline:2px solid rgba(255,255,255,.95);
     outline-offset:4px;
@@ -960,7 +961,10 @@ const masterSearchForm=document.querySelector('#masterSearchForm');
 function syncMasterIsland(){
   if(!masterIslandSelect||!['Pico','Faial','São Jorge'].includes(island))return;
   masterIslandSelect.value=island;
-  if(masterIslandValue)masterIslandValue.textContent=island;
+  if(masterIslandValue){
+    masterIslandValue.textContent=island;
+    masterIslandValue.classList.toggle('visible',island!=='Pico');
+  }
 }
 function syncMasterQueryState(){
   masterSearchInput?.classList.toggle('has-value',Boolean(masterSearchInput.value.trim()));
