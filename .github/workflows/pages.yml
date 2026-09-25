@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
@@ -39,7 +39,7 @@ jobs:
             --exclude='_site' \
             ./ _site/
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./_site
       - name: Deploy
@@ -134,7 +134,7 @@ jobs:
           grep -q "Privacidade" <<<"$app"
           grep -q "Termos" <<<"$app"
           grep -q "booking_token" <<<"$legacy_reply"
-          grep -q '<title>TRIÂNGULO</title>' <<<"$install_page"
+          grep -q '<title>Instalar TRIÂNGULO — Açores</title>' <<<"$install_page"
           grep -q 'href="/apple-touch-icon.png"' <<<"$install_page"
           grep -q 'href="/apple-touch-icon-precomposed.png"' <<<"$install_page"
           grep -q "Instalar TRIÂNGULO" <<<"$install_page"
@@ -155,6 +155,11 @@ jobs:
           grep -q "Sitemap: https://trianguloacores.pt/sitemap.xml" <<<"$robots"
           grep -q "https://trianguloacores.pt/prestadores.html" <<<"$sitemap"
           grep -q "https://trianguloacores.pt/sobre-nos.html" <<<"$sitemap"
+          grep -q 'hreflang="pt-PT"' <<<"$sitemap"
+          grep -q 'hreflang="en"' <<<"$sitemap"
+          grep -q 'localized-seo-sync' <<<"$index"
+          grep -q 'localized-seo-sync' <<<"$providers"
+          grep -q 'localized-seo-sync' <<<"$application"
 
           if grep -Eqi "Fundador|Founding Service Provider|Founding Credit" <<<"$providers$application$terms$app"; then
             echo "Obsolete founding-provider copy is still public"
