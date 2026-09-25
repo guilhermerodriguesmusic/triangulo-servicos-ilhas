@@ -19,6 +19,12 @@ on:
       - "terms.html"
       - "manifest.json"
       - "sw.js"
+      - "en/**"
+      - "servicos/provider-area.css"
+      - "assets/island-pico.jpg"
+      - "assets/island-faial.jpg"
+      - "assets/island-sao-jorge.jpg"
+      - "assets/provider-area-pico.jpg"
   workflow_dispatch:
 
 permissions:
