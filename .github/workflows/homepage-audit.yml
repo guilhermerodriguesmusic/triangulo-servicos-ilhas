@@ -160,6 +160,20 @@ jobs:
             assert.ok(boxes.query.y>boxes.faial.y+boxes.faial.h,'search input must sit below island pills');
             assert.ok(boxes.repairs.y>boxes.submit.y+boxes.submit.h,'category cards must sit below search bar');
             await page.screenshot({path:'homepage-audit/desktop-user-viewport.png',fullPage:true});
+            await page.evaluate(()=>{
+              const selectors=[
+                '.mh-brand','.mh-services','.mh-islands-nav','.mh-how','.mh-about','.mh-top-search','.mh-pt','.mh-en','.mh-login',
+                '.mh-pico','.mh-faial','.mh-saojorge','#masterSearchInput','#masterIslandSelect','.mh-search-submit',
+                '.mh-cat-repairs','.mh-cat-garden','.mh-cat-home','.mh-cat-personal'
+              ];
+              selectors.forEach((sel,i)=>{
+                const el=document.querySelector(sel);if(!el)return;
+                el.style.outline='2px solid '+(i%2?'#ff2d55':'#00e5ff');
+                el.style.outlineOffset='-2px';
+                if(el.tagName!=='INPUT'&&el.tagName!=='SELECT')el.style.background='rgba(255,45,85,.10)';
+              });
+            });
+            await page.screenshot({path:'homepage-audit/desktop-user-viewport-hitboxes.png',fullPage:true});
 
             await Promise.all([
               page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
