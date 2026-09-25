@@ -11,7 +11,11 @@
 <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-precomposed.png">
 <title>TRIÂNGULO Açores — Serviços locais nas ilhas</title>
 <meta name="description" content="Encontra e reserva serviços locais no Pico, Faial e São Jorge. Pessoas da tua ilha, perfis revistos e pedidos simples.">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://trianguloacores.pt/">
+<link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/">
+<link rel="alternate" hreflang="en" href="https://trianguloacores.pt/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TRIÂNGULO Açores">
 <meta property="og:title" content="TRIÂNGULO Açores — Serviços locais nas ilhas">
@@ -799,7 +803,7 @@ nas ilhas</h1>
         <button class="island-pill" type="button" data-island="São Jorge"><span class="mini-mountain"></span>São Jorge</button>
       </div>
 
-      <form id="homeSearch" class="searchbar" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
+      <form id="homeSearch" class="searchbar" action="/servicos/" method="get" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
         <label class="searchmain" aria-label="Serviço">
           <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.3 4.3"/></svg>
           <input id="searchInput" name="q" maxlength="120" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
@@ -807,7 +811,7 @@ nas ilhas</h1>
         <div class="search-divider"></div>
         <label class="island-select-wrap">
           <svg class="pin" viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-13A7 7 0 1 0 5 9c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.4" fill="#fff"/></svg>
-          <select id="islandSelect" aria-label="Ilha">
+          <select id="islandSelect" name="island" aria-label="Ilha">
             <option>Pico</option><option>Faial</option><option>São Jorge</option>
           </select>
         </label>
@@ -910,6 +914,9 @@ function applyLang(){
   if(form)form.setAttribute('aria-label',lang==='pt'?'Pesquisar serviços':'Search services');
   document.querySelector('#pt').classList.toggle('active',lang==='pt');
   document.querySelector('#en').classList.toggle('active',lang==='en');
+  document.querySelector('#pt').setAttribute('aria-pressed',lang==='pt'?'true':'false');
+  document.querySelector('#en').setAttribute('aria-pressed',lang==='en'?'true':'false');
+  document.querySelector('#topSearch')?.setAttribute('aria-label',lang==='pt'?'Pesquisar':'Search');
   document.querySelectorAll('a[href^="/"]:not([data-fixed-lang-link])').forEach(a=>{
     const u=new URL(a.getAttribute('href'),location.origin);
     if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
@@ -917,9 +924,20 @@ function applyLang(){
   });
   document.title=lang==='pt'?'TRIÂNGULO Açores — Serviços locais nas ilhas':'TRIÂNGULO Azores — Local services across the islands';
   const meta=document.querySelector('meta[name="description"]');
-  if(meta)meta.content=lang==='pt'
+  const title=lang==='pt'?'TRIÂNGULO Açores — Serviços locais nas ilhas':'TRIÂNGULO Azores — Local services across the islands';
+  const description=lang==='pt'
     ?'Encontra e reserva serviços locais no Pico, Faial e São Jorge com o TRIÂNGULO Açores.'
     :'Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.';
+  if(meta)meta.content=description;
+  const canonical=document.querySelector('link[rel="canonical"]');
+  const canonicalUrl=lang==='pt'?'https://trianguloacores.pt/':'https://trianguloacores.pt/?lang=en';
+  if(canonical)canonical.href=canonicalUrl;
+  const ogTitle=document.querySelector('meta[property="og:title"]');
+  const ogDescription=document.querySelector('meta[property="og:description"]');
+  const ogUrl=document.querySelector('meta[property="og:url"]');
+  if(ogTitle)ogTitle.content=title;
+  if(ogDescription)ogDescription.content=description;
+  if(ogUrl)ogUrl.content=canonicalUrl;
   syncDesktopMasterInteractivity();
 }
 
@@ -936,7 +954,11 @@ function syncDesktopMasterInteractivity(){
 function setIsland(v){
   island=v;
   localStorage.setItem('tri_island',v);
-  document.querySelectorAll('[data-island]').forEach(b=>b.classList.toggle('active',b.dataset.island===v));
+  document.querySelectorAll('[data-island]').forEach(b=>{
+    const active=b.dataset.island===v;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',active?'true':'false');
+  });
   document.querySelector('#islandSelect').value=v;
   const masterSelect=document.querySelector('#masterIslandSelect');
   if(masterSelect)masterSelect.value=v;
