@@ -187,6 +187,25 @@ jobs:
             await context.close();
           }
 
+          // DESKTOP PT/EN: master language switch preserves in-progress search state.
+          {
+            const {context,page,errors}=await open({width:1536,height:768},'pt');
+            await page.fill('#masterSearchInput','jardim');
+            await page.click('.mh-en');
+            assert.equal(await page.locator('html').getAttribute('lang'),'en','master EN switch did not update language');
+            assert.equal(new URL(page.url()).searchParams.get('lang'),'en','master EN switch did not update URL');
+            assert.equal(await page.locator('#searchInput').inputValue(),'jardim','master query was lost when switching to EN');
+            assert.equal(await page.locator('.master-desktop-ui').isVisible(),false,'PT master stayed visible in EN');
+
+            await page.click('#pt');
+            assert.equal(await page.locator('html').getAttribute('lang'),'pt','switch back to PT failed');
+            assert.equal(new URL(page.url()).searchParams.get('lang'),null,'PT switch left lang=en in URL');
+            assert.equal(await page.locator('#masterSearchInput').inputValue(),'jardim','query was lost when switching back to PT');
+            assert.equal(await page.locator('.master-desktop-ui').isVisible(),true,'PT master did not return');
+            assert.equal(errors.length,0,'master language switch errors: '+errors.join(' | '));
+            await context.close();
+          }
+
           // DESKTOP PT: every master link has a real destination.
           {
             const {context,page}=await open({width:1857,height:1042},'pt');
