@@ -113,15 +113,18 @@ jobs:
             await page.setViewportSize({width:390,height:844});
             await page.waitForTimeout(60);
             assert.equal(await page.locator('#islandSelect').inputValue(),'Faial','selected island changed after switching to mobile layout');
+            assert.equal(await page.locator('#searchInput').inputValue(),'jardim','search query was lost when switching to mobile layout');
+            await page.fill('#searchInput','limpeza');
             await page.setViewportSize({width:1857,height:1042});
             await page.waitForTimeout(60);
             assert.equal(await page.locator('#masterIslandSelect').inputValue(),'Faial','master island state was lost after returning to desktop');
             assert.equal(await page.locator('#masterIslandValue').textContent(),'Faial','master island label was lost after returning to desktop');
+            assert.equal(await page.locator('#masterSearchInput').inputValue(),'limpeza','mobile query was lost when returning to desktop');
             await Promise.all([
               page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
               page.click('#masterSearchForm button[type="submit"]')
             ]);
-            await assertRoute(page,'/servicos/',{island:'Faial',q:'jardim'});
+            await assertRoute(page,'/servicos/',{island:'Faial',q:'limpeza'});
             assert.equal(errors.length,0,'desktop PT page errors: '+errors.join(' | '));
             await context.close();
           }
