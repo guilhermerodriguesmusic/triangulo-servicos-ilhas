@@ -190,6 +190,16 @@ jobs:
             fetch "$base/$page?lang=en&verify=$GITHUB_SHA" >/dev/null
           done
 
+          # Dedicated static English entry points: stable URLs for SEO and no-JS metadata.
+          for page in \
+            "en/" "en/servicos/" "en/prestadores.html" "en/candidatura-prestador.html" \
+            "en/how-it-works.html" "en/sobre-nos.html" "en/privacy.html" \
+            "en/terms.html" "en/instalar/"; do
+            english_page="$(fetch "$base/$page?verify=$GITHUB_SHA")"
+            grep -q 'lang="en"' <<<"$english_page"
+            grep -q 'force-english-entry' <<<"$english_page"
+          done
+
           # Verify only versioned/local assets committed with the site.
           fetch "$base/assets/pico-home-hq.webp?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/home-master.webp?verify=$GITHUB_SHA" >/dev/null
