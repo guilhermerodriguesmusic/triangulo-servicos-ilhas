@@ -214,5 +214,31 @@ document.querySelector('#pt').onclick=()=>setLang('pt');
 document.querySelector('#en').onclick=()=>setLang('en');
 setLang(lang);
 </script>
+<script id="localized-seo-sync">
+(()=>{
+  const base=location.origin+location.pathname;
+  const canonical=document.querySelector('link[rel="canonical"]');
+  const ogTitle=document.querySelector('meta[property="og:title"]');
+  const ogDescription=document.querySelector('meta[property="og:description"]');
+  const ogUrl=document.querySelector('meta[property="og:url"]');
+  let ogLocale=document.querySelector('meta[property="og:locale"]');
+  let ogLocaleAlt=document.querySelector('meta[property="og:locale:alternate"]');
+  if(!ogLocale){ogLocale=document.createElement('meta');ogLocale.setAttribute('property','og:locale');document.head.appendChild(ogLocale)}
+  if(!ogLocaleAlt){ogLocaleAlt=document.createElement('meta');ogLocaleAlt.setAttribute('property','og:locale:alternate');document.head.appendChild(ogLocaleAlt)}
+  function syncLocalizedSeo(){
+    const isEn=(document.documentElement.lang||'').toLowerCase().startsWith('en');
+    const url=isEn?base+'?lang=en':base;
+    const description=document.querySelector('meta[name="description"]')?.content||'';
+    if(canonical)canonical.href=url;
+    if(ogTitle)ogTitle.content=document.title;
+    if(ogDescription)ogDescription.content=description;
+    if(ogUrl)ogUrl.content=url;
+    ogLocale.content=isEn?'en_GB':'pt_PT';
+    ogLocaleAlt.content=isEn?'pt_PT':'en_GB';
+  }
+  new MutationObserver(syncLocalizedSeo).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  queueMicrotask(syncLocalizedSeo);
+})();
+</script>
 </body>
 </html>
