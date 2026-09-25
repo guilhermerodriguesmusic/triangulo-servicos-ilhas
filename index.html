@@ -695,6 +695,7 @@ h1{
   }
   .master-search-form .master-hotspot{pointer-events:auto}
   .master-query::placeholder{color:transparent}
+  .master-query:focus::placeholder{color:#9a9ea3}
   .master-query:focus,
   .master-query.has-value{
     color:#243d50;
@@ -734,6 +735,7 @@ h1{
   }
   .master-island-value.visible{display:flex}
   .master-island-select:focus-visible + .master-island-value{
+    display:flex;
     outline:2px solid rgba(255,255,255,.95);
     outline-offset:4px;
     border-radius:8px;
@@ -841,7 +843,7 @@ nas ilhas</h1>
     <a class="master-hotspot mh-saojorge" href="/servicos/?island=S%C3%A3o+Jorge" aria-label="Serviços em São Jorge"></a>
 
     <form class="master-search-form" id="masterSearchForm" action="/servicos/" method="get" role="search" aria-label="Pesquisar serviços">
-      <input class="master-query" id="masterSearchInput" name="q" type="search" maxlength="120" autocomplete="off" autocapitalize="none" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?">
+      <input class="master-query" id="masterSearchInput" name="q" type="search" maxlength="120" autocomplete="off" autocapitalize="none" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" placeholder="Que serviço precisas?">
       <select class="master-island-select" id="masterIslandSelect" name="island" aria-label="Ilha">
         <option value="Pico">Pico</option>
         <option value="Faial">Faial</option>
