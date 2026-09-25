@@ -17,6 +17,11 @@ on:
       - "terms.html"
       - "instalar/index.html"
       - "sw.js"
+      - "en/**"
+      - "assets/island-pico.jpg"
+      - "assets/island-faial.jpg"
+      - "assets/island-sao-jorge.jpg"
+      - "assets/provider-area-pico.jpg"
       - "assets/home-master.webp"
       - "assets/home-master-2x.webp"
   workflow_dispatch:
@@ -39,12 +44,6 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-
-      - name: Fetch desktop hero used by the live site
-        run: |
-          mkdir -p assets
-          curl -L --fail --retry 3 --retry-delay 2 "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rock%20walled%20plots%20of%20S%C3%A3o%20Mateus%20where%20grapes%20are%20grown%20with%20Mt.%20Pico%20in%20the%20background.jpg?width=1920" -o assets/pico-hero-real.jpg
-          test -s assets/pico-hero-real.jpg
 
       - name: Start local site
         run: |
