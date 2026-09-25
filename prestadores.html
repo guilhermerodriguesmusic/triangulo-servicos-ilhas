@@ -203,6 +203,8 @@ function setLang(v){
   if(meta)meta.content=v==='pt'
     ?'Cria gratuitamente o teu perfil no TRIÂNGULO Açores e torna os teus serviços mais fáceis de encontrar no Pico, Faial e São Jorge.'
     :'Create your free TRIÂNGULO Açores profile and make your services easier to find across Pico, Faial and São Jorge.';
+  const ogTitle=document.querySelector('meta[property="og:title"]');if(ogTitle)ogTitle.content=v==='pt'?'Para prestadores — TRIÂNGULO Açores':'For providers — TRIÂNGULO Azores';
+  const ogDesc=document.querySelector('meta[property="og:description"]');if(ogDesc)ogDesc.content=v==='pt'?'Cria gratuitamente o teu perfil no TRIÂNGULO e recebe pedidos de clientes no Pico, Faial e São Jorge.':'Create your free TRIÂNGULO profile and receive customer requests across Pico, Faial and São Jorge.';
 }
 document.querySelector('#pt').onclick=()=>setLang('pt');
 document.querySelector('#en').onclick=()=>setLang('en');
