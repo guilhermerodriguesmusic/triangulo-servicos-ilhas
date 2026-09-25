@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script id="force-english-entry">try{localStorage.setItem('tri_lang','en')}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="application-name" content="TRIÂNGULO">
+<meta name="apple-mobile-web-app-title" content="TRIÂNGULO">
+<meta name="theme-color" content="#0b3157">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-precomposed.png">
+<title>TRIÂNGULO Azores — Local services across the islands</title>
+<meta name="description" content="Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://trianguloacores.pt/en/">
+<link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/">
+<link rel="alternate" hreflang="en" href="https://trianguloacores.pt/en/">
+<link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TRIÂNGULO Açores">
+<meta property="og:title" content="TRIÂNGULO Azores — Local services across the islands">
+<meta property="og:description" content="Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.">
+<meta property="og:url" content="https://trianguloacores.pt/en/">
+<meta property="og:image" content="https://trianguloacores.pt/assets/pico-home-hq.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="shortcut icon" type="image/png" href="/icon-192.png">
+<link rel="preload" href="/assets/pico-home-hq.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="/assets/home-master.webp" as="image" type="image/webp" media="(max-resolution: 1.49dppx)">
+<link rel="preload" href="/assets/home-master-2x.webp" as="image" type="image/webp" media="(min-resolution: 1.5dppx)">
+<meta name="color-scheme" content="light only">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=GFS+Didot&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a3157;
+  --navy-dark:#052b49;
+  --green:#5f8d50;
+  --green-dark:#2b6a50;
+  --cream:#f8f8f5;
+  --ink:#12324a;
+  --muted:#667985;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff;color:#fff}
+button,input,select{font:inherit}
+a{color:inherit}
+body{min-height:100svh;overflow-x:hidden}
+
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  isolation:isolate;
+  overflow:hidden;
+  background:#4d8dcb;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  background-image:url('/assets/pico-home-hq.webp');
+  background-repeat:no-repeat;
+  background-position:center 63%;
+  background-size:103.5% auto;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    linear-gradient(180deg,rgba(72,143,210,.96) 0%,rgba(72,143,210,.90) 9%,rgba(72,143,210,.58) 17%,rgba(72,143,210,0) 29%),
+    linear-gradient(90deg,rgba(5,39,67,.17) 0%,rgba(5,39,67,.05) 42%,rgba(5,39,67,.015) 68%,rgba(5,39,67,.06) 100%),
+    linear-gradient(180deg,rgba(6,43,73,.01) 0%,rgba(6,43,73,.01) 50%,rgba(4,27,44,.18) 75%,rgba(4,27,44,.48) 100%);
+}
+.top{
+  width:min(1490px,calc(100% - 76px));
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:350px 1fr auto;
+  align-items:center;
+  gap:24px;
+  padding:18px 0 7px;
+}
+.brand{display:flex;align-items:center;text-decoration:none}
+.brand img{display:block;width:306px;height:auto;max-width:100%;filter:drop-shadow(0 2px 10px rgba(255,255,255,.16))}
+.nav{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:46px;
+  white-space:nowrap;
+}
+.nav a,.nav button{
+  border:0;background:none;color:#fff;text-decoration:none;font-size:14px;font-weight:650;padding:8px 0;cursor:pointer;text-shadow:0 2px 11px rgba(0,0,0,.24)
+}
+.nav .with-chevron::after{content:"⌄";font-size:15px;margin-left:8px;position:relative;top:-1px}
+.nav a:hover,.nav button:hover{opacity:.82}
+.nav a:focus-visible,.nav button:focus-visible,.login:focus-visible,.island-pill:focus-visible,.searchbar button:focus-visible,.category:focus-visible{outline:3px solid rgba(255,255,255,.92);outline-offset:3px}
+.island-pill:hover{transform:translateY(-1px)}
+.searchbar:focus-within{box-shadow:0 18px 44px rgba(0,0,0,.25),0 0 0 2px rgba(255,255,255,.75)}
+.actions{display:flex;align-items:center;gap:17px}
+.search-icon{
+  width:38px;height:38px;border:0;background:transparent;color:#fff;display:grid;place-items:center;padding:0;cursor:pointer
+}
+.search-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.7}
+.vrule{height:31px;width:1px;background:rgba(255,255,255,.7);margin:0 3px}
+.lang{display:flex;gap:12px;align-items:center}
+.lang button{position:relative;border:0;background:none;color:#fff;padding:7px 3px;font-size:13px;font-weight:850;cursor:pointer;opacity:.85}
+.lang button+button::before{content:"|";position:absolute;left:-8px;color:rgba(255,255,255,.65)}
+.lang button.active{opacity:1}
+.lang button.active::after{content:"";position:absolute;left:1px;right:1px;bottom:0;height:2px;background:#83a14f;border-radius:2px}
+.login{
+  text-decoration:none;
+  border:0;
+  background:rgba(4,43,72,.91);
+  color:#fff;
+  border-radius:999px;
+  padding:13px 28px;
+  min-width:125px;
+  text-align:center;
+  font-size:13px;
+  font-weight:850;
+  box-shadow:0 9px 24px rgba(4,35,60,.22)
+}
+
+.stage{
+  width:min(1490px,calc(100% - 76px));
+  margin:0 auto;
+  flex:1;
+  display:flex;
+  align-items:flex-start;
+  padding:43px 0 226px;
+  position:relative;
+}
+.copy{width:min(790px,58%);padding-left:70px}
+.kicker{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.37em;
+  text-transform:uppercase;
+  margin:0 0 12px 3px;
+  text-shadow:0 2px 12px rgba(0,0,0,.28)
+}
+h1{
+  margin:0;
+  max-width:635px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(62px,5.45vw,88px);
+  line-height:.855;
+  font-weight:500;
+  letter-spacing:-.043em;
+  text-shadow:0 3px 18px rgba(0,0,0,.15)
+}
+.promise{
+  margin:13px 0 0 2px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(27px,2.12vw,37px);
+  line-height:1.02;
+  text-shadow:0 2px 13px rgba(0,0,0,.18)
+}
+
+.island-pills{display:flex;gap:13px;margin-top:23px}
+.island-pill{
+  border:1px solid rgba(255,255,255,.78);
+  background:rgba(250,250,247,.94);
+  color:#173d4e;
+  height:49px;
+  min-width:128px;
+  padding:0 20px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:11px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 7px 19px rgba(0,0,0,.12);
+  transition:.16s ease
+}
+.island-pill .mini-mountain{position:relative;width:27px;height:14px;display:block}
+.island-pill .mini-mountain:before{
+  content:"";position:absolute;left:0;bottom:0;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:12px solid #496c59
+}
+.island-pill.active{background:rgba(7,52,83,.94);color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.7),0 8px 20px rgba(0,0,0,.19)}
+.island-pill.active .mini-mountain:before{border-bottom-color:#fff}
+
+.searchbar{
+  margin-top:18px;
+  width:min(835px,100%);
+  min-height:68px;
+  background:#fff;
+  border-radius:30px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 1px 205px 190px;
+  align-items:center;
+  gap:0;
+  padding:5px 6px 5px 22px;
+  box-shadow:0 16px 38px rgba(0,0,0,.22)
+}
+.searchmain{display:flex;align-items:center;min-width:0;gap:16px}
+.searchmain svg{width:24px;height:24px;stroke:#1c5055;fill:none;stroke-width:2;flex:none}
+.searchmain input{border:0;outline:0;background:transparent;width:100%;font-size:14px;color:#243d50;padding:14px 0}
+.searchmain input::placeholder{color:#9a9ea3}
+.search-divider{width:1px;height:38px;background:#d9dddf}
+.island-select-wrap{display:flex;align-items:center;gap:10px;padding:0 20px;color:#173e50}
+.pin{width:20px;height:20px;fill:#2c6b56;flex:none}
+.island-select-wrap select{
+  width:100%;
+  border:0;
+  outline:0;
+  appearance:auto;
+  background:transparent;
+  color:#173e50;
+  font-size:13px;
+  font-weight:750;
+  cursor:pointer
+}
+.searchbar button[type=submit]{
+  height:56px;border:0;border-radius:999px;background:linear-gradient(135deg,#5f8d50,#759e5b);
+  color:#fff;font-weight:850;font-size:16px;cursor:pointer;box-shadow:0 7px 18px rgba(69,111,64,.25)
+}
+.searchbar button[type=submit] span{font-size:22px;margin-left:9px;vertical-align:-1px}
+.searchbar button[type=submit],.login,.island-pill,.category{transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
+.searchbar button[type=submit]:hover,.login:hover{transform:translateY(-1px);filter:brightness(1.025)}
+.searchbar button[type=submit]:active,.login:active,.island-pill:active,.category:active{transform:translateY(0) scale(.99)}
+::selection{background:#d6e8b3;color:#12324a}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.handnote{
+  position:absolute;
+  top:66px;
+  right:48px;
+  transform:rotate(-7deg);
+  font-family:"Brush Script MT","Segoe Script","Bradley Hand",cursive;
+  font-size:31px;
+  line-height:.98;
+  color:rgba(255,255,255,.95);
+  text-align:left;
+  text-shadow:0 2px 10px rgba(0,0,0,.15);
+  width:230px
+}
+.handnote::after{
+  content:"";display:block;width:170px;height:3px;background:#a5c75f;border-radius:99px;margin:12px 0 0 18px;transform:rotate(-2deg)
+}
+
+.category-row{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:111px;
+  width:min(1460px,calc(100% - 76px));
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px
+}
+.category{
+  min-height:112px;
+  background:rgba(255,255,255,.95);
+  border:1px solid rgba(255,255,255,.8);
+  color:#18374a;
+  text-decoration:none;
+  border-radius:17px;
+  padding:15px 18px;
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr) 20px;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 13px 29px rgba(0,0,0,.16);
+  backdrop-filter:blur(5px);
+  transition:transform .15s ease,box-shadow .15s ease
+}
+.category:hover{transform:translateY(-3px);box-shadow:0 17px 34px rgba(0,0,0,.20)}
+.category-icon{width:46px;height:46px;display:grid;place-items:center;color:#5e8a4d}
+.category-icon svg{width:39px;height:39px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.category b{display:block;font-size:12.6px;margin-bottom:4px;color:#17394b}
+.category small{display:block;font-size:10px;line-height:1.42;color:#4e6b73}
+.category .arr{font-size:26px;color:#214d52}
+
+.trustbar{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:98px;
+  background:rgba(255,255,255,.97);
+  color:#183a55;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:0 max(52px,calc((100vw - 1430px)/2));
+  align-items:center;
+  box-shadow:0 -2px 14px rgba(0,0,0,.06)
+}
+.trust{
+  min-height:55px;
+  display:grid;
+  grid-template-columns:48px 1fr;
+  align-items:center;
+  gap:12px;
+  padding:0 25px;
+  border-right:1px solid #d7dde0
+}
+.trust:last-child{border-right:0}
+.trust svg{width:39px;height:39px;fill:none;stroke:#2d6b52;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.trust b{display:block;font-size:12px;color:#173a55}
+.trust small{display:block;font-size:10px;color:#6d767d;margin-top:3px}
+
+@media(max-width:1120px){
+  .hero::before{background-size:112% auto;background-position:center 65%}
+  .top{width:calc(100% - 34px);grid-template-columns:240px 1fr auto}.brand img{width:225px}.nav{gap:24px}.nav a,.nav button{font-size:12px}
+  .stage{width:calc(100% - 34px);padding-top:56px}.copy{padding-left:12px;width:70%}
+  .handnote{right:10px;font-size:27px}
+  .category-row{width:calc(100% - 34px);gap:10px}.category{padding:14px;grid-template-columns:42px 1fr 18px}.category-icon{width:38px}.category-icon svg{width:34px;height:34px}.category small{font-size:9px}
+  .trust{padding:0 12px}
+}
+@media(max-width:820px){
+  .hero{min-height:100svh}.hero::before{background-size:auto 100%;background-position:53% center}
+  .top{display:flex;justify-content:space-between;padding-top:14px}.brand img{width:205px}.nav{display:none}.search-icon,.vrule{display:none}.login{display:inline-flex;position:absolute;right:12px;top:64px;align-items:center;justify-content:center;min-width:0;padding:9px 13px;font-size:10px;z-index:30}
+  .stage{padding:72px 0 294px;align-items:flex-start}.copy{width:100%;padding:0 2px}.handnote{display:none}
+  .kicker{font-size:9px;letter-spacing:.28em}.promise{font-size:28px}
+  h1{font-size:clamp(52px,14vw,76px)}
+  .island-pills{gap:7px;flex-wrap:wrap}.island-pill{height:42px;min-width:0;padding:0 14px;font-size:10px}
+  .searchbar{grid-template-columns:1fr 102px;min-height:60px;border-radius:22px;padding:5px 5px 5px 15px}.search-divider,.island-select-wrap{display:none}.searchbar button[type=submit]{height:50px;font-size:12px}.searchbar button[type=submit] span{font-size:17px}
+  .category-row{bottom:18px;grid-template-columns:1fr 1fr;gap:8px}.category{min-height:77px;padding:10px;grid-template-columns:35px 1fr 15px;border-radius:14px}.category-icon{width:31px;height:31px}.category-icon svg{width:29px;height:29px}.category b{font-size:10px;margin-bottom:2px}.category small{display:none}.category .arr{font-size:18px}
+  .trustbar{display:none}
+}
+@media(max-width:480px){
+  .top{width:calc(100% - 24px)}.brand img{width:176px}.lang{gap:8px}.lang button{font-size:11px}
+  .stage{width:calc(100% - 24px);padding-top:72px;padding-bottom:286px}
+  .kicker{font-size:8px;letter-spacing:.20em;margin-bottom:10px}
+  h1{font-size:50px;max-width:355px;line-height:.84}.promise{font-size:24px}
+  .searchbar{margin-top:14px}
+  .category-row{width:calc(100% - 24px)}
+}
+</style>
+<style id="sites-reference-exact-v3">
+@media(min-width:1121px){
+  .hero{
+    height:100svh;
+    min-height:720px;
+  }
+  .hero::before{
+    inset:0;
+    background-size:cover;
+    background-position:center 45%;
+    transform:translate(11px,-4px) scale(1.18);
+    transform-origin:left center;
+  }
+  .hero::after{
+    background:
+      linear-gradient(180deg,rgba(72,143,210,.78) 0%,rgba(72,143,210,.56) 10%,rgba(72,143,210,.22) 23%,rgba(72,143,210,0) 36%),
+      linear-gradient(90deg,rgba(5,39,67,.16) 0%,rgba(5,39,67,.04) 44%,rgba(5,39,67,.02) 70%,rgba(5,39,67,.05) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.11) 68%,rgba(4,27,44,.38) 100%);
+  }
+
+  /* Header — fixed to the supplied reference */
+  .top{
+    position:absolute;
+    z-index:20;
+    left:4.15vw;
+    right:4.25vw;
+    top:1.65vh;
+    width:auto;
+    height:6.5vh;
+    min-height:0;
+    margin:0;
+    padding:0;
+    display:grid;
+    grid-template-columns:21.4vw 1fr auto;
+    gap:1.2vw;
+    align-items:center;
+  }
+  .brand img{
+    width:min(19.4vw,360px);
+    max-width:none;
+    transform:none;
+  }
+  .nav{
+    width:33.2vw;
+    justify-self:center;
+    justify-content:space-between;
+    gap:0;
+    position:relative;
+    left:-1.5vw;
+    top:0;
+  }
+  .nav a,.nav button{
+    font-size:16px;
+    padding:8px 0;
+  }
+  .actions{
+    gap:1.05vw;
+    align-items:center;
+  }
+  .search-icon{width:2vw;height:2vw;min-width:0;min-height:0}
+  .search-icon svg{width:1.45vw;height:1.45vw;min-width:0;min-height:0}
+  .vrule{height:3.25vh}
+  .lang{gap:.72vw}
+  .lang button{font-size:13px;min-width:34px;min-height:0}
+  .login{
+    min-width:7.7vw;
+    padding:1.22vh 1.55vw;
+    font-size:13px;
+  }
+
+  /* Full reference canvas; hero content no longer flows vertically */
+  .stage{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    display:block;
+  }
+  .copy{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    padding:0;
+  }
+
+  .kicker{
+    position:absolute;
+    left:7.10vw;
+    top:14.95vh;
+    margin:0;
+    font-size:11px;
+    letter-spacing:.37em;
+  }
+  h1{
+    position:absolute;
+    left:7.10vw;
+    top:18.05vh;
+    width:760px;
+    max-width:760px;
+    margin:0;
+    font-family:"GFS Didot",Didot,"Bodoni 72",Georgia,serif;
+    font-size:88px;
+    line-height:1;
+    font-weight:400;
+    letter-spacing:-.035em;
+    white-space:pre-line;
+    transform:none;
+  }
+  .promise{
+    position:absolute;
+    left:7.10vw;
+    top:38.00vh;
+    margin:0;
+    font-family:"GFS Didot",Didot,"Bodoni 72",Georgia,serif;
+    font-size:31px;
+    line-height:1.2;
+    font-weight:400;
+    letter-spacing:-.02em;
+    transform:none;
+  }
+
+  .island-pills{
+    position:absolute;
+    left:7.10vw;
+    top:44.72vh;
+    margin:0;
+    gap:1.15vw;
+    align-items:center;
+  }
+  .island-pill{
+    height:5.18vh;
+    min-height:0;
+    min-width:7.55vw;
+    padding:0 1.15vw;
+    gap:.62vw;
+    font-size:12px;
+  }
+  .island-pill[data-island="São Jorge"]{min-width:9.95vw}
+  .island-pill .mini-mountain{
+    width:1.55vw;
+    height:1.15vh;
+  }
+
+  .searchbar{
+    position:absolute;
+    left:7.49vw;
+    top:52.31vh;
+    margin:0;
+    width:50.46vw;
+    height:8.25vh;
+    min-height:0;
+    border-radius:4.36vh;
+    grid-template-columns:minmax(0,1fr) 1px 12.55vw 12.55vw;
+    padding:.62vh .42vw .62vh 1.48vw;
+  }
+  .searchmain{gap:1.02vw}
+  .searchmain svg{width:1.35vw;height:1.35vw}
+  .searchmain input{font-size:16px;padding:0}
+  .search-divider{height:4.25vh}
+  .island-select-wrap{gap:.65vw;padding:0 1.3vw}
+  .pin{width:1.15vw;height:1.15vw}
+  .island-select-wrap select{font-size:15px}
+  .searchbar button[type=submit]{
+    height:6.95vh;
+    border-radius:3.68vh;
+    font-size:20px;
+    padding:0 18px;
+  }
+  .searchbar button[type=submit] span:first-child{font-size:20px}
+  .searchbar button[type=submit] span:last-child{font-size:25px}
+
+  .handnote{
+    top:15.65vh;
+    right:7.15vw;
+    width:13.7vw;
+    transform:rotate(-7deg);
+    font-size:31px;
+    line-height:.98;
+    color:rgba(255,255,255,.95);
+    text-shadow:0 2px 10px rgba(0,0,0,.13);
+  }
+  .handnote::after{
+    width:9.6vw;
+    height:3px;
+    margin:1.05vh 0 0 1.05vw;
+    background:#a5c75f;
+  }
+
+  /* Cards — exact reference row geometry */
+  .category-row{
+    position:absolute;
+    left:6.42vw;
+    right:5.53vw;
+    top:69.86vh;
+    bottom:auto;
+    width:auto;
+    transform:none;
+    grid-template-columns:repeat(4,1fr);
+    gap:1.18vw;
+  }
+  .category{
+    height:13.34vh;
+    min-height:0;
+    border-radius:.95vw;
+    padding:1.55vh 1.35vw;
+    grid-template-columns:3.2vw minmax(0,1fr) 1.35vw;
+    gap:.95vw;
+    background:rgba(255,255,255,.965);
+    box-shadow:0 1.15vh 2.5vh rgba(0,0,0,.16);
+  }
+  .category-icon{width:49px;height:49px}
+  .category-icon svg{width:43px;height:43px}
+  .category b{
+    display:block;
+    min-height:0;
+    margin:0 0 6px;
+    font-size:15px;
+    line-height:1.2;
+  }
+  .category small{
+    display:block;
+    font-size:12.5px;
+    line-height:1.42;
+  }
+  .category .arr{font-size:26px}
+
+  /* Bottom trust bar */
+  .trustbar{
+    height:13.30vh;
+    padding:0 7.05vw;
+    grid-template-columns:repeat(4,1fr);
+  }
+  .trust{
+    min-height:6.6vh;
+    grid-template-columns:3.35vw 1fr;
+    gap:1vw;
+    padding:0 2.55vw;
+    border-right:0;
+  }
+  .trust svg{width:43px;height:43px}
+  .trust b{font-size:15.5px}
+  .trust small{font-size:13px;margin-top:4px}
+}
+</style>
+<style id="approved-master-desktop">
+.master-desktop-ui{display:none}
+@media(min-width:1121px){
+  html[lang="pt"] .hero{
+    height:100svh;
+    min-height:720px;
+    background:#fff;
+  }
+  html[lang="pt"] .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background-image:url('/assets/home-master.webp');
+    background-image:image-set(
+      url('/assets/home-master.webp') 1x,
+      url('/assets/home-master-2x.webp') 2x
+    );
+    background-repeat:no-repeat;
+    image-rendering:auto;
+    background-position:center center;
+    background-size:100% 100%;
+    transform:none;
+  }
+  html[lang="pt"] .hero::after{display:none}
+
+  /* Hide the reconstructed desktop artwork completely; the approved visual is the master itself. */
+  html[lang="pt"] .top,
+  html[lang="pt"] .stage,
+  html[lang="pt"] .category-row,
+  html[lang="pt"] .trustbar{
+    opacity:0;
+    pointer-events:none;
+  }
+
+  html[lang="pt"] .master-desktop-ui{
+    display:block;
+    position:absolute;
+    inset:0;
+    z-index:50;
+    pointer-events:none;
+  }
+  html[lang="pt"] .master-hotspot{
+    position:absolute;
+    display:block;
+    border:0;
+    background:transparent;
+    padding:0;
+    margin:0;
+    color:transparent;
+    text-decoration:none;
+    cursor:pointer;
+    pointer-events:auto;
+    outline:none;
+  }
+  html[lang="pt"] .master-hotspot:focus-visible{
+    outline:3px solid rgba(255,255,255,.95);
+    outline-offset:2px;
+    border-radius:12px;
+  }
+
+  /* Header hotspots */
+  .mh-brand{left:3.7%;top:1.4%;width:21%;height:7.8%}
+  .mh-services{left:30.2%;top:1.6%;width:8%;height:6.5%}
+  .mh-islands-nav{left:39.2%;top:1.6%;width:6.5%;height:6.5%}
+  .mh-how{left:47.0%;top:1.6%;width:10.4%;height:6.5%}
+  .mh-about{left:58.1%;top:1.6%;width:8.6%;height:6.5%}
+  .mh-top-search{left:73.0%;top:1.4%;width:4.4%;height:7.2%}
+  .mh-pt{left:79.2%;top:1.4%;width:3.2%;height:7.2%}
+  .mh-en{left:83.2%;top:1.4%;width:3.2%;height:7.2%}
+  .mh-login{left:88.0%;top:1.1%;width:8.1%;height:7.8%}
+  html[lang="pt"] .master-hotspot.mh-login{
+    left:86.7%;
+    width:9.4%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(4,43,72,.96);
+    color:#fff;
+    border-radius:999px;
+    font:850 11px/1 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    box-shadow:0 9px 24px rgba(4,35,60,.22);
+  }
+
+  /* Island controls */
+  .mh-pico{left:7.05%;top:44.5%;width:8.1%;height:5.7%}
+  .mh-faial{left:15.7%;top:44.5%;width:8.2%;height:5.7%}
+  .mh-saojorge{left:24.5%;top:44.5%;width:10.5%;height:5.7%}
+
+  /* Search interaction layer */
+  .master-search-form{
+    position:absolute;
+    inset:0;
+    margin:0;
+    padding:0;
+    border:0;
+    pointer-events:none;
+  }
+  .master-query{
+    position:absolute;
+    left:11.7%;
+    top:53.1%;
+    width:18.6%;
+    height:7.9%;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:transparent;
+    caret-color:transparent;
+    font:600 16px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;
+    padding:0 14px;
+    pointer-events:auto;
+    z-index:2;
+  }
+  .master-search-form .master-hotspot{pointer-events:auto}
+  .master-query::placeholder{color:transparent}
+  .master-query:focus{
+    color:transparent;
+    background:transparent;
+    box-shadow:none;
+  }
+  .master-query:focus::placeholder{color:transparent}
+  .master-query.has-value{
+    color:#243d50;
+    caret-color:#173e50;
+    background:#fff;
+    border-radius:22px;
+    box-shadow:none;
+  }
+  .master-island-select{
+    position:absolute;
+    left:32.7%;
+    top:53.0%;
+    width:10.6%;
+    height:8.1%;
+    opacity:0;
+    color:transparent;
+    background:transparent;
+    border:0;
+    outline:0;
+    pointer-events:auto;
+    cursor:pointer;
+    z-index:2;
+  }
+  .master-island-value{
+    position:absolute;
+    left:34.35%;
+    top:55.15%;
+    width:4.7%;
+    height:3.5%;
+    display:none;
+    align-items:center;
+    padding-left:4px;
+    background:#fff;
+    color:#173e50;
+    font:750 13px/1 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    pointer-events:none;
+    z-index:1;
+  }
+  .master-island-value.visible{display:flex}
+  .master-island-select:focus-visible + .master-island-value{
+    display:flex;
+    outline:2px solid rgba(255,255,255,.95);
+    outline-offset:4px;
+    border-radius:8px;
+  }
+  .mh-search-submit{left:44.8%;top:53.0%;width:12.8%;height:8.2%}
+
+  /* Category hotspots */
+  .mh-cat-repairs{left:5.7%;top:70.4%;width:21.6%;height:13.5%}
+  .mh-cat-garden{left:28.2%;top:70.4%;width:21.6%;height:13.5%}
+  .mh-cat-home{left:50.7%;top:70.4%;width:21.6%;height:13.5%}
+  .mh-cat-personal{left:73.0%;top:70.4%;width:21.2%;height:13.5%}
+}
+html[lang="en"] .master-desktop-ui{display:none!important}
+</style>
+<style id="english-desktop-parity">
+@media(min-width:1121px){
+  /* Keep EN on the exact same reconstructed desktop geometry as PT.
+     Only copy changes through data-en; no visual redesign or separate crop. */
+}
+</style>
+<style id="accessibility-v1">
+.skip-link{position:fixed;left:12px;top:12px;z-index:10000;padding:10px 14px;border-radius:10px;background:#08111b;color:#fff;font-weight:850;text-decoration:none;transform:translateY(-180%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
+<main id="main-content" class="hero">
+  <header class="top">
+    <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
+    <nav class="nav" aria-label="Principal" data-aria-pt="Principal" data-aria-en="Main navigation">
+      <a href="/servicos/" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
+      <button type="button" class="with-chevron" id="navIslands" data-pt="Ilhas" data-en="Islands">Ilhas</button>
+      <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
+      <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
+    </nav>
+    <div class="actions">
+      <button class="search-icon" type="button" id="topSearch" aria-label="Pesquisar">
+        <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg>
+      </button>
+      <div class="vrule"></div>
+      <div class="lang"><button id="pt" class="active" type="button">PT</button><button id="en" type="button">EN</button></div>
+      <a class="login" href="/prestadores.html" data-pt="Para prestadores" data-en="For providers">Para prestadores</a>
+    </div>
+  </header>
+
+  <section class="stage">
+    <div class="copy">
+      <p class="kicker" data-pt="PESSOAS LOCAIS · ILHAS MAIS FORTES." data-en="LOCAL PEOPLE · STRONGER ISLANDS.">PESSOAS LOCAIS · ILHAS MAIS FORTES.</p>
+      <h1 data-pt="Serviços locais&#10;nas ilhas" data-en="Local services&#10;across the islands">Serviços locais
+nas ilhas</h1>
+      <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</p>
+
+      <div class="island-pills" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
+        <button class="island-pill active" type="button" data-island="Pico"><span class="mini-mountain"></span>Pico</button>
+        <button class="island-pill" type="button" data-island="Faial"><span class="mini-mountain"></span>Faial</button>
+        <button class="island-pill" type="button" data-island="São Jorge"><span class="mini-mountain"></span>São Jorge</button>
+      </div>
+
+      <form id="homeSearch" class="searchbar" action="/servicos/" method="get" role="search" aria-label="Pesquisar serviços" data-aria-pt="Pesquisar serviços" data-aria-en="Search services">
+        <label class="searchmain" aria-label="Serviço">
+          <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.3 4.3"/></svg>
+          <input id="searchInput" name="q" maxlength="120" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" data-ph-pt="Que serviço precisas?" data-ph-en="What service do you need?" placeholder="Que serviço precisas?">
+        </label>
+        <div class="search-divider"></div>
+        <label class="island-select-wrap">
+          <svg class="pin" viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-13A7 7 0 1 0 5 9c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.4" fill="#fff"/></svg>
+          <select id="islandSelect" name="island" aria-label="Ilha">
+            <option>Pico</option><option>Faial</option><option>São Jorge</option>
+          </select>
+        </label>
+        <button type="submit"><span data-pt="Pesquisar" data-en="Search">Pesquisar</span> <span>→</span></button>
+      </form>
+    </div>
+
+    <div class="handnote" data-pt="Pico&#10;sempre à frente" data-en="Pico&#10;leading the way">Pico<br>sempre à frente</div>
+  </section>
+
+  <section class="category-row" aria-label="Categorias" data-aria-pt="Categorias" data-aria-en="Categories">
+    <a class="category" href="/servicos/?group=repairs" data-group="repairs">
+      <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
+      <span><b data-pt="Obras e Reparações" data-en="Repairs & Maintenance">Obras e Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrical work and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
+    </a>
+    <a class="category" href="/servicos/?group=garden" data-group="garden">
+      <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M39 9C23 9 11 18 10 36c10-1 23-7 29-27Z"/><path d="M11 36c7-8 14-13 24-19"/></svg></span>
+      <span><b data-pt="Jardim e Espaços Exteriores" data-en="Garden & Outdoors">Jardim e Espaços Exteriores</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening and maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
+    </a>
+    <a class="category" href="/servicos/?group=home" data-group="home">
+      <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M7 23 24 9l17 14"/><path d="M11 21v20h26V21"/><path d="M20 41V29h8v12"/></svg></span>
+      <span><b data-pt="Casa e Alojamento" data-en="Home & Accommodation">Casa e Alojamento</b><small data-pt="Limpezas, gestão, pequenas obras, apoio ao alojamento." data-en="Cleaning, management, small repairs and hosting support.">Limpezas, gestão, pequenas obras, apoio ao alojamento.</small></span><span class="arr">›</span>
+    </a>
+    <a class="category" href="/servicos/?group=personal" data-group="personal">
+      <span class="category-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><circle cx="11" cy="18" r="4"/><circle cx="37" cy="18" r="4"/><path d="M14 39v-5c0-6 4-10 10-10s10 4 10 10v5"/><path d="M4 38v-4c0-5 3-8 8-8 2 0 4 .5 5 1.5"/><path d="M44 38v-4c0-5-3-8-8-8-2 0-4 .5-5 1.5"/></svg></span>
+      <span><b data-pt="Serviços Pessoais" data-en="Personal Services">Serviços Pessoais</b><small data-pt="Bem-estar, aulas, eventos e serviços do dia a dia." data-en="Wellness, lessons, events and everyday services.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
+    </a>
+  </section>
+
+
+  <div class="master-desktop-ui" aria-label="Homepage controls">
+    <a class="master-hotspot mh-brand" href="/" aria-label="TRIÂNGULO Açores"></a>
+    <a class="master-hotspot mh-services" href="/servicos/" aria-label="Serviços"></a>
+    <a class="master-hotspot mh-islands-nav" href="/servicos/" aria-label="Ilhas"></a>
+    <a class="master-hotspot mh-how" href="/how-it-works.html" aria-label="Como funciona"></a>
+    <a class="master-hotspot mh-about" href="/sobre-nos.html" aria-label="Sobre nós"></a>
+    <button class="master-hotspot mh-top-search" id="masterTopSearch" type="button" aria-label="Pesquisar"></button>
+    <a class="master-hotspot mh-pt" href="/?lang=pt" data-fixed-lang-link aria-label="Português"></a>
+    <a class="master-hotspot mh-en" href="/?lang=en" data-fixed-lang-link aria-label="English"></a>
+    <a class="master-hotspot mh-login" href="/prestadores.html" aria-label="Para prestadores">Para prestadores</a>
+
+    <a class="master-hotspot mh-pico" href="/servicos/?island=Pico" aria-label="Serviços no Pico"></a>
+    <a class="master-hotspot mh-faial" href="/servicos/?island=Faial" aria-label="Serviços no Faial"></a>
+    <a class="master-hotspot mh-saojorge" href="/servicos/?island=S%C3%A3o+Jorge" aria-label="Serviços em São Jorge"></a>
+
+    <form class="master-search-form" id="masterSearchForm" action="/servicos/" method="get" role="search" aria-label="Pesquisar serviços">
+      <input class="master-query" id="masterSearchInput" name="q" type="search" maxlength="120" autocomplete="off" autocapitalize="none" enterkeyhint="search" spellcheck="false" aria-label="Que serviço precisas?" placeholder="Que serviço precisas?">
+      <select class="master-island-select" id="masterIslandSelect" name="island" aria-label="Ilha">
+        <option value="Pico">Pico</option>
+        <option value="Faial">Faial</option>
+        <option value="São Jorge">São Jorge</option>
+      </select>
+      <span class="master-island-value" id="masterIslandValue" aria-hidden="true">Pico</span>
+      <button class="master-hotspot mh-search-submit" type="submit" aria-label="Pesquisar"></button>
+    </form>
+
+    <a class="master-hotspot mh-cat-repairs" href="/servicos/?group=repairs" aria-label="Obras e Reparações"></a>
+    <a class="master-hotspot mh-cat-garden" href="/servicos/?group=garden" aria-label="Jardim e Espaços Exteriores"></a>
+    <a class="master-hotspot mh-cat-home" href="/servicos/?group=home" aria-label="Casa e Alojamento"></a>
+    <a class="master-hotspot mh-cat-personal" href="/servicos/?group=personal" aria-label="Serviços Pessoais"></a>
+  </div>
+
+  <footer class="trustbar">
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="M24 5 39 10v11c0 10-6 17-15 22C15 38 9 31 9 21V10l15-5Z"/><path d="m17 24 5 5 10-11"/></svg>
+      <span><b data-pt="Profissionais locais" data-en="Local professionals">Profissionais locais</b><small data-pt="Pessoas da tua ilha" data-en="People from your island">Pessoas da tua ilha</small></span>
+    </div>
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="m24 5 5.5 11 12 1.7-8.7 8.5 2.1 12-10.9-5.7-10.9 5.7 2.1-12-8.7-8.5 12-1.7L24 5Z"/></svg>
+      <span><b data-pt="Reservas simples" data-en="Simple bookings">Reservas simples</b><small data-pt="Em poucos cliques" data-en="In a few clicks">Em poucos cliques</small></span>
+    </div>
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="M24 43s13-11.3 13-24a13 13 0 1 0-26 0c0 12.7 13 24 13 24Z"/><circle cx="24" cy="19" r="4"/></svg>
+      <span><b data-pt="Três ilhas, uma comunidade" data-en="Three islands, one community">Três ilhas, uma comunidade</b><small>Pico · Faial · São Jorge</small></span>
+    </div>
+    <div class="trust">
+      <svg viewBox="0 0 48 48"><path d="M40 8C23 9 11 18 10 36c10-1 23-7 30-28Z"/><path d="M11 36c8-8 15-13 25-19"/></svg>
+      <span><b data-pt="Um Açores mais forte" data-en="A stronger Azores">Um Açores mais forte</b><small data-pt="Apoia a economia local" data-en="Support the local economy">Apoia a economia local</small></span>
+    </div>
+  </footer>
+</main>
+<script>
+const urlLang=new URLSearchParams(location.search).get('lang');
+let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt');
+let island=localStorage.getItem('tri_island')||'Pico';
+
+function applyLang(){
+  localStorage.setItem('tri_lang',lang);
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-pt][data-en]').forEach(el=>{
+    const value=lang==='pt'?el.dataset.pt:el.dataset.en;
+    if(el.classList.contains('handnote')) el.innerHTML=value.replace(/\n/g,'<br>');
+    else el.textContent=value;
+  });
+  document.querySelectorAll('[data-ph-pt][data-ph-en]').forEach(el=>el.placeholder=lang==='pt'?el.dataset.phPt:el.dataset.phEn);
+  document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='pt'?el.dataset.ariaPt:el.dataset.ariaEn));
+  const si=document.querySelector('#searchInput');
+  if(si)si.setAttribute('aria-label',lang==='pt'?'Que serviço precisas?':'What service do you need?');
+  const form=document.querySelector('#homeSearch');
+  if(form)form.setAttribute('aria-label',lang==='pt'?'Pesquisar serviços':'Search services');
+  document.querySelector('#pt').classList.toggle('active',lang==='pt');
+  document.querySelector('#en').classList.toggle('active',lang==='en');
+  document.querySelector('#pt').setAttribute('aria-pressed',lang==='pt'?'true':'false');
+  document.querySelector('#en').setAttribute('aria-pressed',lang==='en'?'true':'false');
+  document.querySelector('#topSearch')?.setAttribute('aria-label',lang==='pt'?'Pesquisar':'Search');
+  document.querySelectorAll('a[href^="/"]:not([data-fixed-lang-link])').forEach(a=>{
+    const u=new URL(a.getAttribute('href'),location.origin);
+    if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
+    a.setAttribute('href',u.pathname+u.search+u.hash);
+  });
+  document.title=lang==='pt'?'TRIÂNGULO Açores — Serviços locais nas ilhas':'TRIÂNGULO Azores — Local services across the islands';
+  const meta=document.querySelector('meta[name="description"]');
+  const title=lang==='pt'?'TRIÂNGULO Açores — Serviços locais nas ilhas':'TRIÂNGULO Azores — Local services across the islands';
+  const description=lang==='pt'
+    ?'Encontra e reserva serviços locais no Pico, Faial e São Jorge com o TRIÂNGULO Açores.'
+    :'Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.';
+  if(meta)meta.content=description;
+  const canonical=document.querySelector('link[rel="canonical"]');
+  const canonicalUrl=lang==='pt'?'https://trianguloacores.pt/':'https://trianguloacores.pt/?lang=en';
+  if(canonical)canonical.href=canonicalUrl;
+  const ogTitle=document.querySelector('meta[property="og:title"]');
+  const ogDescription=document.querySelector('meta[property="og:description"]');
+  const ogUrl=document.querySelector('meta[property="og:url"]');
+  if(ogTitle)ogTitle.content=title;
+  if(ogDescription)ogDescription.content=description;
+  if(ogUrl)ogUrl.content=canonicalUrl;
+  syncDesktopMasterInteractivity();
+}
+
+const desktopMasterMedia=window.matchMedia('(min-width:1121px)');
+function syncDesktopMasterInteractivity(){
+  const masterActive=lang==='pt'&&desktopMasterMedia.matches;
+  ['.top','.island-pills','#homeSearch','.category-row'].forEach(selector=>{
+    const el=document.querySelector(selector);
+    if(!el)return;
+    if(masterActive)el.setAttribute('inert','');
+    else el.removeAttribute('inert');
+  });
+}
+function setIsland(v){
+  island=v;
+  localStorage.setItem('tri_island',v);
+  document.querySelectorAll('[data-island]').forEach(b=>{
+    const active=b.dataset.island===v;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',active?'true':'false');
+  });
+  document.querySelector('#islandSelect').value=v;
+  const masterSelect=document.querySelector('#masterIslandSelect');
+  if(masterSelect)masterSelect.value=v;
+  const masterValue=document.querySelector('#masterIslandValue');
+  if(masterValue){
+    masterValue.textContent=v;
+    masterValue.classList.toggle('visible',v!=='Pico');
+  }
+}
+function openSearch(q,group=null){
+  const query=(q||'').trim();
+  localStorage.setItem('tri_island',island);
+  localStorage.setItem('tri_home_search',query);
+  localStorage.setItem('tri_client_welcome_v4','1');
+  const params=new URLSearchParams();
+  params.set('island',island);
+  if(query)params.set('q',query);
+  if(group)params.set('group',group);
+  if(lang==='en')params.set('lang','en');
+  location.href='/servicos/?'+params.toString();
+}
+document.querySelectorAll('[data-island]').forEach(b=>b.onclick=()=>setIsland(b.dataset.island));
+document.querySelector('#islandSelect').onchange=e=>setIsland(e.target.value);
+document.querySelector('#navIslands').onclick=()=>document.querySelector('.island-pills').scrollIntoView({behavior:'smooth',block:'center'});
+document.querySelector('#topSearch').onclick=()=>document.querySelector('#searchInput').focus();
+document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch(document.querySelector('#searchInput').value)};
+document.querySelectorAll('[data-group]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch('',a.dataset.group)});
+function syncHomepageLanguageUrl(){
+  const u=new URL(location.href);
+  if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
+  history.replaceState(history.state,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);
+}
+function syncHomepageSearchFields(sourceMode=null){
+  const normal=document.querySelector('#searchInput');
+  const master=document.querySelector('#masterSearchInput');
+  if(!normal||!master)return;
+  const useMaster=sourceMode==='master'||(sourceMode===null&&lang==='pt'&&desktopMasterMedia.matches);
+  const source=useMaster?master:normal;
+  const value=String(source.value||'').slice(0,120);
+  normal.value=value;
+  master.value=value;
+  master.classList.toggle('has-value',Boolean(value.trim()));
+}
+document.querySelector('#pt').onclick=()=>{syncHomepageSearchFields();lang='pt';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
+document.querySelector('#en').onclick=()=>{syncHomepageSearchFields();lang='en';localStorage.setItem('tri_lang',lang);syncHomepageLanguageUrl();applyLang()};
+setIsland(['Pico','Faial','São Jorge'].includes(island)?island:'Pico');
+applyLang();
+
+const masterSearchInput=document.querySelector('#masterSearchInput');
+const masterIslandSelect=document.querySelector('#masterIslandSelect');
+const masterIslandValue=document.querySelector('#masterIslandValue');
+const masterSearchForm=document.querySelector('#masterSearchForm');
+function syncMasterIsland(){
+  if(!masterIslandSelect||!['Pico','Faial','São Jorge'].includes(island))return;
+  masterIslandSelect.value=island;
+  if(masterIslandValue){
+    masterIslandValue.textContent=island;
+    masterIslandValue.classList.toggle('visible',island!=='Pico');
+  }
+}
+function syncMasterQueryState(){
+  masterSearchInput?.classList.toggle('has-value',Boolean(masterSearchInput.value.trim()));
+}
+syncMasterIsland();
+masterIslandSelect?.addEventListener('change',()=>{
+  if(['Pico','Faial','São Jorge'].includes(masterIslandSelect.value)){
+    setIsland(masterIslandSelect.value);
+    syncMasterIsland();
+  }
+});
+masterSearchInput?.addEventListener('input',syncMasterQueryState);
+masterSearchInput?.addEventListener('blur',syncMasterQueryState);
+document.querySelectorAll('.mh-pico,.mh-faial,.mh-saojorge').forEach(a=>a.addEventListener('click',()=>{
+  const u=new URL(a.href,location.origin);
+  const next=u.searchParams.get('island');
+  if(['Pico','Faial','São Jorge'].includes(next)){
+    setIsland(next);
+    syncMasterIsland();
+  }
+}));
+masterSearchForm?.addEventListener('submit',()=>{
+  if(masterSearchInput){
+    masterSearchInput.value=masterSearchInput.value.trim().slice(0,120);
+    syncMasterQueryState();
+  }
+  if(masterIslandSelect&&['Pico','Faial','São Jorge'].includes(masterIslandSelect.value)){
+    setIsland(masterIslandSelect.value);
+    syncMasterIsland();
+  }
+});
+document.querySelector('#masterTopSearch')?.addEventListener('click',()=>masterSearchInput?.focus());
+document.querySelector('.mh-pt')?.addEventListener('click',e=>{
+  e.preventDefault();
+  syncHomepageSearchFields('master');
+  lang='pt';
+  localStorage.setItem('tri_lang',lang);
+  syncHomepageLanguageUrl();
+  applyLang();
+  syncMasterIsland();
+});
+document.querySelector('.mh-en')?.addEventListener('click',e=>{
+  e.preventDefault();
+  syncHomepageSearchFields('master');
+  lang='en';
+  localStorage.setItem('tri_lang',lang);
+  syncHomepageLanguageUrl();
+  applyLang();
+});
+function handleHomepageViewportChange(e){
+  if(lang==='pt')syncHomepageSearchFields(e.matches?'normal':'master');
+  syncDesktopMasterInteractivity();
+  syncMasterIsland();
+}
+if(desktopMasterMedia.addEventListener)desktopMasterMedia.addEventListener('change',handleHomepageViewportChange);
+else if(desktopMasterMedia.addListener)desktopMasterMedia.addListener(handleHomepageViewportChange);
+syncDesktopMasterInteractivity();
+syncMasterIsland();
+</script>
+<script id="localized-seo-sync">
+(()=>{
+  const base=location.origin+location.pathname;
+  const canonical=document.querySelector('link[rel="canonical"]');
+  const ogTitle=document.querySelector('meta[property="og:title"]');
+  const ogDescription=document.querySelector('meta[property="og:description"]');
+  const ogUrl=document.querySelector('meta[property="og:url"]');
+  let ogLocale=document.querySelector('meta[property="og:locale"]');
+  let ogLocaleAlt=document.querySelector('meta[property="og:locale:alternate"]');
+  if(!ogLocale){ogLocale=document.createElement('meta');ogLocale.setAttribute('property','og:locale');document.head.appendChild(ogLocale)}
+  if(!ogLocaleAlt){ogLocaleAlt=document.createElement('meta');ogLocaleAlt.setAttribute('property','og:locale:alternate');document.head.appendChild(ogLocaleAlt)}
+  function syncLocalizedSeo(){
+    const isEn=(document.documentElement.lang||'').toLowerCase().startsWith('en');
+    const url=isEn?base+'?lang=en':base;
+    const description=document.querySelector('meta[name="description"]')?.content||'';
+    if(canonical)canonical.href=url;
+    if(ogTitle)ogTitle.content=document.title;
+    if(ogDescription)ogDescription.content=description;
+    if(ogUrl)ogUrl.content=url;
+    ogLocale.content=isEn?'en_GB':'pt_PT';
+    ogLocaleAlt.content=isEn?'pt_PT':'en_GB';
+  }
+  new MutationObserver(syncLocalizedSeo).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  queueMicrotask(syncLocalizedSeo);
+})();
+</script>
+</body>
+</html>
