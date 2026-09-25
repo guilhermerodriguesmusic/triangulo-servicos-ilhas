@@ -1,12 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://trianguloacores.pt/</loc></url>
-  <url><loc>https://trianguloacores.pt/servicos/</loc></url>
-  <url><loc>https://trianguloacores.pt/prestadores.html</loc></url>
-  <url><loc>https://trianguloacores.pt/candidatura-prestador.html</loc></url>
-  <url><loc>https://trianguloacores.pt/how-it-works.html</loc></url>
-  <url><loc>https://trianguloacores.pt/sobre-nos.html</loc></url>
-  <url><loc>https://trianguloacores.pt/privacy.html</loc></url>
-  <url><loc>https://trianguloacores.pt/terms.html</loc></url>
-  <url><loc>https://trianguloacores.pt/instalar/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://trianguloacores.pt/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/servicos/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/servicos/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/servicos/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/servicos/" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/servicos/?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/servicos/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/servicos/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/servicos/" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/prestadores.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/prestadores.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/prestadores.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/prestadores.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/prestadores.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/prestadores.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/prestadores.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/prestadores.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/candidatura-prestador.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/candidatura-prestador.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/candidatura-prestador.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/candidatura-prestador.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/candidatura-prestador.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/candidatura-prestador.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/candidatura-prestador.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/candidatura-prestador.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/how-it-works.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/how-it-works.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/how-it-works.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/how-it-works.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/how-it-works.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/how-it-works.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/how-it-works.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/how-it-works.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/sobre-nos.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/sobre-nos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/sobre-nos.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/sobre-nos.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/sobre-nos.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/sobre-nos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/sobre-nos.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/sobre-nos.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/privacy.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/privacy.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/privacy.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/privacy.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/privacy.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/terms.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/terms.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/terms.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/terms.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/terms.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/terms.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/terms.html?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/terms.html" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/instalar/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/instalar/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/instalar/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/instalar/" />
+  </url>
+  <url>
+    <loc>https://trianguloacores.pt/instalar/?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://trianguloacores.pt/instalar/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://trianguloacores.pt/instalar/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trianguloacores.pt/instalar/" />
+  </url>
 </urlset>
