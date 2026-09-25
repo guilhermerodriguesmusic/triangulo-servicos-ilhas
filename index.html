@@ -757,6 +757,7 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 </style>
 <style id="english-desktop-parity">
 @media(min-width:1121px){
+  /* English desktop uses the same grid, proportions and hierarchy as the approved PT homepage. */
   html[lang="en"] .hero{
     height:100svh;
     min-height:720px;
@@ -764,86 +765,125 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   }
   html[lang="en"] .hero::before{
     inset:0;
-    background-image:url('/assets/pico-home-hq.webp');
+    background-image:url('/assets/pico-hero-real.jpg');
     background-repeat:no-repeat;
-    background-size:115% auto;
-    background-position:left bottom;
+    background-size:cover;
+    background-position:center 48%;
     transform:none;
     filter:saturate(.96) brightness(1.03);
   }
   html[lang="en"] .hero::after{
     background:
-      linear-gradient(180deg,rgba(72,143,210,.97) 0%,rgba(72,143,210,.91) 9%,rgba(72,143,210,.76) 16%,rgba(72,143,210,.43) 23%,rgba(72,143,210,.14) 34%,rgba(72,143,210,0) 46%),
-      linear-gradient(90deg,rgba(5,39,67,.16) 0%,rgba(5,39,67,.04) 44%,rgba(5,39,67,.02) 70%,rgba(5,39,67,.05) 100%),
-      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.10) 68%,rgba(4,27,44,.36) 100%);
+      linear-gradient(180deg,rgba(72,143,210,.88) 0%,rgba(72,143,210,.64) 10%,rgba(72,143,210,.27) 24%,rgba(72,143,210,0) 37%),
+      linear-gradient(90deg,rgba(5,39,67,.14) 0%,rgba(5,39,67,.04) 44%,rgba(5,39,67,.02) 70%,rgba(5,39,67,.05) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.10) 68%,rgba(4,27,44,.34) 100%);
   }
 
   html[lang="en"] .brand img{
-    width:min(20.8vw,380px);
+    width:min(19.4vw,360px);
+    max-width:none;
   }
   html[lang="en"] .nav a,
   html[lang="en"] .nav button{
-    font-size:15px;
-    font-weight:560;
+    font-size:16px;
+    font-weight:650;
   }
   html[lang="en"] .login{
-    min-width:9.2vw;
-    font-weight:780;
+    min-width:7.7vw;
+    padding:1.22vh 1.55vw;
+    font-size:13px;
+    font-weight:850;
   }
 
   html[lang="en"] .kicker{
+    left:7.10vw;
     top:14.95vh;
     font-size:11px;
     letter-spacing:.37em;
   }
   html[lang="en"] h1{
+    left:7.10vw;
     top:18.05vh;
-    width:780px;
-    max-width:780px;
-    font-size:clamp(72px,5.05vw,84px);
-    line-height:.90;
+    width:760px;
+    max-width:760px;
+    font-size:clamp(66px,4.75vw,88px);
+    line-height:.94;
     letter-spacing:-.035em;
   }
   html[lang="en"] .promise{
-    top:39.7vh;
-    font-size:clamp(27px,2.02vw,32px);
-    line-height:1.1;
+    left:7.10vw;
+    top:38.00vh;
+    font-size:clamp(27px,2.0vw,31px);
+    line-height:1.2;
   }
   html[lang="en"] .handnote{
     top:15.65vh;
     right:7.15vw;
-    width:15vw;
-    font-size:29px;
-    line-height:1;
+    width:13.7vw;
+    font-size:31px;
+    line-height:.98;
   }
 
-  html[lang="en"] .searchmain input{
-    font-size:15px;
+  html[lang="en"] .island-pills{
+    left:7.10vw;
+    top:44.72vh;
   }
+  html[lang="en"] .searchbar{
+    left:7.49vw;
+    top:52.31vh;
+    width:50.46vw;
+    height:8.25vh;
+  }
+  html[lang="en"] .searchmain input{font-size:16px}
   html[lang="en"] .searchbar button[type=submit]{
-    font-size:18px;
+    font-size:20px;
     font-weight:760;
   }
 
+  html[lang="en"] .category-row{
+    left:6.42vw;
+    right:5.53vw;
+    top:69.86vh;
+    grid-template-columns:repeat(4,1fr);
+    gap:1.18vw;
+  }
+  html[lang="en"] .category{
+    height:13.34vh;
+    min-height:0;
+    padding:1.45vh 1.15vw;
+    grid-template-columns:3.2vw minmax(0,1fr) 1.35vw;
+    gap:.85vw;
+  }
   html[lang="en"] .category b{
-    font-size:14.5px;
-    line-height:1.13;
-    margin-bottom:5px;
+    font-size:14px;
+    line-height:1.14;
+    margin-bottom:4px;
   }
   html[lang="en"] .category small{
-    font-size:12px;
-    line-height:1.32;
+    display:block;
+    font-size:11.5px;
+    line-height:1.28;
+  }
+
+  html[lang="en"] .trustbar{
+    height:13.30vh;
+    padding:0 7.05vw;
+    grid-template-columns:repeat(4,1fr);
   }
   html[lang="en"] .trust{
-    padding-left:2.2vw;
-    padding-right:2.2vw;
+    min-height:6.6vh;
+    grid-template-columns:3.35vw 1fr;
+    gap:1vw;
+    padding:0 2.15vw;
   }
   html[lang="en"] .trust b{
-    font-size:14.5px;
-    white-space:nowrap;
+    font-size:14px;
+    line-height:1.12;
+    white-space:normal;
   }
   html[lang="en"] .trust small{
-    font-size:12.5px;
+    font-size:12px;
+    margin-top:4px;
   }
 }
 </style>
