@@ -58,6 +58,13 @@ jobs:
               if text == original:
                   raise SystemExit(f"No external island image URLs found in {name}")
               path.write_text(text)
+
+          css = Path("servicos/provider-area.css")
+          css_text = css.read_text()
+          css_old = "https://commons.wikimedia.org/wiki/Special:Redirect/file/Vinhas_de_S%C3%A3o_Caetano%2C_S%C3%A3o_Mateus%2C_Madalena%2C_ilha_do_Pico%2C_A%C3%A7ores%2C_Portugal.JPG?width=1600"
+          if css_old not in css_text:
+              raise SystemExit("Provider-area Wikimedia image URL not found")
+          css.write_text(css_text.replace(css_old, "/assets/provider-area-pico.jpg"))
           PY
 
       - name: Verify no Wikimedia dependency remains in public HTML
@@ -75,7 +82,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/island-pico.jpg assets/island-faial.jpg assets/island-sao-jorge.jpg servicos/index.html en/servicos/index.html
+          git add assets/island-pico.jpg assets/island-faial.jpg assets/island-sao-jorge.jpg assets/provider-area-pico.jpg servicos/index.html en/servicos/index.html servicos/provider-area.css
           git diff --cached --quiet && exit 0
           git commit -m "Vendor island imagery locally"
           git push
