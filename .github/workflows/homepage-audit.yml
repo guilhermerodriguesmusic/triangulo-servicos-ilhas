@@ -131,6 +131,20 @@ jobs:
                 repairs:rect('.mh-cat-repairs'),garden:rect('.mh-cat-garden'),home:rect('.mh-cat-home'),personal:rect('.mh-cat-personal')
               };
             });
+            const hitSelectors=[
+              '.mh-brand','.mh-services','.mh-islands-nav','.mh-how','.mh-about','.mh-top-search','.mh-pt','.mh-en','.mh-login',
+              '.mh-pico','.mh-faial','.mh-saojorge','#masterSearchInput','#masterIslandSelect','.mh-search-submit',
+              '.mh-cat-repairs','.mh-cat-garden','.mh-cat-home','.mh-cat-personal'
+            ];
+            for(const selector of hitSelectors){
+              const hit=await page.evaluate(sel=>{
+                const el=document.querySelector(sel);if(!el)return false;
+                const r=el.getBoundingClientRect();
+                const top=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+                return top===el||el.contains(top);
+              },selector);
+              assert.equal(hit,true,'master control is covered at its centre: '+selector);
+            }
             const overlap=(a,b)=>Math.max(a.x,b.x)<Math.min(a.x+a.w,b.x+b.w)&&Math.max(a.y,b.y)<Math.min(a.y+a.h,b.y+b.h);
             for(const key of ['pico','faial','saojorge']){
               assert.equal(overlap(boxes[key],boxes.query),false,key+' island hotspot overlaps search input');
