@@ -127,5 +127,31 @@ const qs=new URLSearchParams(location.search);let lang=qs.get('lang')==='en'?'en
 function apply(){localStorage.setItem('tri_lang',lang);document.documentElement.lang=lang;document.body.classList.toggle('en',lang==='en');document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent=lang==='en'?el.dataset.en:el.dataset.pt);document.querySelectorAll('[data-aria-pt][data-aria-en]').forEach(el=>el.setAttribute('aria-label',lang==='en'?el.dataset.ariaEn:el.dataset.ariaPt));document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));document.querySelectorAll('a[href^="/"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');a.setAttribute('href',u.pathname+u.search+u.hash)});document.title=lang==='en'?'TRIÂNGULO — About us':'TRIÂNGULO — Sobre nós';const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=lang==='en'?'Meet TRIÂNGULO Açores, a local services platform for Pico, Faial and São Jorge.':'Conhece o TRIÂNGULO Açores: uma plataforma de serviços locais para o Pico, Faial e São Jorge.'}
 document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;apply()});apply();
 </script>
+<script id="localized-seo-sync">
+(()=>{
+  const base=location.origin+location.pathname;
+  const canonical=document.querySelector('link[rel="canonical"]');
+  const ogTitle=document.querySelector('meta[property="og:title"]');
+  const ogDescription=document.querySelector('meta[property="og:description"]');
+  const ogUrl=document.querySelector('meta[property="og:url"]');
+  let ogLocale=document.querySelector('meta[property="og:locale"]');
+  let ogLocaleAlt=document.querySelector('meta[property="og:locale:alternate"]');
+  if(!ogLocale){ogLocale=document.createElement('meta');ogLocale.setAttribute('property','og:locale');document.head.appendChild(ogLocale)}
+  if(!ogLocaleAlt){ogLocaleAlt=document.createElement('meta');ogLocaleAlt.setAttribute('property','og:locale:alternate');document.head.appendChild(ogLocaleAlt)}
+  function syncLocalizedSeo(){
+    const isEn=(document.documentElement.lang||'').toLowerCase().startsWith('en');
+    const url=isEn?base+'?lang=en':base;
+    const description=document.querySelector('meta[name="description"]')?.content||'';
+    if(canonical)canonical.href=url;
+    if(ogTitle)ogTitle.content=document.title;
+    if(ogDescription)ogDescription.content=description;
+    if(ogUrl)ogUrl.content=url;
+    ogLocale.content=isEn?'en_GB':'pt_PT';
+    ogLocaleAlt.content=isEn?'pt_PT':'en_GB';
+  }
+  new MutationObserver(syncLocalizedSeo).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  queueMicrotask(syncLocalizedSeo);
+})();
+</script>
 </body>
 </html>
