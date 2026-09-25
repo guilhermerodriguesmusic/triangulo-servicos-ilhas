@@ -159,6 +159,7 @@ jobs:
             }
             assert.ok(boxes.query.y>boxes.faial.y+boxes.faial.h,'search input must sit below island pills');
             assert.ok(boxes.repairs.y>boxes.submit.y+boxes.submit.h,'category cards must sit below search bar');
+            await page.screenshot({path:'homepage-audit/desktop-user-viewport.png',fullPage:true});
 
             await Promise.all([
               page.waitForURL(/\/servicos\//,{waitUntil:'domcontentloaded',timeout:10000}),
