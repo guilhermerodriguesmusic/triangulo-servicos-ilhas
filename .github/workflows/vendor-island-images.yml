@@ -31,10 +31,12 @@ jobs:
           curl -L --fail --retry 5 --retry-delay 2             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pico%2C_Azores_%2824309854589%29.jpg?width=1200"             -o assets/island-pico.jpg
           curl -L --fail --retry 5 --retry-delay 2             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Faial.jpg?width=1200"             -o assets/island-faial.jpg
           curl -L --fail --retry 5 --retry-delay 2             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Faja_dos_bodes.jpg?width=1200"             -o assets/island-sao-jorge.jpg
+          curl -L --fail --retry 5 --retry-delay 2             "https://commons.wikimedia.org/wiki/Special:Redirect/file/Vinhas_de_S%C3%A3o_Caetano%2C_S%C3%A3o_Mateus%2C_Madalena%2C_ilha_do_Pico%2C_A%C3%A7ores%2C_Portugal.JPG?width=1600"             -o assets/provider-area-pico.jpg
           test -s assets/island-pico.jpg
           test -s assets/island-faial.jpg
           test -s assets/island-sao-jorge.jpg
-          file assets/island-pico.jpg assets/island-faial.jpg assets/island-sao-jorge.jpg
+          test -s assets/provider-area-pico.jpg
+          file assets/island-pico.jpg assets/island-faial.jpg assets/island-sao-jorge.jpg assets/provider-area-pico.jpg
 
       - name: Point service pages to local copies
         shell: bash
