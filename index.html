@@ -1015,6 +1015,23 @@ masterSearchForm?.addEventListener('submit',()=>{
   }
 });
 document.querySelector('#masterTopSearch')?.addEventListener('click',()=>masterSearchInput?.focus());
+document.querySelector('.mh-pt')?.addEventListener('click',e=>{
+  e.preventDefault();
+  syncHomepageSearchFields('master');
+  lang='pt';
+  localStorage.setItem('tri_lang',lang);
+  syncHomepageLanguageUrl();
+  applyLang();
+  syncMasterIsland();
+});
+document.querySelector('.mh-en')?.addEventListener('click',e=>{
+  e.preventDefault();
+  syncHomepageSearchFields('master');
+  lang='en';
+  localStorage.setItem('tri_lang',lang);
+  syncHomepageLanguageUrl();
+  applyLang();
+});
 function handleHomepageViewportChange(e){
   if(lang==='pt')syncHomepageSearchFields(e.matches?'normal':'master');
   syncDesktopMasterInteractivity();
