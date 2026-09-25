@@ -38,6 +38,11 @@ jobs:
             --exclude='.github' \
             --exclude='_site' \
             ./ _site/
+          if grep -R -E "https://(commons|upload)\\.wikimedia\\.org" \
+            --include="*.html" --include="*.css" --include="*.js" _site; then
+            echo "External Wikimedia dependency returned"
+            exit 1
+          fi
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
@@ -204,6 +209,10 @@ jobs:
           fetch "$base/assets/pico-home-hq.webp?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/home-master.webp?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/assets/home-master-2x.webp?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/assets/island-pico.jpg?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/assets/island-faial.jpg?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/assets/island-sao-jorge.jpg?verify=$GITHUB_SHA" >/dev/null
+          fetch "$base/assets/provider-area-pico.jpg?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/icon-192.png?verify=$GITHUB_SHA" >/dev/null
           fetch "$base/icon-512.png?verify=$GITHUB_SHA" >/dev/null
 
