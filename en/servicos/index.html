@@ -24,6 +24,8 @@
 <meta property="og:description" content="Find local services across Pico, Faial and São Jorge or post what you need and let TRIÂNGULO find someone for you.">
 <meta property="og:url" content="https://trianguloacores.pt/en/servicos/">
 <meta property="og:image" content="https://trianguloacores.pt/assets/pico-home-hq.webp">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="pt_PT">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="/manifest.json">
 <link rel="stylesheet" href="/servicos/provider-area.css">
@@ -2329,7 +2331,6 @@ window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||locat
 <script>init();</script>
 <script id="localized-seo-sync">
 (()=>{
-  const base=location.origin+location.pathname;
   const canonical=document.querySelector('link[rel="canonical"]');
   const ogTitle=document.querySelector('meta[property="og:title"]');
   const ogDescription=document.querySelector('meta[property="og:description"]');
@@ -2340,7 +2341,8 @@ window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||locat
   if(!ogLocaleAlt){ogLocaleAlt=document.createElement('meta');ogLocaleAlt.setAttribute('property','og:locale:alternate');document.head.appendChild(ogLocaleAlt)}
   function syncLocalizedSeo(){
     const isEn=(document.documentElement.lang||'').toLowerCase().startsWith('en');
-    const url=isEn?base+'?lang=en':base;
+    const alternate=document.querySelector('link[rel="alternate"][hreflang="'+(isEn?'en':'pt-PT')+'"]');
+    const url=alternate?.href||location.origin+location.pathname;
     const description=document.querySelector('meta[name="description"]')?.content||'';
     if(canonical)canonical.href=url;
     if(ogTitle)ogTitle.content=document.title;
