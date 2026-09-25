@@ -925,6 +925,13 @@ function setIsland(v){
   localStorage.setItem('tri_island',v);
   document.querySelectorAll('[data-island]').forEach(b=>b.classList.toggle('active',b.dataset.island===v));
   document.querySelector('#islandSelect').value=v;
+  const masterSelect=document.querySelector('#masterIslandSelect');
+  if(masterSelect)masterSelect.value=v;
+  const masterValue=document.querySelector('#masterIslandValue');
+  if(masterValue){
+    masterValue.textContent=v;
+    masterValue.classList.toggle('visible',v!=='Pico');
+  }
 }
 function openSearch(q,group=null){
   const query=(q||'').trim();
