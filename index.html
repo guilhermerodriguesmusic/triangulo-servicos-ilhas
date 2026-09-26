@@ -770,37 +770,66 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 </style>
 <style id="english-desktop-parity">
 @media(min-width:1121px){
-  /* EN uses the same approved photographic composition and geometry as PT.
-     Only the copy changes; the PT master itself remains untouched. */
+  /* English desktop is anchored to the same approved master composition as PT. */
   html[lang="en"] .hero::before{
-    background-image:url('/assets/pico-home-clean.webp');
+    background-image:image-set(
+      url('/assets/home-master.webp') 1x,
+      url('/assets/home-master-2x.webp') 2x
+    );
     background-size:cover;
     background-position:center center;
     transform:none;
     transform-origin:center center;
   }
+
+  /* Soft masks remove only baked PT copy from the shared master.
+     All English interactive UI is rendered above these masks. */
   html[lang="en"] .hero::after{
     background:
-      linear-gradient(180deg,rgba(72,143,210,.97) 0%,rgba(72,143,210,.91) 15%,rgba(72,143,210,.72) 25%,rgba(72,143,210,.30) 35%,rgba(72,143,210,0) 44%),
-      linear-gradient(90deg,rgba(5,39,67,.10) 0%,rgba(5,39,67,.025) 48%,rgba(5,39,67,.02) 72%,rgba(5,39,67,.04) 100%),
-      linear-gradient(180deg,rgba(6,43,73,0) 50%,rgba(4,27,44,.10) 69%,rgba(4,27,44,.34) 100%);
+      linear-gradient(180deg,rgba(72,143,210,.99),rgba(72,143,210,.96) 74%,rgba(72,143,210,0))
+        right top / 73% 11.3% no-repeat,
+      linear-gradient(90deg,rgba(72,143,210,.98) 0%,rgba(72,143,210,.96) 72%,rgba(72,143,210,.60) 88%,rgba(72,143,210,0) 100%)
+        left 11.2% / 54% 31.5% no-repeat,
+      linear-gradient(90deg,rgba(72,143,210,0) 0%,rgba(72,143,210,.90) 20%,rgba(72,143,210,.98) 48%,rgba(72,143,210,.94) 82%,rgba(72,143,210,0) 100%)
+        right 12.4% / 29% 16.5% no-repeat;
   }
-    html[lang="en"] .brand img{max-width:none;transform:none}
-  html[lang="en"] .brand-approved-en{width:min(24vw,440px)!important;height:78px;object-fit:fill}
+
+  /* Keep the approved logo already baked into the shared master. */
+  html[lang="en"] .brand img{opacity:0!important}
+
   html[lang="en"] .nav{left:-1.5vw;transform:translateY(-6px)}
   html[lang="en"] .nav a,html[lang="en"] .nav button{font-size:14px;font-weight:650}
   html[lang="en"] .actions{gap:1.05vw;transform:translateY(-6px)}
-  html[lang="en"] .kicker{top:14.95vh}
-  html[lang="en"] h1{top:18.05vh;width:700px;max-width:700px;font-size:88px;line-height:1}
-  html[lang="en"] .promise{top:38.00vh;font-size:31px}
+
+  html[lang="en"] .kicker{left:7.10vw;top:14.95vh}
+  html[lang="en"] h1{left:7.10vw;top:18.05vh;width:760px;max-width:760px;font-size:88px;line-height:1}
+  html[lang="en"] .promise{left:7.10vw;top:38.00vh;font-size:31px}
   html[lang="en"] .handnote{top:15.65vh;right:7.15vw;font-size:31px;line-height:.98}
+
   html[lang="en"] .island-pills{left:7.10vw;top:44.72vh}
-  html[lang="en"] .searchbar{left:7.49vw;top:52.31vh}
-  html[lang="en"] .category-row{left:6.42vw;right:5.53vw;top:69.86vh}
-  html[lang="en"] .category{height:13.34vh;padding:1.55vh 1.35vw;grid-template-columns:3.2vw minmax(0,1fr) 1.35vw;gap:.95vw}
+
+  /* Match the approved master geometry pixel-for-pixel at the audit viewport. */
+  html[lang="en"] .searchbar{
+    left:7.16vw;
+    top:52.69vh;
+    width:50.40vw;
+    height:8.35vh;
+  }
+  html[lang="en"] .category-row{
+    left:6.14vw;
+    right:5.92vw;
+    top:70.54vh;
+  }
+  html[lang="en"] .category{
+    height:13.24vh;
+    padding:1.55vh 1.35vw;
+    grid-template-columns:3.2vw minmax(0,1fr) 1.35vw;
+    gap:.95vw;
+  }
   html[lang="en"] .category b{font-size:15px;line-height:1.2;margin-bottom:6px}
   html[lang="en"] .category small{font-size:12.5px;line-height:1.42}
-  html[lang="en"] .trustbar{height:13.30vh}
+
+  html[lang="en"] .trustbar{height:12.48vh}
   html[lang="en"] .trust{padding:0 2.55vw}
   html[lang="en"] .trust b{font-size:15.5px;line-height:1.2}
   html[lang="en"] .trust small{font-size:13px}
