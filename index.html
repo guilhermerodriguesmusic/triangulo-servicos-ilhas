@@ -769,6 +769,7 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   /* EN mirrors the approved PT geometry over the clean road-to-Pico source. */
   html[lang="en"] .hero{background:#4d8dcb}
   html[lang="en"] .hero::before{
+    inset:0 0 0 -100px;
     background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
     background-position:center 45%;
@@ -779,11 +780,26 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   html[lang="en"] .hero::after{
     display:block;
     background:
-      linear-gradient(180deg,rgba(72,143,210,.99) 0%,rgba(72,143,210,.99) 8%,rgba(72,143,210,.86) 10.5%,rgba(72,143,210,.38) 13%,rgba(72,143,210,0) 16%),
-      linear-gradient(90deg,rgba(72,143,210,.99) 0%,rgba(72,143,210,.95) 56%,rgba(72,143,210,0) 100%) left 10% / 10% 15% no-repeat,
-      linear-gradient(90deg,rgba(5,39,67,.12) 0%,rgba(5,39,67,.035) 44%,rgba(5,39,67,.015) 70%,rgba(5,39,67,.05) 100%),
+      linear-gradient(180deg,rgba(72,143,210,.88) 0%,rgba(72,143,210,.68) 10%,rgba(72,143,210,.34) 20%,rgba(72,143,210,.10) 28%,rgba(72,143,210,0) 35%),
+      linear-gradient(90deg,rgba(5,39,67,.10) 0%,rgba(5,39,67,.028) 44%,rgba(5,39,67,.015) 70%,rgba(5,39,67,.045) 100%),
       linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.10) 68%,rgba(4,27,44,.35) 100%);
   }
+
+  /* Reuse the approved master itself only for the logo crop, so the English
+     header carries the exact same brand artwork without exposing PT copy. */
+  html[lang="en"] .brand{
+    height:6.5vh;
+    background-image:image-set(
+      url('/assets/home-master.webp') 1x,
+      url('/assets/home-master-2x.webp') 2x
+    );
+    background-size:100vw 100vh;
+    background-position:calc(-4.15vw) calc(-1.65vh);
+    background-repeat:no-repeat;
+  }
+  html[lang="en"] .brand img{opacity:0!important}
+  html[lang="en"] .nav a,
+  html[lang="en"] .nav button{font-weight:550}
 }
 </style>
 <style id="accessibility-v1">
