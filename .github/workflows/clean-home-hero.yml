@@ -51,8 +51,8 @@ jobs:
           mask = np.zeros((h, w), dtype=np.uint8)
           kept = []
           if detected is not None:
-              for raw in detected[:,0]:
-                  x1,y1,x2,y2 = map(int, raw)
+              for raw in np.asarray(detected).reshape(-1,4):
+                  x1,y1,x2,y2 = map(int, raw.tolist())
                   dx,dy=x2-x1,y2-y1
                   length=math.hypot(dx,dy)
                   if length < w*0.10:
