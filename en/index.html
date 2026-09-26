@@ -22,13 +22,13 @@
 <meta property="og:title" content="TRIÂNGULO Azores — Local services across the islands">
 <meta property="og:description" content="Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.">
 <meta property="og:url" content="https://trianguloacores.pt/en/">
-<meta property="og:image" content="https://trianguloacores.pt/assets/pico-home-road.jpg">
+<meta property="og:image" content="https://trianguloacores.pt/assets/pico-home-clean.webp">
 <meta property="og:locale" content="en_GB">
 <meta property="og:locale:alternate" content="pt_PT">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="shortcut icon" type="image/png" href="/icon-192.png">
-<link rel="preload" href="/assets/pico-home-road.jpg" as="image" fetchpriority="high">
+<link rel="preload" href="/assets/pico-home-clean.webp" as="image" fetchpriority="high">
 <link rel="preload" href="/assets/home-master.webp" as="image" type="image/webp" media="(max-resolution: 1.49dppx)">
 <link rel="preload" href="/assets/home-master-2x.webp" as="image" type="image/webp" media="(min-resolution: 1.5dppx)">
 <meta name="color-scheme" content="light only">
@@ -65,7 +65,7 @@ body{min-height:100svh;overflow-x:hidden}
   position:absolute;
   inset:0;
   z-index:-3;
-  background-image:url('/assets/pico-home-road.jpg');
+  background-image:url('/assets/pico-home-clean.webp');
   background-repeat:no-repeat;
   background-position:center 63%;
   background-size:103.5% auto;
@@ -774,11 +774,11 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   /* EN uses the same approved photographic composition and geometry as PT.
      Only the copy changes; the PT master itself remains untouched. */
   html[lang="en"] .hero::before{
-    background-image:url('/assets/pico-home-road.jpg');
+    background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
-    background-position:center 45%;
-    transform:translate(92px,-120px) scale(1.18);
-    transform-origin:left center;
+    background-position:center center;
+    transform:none;
+    transform-origin:center center;
   }
   html[lang="en"] .brand img{max-width:none;transform:none}
   html[lang="en"] .brand-approved-en{width:min(22vw,410px)!important;height:72px;object-fit:fill}
