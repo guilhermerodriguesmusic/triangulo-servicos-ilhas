@@ -766,16 +766,11 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   /* EN uses the same approved photographic composition and geometry as PT.
      Only the copy changes; the PT master itself remains untouched. */
   html[lang="en"] .hero::before{
-    background-image:url('/assets/pico-home-road.jpg');
+    background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
-    background-position:center center;
-    transform:none;
-  }
-  html[lang="en"] .hero::after{
-    background:
-      linear-gradient(180deg,rgba(72,143,210,.34) 0%,rgba(72,143,210,.20) 13%,rgba(72,143,210,.05) 29%,rgba(72,143,210,0) 43%),
-      linear-gradient(90deg,rgba(5,39,67,.08) 0%,rgba(5,39,67,.025) 45%,rgba(5,39,67,.01) 72%,rgba(5,39,67,.035) 100%),
-      linear-gradient(180deg,rgba(6,43,73,0) 52%,rgba(4,27,44,.06) 72%,rgba(4,27,44,.20) 100%);
+    background-position:center 45%;
+    transform:translate(11px,-4px) scale(1.18);
+    transform-origin:left center;
   }
   html[lang="en"] .brand img{width:min(21.4vw,397px)}
   html[lang="en"] .nav{left:-3.5vw}
