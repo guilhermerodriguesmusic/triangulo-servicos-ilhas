@@ -780,8 +780,14 @@ html[lang="en"] .master-desktop-ui{display:none!important}
     transform:none;
     transform-origin:center center;
   }
-  html[lang="en"] .brand img{max-width:none;transform:none}
-  html[lang="en"] .brand-approved-en{width:min(22vw,410px)!important;height:72px;object-fit:fill}
+  html[lang="en"] .hero::after{
+    background:
+      linear-gradient(180deg,rgba(72,143,210,.97) 0%,rgba(72,143,210,.91) 15%,rgba(72,143,210,.72) 25%,rgba(72,143,210,.30) 35%,rgba(72,143,210,0) 44%),
+      linear-gradient(90deg,rgba(5,39,67,.10) 0%,rgba(5,39,67,.025) 48%,rgba(5,39,67,.02) 72%,rgba(5,39,67,.04) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 50%,rgba(4,27,44,.10) 69%,rgba(4,27,44,.34) 100%);
+  }
+    html[lang="en"] .brand img{max-width:none;transform:none}
+  html[lang="en"] .brand-approved-en{width:min(24vw,440px)!important;height:78px;object-fit:fill}
   html[lang="en"] .nav{left:-1.5vw;transform:translateY(-6px)}
   html[lang="en"] .nav a,html[lang="en"] .nav button{font-size:14px;font-weight:650}
   html[lang="en"] .actions{gap:1.05vw;transform:translateY(-6px)}
