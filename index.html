@@ -773,14 +773,20 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   /* EN uses the same approved photographic composition and geometry as PT.
      Only the copy changes; the PT master itself remains untouched. */
   html[lang="en"] .hero::before{
-    background-image:url('/assets/pico-home-hq.webp');
+    background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
-    background-position:center 45%;
-    transform:translate(92px,-120px) scale(1.18);
-    transform-origin:left center;
+    background-position:center center;
+    transform:none;
+    transform-origin:center center;
   }
-  html[lang="en"] .brand img{max-width:none;transform:none}
-  html[lang="en"] .brand-approved-en{width:min(22vw,410px)!important;height:72px;object-fit:fill}
+  html[lang="en"] .hero::after{
+    background:
+      linear-gradient(180deg,rgba(72,143,210,.97) 0%,rgba(72,143,210,.91) 15%,rgba(72,143,210,.72) 25%,rgba(72,143,210,.30) 35%,rgba(72,143,210,0) 44%),
+      linear-gradient(90deg,rgba(5,39,67,.10) 0%,rgba(5,39,67,.025) 48%,rgba(5,39,67,.02) 72%,rgba(5,39,67,.04) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 50%,rgba(4,27,44,.10) 69%,rgba(4,27,44,.34) 100%);
+  }
+    html[lang="en"] .brand img{max-width:none;transform:none}
+  html[lang="en"] .brand-approved-en{width:min(24vw,440px)!important;height:78px;object-fit:fill}
   html[lang="en"] .nav{left:-1.5vw;transform:translateY(-6px)}
   html[lang="en"] .nav a,html[lang="en"] .nav button{font-size:14px;font-weight:650}
   html[lang="en"] .actions{gap:1.05vw;transform:translateY(-6px)}
@@ -828,9 +834,9 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   <section class="stage">
     <div class="copy">
       <p class="kicker" data-pt="PESSOAS LOCAIS · ILHAS MAIS FORTES." data-en="LOCAL PEOPLE · STRONGER ISLANDS.">PESSOAS LOCAIS · ILHAS MAIS FORTES.</p>
-      <h1 data-pt="Serviços locais&#10;nas ilhas" data-en="Local services&#10;on the islands">Serviços locais
+      <h1 data-pt="Serviços locais&#10;nas ilhas" data-en="Local services&#10;across the islands">Serviços locais
 nas ilhas</h1>
-      <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Done.">Encontra. Reserva. Resolve.</p>
+      <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</p>
 
       <div class="island-pills" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
         <button class="island-pill active" type="button" data-island="Pico"><span class="mini-mountain"></span>Pico</button>
@@ -860,11 +866,11 @@ nas ilhas</h1>
   <section class="category-row" aria-label="Categorias" data-aria-pt="Categorias" data-aria-en="Categories">
     <a class="category" href="/servicos/?group=repairs" data-group="repairs">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
-      <span><b data-pt="Obras e Reparações" data-en="Repairs & Works">Obras e Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrics and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
+      <span><b data-pt="Obras e Reparações" data-en="Repairs & Maintenance">Obras e Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrical work and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=garden" data-group="garden">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M39 9C23 9 11 18 10 36c10-1 23-7 29-27Z"/><path d="M11 36c7-8 14-13 24-19"/></svg></span>
-      <span><b data-pt="Jardim e Espaços Exteriores" data-en="Garden & Outdoor Spaces">Jardim e Espaços Exteriores</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening, maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
+      <span><b data-pt="Jardim e Espaços Exteriores" data-en="Garden & Outdoors">Jardim e Espaços Exteriores</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening, maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=home" data-group="home">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M7 23 24 9l17 14"/><path d="M11 21v20h26V21"/><path d="M20 41V29h8v12"/></svg></span>
