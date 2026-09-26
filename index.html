@@ -761,15 +761,22 @@ h1{
 }
 html[lang="en"] .master-desktop-ui{display:none!important}
 </style>
+<style id="english-logo-visibility">
+.brand-approved-en{display:none!important}
+@media(min-width:1121px){
+  html[lang="en"] .brand-current{display:none!important}
+  html[lang="en"] .brand-approved-en{display:block!important}
+}
+</style>
 <style id="english-desktop-parity">
 @media(min-width:1121px){
   /* EN uses the same approved photographic composition and geometry as PT.
      Only the copy changes; the PT master itself remains untouched. */
   html[lang="en"] .hero::before{
-    background-image:url('/assets/pico-home-road.jpg');
+    background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
     background-position:center 45%;
-    transform:translate(92px,-170px) scale(1.18);
+    transform:translate(92px,-72px) scale(1.18);
     transform-origin:left center;
   }
   html[lang="en"] .brand img{width:min(19.4vw,360px);max-width:none;transform:none}
