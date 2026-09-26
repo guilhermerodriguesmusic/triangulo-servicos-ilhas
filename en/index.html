@@ -770,16 +770,26 @@ html[lang="en"] .master-desktop-ui{display:none!important}
     background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
     background-position:center 45%;
-    transform:translate(11px,-4px) scale(1.18);
+    transform:translate(92px,-72px) scale(1.18);
     transform-origin:left center;
   }
-  html[lang="en"] .brand img{width:min(21.4vw,397px)}
-  html[lang="en"] .nav{left:-3.5vw}
-  html[lang="en"] .actions{gap:1.75vw}
-  html[lang="en"] .handnote{top:14.6vh;right:6.9vw}
-  html[lang="en"] .searchbar{left:7.17vw;top:52.70vh}
-  html[lang="en"] .category-row{left:6.14vw;right:5.92vw;top:70.53vh}
-  html[lang="en"] .trustbar{height:12.48vh}
+  html[lang="en"] .brand img{width:min(19.4vw,360px);max-width:none;transform:none}
+  html[lang="en"] .nav{left:-1.5vw}
+  html[lang="en"] .actions{gap:1.05vw}
+  html[lang="en"] .kicker{top:14.95vh}
+  html[lang="en"] h1{top:18.05vh;width:700px;max-width:700px;font-size:88px;line-height:1}
+  html[lang="en"] .promise{top:38.00vh;font-size:31px}
+  html[lang="en"] .handnote{top:15.65vh;right:7.15vw;font-size:31px;line-height:.98}
+  html[lang="en"] .island-pills{left:7.10vw;top:44.72vh}
+  html[lang="en"] .searchbar{left:7.49vw;top:52.31vh}
+  html[lang="en"] .category-row{left:6.42vw;right:5.53vw;top:69.86vh}
+  html[lang="en"] .category{height:13.34vh;padding:1.55vh 1.35vw;grid-template-columns:3.2vw minmax(0,1fr) 1.35vw;gap:.95vw}
+  html[lang="en"] .category b{font-size:15px;line-height:1.2;margin-bottom:6px}
+  html[lang="en"] .category small{font-size:12.5px;line-height:1.42}
+  html[lang="en"] .trustbar{height:13.30vh}
+  html[lang="en"] .trust{padding:0 2.55vw}
+  html[lang="en"] .trust b{font-size:15.5px;line-height:1.2}
+  html[lang="en"] .trust small{font-size:13px}
 }
 </style>
 <style id="accessibility-v1">
@@ -790,7 +800,7 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
 <main id="main-content" class="hero">
   <header class="top">
-    <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a>
+    <a class="brand" href="/" aria-label="TRIÂNGULO Açores"><img class="brand-current" src="/logo-v2.svg" alt="TRIÂNGULO Açores"><img class="brand-approved-en" src="/assets/logo-approved-desktop.svg" alt="TRIÂNGULO Açores"></a>
     <nav class="nav" aria-label="Principal" data-aria-pt="Principal" data-aria-en="Main navigation">
       <a href="/servicos/" class="with-chevron" data-pt="Serviços" data-en="Services">Serviços</a>
       <button type="button" class="with-chevron" id="navIslands" data-pt="Ilhas" data-en="Islands">Ilhas</button>
@@ -810,9 +820,9 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   <section class="stage">
     <div class="copy">
       <p class="kicker" data-pt="PESSOAS LOCAIS · ILHAS MAIS FORTES." data-en="LOCAL PEOPLE · STRONGER ISLANDS.">PESSOAS LOCAIS · ILHAS MAIS FORTES.</p>
-      <h1 data-pt="Serviços locais&#10;nas ilhas" data-en="Local services&#10;across the islands">Serviços locais
+      <h1 data-pt="Serviços locais&#10;nas ilhas" data-en="Local services&#10;on the islands">Serviços locais
 nas ilhas</h1>
-      <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Get it done.">Encontra. Reserva. Resolve.</p>
+      <p class="promise" data-pt="Encontra. Reserva. Resolve." data-en="Find. Book. Done.">Encontra. Reserva. Resolve.</p>
 
       <div class="island-pills" aria-label="Escolher ilha" data-aria-pt="Escolher ilha" data-aria-en="Choose island">
         <button class="island-pill active" type="button" data-island="Pico"><span class="mini-mountain"></span>Pico</button>
@@ -836,25 +846,25 @@ nas ilhas</h1>
       </form>
     </div>
 
-    <div class="handnote" data-pt="Pico&#10;sempre à frente" data-en="Pico&#10;leading the way">Pico<br>sempre à frente</div>
+    <div class="handnote" data-pt="Pico&#10;sempre à frente" data-en="Pico&#10;always ahead">Pico<br>sempre à frente</div>
   </section>
 
   <section class="category-row" aria-label="Categorias" data-aria-pt="Categorias" data-aria-en="Categories">
     <a class="category" href="/servicos/?group=repairs" data-group="repairs">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="m8 39 18-18"/><path d="m15 8 8 8-5 5-8-8 5-5Z"/><path d="M31 24 41 34l-7 7-10-10"/><path d="M28 19c4-7 9-8 13-7-1 4-3 8-8 10"/></svg></span>
-      <span><b data-pt="Obras e Reparações" data-en="Repairs & Maintenance">Obras e Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrical work and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
+      <span><b data-pt="Obras e Reparações" data-en="Repairs & Works">Obras e Reparações</b><small data-pt="Carpintaria, canalização, eletricidade e mais." data-en="Carpentry, plumbing, electrics and more.">Carpintaria, canalização, eletricidade e mais.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=garden" data-group="garden">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M39 9C23 9 11 18 10 36c10-1 23-7 29-27Z"/><path d="M11 36c7-8 14-13 24-19"/></svg></span>
-      <span><b data-pt="Jardim e Espaços Exteriores" data-en="Garden & Outdoors">Jardim e Espaços Exteriores</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening and maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
+      <span><b data-pt="Jardim e Espaços Exteriores" data-en="Garden & Outdoor Spaces">Jardim e Espaços Exteriores</b><small data-pt="Limpeza de terrenos, jardinagem, manutenção." data-en="Land clearing, gardening, maintenance.">Limpeza de terrenos, jardinagem, manutenção.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=home" data-group="home">
       <span class="category-icon"><svg viewBox="0 0 48 48"><path d="M7 23 24 9l17 14"/><path d="M11 21v20h26V21"/><path d="M20 41V29h8v12"/></svg></span>
-      <span><b data-pt="Casa e Alojamento" data-en="Home & Accommodation">Casa e Alojamento</b><small data-pt="Limpezas, gestão, pequenas obras, apoio ao alojamento." data-en="Cleaning, management, small repairs and hosting support.">Limpezas, gestão, pequenas obras, apoio ao alojamento.</small></span><span class="arr">›</span>
+      <span><b data-pt="Casa e Alojamento" data-en="Home & Accommodation">Casa e Alojamento</b><small data-pt="Limpezas, gestão, pequenas obras, apoio ao alojamento." data-en="Cleaning, management, small works, hosting support.">Limpezas, gestão, pequenas obras, apoio ao alojamento.</small></span><span class="arr">›</span>
     </a>
     <a class="category" href="/servicos/?group=personal" data-group="personal">
       <span class="category-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="15" r="6"/><circle cx="11" cy="18" r="4"/><circle cx="37" cy="18" r="4"/><path d="M14 39v-5c0-6 4-10 10-10s10 4 10 10v5"/><path d="M4 38v-4c0-5 3-8 8-8 2 0 4 .5 5 1.5"/><path d="M44 38v-4c0-5-3-8-8-8-2 0-4 .5-5 1.5"/></svg></span>
-      <span><b data-pt="Serviços Pessoais" data-en="Personal Services">Serviços Pessoais</b><small data-pt="Bem-estar, aulas, eventos e serviços do dia a dia." data-en="Wellness, lessons, events and everyday services.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
+      <span><b data-pt="Serviços Pessoais" data-en="Personal Services">Serviços Pessoais</b><small data-pt="Bem-estar, aulas, eventos e serviços do dia a dia." data-en="Well-being, lessons, events and everyday services.">Bem-estar, aulas, eventos e serviços do dia a dia.</small></span><span class="arr">›</span>
     </a>
   </section>
 
