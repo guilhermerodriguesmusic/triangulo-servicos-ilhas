@@ -1444,9 +1444,10 @@ function providerPrice(p){if(p.pricing_type==='quote'||p.price==null)return lang
 function providerCategoryLabels(p){return (p.categories||[]).map(code=>{if(code==='other'&&p.other_service)return p.other_service;const i=CATEGORY_CODES.indexOf(code),c=categories[i];return c?(lang==='pt'?(c.shortPt||c.pt):(c.shortEn||c.en)):code}).slice(0,3)}
 function renderProviders(){}
 async function loadProviders(q=activeSearchQuery,group=activeServiceGroup){
- const serial=++searchSerial;providersLoading=true;providersLoadError=false;activeSearchQuery=String(q||'').trim().slice(0,120);activeServiceGroup=group||null;updateResults(activeSearchQuery);
+ const requestedQuery=String(q||'').trim().slice(0,120),requestedGroup=group||null;
+ const serial=++searchSerial;providersLoading=true;providersLoadError=false;updateResults(activeSearchQuery);
  try{
-  const {data,error}=await db.rpc('search_services_v3',{p_island:island,p_query:activeSearchQuery,p_group:activeServiceGroup});
+  const {data,error}=await db.rpc('search_services_v3',{p_island:island,p_query:requestedQuery,p_group:requestedGroup});
   if(error)throw error;if(serial!==searchSerial)return;
   realProviders=(data||[]).map(s=>({
     id:s.service_id,service_id:s.service_id,provider_id:s.provider_id,
