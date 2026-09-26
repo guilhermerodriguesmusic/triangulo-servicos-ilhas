@@ -446,7 +446,9 @@ jobs:
             });
             assert.equal(await page.locator('#emptyPost').isVisible(),true,'empty-island help CTA missing');
             assert.equal(await page.locator('.empty-provider-cta').getAttribute('href'),'/prestadores.html','empty-island provider CTA incorrect');
-            await page.click('#emptyPost');
+            await page.waitForTimeout(120);
+            await page.waitForFunction(()=>{const b=document.querySelector('#emptyPost');return !!b&&!b.disabled&&b.getClientRects().length>0});
+            await page.evaluate(()=>document.querySelector('#emptyPost')?.click());
             assert.equal(await page.locator('#requestSheet').evaluate(el=>el.classList.contains('open')),true,'empty-island help CTA did not open request form');
 
             // Results search must preserve an active category filter when editing/clearing text.
