@@ -17,15 +17,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Clean power lines from local high-resolution source
+      - name: Clean real power lines from local high-resolution source
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m pip install --quiet pillow opencv-python-headless
+          python3 -m pip install --quiet opencv-python-headless
           python3 - <<'PY'
           import cv2
           import numpy as np
           from pathlib import Path
+          import math
 
           src = Path("assets/pico-home-hq.webp")
           img = cv2.imread(str(src), cv2.IMREAD_COLOR)
@@ -34,34 +35,64 @@ jobs:
           h, w = img.shape[:2]
           print(f"source={w}x{h}")
 
+          gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+          roi_h = round(h * 0.46)
+          roi_w = round(w * 0.83)
+          roi = gray[:roi_h, :roi_w]
+          edges = cv2.Canny(roi, 35, 110, apertureSize=3)
+
+          detected = cv2.HoughLinesP(
+              edges, 1, np.pi/1800,
+              threshold=max(55, round(w*0.035)),
+              minLineLength=round(w*0.10),
+              maxLineGap=round(w*0.025)
+          )
+
           mask = np.zeros((h, w), dtype=np.uint8)
-          def line(x1,y1,x2,y2,t=0.0045):
-              cv2.line(
-                  mask,
-                  (round(w*x1), round(h*y1)),
-                  (round(w*x2), round(h*y2)),
-                  255,
-                  max(3, round(min(w,h)*t)),
-                  cv2.LINE_AA
-              )
+          kept = []
+          if detected is not None:
+              for raw in detected[:,0]:
+                  x1,y1,x2,y2 = map(int, raw)
+                  dx,dy=x2-x1,y2-y1
+                  length=math.hypot(dx,dy)
+                  if length < w*0.10:
+                      continue
+                  angle=abs(math.degrees(math.atan2(dy,dx)))
+                  angle=min(angle,180-angle)
+                  if angle > 16:
+                      continue
 
-          # Power lines visible across the sky. Coordinates are normalized so
-          # this remains stable if the source is re-encoded at the same crop.
-          line(-0.02,0.270,0.825,0.078,0.0040)
-          line(-0.02,0.337,0.835,0.300,0.0045)
-          line(-0.02,0.383,0.830,0.323,0.0045)
-          line(-0.02,0.405,0.827,0.340,0.0045)
-          line(-0.02,0.431,0.824,0.355,0.0045)
+                  vals=[]
+                  for t in np.linspace(0,1,31):
+                      x=round(x1+dx*t); y=round(y1+dy*t)
+                      y0=max(0,y-2); y3=min(h,y+3)
+                      x0=max(0,x-2); x3=min(w,x+3)
+                      vals.append(np.percentile(gray[y0:y3,x0:x3],20))
+                  darkness=float(np.median(vals))
+                  if darkness > 118:
+                      continue
 
-          # Slight dilation catches antialiased/dark edges around each cable.
-          kernel = np.ones((3,3), np.uint8)
-          mask = cv2.dilate(mask, kernel, iterations=1)
+                  cy=(y1+y2)/2
+                  if cy > h*0.445:
+                      continue
 
-          clean = cv2.inpaint(img, mask, 5, cv2.INPAINT_TELEA)
-          ok = cv2.imwrite("assets/pico-home-clean.webp", clean, [cv2.IMWRITE_WEBP_QUALITY, 94])
+                  kept.append((x1,y1,x2,y2,round(angle,2),round(darkness,1),round(length,1)))
+                  cv2.line(mask,(x1,y1),(x2,y2),255,max(7,round(min(w,h)*0.006)),cv2.LINE_AA)
+
+          mask = cv2.dilate(mask, np.ones((5,5),np.uint8), iterations=1)
+          print("detected cable segments:", len(kept))
+          for item in sorted(kept,key=lambda z:(z[1],z[0])):
+              print(item)
+
+          if len(kept) < 5:
+              raise SystemExit("Cable detector found too few segments; refusing to write an unreliable image")
+
+          clean = cv2.inpaint(img, mask, 6, cv2.INPAINT_TELEA)
+          ok = cv2.imwrite("assets/pico-home-clean.webp", clean, [cv2.IMWRITE_WEBP_QUALITY, 96])
           if not ok:
               raise SystemExit("Could not write clean hero")
           print("wrote assets/pico-home-clean.webp")
+          PY
 
       - name: Commit clean local hero
         shell: bash
@@ -71,5 +102,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/pico-home-clean.webp
           git diff --cached --quiet && exit 0
-          git commit -m "Add clean local homepage hero"
+          git commit -m "Refine clean local homepage hero"
           git push
