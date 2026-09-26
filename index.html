@@ -767,7 +767,9 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 <style id="english-desktop-parity">
 @media(min-width:1121px){
   /* EN mirrors the approved PT geometry over the clean road-to-Pico source. */
-  html[lang="en"] .hero{background:#4d8dcb}
+  html[lang="en"] .hero{
+    background:#4d8dcb url('/assets/pico-home-clean.webp') center 45%/cover no-repeat;
+  }
   html[lang="en"] .hero::before{
     inset:0 0 0 -100px;
     background-image:url('/assets/pico-home-clean.webp');
