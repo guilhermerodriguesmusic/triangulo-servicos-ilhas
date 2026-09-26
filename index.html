@@ -766,20 +766,23 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 </style>
 <style id="english-desktop-parity">
 @media(min-width:1121px){
-  /* English keeps the exact approved PT geometry. Only the copy and clean
-     photographic source differ because the PT master contains baked-in text. */
+  /* EN mirrors the approved PT geometry over the clean road-to-Pico source. */
+  html[lang="en"] .hero{background:#4d8dcb}
   html[lang="en"] .hero::before{
-    background-image:url('/assets/pico-hero-clean.jpg');
+    background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
-    background-position:center 52%;
-    transform:none;
+    background-position:center 45%;
+    transform:translate(92px,-120px) scale(1.18);
+    transform-origin:left center;
     filter:none;
   }
   html[lang="en"] .hero::after{
+    display:block;
     background:
-      linear-gradient(180deg,rgba(72,143,210,.78) 0%,rgba(72,143,210,.56) 10%,rgba(72,143,210,.22) 23%,rgba(72,143,210,0) 36%),
-      linear-gradient(90deg,rgba(5,39,67,.16) 0%,rgba(5,39,67,.04) 44%,rgba(5,39,67,.02) 70%,rgba(5,39,67,.05) 100%),
-      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.11) 68%,rgba(4,27,44,.38) 100%);
+      linear-gradient(180deg,rgba(72,143,210,.99) 0%,rgba(72,143,210,.99) 8%,rgba(72,143,210,.86) 10.5%,rgba(72,143,210,.38) 13%,rgba(72,143,210,0) 16%),
+      linear-gradient(90deg,rgba(72,143,210,.99) 0%,rgba(72,143,210,.95) 56%,rgba(72,143,210,0) 100%) left 10% / 10% 15% no-repeat,
+      linear-gradient(90deg,rgba(5,39,67,.12) 0%,rgba(5,39,67,.035) 44%,rgba(5,39,67,.015) 70%,rgba(5,39,67,.05) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.10) 68%,rgba(4,27,44,.35) 100%);
   }
 }
 </style>
