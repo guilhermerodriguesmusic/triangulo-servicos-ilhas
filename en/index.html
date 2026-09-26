@@ -764,54 +764,24 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 </style>
 <style id="english-logo-visibility">
 .brand-approved-en{display:none!important}
-@media(min-width:1121px){
-  html[lang="en"] .brand-current{display:none!important}
-  html[lang="en"] .brand-approved-en{display:block!important}
-}
 </style>
 <style id="english-desktop-parity">
 @media(min-width:1121px){
-  /* EN uses the same approved photographic composition and geometry as PT.
-     Only the copy changes; the PT master itself remains untouched. */
+  /* English keeps the exact approved PT geometry. Only the copy and clean
+     photographic source differ because the PT master contains baked-in text. */
   html[lang="en"] .hero::before{
-    background-image:url('/assets/pico-home-hq.webp');
-    background-size:112% auto;
-    background-position:left 50%;
+    background-image:url('/assets/pico-hero-clean.jpg');
+    background-size:cover;
+    background-position:center 52%;
     transform:none;
-    transform-origin:left center;
-    filter:brightness(1.13) saturate(1.05) contrast(.96);
+    filter:none;
   }
   html[lang="en"] .hero::after{
     background:
-      linear-gradient(180deg,
-        rgba(72,143,210,.995) 0%,
-        rgba(72,143,210,.995) 31.5%,
-        rgba(72,143,210,.94) 33%,
-        rgba(72,143,210,.70) 34.5%,
-        rgba(72,143,210,.28) 36%,
-        rgba(72,143,210,0) 38%),
-      linear-gradient(90deg,rgba(5,39,67,.08) 0%,rgba(5,39,67,.018) 50%,rgba(5,39,67,.02) 76%,rgba(5,39,67,.04) 100%),
-      linear-gradient(180deg,rgba(6,43,73,0) 52%,rgba(4,27,44,.10) 70%,rgba(4,27,44,.35) 100%);
+      linear-gradient(180deg,rgba(72,143,210,.78) 0%,rgba(72,143,210,.56) 10%,rgba(72,143,210,.22) 23%,rgba(72,143,210,0) 36%),
+      linear-gradient(90deg,rgba(5,39,67,.16) 0%,rgba(5,39,67,.04) 44%,rgba(5,39,67,.02) 70%,rgba(5,39,67,.05) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.11) 68%,rgba(4,27,44,.38) 100%);
   }
-    html[lang="en"] .brand img{max-width:none;transform:none}
-  html[lang="en"] .brand-approved-en{width:min(24vw,440px)!important;height:78px;object-fit:fill;transform:scale(1.38);transform-origin:left center}
-  html[lang="en"] .nav{left:-2.7vw;transform:translateY(-6px)}
-  html[lang="en"] .nav a,html[lang="en"] .nav button{font-size:14px;font-weight:650}
-  html[lang="en"] .actions{gap:1.05vw;transform:translateY(-6px)}
-  html[lang="en"] .kicker{top:14.95vh}
-  html[lang="en"] h1{top:18.05vh;width:700px;max-width:700px;font-size:88px;line-height:1}
-  html[lang="en"] .promise{top:38.00vh;font-size:31px}
-  html[lang="en"] .handnote{top:15.65vh;right:7.15vw;font-size:31px;line-height:.98}
-  html[lang="en"] .island-pills{left:7.10vw;top:44.72vh}
-  html[lang="en"] .searchbar{left:7.16vw;top:52.69vh;width:50.40vw;height:8.35vh}
-  html[lang="en"] .category-row{left:6.14vw;right:5.92vw;top:70.54vh}
-  html[lang="en"] .category{height:13.34vh;padding:1.55vh 1.35vw;grid-template-columns:3.2vw minmax(0,1fr) 1.35vw;gap:.95vw}
-  html[lang="en"] .category b{font-size:15px;line-height:1.2;margin-bottom:6px}
-  html[lang="en"] .category small{font-size:12.5px;line-height:1.42}
-  html[lang="en"] .trustbar{height:12.48vh}
-  html[lang="en"] .trust{padding:0 2.55vw}
-  html[lang="en"] .trust b{font-size:15.5px;line-height:1.2}
-  html[lang="en"] .trust small{font-size:13px}
 }
 </style>
 <style id="accessibility-v1">
