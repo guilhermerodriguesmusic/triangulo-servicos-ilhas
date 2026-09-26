@@ -638,6 +638,45 @@ jobs:
             await context.close();
           }
 
+          // Client contact-release contract: quote hides contacts; confirmed no-payment flow reveals them.
+          {
+            const context=await browser.newContext({viewport:{width:390,height:844},locale:'en-GB'});
+            const page=await context.newPage();
+            await page.goto(base+'/servicos/?lang=en',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(500);
+
+            const quoted={
+              kind:'direct',token:'00000000-0000-4000-8000-000000000101',
+              provider:'Dário',service_title:'Garden & Land',island:'Pico',
+              date:'2099-12-01',time:'11:00',status:'quoted',payment_status:'pending',
+              provider_amount:40,service_fee_amount:4.8,total_amount:44.8,
+              requires_quote:true,contact_released:false,provider_email:null,provider_phone:null,
+              createdAt:'2099-01-01T10:00:00Z'
+            };
+            await page.evaluate(item=>{
+              localStorage.setItem('tri_booking_history',JSON.stringify([item]));
+              paymentsLive=false;
+              renderBookings();
+              showScreen('bookings');
+            },quoted);
+            assert.equal(await page.locator('#bookingList [data-confirm-quote]').count(),1,'quoted booking lost confirm-quote action');
+            const quotedText=await page.locator('#bookingList').innerText();
+            assert.equal(quotedText.includes('provider@example.test'),false,'provider email leaked before quote confirmation');
+            assert.equal(quotedText.includes('912345678'),false,'provider phone leaked before quote confirmation');
+
+            const confirmed={...quoted,status:'confirmed',contact_released:true,provider_email:'provider@example.test',provider_phone:'912345678'};
+            await page.evaluate(item=>{
+              localStorage.setItem('tri_booking_history',JSON.stringify([item]));
+              renderBookings();
+            },confirmed);
+            assert.equal(await page.locator('#bookingList [data-confirm-quote]').count(),0,'confirmed booking still shows quote-confirm action');
+            assert.equal(await page.locator('#bookingList .booking-contact').count(),1,'confirmed no-payment booking did not reveal contact block');
+            const confirmedText=await page.locator('#bookingList').innerText();
+            assert.match(confirmedText,/provider@example\.test/,'confirmed booking missing provider email');
+            assert.match(confirmedText,/912345678/,'confirmed booking missing provider phone');
+            await context.close();
+          }
+
           // Static route existence + internal public-link crawl.
           {
             const context=await browser.newContext();
