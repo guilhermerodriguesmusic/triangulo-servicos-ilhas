@@ -31,7 +31,7 @@
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:21px}.card h2{font-size:18px;margin:0 0 8px}.card p{font-size:13px;line-height:1.6;color:var(--muted);margin:0}.status{margin-top:14px;background:#fff8dd;border:1px solid #efe2a6;border-radius:17px;padding:15px 17px;font-size:12px;line-height:1.55;color:#6f5a16}.status strong{color:#4f3e08}
 .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.cta a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:999px;padding:12px 17px;font-size:12px;font-weight:900}.cta .primary{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(16,139,110,.16)}.cta .secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.cta a{transition:transform .15s ease,box-shadow .15s ease,background .15s ease}.cta a:hover{transform:translateY(-1px)}.cta .secondary:hover{background:#f7faf9;box-shadow:0 7px 18px rgba(21,52,88,.06)}
 .footer{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:11px;color:#718698}.footer a{display:inline-flex;align-items:center;color:#48697d;text-decoration:none;font-weight:800;padding:6px 8px;border-radius:999px;transition:.15s ease}.footer a:hover{background:#edf5e8;color:#315f45}
-main>section[data-en]{display:none}body.en main>section[data-pt]{display:none}body.en main>section[data-en]{display:block}
+main>section[data-en]{display:none}html[lang="en"] main>section[data-pt]{display:none}html[lang="en"] main>section[data-en]{display:block}
 @media(max-width:760px){.steps{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}.hero{padding:26px 21px}.wrap{padding:12px 12px 40px}}@media(max-width:480px){.steps{grid-template-columns:1fr}.step{min-height:0}}
 
 .price-example{margin-top:8px;padding:9px 10px;border-radius:10px;background:#f3f8f5;color:#315f49;font-size:11px;line-height:1.45}
@@ -79,18 +79,18 @@ main>section[data-en]{display:none}body.en main>section[data-pt]{display:none}bo
 </style>
 </head>
 <body>
-<a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
+<a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Skip to content</a>
 <div class="wrap">
 <header class="top"><a class="brand" href="/"><img src="/logo-v2.svg" alt="TRIÂNGULO Açores"></a><div class="lang"><button data-lang="pt" type="button">PT</button><button data-lang="en" type="button">EN</button></div></header>
-<nav class="persistent-choice-nav" aria-label="Navegação principal" data-aria-pt="Navegação principal" data-aria-en="Main navigation">
-  <a href="/servicos/" data-pt="Serviços" data-en="Services">Serviços</a>
+<nav class="persistent-choice-nav" aria-label="Main navigation" data-aria-pt="Navegação principal" data-aria-en="Main navigation">
+  <a href="/servicos/" data-pt="Serviços" data-en="Services">Services</a>
   <a href="/servicos/?island=Pico">Pico</a>
   <a href="/servicos/?island=Faial">Faial</a>
   <a href="/servicos/?island=S%C3%A3o+Jorge">São Jorge</a>
-  <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">Como funciona</a>
-  <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a>
-  <a href="/instalar/" data-pt="Instalar" data-en="Install">Instalar</a>
-  <a href="/prestadores.html" data-pt="Para prestadores" data-en="For providers">Para prestadores</a>
+  <a href="/how-it-works.html" data-pt="Como funciona" data-en="How it works">How it works</a>
+  <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">About us</a>
+  <a href="/instalar/" data-pt="Instalar" data-en="Install">Install</a>
+  <a href="/prestadores.html" data-pt="Para prestadores" data-en="For providers">For providers</a>
 </nav>
 <main id="main-content">
 <section data-pt>
@@ -128,7 +128,7 @@ main>section[data-en]{display:none}body.en main>section[data-pt]{display:none}bo
 <div class="cta"><a class="primary" href="/servicos/">Find a service →</a><a class="secondary" href="/prestadores.html">For providers</a></div>
 </section>
 </main>
-<footer class="footer"><span>TRIÂNGULO · Pico · Faial · São Jorge</span><span><a href="/" data-pt="Início" data-en="Home">Início</a> · <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">Sobre nós</a> · <a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a> · <a href="/terms.html" data-pt="Termos" data-en="Terms">Termos</a></span></footer>
+<footer class="footer"><span>TRIÂNGULO · Pico · Faial · São Jorge</span><span><a href="/" data-pt="Início" data-en="Home">Home</a> · <a href="/sobre-nos.html" data-pt="Sobre nós" data-en="About us">About us</a> · <a href="/privacy.html" data-pt="Privacidade" data-en="Privacy">Privacy</a> · <a href="/terms.html" data-pt="Termos" data-en="Terms">Terms</a></span></footer>
 </div>
 <script>
 const qs=new URLSearchParams(location.search);let lang=qs.get('lang')==='en'?'en':(qs.get('lang')==='pt'?'pt':(localStorage.getItem('tri_lang')||'pt'));
