@@ -1,0 +1,87 @@
+name: Build clean English hero v2
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/clean-hero-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install image tools
+        run: |
+          python3 -m pip install --quiet opencv-python-headless pillow numpy
+
+      - name: Remove only long overhead cables
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import cv2, numpy as np
+          from PIL import Image
+
+          src='assets/pico-home-hq.webp'
+          out='assets/pico-home-clean-v2.webp'
+          img=cv2.imread(src, cv2.IMREAD_COLOR)
+          if img is None:
+              raise SystemExit('Could not read '+src)
+          h,w=img.shape[:2]
+
+          # Work only in the sky/top half. Cables are long, dark and near-horizontal.
+          top=img[:int(h*0.47)]
+          gray=cv2.cvtColor(top,cv2.COLOR_BGR2GRAY)
+          # Dark-line emphasis without treating cloud/tree texture as cable.
+          blackhat=cv2.morphologyEx(gray,cv2.MORPH_BLACKHAT,cv2.getStructuringElement(cv2.MORPH_RECT,(41,3)))
+          _,bw=cv2.threshold(blackhat,18,255,cv2.THRESH_BINARY)
+          bw=cv2.morphologyEx(bw,cv2.MORPH_CLOSE,cv2.getStructuringElement(cv2.MORPH_RECT,(31,1)))
+
+          lines=cv2.HoughLinesP(bw,1,np.pi/180,threshold=max(100,w//12),
+                                minLineLength=int(w*0.33),maxLineGap=int(w*0.05))
+          mask=np.zeros((h,w),np.uint8)
+          accepted=[]
+          if lines is not None:
+              for line in lines[:,0]:
+                  x1,y1,x2,y2=map(int,line)
+                  dx=x2-x1; dy=y2-y1
+                  if abs(dx)<1: continue
+                  angle=abs(np.degrees(np.arctan2(dy,dx)))
+                  length=(dx*dx+dy*dy)**0.5
+                  if angle<=8 and length>=w*0.33 and max(y1,y2)<h*0.43:
+                      cv2.line(mask,(x1,y1),(x2,y2),255,5,cv2.LINE_AA)
+                      accepted.append((x1,y1,x2,y2,round(angle,2),round(length,1)))
+
+          # Expand only slightly around cable pixels.
+          mask=cv2.dilate(mask,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5)),iterations=1)
+          cleaned=cv2.inpaint(img,mask,3,cv2.INPAINT_TELEA)
+
+          # Preserve everything outside the explicit cable mask exactly.
+          rgba=cv2.cvtColor(cleaned,cv2.COLOR_BGR2RGB)
+          Image.fromarray(rgba).save(out,'WEBP',quality=94,method=6)
+
+          print('source',w,h,'accepted_lines',len(accepted))
+          for x in accepted[:30]: print('line',x)
+          if not accepted:
+              raise SystemExit('No long cable lines detected; refusing to create a broad cleanup')
+          PY
+
+      - name: Commit cleaned local hero
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/pico-home-clean-v2.webp
+          git diff --cached --quiet && exit 0
+          git commit -m "Add targeted cable-free English hero"
+          git pull --rebase origin main
+          git push
