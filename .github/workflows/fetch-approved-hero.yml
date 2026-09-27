@@ -1,0 +1,33 @@
+name: Fetch approved Pico hero source
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/fetch-approved-hero.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download source image
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p hero-source
+          curl -L --fail --retry 5 --retry-delay 2 \
+            "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rock%20walled%20plots%20of%20S%C3%A3o%20Mateus%20where%20grapes%20are%20grown%20with%20Mt.%20Pico%20in%20the%20background.jpg?width=1920" \
+            -o hero-source/pico-approved-source.jpg
+          test -s hero-source/pico-approved-source.jpg
+          file hero-source/pico-approved-source.jpg
+      - name: Upload source image
+        uses: actions/upload-artifact@v4
+        with:
+          name: pico-approved-hero-source
+          path: hero-source/pico-approved-source.jpg
+          retention-days: 1
