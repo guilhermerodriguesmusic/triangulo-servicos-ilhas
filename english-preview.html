@@ -779,17 +779,6 @@ html[lang="en"] .master-desktop-ui{display:none!important}
     content:"";position:absolute;z-index:-1;left:-4.15vw;right:-4.25vw;top:-1.65vh;height:10.5vh;
     background:linear-gradient(90deg,#4a88cc 0%,#5b98d7 38%,#65a2df 72%,#68a3e3 100%);
   }
-  html[lang="en"] .copy::before{
-    content:"";position:absolute;left:5.4vw;top:12.7vh;width:46vw;height:29.5vh;z-index:-1;pointer-events:none;
-    background:linear-gradient(90deg,rgba(75,139,207,.995) 0%,rgba(85,149,214,.985) 62%,rgba(101,164,223,.93) 84%,rgba(101,164,223,0) 100%);
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 7%,#000 88%,transparent 100%);
-    mask-image:linear-gradient(180deg,transparent 0,#000 7%,#000 88%,transparent 100%);
-  }
-  html[lang="en"] .handnote::before{
-    content:"";position:absolute;z-index:-1;left:-1.6vw;right:-1.2vw;top:-1.8vh;bottom:-1.2vh;
-    background:linear-gradient(90deg,rgba(104,168,230,0),rgba(104,168,230,.96) 22%,rgba(108,172,233,.98) 78%,rgba(108,172,233,0));
-  }
-
   html[lang="en"] .brand{height:auto;background:none}
   html[lang="en"] .brand-current{display:none!important}
   html[lang="en"] .brand-approved-en{display:block!important;opacity:1!important;width:min(25vw,465px)!important;max-width:none!important;transform:none}
@@ -798,10 +787,27 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   html[lang="en"] .actions{gap:1.05vw;transform:none}
   html[lang="en"] .login{min-width:9.4vw;padding-left:1.25vw;padding-right:1.25vw}
 
-  html[lang="en"] .kicker{left:7.10vw;top:14.95vh}
-  html[lang="en"] h1{left:7.10vw;top:18.05vh;width:790px;max-width:790px;font-size:88px;line-height:1}
-  html[lang="en"] .promise{left:7.10vw;top:38.00vh;font-size:31px}
-  html[lang="en"] .handnote{top:15.65vh;right:7.15vw;font-family:"Caveat","Segoe Script","Bradley Hand",cursive;font-size:31px;font-weight:500;line-height:.98}
+  html[lang="en"] .kicker{
+    left:7.10vw;top:14.95vh;width:34vw;
+    background:linear-gradient(90deg,rgba(77,141,208,.995),rgba(91,156,218,.985) 82%,rgba(98,163,224,0));
+    box-shadow:0 0 16px 10px rgba(82,148,213,.94)
+  }
+  html[lang="en"] h1{
+    left:7.10vw;top:18.05vh;width:790px;max-width:790px;font-size:88px;line-height:1;
+    background:linear-gradient(90deg,rgba(78,143,210,.998),rgba(91,155,217,.992) 84%,rgba(101,165,224,0));
+    box-shadow:0 0 22px 16px rgba(84,149,214,.96)
+  }
+  html[lang="en"] .promise{
+    left:7.10vw;top:38.00vh;width:34vw;font-size:31px;
+    background:linear-gradient(90deg,rgba(78,143,210,.998),rgba(91,155,217,.99) 84%,rgba(101,165,224,0));
+    box-shadow:0 0 16px 10px rgba(84,149,214,.94)
+  }
+  html[lang="en"] .handnote{
+    top:15.65vh;right:7.15vw;width:15vw;padding:0 .5vw;
+    font-family:"Caveat","Segoe Script","Bradley Hand",cursive;font-size:31px;font-weight:500;line-height:.98;
+    background:linear-gradient(90deg,rgba(104,168,230,0),rgba(106,170,231,.995) 18%,rgba(108,172,233,.998) 82%,rgba(108,172,233,0));
+    box-shadow:0 0 16px 9px rgba(107,171,232,.93)
+  }
   html[lang="en"] .island-pills{left:7.10vw;top:44.72vh}
   html[lang="en"] .island-pill{background:#fff}
   html[lang="en"] .island-pill.active{background:#0b4d78}
