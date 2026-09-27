@@ -775,16 +775,21 @@ html[lang="en"] .master-desktop-ui{display:none!important}
   }
   html[lang="en"] .hero::before{
     inset:0;
-    background-image:url('/assets/home-master.webp');
-    background-image:image-set(url('/assets/home-master.webp') 1x,url('/assets/home-master-2x.webp') 2x);
+    background-image:url('/assets/pico-home-clean.webp');
     background-repeat:no-repeat;
-    background-position:center center;
-    background-size:100% 100%;
-    transform:none;
-    transform-origin:center center;
+    background-position:center 45%;
+    background-size:cover;
+    transform:translate(11px,-4px) scale(1.18);
+    transform-origin:left center;
     filter:none;
   }
-  html[lang="en"] .hero::after{display:none}
+  html[lang="en"] .hero::after{
+    display:block;
+    background:
+      linear-gradient(180deg,rgba(72,143,210,.78) 0%,rgba(72,143,210,.56) 10%,rgba(72,143,210,.22) 23%,rgba(72,143,210,0) 36%),
+      linear-gradient(90deg,rgba(5,39,67,.16) 0%,rgba(5,39,67,.04) 44%,rgba(5,39,67,.02) 70%,rgba(5,39,67,.05) 100%),
+      linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.11) 68%,rgba(4,27,44,.38) 100%);
+  }
 
   /* Header: identical PT reference geometry. */
   html[lang="en"] .top{
