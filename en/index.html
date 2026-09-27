@@ -767,33 +767,103 @@ html[lang="en"] .master-desktop-ui{display:none!important}
 </style>
 <style id="english-desktop-parity">
 @media(min-width:1121px){
-  /* EN mirrors the approved PT geometry over the clean road-to-Pico source. */
+  /* English desktop follows the approved PT composition; only copy changes. */
   html[lang="en"] .hero{
-    background:#4d8dcb url('/assets/pico-home-clean.webp') center 45%/cover no-repeat;
+    background:#4d8dcb;
   }
   html[lang="en"] .hero::before{
     inset:0 0 0 -100px;
     background-image:url('/assets/pico-home-clean.webp');
     background-size:cover;
     background-position:center 45%;
-    transform:translate(92px,-120px) scale(1.18);
+    transform:translate(136px,-182px) scale(1.18);
     transform-origin:left center;
     filter:none;
   }
   html[lang="en"] .hero::after{
     display:block;
     background:
-      linear-gradient(180deg,rgba(72,143,210,1) 0%,rgba(72,143,210,.99) 12%,rgba(72,143,210,.94) 18%,rgba(72,143,210,.72) 22%,rgba(72,143,210,.34) 27%,rgba(72,143,210,.10) 31%,rgba(72,143,210,0) 35%),
+      linear-gradient(180deg,rgba(92,158,221,.88) 0%,rgba(88,154,219,.78) 12%,rgba(82,150,216,.48) 20%,rgba(78,146,212,.18) 28%,rgba(72,143,210,0) 36%),
       linear-gradient(90deg,rgba(5,39,67,.10) 0%,rgba(5,39,67,.028) 44%,rgba(5,39,67,.015) 70%,rgba(5,39,67,.045) 100%),
       linear-gradient(180deg,rgba(6,43,73,0) 48%,rgba(4,27,44,.10) 68%,rgba(4,27,44,.35) 100%);
   }
 
+  /* Same TRIÂNGULO mark and scale as the approved PT master. */
   html[lang="en"] .brand{height:auto;background:none}
-  html[lang="en"] .brand-current{display:none!important}
-  html[lang="en"] .brand-approved-en{display:block!important;opacity:1!important;width:306px}
-  html[lang="en"] .handnote{font-family:"Caveat","Segoe Script","Bradley Hand",cursive;font-weight:500}
+  html[lang="en"] .brand-current{
+    display:block!important;
+    opacity:1!important;
+    width:min(19.4vw,360px)!important;
+    max-width:none!important;
+  }
+  html[lang="en"] .brand-approved-en{display:none!important}
+
+  /* Header geometry mirrors PT. */
+  html[lang="en"] .nav{
+    left:-3.85vw;
+    width:33.2vw;
+  }
   html[lang="en"] .nav a,
-  html[lang="en"] .nav button{font-weight:550}
+  html[lang="en"] .nav button{
+    font-size:16px;
+    font-weight:500;
+  }
+  html[lang="en"] .actions{
+    gap:1.22vw;
+    transform:translateY(-1px);
+  }
+  html[lang="en"] .login{
+    min-width:8.9vw;
+    padding-left:1.25vw;
+    padding-right:1.25vw;
+  }
+
+  /* Hero copy keeps the approved PT anchors. */
+  html[lang="en"] .kicker{left:7.10vw;top:14.95vh}
+  html[lang="en"] h1{
+    left:7.10vw;
+    top:18.05vh;
+    width:790px;
+    max-width:790px;
+    font-size:88px;
+    line-height:1;
+  }
+  html[lang="en"] .promise{
+    left:7.10vw;
+    top:38.00vh;
+    font-size:31px;
+  }
+  html[lang="en"] .handnote{
+    top:14.45vh;
+    right:7.15vw;
+    font-family:"Caveat","Segoe Script","Bradley Hand",cursive;
+    font-size:31px;
+    font-weight:500;
+    line-height:.98;
+  }
+
+  html[lang="en"] .island-pills{left:7.10vw;top:44.72vh}
+
+  /* Search and cards follow the master coordinates rather than a separate EN layout. */
+  html[lang="en"] .searchbar{
+    left:7.10vw;
+    top:52.31vh;
+    width:50.95vw;
+    height:8.25vh;
+  }
+  html[lang="en"] .category-row{
+    left:6.02vw;
+    right:5.72vw;
+    top:69.86vh;
+  }
+  html[lang="en"] .category{
+    height:13.34vh;
+  }
+  html[lang="en"] .trustbar{
+    height:13.30vh;
+    padding-left:7.05vw;
+    padding-right:7.05vw;
+  }
 }
 </style>
 <style id="accessibility-v1">
