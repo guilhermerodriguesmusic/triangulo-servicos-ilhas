@@ -999,7 +999,8 @@ nas ilhas</h1>
 </main>
 <script>
 const urlLang=new URLSearchParams(location.search).get('lang');
-let lang=(urlLang==='en'||urlLang==='pt')?urlLang:(localStorage.getItem('tri_lang')||'pt');
+const pathLang=location.pathname.replace(/\/+$/,'').endsWith('/en')?'en':'pt';
+let lang=(urlLang==='en'||urlLang==='pt')?urlLang:pathLang;
 let island=localStorage.getItem('tri_island')||'Pico';
 
 function applyLang(){
@@ -1034,7 +1035,7 @@ function applyLang(){
     :'Find and book local services across Pico, Faial and São Jorge with TRIÂNGULO Azores.';
   if(meta)meta.content=description;
   const canonical=document.querySelector('link[rel="canonical"]');
-  const canonicalUrl=lang==='pt'?'https://trianguloacores.pt/':'https://trianguloacores.pt/?lang=en';
+  const canonicalUrl=lang==='pt'?'https://trianguloacores.pt/':'https://trianguloacores.pt/en/';
   if(canonical)canonical.href=canonicalUrl;
   const ogTitle=document.querySelector('meta[property="og:title"]');
   const ogDescription=document.querySelector('meta[property="og:description"]');
@@ -1092,8 +1093,9 @@ document.querySelector('#homeSearch').onsubmit=e=>{e.preventDefault();openSearch
 document.querySelectorAll('[data-group]').forEach(a=>a.onclick=e=>{e.preventDefault();openSearch('',a.dataset.group)});
 function syncHomepageLanguageUrl(){
   const u=new URL(location.href);
-  if(lang==='en')u.searchParams.set('lang','en');else u.searchParams.delete('lang');
-  history.replaceState(history.state,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);
+  u.searchParams.delete('lang');
+  const targetPath=lang==='en'?'/en/':'/';
+  history.replaceState(history.state,'',targetPath+(u.searchParams.toString()?'?'+u.searchParams.toString():'')+u.hash);
 }
 function syncHomepageSearchFields(sourceMode=null){
   const normal=document.querySelector('#searchInput');
