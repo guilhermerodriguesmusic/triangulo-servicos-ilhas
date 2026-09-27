@@ -1,0 +1,50 @@
+name: English homepage parity preview
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "english-preview.html"
+      - ".github/workflows/english-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start local site
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/en-preview-http.log 2>&1 &
+          for i in {1..30}; do
+            curl --silent --fail http://127.0.0.1:4173/english-preview.html >/dev/null && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Capture English parity preview
+        shell: bash
+        run: |
+          mkdir -p english-preview
+          cat > /tmp/capture.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const browser=await chromium.launch({headless:true});
+          const context=await browser.newContext({viewport:{width:1857,height:1042},locale:'en-GB'});
+          const page=await context.newPage();
+          await page.goto('http://127.0.0.1:4173/english-preview.html?lang=en',{waitUntil:'domcontentloaded'});
+          await page.waitForTimeout(500);
+          await page.screenshot({path:'english-preview/desktop-en.png',fullPage:true});
+          await browser.close();
+          JS
+          node /tmp/capture.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: english-homepage-parity-preview
+          path: english-preview/desktop-en.png
+          retention-days: 1
