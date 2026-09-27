@@ -32,7 +32,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p english-preview
-          cat > /tmp/capture.mjs <<'JS'
+          cat > capture-preview.mjs <<'JS'
           import { chromium } from 'playwright';
           const browser=await chromium.launch({headless:true});
           const context=await browser.newContext({viewport:{width:1857,height:1042},locale:'en-GB'});
@@ -42,7 +42,7 @@ jobs:
           await page.screenshot({path:'english-preview/desktop-en.png',fullPage:true});
           await browser.close();
           JS
-          node /tmp/capture.mjs
+          node capture-preview.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: english-homepage-parity-preview
