@@ -720,6 +720,8 @@ jobs:
           path: |
             homepage-audit/
             assets/pico-home-clean.webp
+            assets/pico-home-hq.webp
+            assets/pico-home-road.jpg
             assets/home-master.webp
             assets/home-master-2x.webp
           retention-days: 7
