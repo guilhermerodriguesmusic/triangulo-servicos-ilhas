@@ -1,0 +1,28 @@
+name: Asset preview bundle
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/asset-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: triangulo-home-assets-preview
+          path: |
+            assets/pico-home-road.jpg
+            assets/pico-home-clean.webp
+            assets/pico-home-hq.webp
+            assets/home-master.webp
+            assets/home-master-2x.webp
+            assets/logo-approved-desktop.svg
+          retention-days: 1
