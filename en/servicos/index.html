@@ -956,6 +956,190 @@ body.route-public-results #explore{display:block!important}
 .provider-tag-rating{background:#fff7db;color:#6f5600}.book-review-summary{display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:12px;font-weight:850;color:#6f5600}.book-review-excerpt{display:block;margin-top:5px;font-style:italic;color:#667b8b}.client-review{margin-top:11px;padding:12px;border:1px solid #e2d69c;background:#fffdf3;border-radius:14px}.client-review.done{border-color:#cfe3d9;background:#f7fffb}.client-review b{display:block;margin-bottom:4px}.client-review small{display:block;color:#6b8095;line-height:1.4}.review-stars{display:flex;gap:3px;margin:8px 0}.review-stars button{border:0;background:transparent;padding:1px;font-size:27px;line-height:1;color:#b9c3ca;cursor:pointer}.review-stars button.on{color:#b88600}.review-comment{width:100%;min-height:70px;resize:vertical;margin:5px 0 7px;padding:9px 10px;border:1px solid #d8e3eb;border-radius:10px;font:inherit}.review-submit{width:100%;min-height:40px}.review-status{min-height:17px;margin-top:5px}.review-done-stars{color:#9b7200;letter-spacing:1px;font-size:18px}.client-review.review-focus{outline:3px solid #b8d8cc;outline-offset:3px;box-shadow:0 10px 28px #15345816}
 </style>
 <link rel="stylesheet" href="/servicos/request-photos.css">
+<style id="services-visual-v2">
+/* TRIÂNGULO Services visual refinement — presentation only, no functional changes */
+@media(min-width:760px){
+  body{background:
+    radial-gradient(circle at 12% 0%,rgba(205,229,218,.62),transparent 30%),
+    linear-gradient(180deg,#eef4f1 0%,#f7faf8 42%,#edf3f1 100%)!important}
+  .app{
+    width:min(1180px,calc(100% - 44px))!important;
+    border-radius:32px!important;
+    box-shadow:0 26px 70px rgba(15,54,91,.13)!important;
+    background:#fbfdfc!important;
+  }
+  .topbar{
+    height:84px!important;
+    padding:15px 34px!important;
+    border-bottom:1px solid rgba(10,49,87,.07)!important;
+    background:rgba(255,255,255,.94)!important;
+  }
+  .topbar .brand-full{width:190px!important}
+  .desktop-client-nav{gap:5px!important}
+  .desktop-client-nav a,
+  .desktop-client-nav button{
+    font-size:11.5px!important;
+    padding:10px 13px!important;
+  }
+  #home{
+    max-width:none!important;
+    padding:0 34px 50px!important;
+  }
+  #home .home-hero{
+    min-height:310px;
+    margin:0 -34px!important;
+    padding:54px 56px 42px!important;
+    border-radius:0 0 34px 34px;
+    overflow:hidden;
+    background:
+      linear-gradient(90deg,rgba(5,44,73,.82) 0%,rgba(5,44,73,.58) 43%,rgba(5,44,73,.14) 72%,rgba(5,44,73,.05) 100%),
+      url('/assets/pico-home-clean.webp') center 57%/cover no-repeat!important;
+    box-shadow:inset 0 -1px 0 rgba(255,255,255,.22);
+  }
+  #home .home-hero:after{
+    display:block!important;
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg,rgba(11,49,87,.05),rgba(11,49,87,.18)),
+      radial-gradient(circle at 76% 25%,rgba(255,255,255,.20),transparent 28%);
+  }
+  #home .home-hero>*{position:relative;z-index:1}
+  #home .island-select{justify-content:flex-start!important}
+  #home .island-select button{
+    background:rgba(255,255,255,.94)!important;
+    color:#244b3d!important;
+    border:1px solid rgba(255,255,255,.88)!important;
+    box-shadow:0 10px 28px rgba(0,0,0,.14)!important;
+    padding:10px 17px!important;
+  }
+  #home .home-title{
+    margin:24px 0 22px!important;
+    max-width:660px;
+  }
+  #home .home-title h1{
+    color:#fff!important;
+    font-size:52px!important;
+    line-height:1.02!important;
+    letter-spacing:-.045em!important;
+    text-shadow:0 2px 18px rgba(0,0,0,.16);
+  }
+  #home .home-title p{
+    color:rgba(255,255,255,.88)!important;
+    font-size:16px!important;
+    margin-top:8px!important;
+  }
+  #home .searchbar{
+    width:min(720px,72%);
+    height:66px!important;
+    border:1px solid rgba(255,255,255,.82)!important;
+    border-radius:22px!important;
+    padding:0 17px!important;
+    box-shadow:0 18px 42px rgba(0,0,0,.19)!important;
+  }
+  #home .searchbar input{font-size:17px!important}
+  #home .searchbar button{
+    width:42px;height:42px;border-radius:50%;
+    background:#557d58!important;color:#fff!important;
+    display:grid;place-items:center;
+  }
+  #home .section-head{
+    margin:34px 0 16px!important;
+  }
+  #home .section-head h2{
+    font-size:26px!important;
+    letter-spacing:-.035em!important;
+  }
+  #home .section-head button{
+    font-size:13px!important;
+    padding:8px 11px!important;
+    border-radius:999px!important;
+    background:#eef5f1!important;
+    color:#315f45!important;
+  }
+  #home .category-grid{
+    gap:14px!important;
+  }
+  #home .category{
+    min-height:126px!important;
+    border-radius:22px!important;
+    padding:18px 10px 16px!important;
+    gap:11px!important;
+    box-shadow:0 13px 28px rgba(22,61,83,.12)!important;
+    border:1px solid rgba(255,255,255,.24);
+    transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
+  }
+  #home .category:hover{
+    transform:translateY(-4px);
+    box-shadow:0 19px 34px rgba(22,61,83,.16)!important;
+    filter:saturate(1.05);
+  }
+  #home .category svg{width:34px!important;height:34px!important}
+  #home .category small{font-size:13px!important;line-height:1.25}
+  #home .urgent{
+    margin-top:20px!important;
+    min-height:82px;
+    border-radius:22px!important;
+    padding:17px 20px!important;
+    background:linear-gradient(135deg,#f4f1df,#eef5e8)!important;
+    border:1px solid #d9e6d7!important;
+    box-shadow:0 11px 28px rgba(38,79,59,.08)!important;
+    color:#244c3a!important;
+  }
+  #home .urgent .bolt{
+    width:44px;height:44px;border-radius:14px;
+    display:grid;place-items:center;
+    background:#4e7439;color:#fff;
+  }
+  #home .urgent strong{font-size:16px!important}
+  #home .urgent small{font-size:12px!important;color:#587064!important}
+  #home .urgent .arrow{color:#4e7439!important}
+  body.results-mode #explore{background:#fbfdfc}
+  body.results-mode .results-head{margin-top:10px!important}
+  body.results-mode .results-search{
+    height:58px!important;border:1px solid #dfe9e5;
+    background:#fff!important;box-shadow:0 7px 20px rgba(18,50,74,.05);
+  }
+  body.results-mode .result-filter{
+    border:1px solid #e2ebe7!important;
+    background:#fff!important;
+    border-radius:999px!important;
+  }
+  body.results-mode .result-filter.active{
+    background:#e8f1eb!important;color:#315f45!important;border-color:#cfe0d5!important;
+  }
+  body.results-mode .result-card{
+    background:linear-gradient(180deg,#fff,#fcfefd)!important;
+    border:1px solid #e1eae6!important;
+    border-radius:24px!important;
+    box-shadow:0 12px 30px rgba(18,50,74,.075)!important;
+  }
+  body.results-mode .result-card:hover{
+    box-shadow:0 20px 42px rgba(18,50,74,.12)!important;
+  }
+}
+@media(max-width:759px){
+  .home-hero{
+    padding-top:16px!important;
+    padding-bottom:23px!important;
+    background:linear-gradient(180deg,#edf8f4 0%,#fff 96%)!important;
+  }
+  .home-title h1{font-size:34px!important}
+  .searchbar{
+    border-radius:20px!important;
+    box-shadow:0 9px 24px rgba(18,50,74,.08)!important;
+  }
+  .category{
+    border-radius:17px!important;
+    box-shadow:0 8px 18px rgba(26,76,124,.10)!important;
+  }
+  .urgent{
+    border-radius:19px!important;
+    box-shadow:0 9px 20px rgba(221,170,21,.11)!important;
+  }
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Skip to content</a>
