@@ -955,6 +955,95 @@ body.route-public-results #explore{display:block!important}
 .provider-tag-rating{background:#fff7db;color:#6f5600}.book-review-summary{display:inline-flex;align-items:center;gap:6px;margin-top:5px;font-size:12px;font-weight:850;color:#6f5600}.book-review-excerpt{display:block;margin-top:5px;font-style:italic;color:#667b8b}.client-review{margin-top:11px;padding:12px;border:1px solid #e2d69c;background:#fffdf3;border-radius:14px}.client-review.done{border-color:#cfe3d9;background:#f7fffb}.client-review b{display:block;margin-bottom:4px}.client-review small{display:block;color:#6b8095;line-height:1.4}.review-stars{display:flex;gap:3px;margin:8px 0}.review-stars button{border:0;background:transparent;padding:1px;font-size:27px;line-height:1;color:#b9c3ca;cursor:pointer}.review-stars button.on{color:#b88600}.review-comment{width:100%;min-height:70px;resize:vertical;margin:5px 0 7px;padding:9px 10px;border:1px solid #d8e3eb;border-radius:10px;font:inherit}.review-submit{width:100%;min-height:40px}.review-status{min-height:17px;margin-top:5px}.review-done-stars{color:#9b7200;letter-spacing:1px;font-size:18px}.client-review.review-focus{outline:3px solid #b8d8cc;outline-offset:3px;box-shadow:0 10px 28px #15345816}
 </style>
 <link rel="stylesheet" href="/servicos/request-photos.css">
+<style id="services-approved-v1">
+@font-face{font-family:'GFS Didot';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/home-didot.ttf') format('truetype')}
+body.results-mode{background:#eef3f1!important}
+body.results-mode .app{width:min(1180px,calc(100% - 44px))!important;min-height:calc(100vh - 36px)!important;border-radius:30px!important;overflow:hidden!important;box-shadow:0 24px 64px rgba(18,50,74,.12)!important;background:#fff!important}
+body.results-mode #mainShell{padding-bottom:28px!important;background:#fff!important}
+body.results-mode #home{display:block!important;max-width:none!important;margin:0!important;padding:0 34px 22px!important}
+body.results-mode #explore{display:block!important;padding:0 34px 46px!important}
+body.results-mode .bottom-nav{display:none!important}
+body.results-mode .topbar{height:78px!important;padding:13px 32px!important;background:rgba(255,255,255,.97)!important}
+body.results-mode .topbar .brand-full{width:180px!important}
+body.results-mode .home-hero{
+  --services-island-bg:url('/assets/island-pico.jpg');
+  min-height:300px!important;
+  margin:0 -34px!important;
+  padding:44px 48px 34px!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.88) 0%,rgba(255,255,255,.68) 37%,rgba(255,255,255,.16) 66%,rgba(255,255,255,.02) 100%),
+    var(--services-island-bg) center 50%/cover no-repeat!important;
+  position:relative!important;
+}
+body.results-mode .home-hero:after{content:"";display:block!important;position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,38,61,.01),rgba(8,38,61,.12));z-index:0;pointer-events:none}
+body.results-mode .home-hero>*{position:relative;z-index:1}
+body.results-mode .island-select{justify-content:flex-start!important;margin-bottom:14px}
+body.results-mode .island-select button{background:#fff!important;color:#17394b!important;border:1px solid #e0e8e4!important;box-shadow:0 8px 20px rgba(18,50,74,.10)!important}
+body.results-mode .home-title{margin:0 0 18px!important;max-width:650px}
+body.results-mode .home-title h1{font-family:'GFS Didot',Didot,Georgia,serif!important;font-size:54px!important;line-height:1!important;letter-spacing:-.035em!important;color:#0f302d!important;margin:0 0 7px!important}
+body.results-mode .home-title p{font-size:15px!important;color:#274b57!important;margin:0!important}
+body.results-mode .searchbar{width:min(760px,72%)!important;height:62px!important;border-radius:22px!important;background:#fff!important;border:1px solid rgba(217,229,224,.95)!important;box-shadow:0 13px 30px rgba(18,50,74,.13)!important;padding:0 10px 0 16px!important}
+body.results-mode .searchbar input{font-size:16px!important}
+body.results-mode .searchbar button{width:120px!important;height:44px!important;border-radius:999px!important;background:#174f3d!important;color:#fff!important;font-size:0!important;font-weight:800!important}
+body.results-mode .searchbar button:after{content:attr(data-label);font-size:12px}
+body.results-mode #home>.section-head{margin:24px 0 13px!important}
+body.results-mode #home>.section-head h2{font-family:'GFS Didot',Didot,Georgia,serif!important;font-size:34px!important;letter-spacing:-.025em!important}
+body.results-mode #home>.section-head button{background:#eef5f1!important;color:#315f45!important;border-radius:999px!important;padding:8px 11px!important}
+body.results-mode #home .category-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;margin-bottom:0!important}
+body.results-mode #home .category{min-height:108px!important;border-radius:18px!important;padding:14px 8px!important;box-shadow:0 10px 22px rgba(18,50,74,.10)!important}
+body.results-mode #home .category span{font-size:28px!important}
+body.results-mode #home .category small{font-size:12px!important}
+body.results-mode #urgentBtn{display:none!important}
+
+/* Results live directly under categories */
+body.results-mode #explore{border-top:1px solid #edf1ef;padding-top:24px!important}
+body.results-mode .results-head,
+body.results-mode .results-filters{display:none!important}
+body.results-mode .results-tools,
+body.results-mode .result-title,
+body.results-mode .results-list,
+body.results-mode #postFromResults{max-width:1000px!important;margin-left:auto!important;margin-right:auto!important}
+body.results-mode .results-tools{justify-content:flex-end!important;margin-bottom:8px!important}
+body.results-mode .results-island{display:none!important}
+body.results-mode .result-title{margin:0 0 14px!important;align-items:center!important}
+body.results-mode .result-title h2{font-family:'GFS Didot',Didot,Georgia,serif!important;font-size:32px!important;letter-spacing:-.025em!important}
+body.results-mode .result-title small{font-size:11px!important}
+body.results-mode .results-list{grid-template-columns:1fr!important;gap:14px!important}
+body.results-mode .result-card{grid-template-columns:150px minmax(0,1fr)!important;min-height:180px!important;padding:14px!important;border-radius:20px!important;border:1px solid #e2ebe7!important;box-shadow:0 12px 28px rgba(18,50,74,.075)!important}
+body.results-mode .result-card img{width:150px!important;height:150px!important;border-radius:15px!important}
+body.results-mode .result-card b{font-size:20px!important}
+body.results-mode .result-card .desc{font-size:12px!important;line-height:1.5!important}
+body.results-mode .provider-tag{font-size:9.5px!important;padding:5px 8px!important;background:#eef4f1!important;color:#416451!important}
+body.results-mode .result-card-action button{background:#174f3d!important;border-radius:999px!important;padding:11px 16px!important}
+body.results-mode .real-empty-no-results{max-width:1000px!important;border:1px solid #e2e9e5!important;background:#fff!important;border-radius:20px!important;box-shadow:0 8px 24px rgba(18,50,74,.05)!important;padding:34px 24px!important}
+@media(max-width:759px){
+ body.results-mode{background:#fff!important}
+ body.results-mode .app{width:100%!important;min-height:100vh!important;border-radius:0!important;box-shadow:none!important}
+ body.results-mode .topbar{height:66px!important;padding:10px 14px!important}
+ body.results-mode .topbar .brand-full{width:148px!important}
+ body.results-mode #home{padding:0 14px 16px!important}
+ body.results-mode #explore{padding:18px 14px 96px!important}
+ body.results-mode .bottom-nav{display:grid!important}
+ body.results-mode .home-hero{min-height:250px!important;margin:0 -14px!important;padding:24px 16px 22px!important;background:
+   linear-gradient(180deg,rgba(255,255,255,.80),rgba(255,255,255,.40) 58%,rgba(255,255,255,.12)),
+   var(--services-island-bg) center 48%/cover no-repeat!important}
+ body.results-mode .home-title h1{font-size:38px!important}
+ body.results-mode .home-title p{font-size:13px!important;max-width:85%}
+ body.results-mode .searchbar{width:100%!important;height:56px!important;border-radius:18px!important}
+ body.results-mode .searchbar button{width:52px!important;height:40px!important}
+ body.results-mode .searchbar button:after{content:"→";font-size:18px}
+ body.results-mode #home>.section-head h2{font-size:28px!important}
+ body.results-mode #home .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ body.results-mode #home .category{min-height:92px!important}
+ body.results-mode .results-tools{margin-bottom:7px!important}
+ body.results-mode .result-title h2{font-size:27px!important}
+ body.results-mode .result-card{grid-template-columns:92px minmax(0,1fr)!important;min-height:0!important;padding:10px!important}
+ body.results-mode .result-card img{width:92px!important;height:112px!important}
+ body.results-mode .result-card b{font-size:15px!important}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content" data-pt="Saltar para o conteúdo" data-en="Skip to content">Saltar para o conteúdo</a>
@@ -2353,6 +2442,33 @@ window.addEventListener('hashchange',()=>{if(location.hash==='#prestador'||locat
   }
   new MutationObserver(syncLocalizedSeo).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   queueMicrotask(syncLocalizedSeo);
+})();
+</script>
+<script id="services-approved-island-visual">
+(()=>{
+ const hero=document.querySelector('#home .home-hero');
+ const pill=document.getElementById('islandPill');
+ const formButton=document.querySelector('#home .searchbar button[type="submit"]');
+ if(formButton) formButton.dataset.label=document.documentElement.lang==='en'?'Search':'Pesquisar';
+ const images={
+   'Pico':"url('/assets/island-pico.jpg')",
+   'Faial':"url('/assets/island-faial.jpg')",
+   'São Jorge':"url('/assets/island-sao-jorge.jpg')"
+ };
+ function currentIsland(){
+   const span=pill&&pill.querySelector('span');
+   return (span&&span.textContent||'Pico').trim();
+ }
+ function sync(){
+   const name=currentIsland();
+   if(hero&&images[name]) hero.style.setProperty('--services-island-bg',images[name]);
+ }
+ sync();
+ const mo=new MutationObserver(sync);
+ if(pill) mo.observe(pill,{subtree:true,childList:true,characterData:true});
+ document.addEventListener('click',e=>{
+   if(e.target.closest('[data-set-island]')) setTimeout(sync,0);
+ });
 })();
 </script>
 </body></html>
